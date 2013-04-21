@@ -15,9 +15,9 @@ import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSourc
 import org.andengine.opengl.texture.atlas.buildable.builder.BlackPawnTextureAtlasBuilder;
 import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder;
 import org.andengine.opengl.texture.region.TextureRegion;
-import org.andengine.ui.activity.SimpleBaseGameActivity;
+import org.andengine.ui.activity.BaseGameActivity;
 
-public class MyActivity extends SimpleBaseGameActivity {
+public class MyActivity extends BaseGameActivity {
     private Camera camera;
     private static final int CAMERA_WIDTH = 720;
     private static final int CAMERA_HEIGHT = 480;
@@ -33,35 +33,36 @@ public class MyActivity extends SimpleBaseGameActivity {
     }
 
     @Override
-    protected void onCreateResources() {
+    public void onCreateResources(OnCreateResourcesCallback pOnCreateResourcesCallback) {
         // lol
         // full path assets/gfx
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
-        // Create the bitmap texture atlas for the sprite's texture region
-        BuildableBitmapTextureAtlas mBitmapTextureAtlas =
+        // create atlas
+        BuildableBitmapTextureAtlas atlas =
                 new BuildableBitmapTextureAtlas(mEngine.getTextureManager(), 1024, 1024,
                 TextureOptions.BILINEAR);
-        /* Create the sprite's texture region via
-        the BitmapTextureAtlasTextureRegionFactory */
+
         shipTextureRegion = BitmapTextureAtlasTextureRegionFactory.
-                createFromAsset(mBitmapTextureAtlas, this, "ship.png");  // ship.png in assets/gfx folder
+                createFromAsset(atlas, this, "ship.png");  // ship.png in assets/gfx folder
         // Build the bitmap texture atlas
         try {
-            mBitmapTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource
-                                                                      , BitmapTextureAtlas >(0, 1, 1));
+            atlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource
+                    , BitmapTextureAtlas>(0, 1, 1));
         } catch (ITextureAtlasBuilder.TextureAtlasBuilderException e) {
             e.printStackTrace();
         }
         // Load the bitmap texture atlas into the device's gpu memory
-        mBitmapTextureAtlas.load();
+        atlas.load();
+        pOnCreateResourcesCallback.onCreateResourcesFinished();
     }
 
     @Override
-    protected Scene onCreateScene() {
+    public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback) {
         scene = new Scene();
         final float shipX = CAMERA_WIDTH * 0.5f;
         final float shipY = CAMERA_HEIGHT * 0.5f;
 
+        // create ship sprite
         Sprite shipSprite = new Sprite(shipX
                                         , shipY
                                         , shipTextureRegion
@@ -70,6 +71,12 @@ public class MyActivity extends SimpleBaseGameActivity {
         scene.attachChild(shipSprite);
 
         scene.setBackground(new Background(0.09804f, 0.6274f, 0.8784f));
-        return scene;
+        pOnCreateSceneCallback.onCreateSceneFinished(scene);
+    }
+
+    @Override
+    public void onPopulateScene(Scene pScene,
+                                OnPopulateSceneCallback pOnPopulateSceneCallback) {
+        pOnPopulateSceneCallback.onPopulateSceneFinished();
     }
 }
