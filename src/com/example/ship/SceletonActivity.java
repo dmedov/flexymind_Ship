@@ -17,7 +17,7 @@ import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.ui.activity.BaseGameActivity;
 
-public class MyActivity extends BaseGameActivity {
+public class SceletonActivity extends BaseGameActivity {
     private Camera camera;
     private static final int CAMERA_WIDTH = 720;
     private static final int CAMERA_HEIGHT = 480;
