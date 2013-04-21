@@ -16,6 +16,7 @@ import org.andengine.opengl.texture.atlas.buildable.builder.BlackPawnTextureAtla
 import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.ui.activity.BaseGameActivity;
+import org.andengine.util.color.Color;
 
 public class SceletonActivity extends BaseGameActivity {
     private static final int CAMERA_WIDTH = 720;
@@ -72,8 +73,8 @@ public class SceletonActivity extends BaseGameActivity {
                                         , mEngine.getVertexBufferObjectManager());
 
         scene.attachChild(shipSprite);
-
-        scene.setBackground(new Background(0.09804f, 0.6274f, 0.8784f));
+        Color backgroundColor = new Color(0.09804f, 0.6274f, 0.8784f);
+        scene.setBackground(new Background(backgroundColor));
         pOnCreateSceneCallback.onCreateSceneFinished(scene);
     }
 
