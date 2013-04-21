@@ -36,11 +36,15 @@ public class SceletonActivity extends BaseGameActivity {
     public void onCreateResources(OnCreateResourcesCallback pOnCreateResourcesCallback) {
         // lol
         // full path assets/gfx
+        final int atlasWidth  = 1024;
+        final int atlasHeight = 1024;
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
         // create atlas
         BuildableBitmapTextureAtlas atlas =
-                new BuildableBitmapTextureAtlas(mEngine.getTextureManager(), 1024, 1024,
-                TextureOptions.BILINEAR);
+                new BuildableBitmapTextureAtlas(mEngine.getTextureManager()
+                                                , atlasWidth
+                                                , atlasHeight
+                                                , TextureOptions.BILINEAR);
 
         shipTextureRegion = BitmapTextureAtlasTextureRegionFactory.
                 createFromAsset(atlas, this, "ship.png");  // ship.png in assets/gfx folder
