@@ -18,11 +18,11 @@ import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.ui.activity.BaseGameActivity;
 
 public class SceletonActivity extends BaseGameActivity {
-    private Camera camera;
     private static final int CAMERA_WIDTH = 720;
     private static final int CAMERA_HEIGHT = 480;
+    private Camera camera;
     private TextureRegion shipTextureRegion;
-    Scene scene;
+    private Scene scene;
 
     @Override
     public EngineOptions onCreateEngineOptions() {
