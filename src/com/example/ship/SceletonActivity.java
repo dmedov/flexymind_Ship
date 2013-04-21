@@ -34,10 +34,9 @@ public class SceletonActivity extends BaseGameActivity {
 
     @Override
     public void onCreateResources(OnCreateResourcesCallback pOnCreateResourcesCallback) {
-        // lol
-        // full path assets/gfx
         final int atlasWidth  = 1024;
         final int atlasHeight = 1024;
+        // full path assets/gfx
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
         // create atlas
         BuildableBitmapTextureAtlas atlas =
