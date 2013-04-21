@@ -80,6 +80,7 @@ public class SceletonActivity extends BaseGameActivity {
     @Override
     public void onPopulateScene(Scene pScene,
                                 OnPopulateSceneCallback pOnPopulateSceneCallback) {
+
         pOnPopulateSceneCallback.onPopulateSceneFinished();
     }
 }
