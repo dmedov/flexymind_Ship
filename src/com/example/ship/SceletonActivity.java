@@ -28,18 +28,27 @@ public class SceletonActivity extends BaseGameActivity {
     private TextureRegion shipTextureRegion;
     private Scene scene;
 
-    @Override
-    public EngineOptions onCreateEngineOptions() {
+    private ZoomCamera getZoomCamera(){
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        ZoomCamera camera;
 
-        float cameraWidth = metrics.widthPixels;
-        float cameraHeight = metrics.heightPixels;
-
+        final float cameraWidth = metrics.widthPixels;
+        final float cameraHeight = metrics.heightPixels;
         camera = new ZoomCamera(0, 0, cameraWidth, cameraHeight);
-        camera.setCenter(0.5f * TEXTURE_WIDTH, 0.5f * TEXTURE_HEIGHT);
-        camera.setZoomFactor(1.0f);
 
+        final float cameraCenterX = 0.5f * TEXTURE_WIDTH;
+        final float cameraCenterY = 0.5f * TEXTURE_HEIGHT;
+        camera.setCenter(cameraCenterX, cameraCenterY);
+
+        final float zoomFactor = 1.0f;     // будет изменен в дальнейшем
+        camera.setZoomFactor(zoomFactor);
+        return camera;
+    }
+
+    @Override
+    public EngineOptions onCreateEngineOptions() {
+        camera = getZoomCamera();
         EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED,
                 new FillResolutionPolicy(), camera);
         return engineOptions;
@@ -75,8 +84,11 @@ public class SceletonActivity extends BaseGameActivity {
     @Override
     public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback) {
         scene = new Scene();
-        final float shipX = TEXTURE_WIDTH * 0.5f - 128;
-        final float shipY = TEXTURE_HEIGHT * 0.5f - 128;
+
+        final float shipWidth = 128f;
+        final float shipHeight = 128f;
+        final float shipX = TEXTURE_WIDTH * 0.5f - shipWidth;
+        final float shipY = TEXTURE_HEIGHT * 0.5f - shipHeight;
 
         // create ship sprite
         Sprite shipSprite = new Sprite(shipX
@@ -93,7 +105,8 @@ public class SceletonActivity extends BaseGameActivity {
     @Override
     public void onPopulateScene(Scene pScene,
                                 OnPopulateSceneCallback pOnPopulateSceneCallback) {
-
         pOnPopulateSceneCallback.onPopulateSceneFinished();
     }
+
+
 }
