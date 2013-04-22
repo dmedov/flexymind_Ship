@@ -84,11 +84,8 @@ public class SceletonActivity extends BaseGameActivity {
     @Override
     public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback) {
         scene = new Scene();
-
-        final float shipWidth = 128f;
-        final float shipHeight = 128f;
-        final float shipX = TEXTURE_WIDTH * 0.5f - shipWidth;
-        final float shipY = TEXTURE_HEIGHT * 0.5f - shipHeight;
+        final float shipX = TEXTURE_WIDTH * 0.5f - shipTextureRegion.getWidth();
+        final float shipY = TEXTURE_HEIGHT * 0.5f - shipTextureRegion.getHeight();
 
         // create ship sprite
         Sprite shipSprite = new Sprite(shipX
