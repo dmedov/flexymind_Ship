@@ -1,6 +1,7 @@
 package com.example.ship;
 
 import android.util.DisplayMetrics;
+import android.util.Log;
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.camera.ZoomCamera;
 import org.andengine.engine.options.EngineOptions;
@@ -84,8 +85,8 @@ public class SceletonActivity extends BaseGameActivity {
     @Override
     public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback) {
         scene = new Scene();
-        final float shipX = TEXTURE_WIDTH * 0.5f - shipTextureRegion.getWidth();
-        final float shipY = TEXTURE_HEIGHT * 0.5f - shipTextureRegion.getHeight();
+        final float shipX = TEXTURE_WIDTH * 0.5f - shipTextureRegion.getWidth() * 0.5f;
+        final float shipY = TEXTURE_HEIGHT * 0.5f - shipTextureRegion.getHeight() * 0.5f;
 
         // create ship sprite
         Sprite shipSprite = new Sprite(shipX
