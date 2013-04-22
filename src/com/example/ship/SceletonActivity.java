@@ -1,9 +1,11 @@
 package com.example.ship;
 
+import android.util.DisplayMetrics;
 import org.andengine.engine.camera.Camera;
+import org.andengine.engine.camera.ZoomCamera;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
-import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
+import org.andengine.engine.options.resolutionpolicy.*;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.sprite.Sprite;
@@ -15,19 +17,29 @@ import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSourc
 import org.andengine.opengl.texture.atlas.buildable.builder.BlackPawnTextureAtlasBuilder;
 import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder;
 import org.andengine.opengl.texture.region.TextureRegion;
+import org.andengine.opengl.view.RenderSurfaceView;
 import org.andengine.ui.activity.BaseGameActivity;
 import org.andengine.util.color.Color;
 
 public class SceletonActivity extends BaseGameActivity {
-    private static final int CAMERA_WIDTH = 720;
-    private static final int CAMERA_HEIGHT = 480;
-    private Camera camera;
+    private static final int TEXTURE_WIDTH = 960;
+    private static final int TEXTURE_HEIGHT = 600;
+    private ZoomCamera camera;
     private TextureRegion shipTextureRegion;
     private Scene scene;
 
     @Override
     public EngineOptions onCreateEngineOptions() {
-        camera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
+        float cameraWidth = metrics.widthPixels;
+        float cameraHeight = metrics.heightPixels;
+
+        camera = new ZoomCamera(0, 0, cameraWidth, cameraHeight);
+        camera.setCenter(0.5f * TEXTURE_WIDTH, 0.5f * TEXTURE_HEIGHT);
+        camera.setZoomFactor(1.0f);
+
         EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED,
                 new FillResolutionPolicy(), camera);
         return engineOptions;
@@ -63,8 +75,8 @@ public class SceletonActivity extends BaseGameActivity {
     @Override
     public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback) {
         scene = new Scene();
-        final float shipX = CAMERA_WIDTH * 0.5f;
-        final float shipY = CAMERA_HEIGHT * 0.5f;
+        final float shipX = TEXTURE_WIDTH * 0.5f - 128;
+        final float shipY = TEXTURE_HEIGHT * 0.5f - 128;
 
         // create ship sprite
         Sprite shipSprite = new Sprite(shipX
