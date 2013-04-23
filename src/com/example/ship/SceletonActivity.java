@@ -2,11 +2,10 @@ package com.example.ship;
 
 import android.util.DisplayMetrics;
 import android.util.Log;
-import org.andengine.engine.camera.Camera;
 import org.andengine.engine.camera.ZoomCamera;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
-import org.andengine.engine.options.resolutionpolicy.*;
+import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.sprite.Sprite;
@@ -18,15 +17,14 @@ import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSourc
 import org.andengine.opengl.texture.atlas.buildable.builder.BlackPawnTextureAtlasBuilder;
 import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder;
 import org.andengine.opengl.texture.region.TextureRegion;
-import org.andengine.opengl.view.RenderSurfaceView;
 import org.andengine.ui.activity.BaseGameActivity;
 import org.andengine.util.color.Color;
 
 public class SceletonActivity extends BaseGameActivity {
     private static final int TEXTURE_WIDTH = 960;
     private static final int TEXTURE_HEIGHT = 600;
-    private ZoomCamera camera;
     private TextureRegion shipTextureRegion;
+    private TextureRegion backTextureRegion;
     private Scene scene;
 
     private ZoomCamera getZoomCamera(){
@@ -34,22 +32,23 @@ public class SceletonActivity extends BaseGameActivity {
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         ZoomCamera camera;
 
-        final float cameraWidth = metrics.widthPixels;
-        final float cameraHeight = metrics.heightPixels;
+        float cameraWidth = TEXTURE_WIDTH + TEXTURE_HEIGHT / 5;
+        float cameraHeight = cameraWidth * metrics.heightPixels / metrics.widthPixels;
         camera = new ZoomCamera(0, 0, cameraWidth, cameraHeight);
 
         final float cameraCenterX = 0.5f * TEXTURE_WIDTH;
         final float cameraCenterY = 0.5f * TEXTURE_HEIGHT;
         camera.setCenter(cameraCenterX, cameraCenterY);
 
-        final float zoomFactor = 1.0f;     // будет изменен в дальнейшем
+        final float zoomFactor = cameraHeight / TEXTURE_HEIGHT;     // будет изменен в дальнейшем
+        Log.e("zoom", String.valueOf(zoomFactor));
         camera.setZoomFactor(zoomFactor);
         return camera;
     }
 
     @Override
     public EngineOptions onCreateEngineOptions() {
-        camera = getZoomCamera();
+        ZoomCamera camera = getZoomCamera();
         EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED,
                 new FillResolutionPolicy(), camera);
         return engineOptions;
@@ -70,6 +69,9 @@ public class SceletonActivity extends BaseGameActivity {
 
         shipTextureRegion = BitmapTextureAtlasTextureRegionFactory.
                 createFromAsset(atlas, this, "ship.png");  // ship.png in assets/gfx folder
+
+        backTextureRegion = BitmapTextureAtlasTextureRegionFactory.
+                createFromAsset(atlas, this, "back.png");
         // Build the bitmap texture atlas
         try {
             atlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource
@@ -94,7 +96,14 @@ public class SceletonActivity extends BaseGameActivity {
                                         , shipTextureRegion
                                         , mEngine.getVertexBufferObjectManager());
 
+        Sprite backSprite = new Sprite(0
+                , 0
+                , backTextureRegion
+                , mEngine.getVertexBufferObjectManager());
+
+        scene.attachChild(backSprite);
         scene.attachChild(shipSprite);
+
         Color backgroundColor = new Color(0.09804f, 0.6274f, 0.8784f);
         scene.setBackground(new Background(backgroundColor));
         pOnCreateSceneCallback.onCreateSceneFinished(scene);
