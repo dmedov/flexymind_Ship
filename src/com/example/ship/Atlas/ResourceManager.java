@@ -60,7 +60,7 @@ public class ResourceManager {
                             atlas_width = Integer.parseInt(parser.getAttributeValue(i));
                         if( parser.getAttributeName(i).equals("height") )               // Вытаскиваем параметры атласа
                             atlas_height = Integer.parseInt( parser.getAttributeValue(i) );
-                        if( parser.getAttributeName(i).equals("texture_options") )
+                        if( parser.getAttributeName(i).equals("type") )
                             textureOptions = stringToTextureOptions(parser.getAttributeValue(i));
                     }
 
@@ -85,7 +85,17 @@ public class ResourceManager {
                     catch (ITextureAtlasBuilder.TextureAtlasBuilderException e) {
                         // XXX: Обработка исключения
                     }
+
+                    atlasList.get(curr_atlas).load();          // Загрузка атласа в память
                     //=================//
+                }
+                //==================================//
+
+                //=== Случай START_TAG - текстура ===//
+                if (       ( parser.getEventType() == XmlPullParser.START_TAG )
+                        && ( parser.getName().equals("texture") )
+                        && ( parser.getDepth() == 3 ) ) {
+
                 }
                 //==================================//
 //=============================================================================//
