@@ -18,7 +18,30 @@ import java.util.ArrayList;
 /*
 Created by: IVAN
 Date: 22.04.13
- */
+
+Для загрузки текстур нужно вписать их в res/xml/atlas.xml в таком виде:
+
+<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+            <Atlas type=" [Сюда писать тип атласа ( BILINEAR, REPEATE, ... )] "
+                   width=" [Сюда писать ширину атласа] "
+                   height=" [Сюда писать высоту атласа] ">
+
+                [Здесь перечисляем все текстуры, которые нужно впихнуть в этот атлас]
+                <texture path=" [Сюда пишем путь к текстуре относительно assets/gfx/] "
+                         name=" [Сюда пишем имя текстуры, по которому мы будем к ней обращаться из программы] " />
+
+            </Atlas>
+</resources>
+
+Теперь в BaseGameActivity создаём экземпляр класса ResourceManager.
+И в методе OnCreateResources у BaseGameActivity вызываем метод класса
+loadAllTextures ( this, mEngine.getTextureManager() );
+Посде этого все ресурсы загружены
+
+Для получения ITextureRegion нужного ресурса вызываем метод класса
+getLoadedTextureRegion ( " [Сюда пишем имя, которое мы забили в xml] " );
+*/
 
 public class ResourceManager {
     public final ArrayList<Texture> loadedTextures;                     // List для записи загруженных текстур
@@ -45,7 +68,7 @@ public class ResourceManager {
         try {
             XmlPullParser parser = context.getResources().getXml( R.xml.atlas ); // Инициализировали парсер xml
 
-            while (parser.getEventType() != XmlPullParser.END_DOCUMENT ) {
+            while ( parser.getEventType() != XmlPullParser.END_DOCUMENT ) {
 //============================ Парсер =========================================//
 
                 //==== Случай START_TAG - атлас ====//
