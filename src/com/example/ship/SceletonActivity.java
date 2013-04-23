@@ -95,10 +95,13 @@ public class SceletonActivity extends BaseGameActivity {
                                         , shipTextureRegion
                                         , mEngine.getVertexBufferObjectManager());
 
-        Sprite backSprite = new Sprite(0
-                , 0
-                , backTextureRegion
-                , mEngine.getVertexBufferObjectManager());
+        final float backSpriteX = TEXTURE_WIDTH * 0.5f - backTextureRegion.getWidth() * 0.5f;
+        final float backSpriteY = TEXTURE_HEIGHT * 0.5f - backTextureRegion.getHeight() * 0.5f;
+
+        Sprite backSprite = new Sprite(backSpriteX
+                                        , backSpriteY
+                                        , backTextureRegion
+                                        , mEngine.getVertexBufferObjectManager());
 
         scene.attachChild(backSprite);
         scene.attachChild(shipSprite);
