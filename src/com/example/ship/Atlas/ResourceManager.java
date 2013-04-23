@@ -71,7 +71,6 @@ public class ResourceManager {
                                                                     , atlas_height
                                                                     , textureOptions ) ); // Создаём новый атлас
                     // XXX: ДОБАВИТЬ TEXTURE FORMAT!
-                    curr_atlas++;
                     //=================//
                 }
                 //==================================//
@@ -91,6 +90,7 @@ public class ResourceManager {
                     }
 
                     atlasList.get(curr_atlas).load();          // Загрузка атласа в память
+                    curr_atlas++;
                     //=================//
                 }
                 //==================================//
