@@ -32,7 +32,7 @@ public class SceletonActivity extends BaseGameActivity {
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         ZoomCamera camera;
 
-        float cameraWidth = TEXTURE_WIDTH + TEXTURE_HEIGHT / 5;
+        float cameraWidth = TEXTURE_WIDTH;
         float cameraHeight = cameraWidth * metrics.heightPixels / metrics.widthPixels;
         camera = new ZoomCamera(0, 0, cameraWidth, cameraHeight);
 
@@ -40,8 +40,7 @@ public class SceletonActivity extends BaseGameActivity {
         final float cameraCenterY = 0.5f * TEXTURE_HEIGHT;
         camera.setCenter(cameraCenterX, cameraCenterY);
 
-        final float zoomFactor = cameraHeight / TEXTURE_HEIGHT;     // будет изменен в дальнейшем
-        Log.e("zoom", String.valueOf(zoomFactor));
+        final float zoomFactor = cameraHeight / TEXTURE_HEIGHT;
         camera.setZoomFactor(zoomFactor);
         return camera;
     }
