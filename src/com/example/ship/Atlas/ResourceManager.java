@@ -5,6 +5,7 @@ import android.content.Context;
 import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
+import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
 import org.andengine.opengl.texture.atlas.buildable.builder.BlackPawnTextureAtlasBuilder;
@@ -37,11 +38,12 @@ public class ResourceManager {
         return null;
     }
 
-    public void loadAllTextures ( Context context,TextureManager pTextureManager, String xmlpath ) {
+    public void loadAllTextures ( Context context, TextureManager pTextureManager ) {
         int curr_atlas = 0;         // Счётчик атласов
+        BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/"); // Установили default-путь к текстурам
 
         try {
-            XmlPullParser parser = context.getResources().getXml( R.xml.atlas );
+            XmlPullParser parser = context.getResources().getXml( R.xml.atlas ); // Инициализировали парсер xml
 
             while (parser.getEventType() != XmlPullParser.END_DOCUMENT ) {
 //============================ Парсер =========================================//
@@ -68,6 +70,7 @@ public class ResourceManager {
                                                                     , atlas_width
                                                                     , atlas_height
                                                                     , textureOptions ) ); // Создаём новый атлас
+                    // XXX: ДОБАВИТЬ TEXTURE FORMAT!
                     curr_atlas++;
                     //=================//
                 }
@@ -81,6 +84,7 @@ public class ResourceManager {
                     try {
                         atlasList.get(curr_atlas).build(       // Генерируем новый атлас с текущим номером curr_atlas
                                 new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0,1,1));
+                                                               // 1 - source padding; 1 - source space
                     }
                     catch (ITextureAtlasBuilder.TextureAtlasBuilderException e) {
                         // XXX: Обработка исключения
@@ -94,10 +98,26 @@ public class ResourceManager {
                 //=== Случай START_TAG - текстура ===//
                 if (       ( parser.getEventType() == XmlPullParser.START_TAG )
                         && ( parser.getName().equals("texture") )
-                        && ( parser.getDepth() == 3 ) ) {
+                        && ( parser.getDepth() == 3 ) ) {           // Глубина вложенности - 3
+                    String path = "";
+                    String tname = "";
 
+                    for ( int i = 0; i < parser.getAttributeCount(); i++ ) { // Вытаскиваем параметры текстуры
+                        if ( parser.getAttributeName(i).equals("name") ) tname = parser.getAttributeValue(i);
+                        if ( parser.getAttributeName(i).equals("path") ) path = parser.getAttributeValue(i);
+                    }
+
+                    // Создаём новый TextureRegion и записываем его в loadedTextures
+                    ITextureRegion textReg =
+                            BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+                                                                             atlasList.get(curr_atlas)
+                                                                            ,context
+                                                                            ,path );
+                    loadedTextures.add( new Texture(tname, textReg) );
                 }
                 //==================================//
+
+                parser.next();
 //=============================================================================//
             }
         }
