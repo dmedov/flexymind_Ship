@@ -1,5 +1,6 @@
 package com.example.ship;
 
+import com.example.ship.Atlas.ResourceManager;
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
@@ -24,6 +25,7 @@ public class SceletonActivity extends BaseGameActivity {
     private Camera camera;
     private TextureRegion shipTextureRegion;
     private Scene scene;
+    private ResourceManager resMan;
 
     @Override
     public EngineOptions onCreateEngineOptions() {
@@ -35,28 +37,8 @@ public class SceletonActivity extends BaseGameActivity {
 
     @Override
     public void onCreateResources(OnCreateResourcesCallback pOnCreateResourcesCallback) {
-        final int atlasWidth  = 1024;
-        final int atlasHeight = 1024;
-        // full path assets/gfx
-        BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
-        // create atlas
-        BuildableBitmapTextureAtlas atlas =
-                new BuildableBitmapTextureAtlas(mEngine.getTextureManager()
-                                                , atlasWidth
-                                                , atlasHeight
-                                                , TextureOptions.BILINEAR);
-
-        shipTextureRegion = BitmapTextureAtlasTextureRegionFactory.
-                createFromAsset(atlas, this, "ship.png");  // ship.png in assets/gfx folder
-        // Build the bitmap texture atlas
-        try {
-            atlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource
-                    , BitmapTextureAtlas>(0, 1, 1));
-        } catch (ITextureAtlasBuilder.TextureAtlasBuilderException e) {
-            e.printStackTrace();
-        }
-        // Load the bitmap texture atlas into the device's gpu memory
-        atlas.load();
+        resMan = new ResourceManager();
+        resMan.loadAllTextures(this,mEngine.getTextureManager());
         pOnCreateResourcesCallback.onCreateResourcesFinished();
     }
 
@@ -69,7 +51,7 @@ public class SceletonActivity extends BaseGameActivity {
         // create ship sprite
         Sprite shipSprite = new Sprite(shipX
                                         , shipY
-                                        , shipTextureRegion
+                                        , resMan.getLoadedTextureRegion("ship")
                                         , mEngine.getVertexBufferObjectManager());
 
         scene.attachChild(shipSprite);
