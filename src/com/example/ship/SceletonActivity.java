@@ -3,6 +3,7 @@ package com.example.ship;
 import android.graphics.Typeface;
 import android.util.Log;
 import com.example.ship.Atlas.ResourceManager;
+import com.example.ship.ButtonMenu.ButtonMenu;
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
@@ -24,7 +25,6 @@ public class SceletonActivity extends BaseGameActivity {
     private static final int CAMERA_WIDTH = 960;
     private static final int CAMERA_HEIGHT = 600;
     private Camera camera;
-    private TextureRegion shipTextureRegion;
     private Scene scene;
     private ResourceManager resMan;
     Font mFont;
@@ -53,7 +53,7 @@ public class SceletonActivity extends BaseGameActivity {
     public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback) {
         scene = new Scene();
 
-        Sprite startButtonSprite = new Sprite( CAMERA_WIDTH * 0.5f - resMan.getLoadedTextureRegion("button_menu").getWidth() * 0.5f
+        /*Sprite startButtonSprite = new Sprite( CAMERA_WIDTH * 0.5f - resMan.getLoadedTextureRegion("button_menu").getWidth() * 0.5f
                                              , CAMERA_HEIGHT * 0.2f
                                              , resMan.getLoadedTextureRegion("button_menu")
                                              , mEngine.getVertexBufferObjectManager()){
@@ -66,9 +66,9 @@ public class SceletonActivity extends BaseGameActivity {
                 }
                 return true;
             }
-        };
+        };        */
 
-        Sprite exitButtonSprite = new Sprite( CAMERA_WIDTH * 0.5f - resMan.getLoadedTextureRegion("button_menu").getWidth() * 0.5f
+      /*  Sprite exitButtonSprite = new Sprite( CAMERA_WIDTH * 0.5f - resMan.getLoadedTextureRegion("button_menu").getWidth() * 0.5f
                                             , CAMERA_HEIGHT * 0.4f
                                             , resMan.getLoadedTextureRegion("button_menu")
                                             , mEngine.getVertexBufferObjectManager()){
@@ -81,7 +81,17 @@ public class SceletonActivity extends BaseGameActivity {
                 }
                 return true;
             }
-        };
+        };     */
+
+        ButtonMenu startButtonSprite = new ButtonMenu( 1
+                                                     , resMan.getLoadedTextureRegion("button_menu")
+                                                     , mEngine.getVertexBufferObjectManager()
+                                                     , "Start" );
+
+        ButtonMenu exitButtonSprite = new ButtonMenu( 2
+                                                    , resMan.getLoadedTextureRegion("button_menu")
+                                                    , mEngine.getVertexBufferObjectManager()
+                                                    , "Exit");
 
         Text text = new Text(startButtonSprite.getRotationCenterX(), 0.0f, mFont,"Start", mEngine.getVertexBufferObjectManager());
 
