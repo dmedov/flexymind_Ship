@@ -27,7 +27,7 @@ public class SceletonActivity extends BaseGameActivity {
     private Camera camera;
     private Scene scene;
     private ResourceManager resMan;
-    Font mFont;
+    private Font mFont;
 
 
     @Override
@@ -53,55 +53,38 @@ public class SceletonActivity extends BaseGameActivity {
     public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback) {
         scene = new Scene();
 
-        /*Sprite startButtonSprite = new Sprite( CAMERA_WIDTH * 0.5f - resMan.getLoadedTextureRegion("button_menu").getWidth() * 0.5f
-                                             , CAMERA_HEIGHT * 0.2f
-                                             , resMan.getLoadedTextureRegion("button_menu")
-                                             , mEngine.getVertexBufferObjectManager()){
-            @Override
-            public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
-                float pTouchAreaLocalX, float pTouchAreaLocalY){
-
-                if ( pSceneTouchEvent.isActionDown() ){
-                    Log.d("AAAAAAAAAwwwwwwwwwwwwwwwwwwAAAAAAAA:","AAAAAAAAAAwwwwwwwwwwwwwwwwAAAAAAAAAAAA");
-                }
-                return true;
-            }
-        };        */
-
-      /*  Sprite exitButtonSprite = new Sprite( CAMERA_WIDTH * 0.5f - resMan.getLoadedTextureRegion("button_menu").getWidth() * 0.5f
-                                            , CAMERA_HEIGHT * 0.4f
-                                            , resMan.getLoadedTextureRegion("button_menu")
-                                            , mEngine.getVertexBufferObjectManager()){
-            @Override
-            public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
-                                         float pTouchAreaLocalX, float pTouchAreaLocalY){
-
-                if ( pSceneTouchEvent.isActionDown() ){
-                    Log.d("AAAAAAAAAwwwwwwwwwwwwwwwwwwAAAAAAAA:","AAAAAAAAAAwwwwwwwwwwwwwwwwAAAAAAAAAAAA");
-                }
-                return true;
-            }
-        };     */
-
         ButtonMenu startButtonSprite = new ButtonMenu( 1
                                                      , resMan.getLoadedTextureRegion("button_menu")
                                                      , mEngine.getVertexBufferObjectManager()
-                                                     , "Start" );
+                                                     , "Start"
+                                                     , mFont );
 
-        ButtonMenu exitButtonSprite = new ButtonMenu( 2
+        ButtonMenu highscoresButtonSprite = new ButtonMenu( 2
+                                                          , resMan.getLoadedTextureRegion("button_menu")
+                                                          , mEngine.getVertexBufferObjectManager()
+                                                          , "HighScores"
+                                                          , mFont );
+
+        ButtonMenu creditsButtonSprite = new ButtonMenu( 3
+                                                       , resMan.getLoadedTextureRegion("button_menu")
+                                                       , mEngine.getVertexBufferObjectManager()
+                                                       , "Credit"
+                                                       , mFont );
+
+        ButtonMenu exitButtonSprite = new ButtonMenu( 4
                                                     , resMan.getLoadedTextureRegion("button_menu")
                                                     , mEngine.getVertexBufferObjectManager()
-                                                    , "Exit");
-
-        Text text = new Text(startButtonSprite.getRotationCenterX(), 0.0f, mFont,"Start", mEngine.getVertexBufferObjectManager());
-
+                                                    , "Exit"
+                                                    , mFont );
 
         scene.registerTouchArea(startButtonSprite);
+        scene.registerTouchArea(highscoresButtonSprite);
+        scene.registerTouchArea(creditsButtonSprite);
         scene.registerTouchArea(exitButtonSprite);
         scene.attachChild(startButtonSprite);
+        scene.attachChild(highscoresButtonSprite);
+        scene.attachChild(creditsButtonSprite);
         scene.attachChild(exitButtonSprite);
-        startButtonSprite.attachChild(text);
-        text.setPosition(startButtonSprite.getWidth() * 0.5f - text.getWidth() * 0.5f,startButtonSprite.getHeight() * 0.5f - text.getHeight() * 0.5f);
         Color backgroundColor = new Color(0.09804f, 0.6274f, 0.8784f);
         scene.setBackground(new Background(backgroundColor));
         scene.setTouchAreaBindingOnActionDownEnabled(true);
