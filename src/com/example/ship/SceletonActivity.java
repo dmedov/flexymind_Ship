@@ -1,5 +1,7 @@
 package com.example.ship;
 
+import android.util.Log;
+import android.widget.Toast;
 import com.example.ship.Atlas.ResourceManager;
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.options.EngineOptions;
@@ -7,7 +9,9 @@ import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
+import org.andengine.entity.sprite.ButtonSprite;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.ui.activity.BaseGameActivity;
 import org.andengine.util.color.Color;
@@ -42,14 +46,32 @@ public class SceletonActivity extends BaseGameActivity {
         final float shipY = CAMERA_HEIGHT * 0.5f;
 
         // create ship sprite
-        Sprite shipSprite = new Sprite(shipX
-                                        , shipY
-                                        , resMan.getLoadedTextureRegion("ship")
-                                        , mEngine.getVertexBufferObjectManager());
+        /*Sprite shipSprite = new Sprite( shipX
+                                      , shipY
+                                      , resMan.getLoadedTextureRegion("ship")
+                                      , mEngine.getVertexBufferObjectManager()); */
 
-        scene.attachChild(shipSprite);
+        Sprite shipSprite = new Sprite( CAMERA_WIDTH * 0.5f
+                                                  , CAMERA_HEIGHT * 0.5f
+                                                  , resMan.getLoadedTextureRegion("ship")
+                                                  , mEngine.getVertexBufferObjectManager()){
+            @Override
+            public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
+                float pTouchAreaLocalX, float pTouchAreaLocalY){
+
+                if ( pSceneTouchEvent.isActionDown() ){
+                    Log.d("AAAAAAAAAwwwwwwwwwwwwwwwwwwAAAAAAAA:","AAAAAAAAAAwwwwwwwwwwwwwwwwAAAAAAAAAAAA");
+                }
+                return true;
+            }
+        };
+
+       scene.registerTouchArea(shipSprite);
+       scene.attachChild(shipSprite);
+       // scene.attachChild(startButtonSprite);
         Color backgroundColor = new Color(0.09804f, 0.6274f, 0.8784f);
         scene.setBackground(new Background(backgroundColor));
+        scene.setTouchAreaBindingOnActionDownEnabled(true);
         pOnCreateSceneCallback.onCreateSceneFinished(scene);
     }
 
