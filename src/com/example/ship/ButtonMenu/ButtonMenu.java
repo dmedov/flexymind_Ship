@@ -32,13 +32,4 @@ public class ButtonMenu extends Sprite{
         this.attachChild(text);
     }
 
-    @Override
-    public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
-                                 float pTouchAreaLocalX, float pTouchAreaLocalY){
-        if ( pSceneTouchEvent.isActionDown() ){
-            Log.d("AAAAAAAAAwwwwwwwwwwwwwwwwwwAAAAAAAA:", "AAAAAAAAAAwwwwwwwwwwwwwwwwAAAAAAAAAAAA");
-        }
-        return true;
-    }
-
 }

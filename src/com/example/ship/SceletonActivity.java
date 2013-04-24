@@ -57,25 +57,61 @@ public class SceletonActivity extends BaseGameActivity {
                                                      , resMan.getLoadedTextureRegion("button_menu")
                                                      , mEngine.getVertexBufferObjectManager()
                                                      , "Start"
-                                                     , mFont );
+                                                     , mFont ){
+            @Override
+            public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
+                                         float pTouchAreaLocalX, float pTouchAreaLocalY){
+                if ( pSceneTouchEvent.isActionDown() ){
+                    Log.d("AAAAAAAAAwwwwwwwwwwwwwwwwwwAAAAAAAA:", "AAAAAAAAAAwwwwwwwwwwwwwwwwAAAAAAAAAAAA");
+                }
+                return true;
+            }
+        };
 
         ButtonMenu highscoresButtonSprite = new ButtonMenu( 2
                                                           , resMan.getLoadedTextureRegion("button_menu")
                                                           , mEngine.getVertexBufferObjectManager()
                                                           , "HighScores"
-                                                          , mFont );
+                                                          , mFont ){
+            @Override
+            public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
+                                         float pTouchAreaLocalX, float pTouchAreaLocalY){
+                if ( pSceneTouchEvent.isActionDown() ){
+                    Log.d("AAAAAAAAAwwwwwwwwwwwwwwwwwwAAAAAAAA:", "AAAAAAAAAAwwwwwwwwwwwwwwwwAAAAAAAAAAAA");
+                }
+                return true;
+            }
+        };
 
         ButtonMenu creditsButtonSprite = new ButtonMenu( 3
                                                        , resMan.getLoadedTextureRegion("button_menu")
                                                        , mEngine.getVertexBufferObjectManager()
                                                        , "Credit"
-                                                       , mFont );
+                                                       , mFont ){
+            @Override
+            public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
+                                         float pTouchAreaLocalX, float pTouchAreaLocalY){
+                if ( pSceneTouchEvent.isActionDown() ){
+                    Log.d("AAAAAAAAAwwwwwwwwwwwwwwwwwwAAAAAAAA:", "AAAAAAAAAAwwwwwwwwwwwwwwwwAAAAAAAAAAAA");
+                }
+                return true;
+            }
+        };
 
         ButtonMenu exitButtonSprite = new ButtonMenu( 4
                                                     , resMan.getLoadedTextureRegion("button_menu")
                                                     , mEngine.getVertexBufferObjectManager()
                                                     , "Exit"
-                                                    , mFont );
+                                                    , mFont ){
+            @Override
+            public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
+                    float pTouchAreaLocalX, float pTouchAreaLocalY){
+                if ( pSceneTouchEvent.isActionDown() ){
+                    Log.d("AAAAAAAAAwwwwwwwwwwwwwwwwwwAAAAAAAA:", "AAAAAAAAAAwwwwwwwwwwwwwwwwAAAAAAAAAAAA");
+                }
+                return true;
+            }
+        };
 
         scene.registerTouchArea(startButtonSprite);
         scene.registerTouchArea(highscoresButtonSprite);
