@@ -1,5 +1,6 @@
 package com.example.ship;
 
+import android.graphics.PointF;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import org.andengine.engine.camera.ZoomCamera;
@@ -27,7 +28,7 @@ public class SceletonActivity extends BaseGameActivity {
     private TextureRegion backTextureRegion;
     private Scene scene;
 
-    private ZoomCamera getZoomCamera(){
+    private ZoomCamera createZoomCamera(){
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         ZoomCamera camera;
@@ -36,9 +37,8 @@ public class SceletonActivity extends BaseGameActivity {
         float cameraHeight = cameraWidth * metrics.heightPixels / metrics.widthPixels;
         camera = new ZoomCamera(0, 0, cameraWidth, cameraHeight);
 
-        final float cameraCenterX = 0.5f * TEXTURE_WIDTH;
-        final float cameraCenterY = 0.5f * TEXTURE_HEIGHT;
-        camera.setCenter(cameraCenterX, cameraCenterY);
+        final PointF cameraCenter = new PointF(0.5f * TEXTURE_WIDTH, 0.5f * TEXTURE_HEIGHT);
+        camera.setCenter(cameraCenter.x, cameraCenter.y );
 
         final float zoomFactor = cameraHeight / TEXTURE_HEIGHT;
         camera.setZoomFactor(zoomFactor);
@@ -47,7 +47,7 @@ public class SceletonActivity extends BaseGameActivity {
 
     @Override
     public EngineOptions onCreateEngineOptions() {
-        ZoomCamera camera = getZoomCamera();
+        ZoomCamera camera = createZoomCamera();
         EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED,
                 new FillResolutionPolicy(), camera);
         return engineOptions;
@@ -86,20 +86,19 @@ public class SceletonActivity extends BaseGameActivity {
     @Override
     public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback) {
         scene = new Scene();
-        final float shipX = TEXTURE_WIDTH * 0.5f - shipTextureRegion.getWidth() * 0.5f;
-        final float shipY = TEXTURE_HEIGHT * 0.5f - shipTextureRegion.getHeight() * 0.5f;
-
+        final PointF ship = new PointF(TEXTURE_WIDTH * 0.5f - shipTextureRegion.getWidth() * 0.5f
+                                    , TEXTURE_HEIGHT * 0.5f - shipTextureRegion.getHeight() * 0.5f);
         // create ship sprite
-        Sprite shipSprite = new Sprite(shipX
-                                        , shipY
+        Sprite shipSprite = new Sprite(ship.x
+                                        , ship.y
                                         , shipTextureRegion
                                         , mEngine.getVertexBufferObjectManager());
 
-        final float backSpriteX = TEXTURE_WIDTH * 0.5f - backTextureRegion.getWidth() * 0.5f;
-        final float backSpriteY = TEXTURE_HEIGHT * 0.5f - backTextureRegion.getHeight() * 0.5f;
+        final PointF back = new PointF(TEXTURE_WIDTH * 0.5f - backTextureRegion.getWidth() * 0.5f
+                                        , TEXTURE_HEIGHT * 0.5f - backTextureRegion.getHeight() * 0.5f);
 
-        Sprite backSprite = new Sprite(backSpriteX
-                                        , backSpriteY
+        Sprite backSprite = new Sprite(back.x
+                                        , back.y
                                         , backTextureRegion
                                         , mEngine.getVertexBufferObjectManager());
 
