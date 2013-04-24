@@ -2,6 +2,7 @@ package com.example.ship;
 
 import android.graphics.Typeface;
 import android.util.Log;
+import android.widget.Toast;
 import com.example.ship.Atlas.ResourceManager;
 import com.example.ship.ButtonMenu.ButtonMenu;
 import org.andengine.engine.camera.Camera;
@@ -60,11 +61,17 @@ public class SceletonActivity extends BaseGameActivity {
                                                      , mFont ){
             @Override
             public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
-                                         float pTouchAreaLocalX, float pTouchAreaLocalY){
+                    float pTouchAreaLocalX, float pTouchAreaLocalY){
                 if ( pSceneTouchEvent.isActionDown() ){
-                    Log.d("AAAAAAAAAwwwwwwwwwwwwwwwwwwAAAAAAAA:", "AAAAAAAAAAwwwwwwwwwwwwwwwwAAAAAAAAAAAA");
+                    runOnUiThread(new Runnable(){
+                        @Override
+                        public void run() {
+                            Toast.makeText(getApplicationContext(), "Start Button Pressed!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
-                return true;
+                return super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX,
+                        pTouchAreaLocalY);
             }
         };
 
@@ -75,11 +82,17 @@ public class SceletonActivity extends BaseGameActivity {
                                                           , mFont ){
             @Override
             public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
-                                         float pTouchAreaLocalX, float pTouchAreaLocalY){
+                    float pTouchAreaLocalX, float pTouchAreaLocalY){
                 if ( pSceneTouchEvent.isActionDown() ){
-                    Log.d("AAAAAAAAAwwwwwwwwwwwwwwwwwwAAAAAAAA:", "AAAAAAAAAAwwwwwwwwwwwwwwwwAAAAAAAAAAAA");
+                    runOnUiThread(new Runnable(){
+                        @Override
+                        public void run() {
+                            Toast.makeText(getApplicationContext(), "HighScores Button Pressed!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
-                return true;
+                return super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX,
+                        pTouchAreaLocalY);
             }
         };
 
@@ -90,11 +103,17 @@ public class SceletonActivity extends BaseGameActivity {
                                                        , mFont ){
             @Override
             public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
-                                         float pTouchAreaLocalX, float pTouchAreaLocalY){
+                    float pTouchAreaLocalX, float pTouchAreaLocalY){
                 if ( pSceneTouchEvent.isActionDown() ){
-                    Log.d("AAAAAAAAAwwwwwwwwwwwwwwwwwwAAAAAAAA:", "AAAAAAAAAAwwwwwwwwwwwwwwwwAAAAAAAAAAAA");
+                    runOnUiThread(new Runnable(){
+                        @Override
+                        public void run() {
+                            Toast.makeText(getApplicationContext(), "Credit Button Pressed!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
-                return true;
+                return super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX,
+                        pTouchAreaLocalY);
             }
         };
 
@@ -107,9 +126,15 @@ public class SceletonActivity extends BaseGameActivity {
             public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
                     float pTouchAreaLocalX, float pTouchAreaLocalY){
                 if ( pSceneTouchEvent.isActionDown() ){
-                    Log.d("AAAAAAAAAwwwwwwwwwwwwwwwwwwAAAAAAAA:", "AAAAAAAAAAwwwwwwwwwwwwwwwwAAAAAAAAAAAA");
+                    runOnUiThread(new Runnable(){
+                        @Override
+                        public void run() {
+                            Toast.makeText(getApplicationContext(), "Exit Button Pressed!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
-                return true;
+                return super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX,
+                        pTouchAreaLocalY);
             }
         };
 
