@@ -1,23 +1,21 @@
 package com.example.ship;
 
 import android.graphics.Typeface;
-import android.widget.Toast;
 import com.example.ship.Atlas.ResourceManager;
-import com.example.ship.Menu.ButtonMenu;
 import com.example.ship.Menu.ShipMenuScene;
-import org.andengine.engine.camera.Camera;
 import android.graphics.PointF;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import org.andengine.engine.camera.ZoomCamera;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
+import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.ui.activity.BaseGameActivity;
 import org.andengine.util.color.Color;
 
@@ -26,7 +24,7 @@ public class SceletonActivity extends BaseGameActivity {
     private static final int TEXTURE_HEIGHT = 600;
     private Scene sceletoneScene;
     private Scene menuScene;
-    private ResourceManager resMan;
+    private ResourceManager resourceManager;
     private Font mFont;
 
     private ZoomCamera createZoomCamera(){
@@ -56,8 +54,8 @@ public class SceletonActivity extends BaseGameActivity {
 
     @Override
     public void onCreateResources(OnCreateResourcesCallback pOnCreateResourcesCallback) {
-        resMan = new ResourceManager();
-        resMan.loadAllTextures(this,mEngine.getTextureManager());
+        resourceManager = new ResourceManager();
+        resourceManager.loadAllTextures(this, mEngine.getTextureManager());
         mFont = FontFactory.create(mEngine.getFontManager(), mEngine.
                 getTextureManager(), 256, 256, Typeface.create(Typeface.DEFAULT,
                 Typeface.NORMAL), 32f, true, Color.BLACK_ABGR_PACKED_INT);
@@ -68,28 +66,47 @@ public class SceletonActivity extends BaseGameActivity {
     @Override
     public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback) {
         sceletoneScene = new Scene();
-        final PointF ship = new PointF(TEXTURE_WIDTH * 0.5f - shipTextureRegion.getWidth() * 0.5f
-                , TEXTURE_HEIGHT * 0.5f - shipTextureRegion.getHeight() * 0.5f);
-        // create ship sprite
-        Sprite shipSprite = new Sprite(ship.x
-                , ship.y
-                , shipTextureRegion
-                , mEngine.getVertexBufferObjectManager());
 
-        final PointF back = new PointF(TEXTURE_WIDTH * 0.5f - backTextureRegion.getWidth() * 0.5f
+        ITextureRegion shipTextureRegion = resourceManager.getLoadedTextureRegion("ship");
+        ITextureRegion backTextureRegion = resourceManager.getLoadedTextureRegion("back");
+
+        final PointF shipPosition = new PointF(TEXTURE_WIDTH * 0.5f - shipTextureRegion.getWidth() * 0.5f
+                , TEXTURE_HEIGHT * 0.5f - shipTextureRegion.getHeight() * 0.5f);
+
+        Sprite shipSprite = new Sprite(shipPosition.x
+                , shipPosition.y
+                , shipTextureRegion
+                , mEngine.getVertexBufferObjectManager()){
+            @Override
+            public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+                if ( pSceneTouchEvent.isActionDown() ){
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mEngine.setScene(menuScene);
+                        }
+                    });
+                }
+                return super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
+            }
+        };
+
+        final PointF backgroundPosition = new PointF(TEXTURE_WIDTH * 0.5f - backTextureRegion.getWidth() * 0.5f
                 , TEXTURE_HEIGHT * 0.5f - backTextureRegion.getHeight() * 0.5f);
 
-        Sprite backSprite = new Sprite(back.x
-                , back.y
+        Sprite backSprite = new Sprite(backgroundPosition.x
+                , backgroundPosition.y
                 , backTextureRegion
                 , mEngine.getVertexBufferObjectManager());
 
+        sceletoneScene.registerTouchArea(shipSprite);
         sceletoneScene.attachChild(backSprite);
         sceletoneScene.attachChild(shipSprite);
-
         Color backgroundColor = new Color(0.09804f, 0.6274f, 0.8784f);
         sceletoneScene.setBackground(new Background(backgroundColor));
-        menuScene = new ShipMenuScene(this, CAMERA_WIDTH, CAMERA_HEIGHT, resMan);
+
+        menuScene = new ShipMenuScene(this, TEXTURE_WIDTH, TEXTURE_HEIGHT, resourceManager);
+
         pOnCreateSceneCallback.onCreateSceneFinished(sceletoneScene);
     }
 

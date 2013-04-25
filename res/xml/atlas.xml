@@ -4,5 +4,6 @@
                 <texture path="button_menu.png" name="button_menu" />
                 <texture path="ship.png" name="ship" />
                 <texture path="bgShip.png" name="bg_ship"/>
+                <texture path="back.png" name="back"/>
             </Atlas>
 </resources>
