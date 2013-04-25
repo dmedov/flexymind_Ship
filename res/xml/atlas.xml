@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <resources>
-            <Atlas type="BILINEAR" width="1024" height="512">
+            <Atlas type="BILINEAR" width="2048" height="2048">
                 <texture path="button_menu.png" name="button_menu" />
                 <texture path="ship.png" name="ship" />
+                <texture path="bgShip.png" name="bg_ship"/>
             </Atlas>
 </resources>

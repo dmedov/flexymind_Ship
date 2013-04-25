@@ -1,12 +1,14 @@
 package com.example.ship.Menu;
 
 import android.graphics.Point;
+import android.graphics.PointF;
 import android.graphics.Typeface;
 import android.widget.Toast;
 import com.example.ship.Atlas.ResourceManager;
 import org.andengine.engine.Engine;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
@@ -22,10 +24,14 @@ import org.andengine.util.color.Color;
  */
 public class ShipMenuScene extends Scene {
     private final BaseGameActivity activity;
-    private Engine mEngine;
+    private final Engine mEngine;
+    private final ResourceManager resourceManager;
+    private Point textureSize;
     private Font font;
 
-    public ShipMenuScene(final BaseGameActivity activity, int textureWidth, int textureHeight, ResourceManager resourceManager) {
+    public ShipMenuScene(final BaseGameActivity activity, int textureWidth
+                         , int textureHeight, ResourceManager resourceManager) {
+
         this(activity, new Point(textureWidth, textureHeight), resourceManager);
     }
 
@@ -37,6 +43,24 @@ public class ShipMenuScene extends Scene {
                 getTextureManager(), 256, 256, Typeface.create(Typeface.DEFAULT,
                 Typeface.NORMAL), 32f, true, Color.BLACK_ABGR_PACKED_INT);
         font.load();
+        this.textureSize = textureSize;
+        this.resourceManager = resourceManager;
+
+        createBackground();
+
+        createButtons();
+    }
+
+    private void createBackground() {
+        Sprite backgroundImage = new Sprite(0, 0, resourceManager.getLoadedTextureRegion("bg_ship")
+                , mEngine.getVertexBufferObjectManager());
+        //backgroundImage.setScale (textureSize.y / backgroundImage.getHeight());
+        this.attachChild(backgroundImage);
+        Color backgroundColor = new Color(0.09804f, 0.6274f, 0.8784f);
+        this.setBackground(new Background(backgroundColor));
+    }
+
+    private void createButtons() {
 
         ButtonMenu startButtonSprite = new ButtonMenu( 1
                 ,resourceManager.getLoadedTextureRegion("button_menu")
@@ -133,8 +157,6 @@ public class ShipMenuScene extends Scene {
         this.attachChild(highscoresButtonSprite);
         this.attachChild(creditsButtonSprite);
         this.attachChild(exitButtonSprite);
-        Color backgroundColor = new Color(0.09804f, 0.6274f, 0.8784f);
-        this.setBackground(new Background(backgroundColor));
         this.setTouchAreaBindingOnActionDownEnabled(true);
     }
 }

@@ -15,7 +15,6 @@ import org.andengine.util.color.Color;
 
 public class ButtonMenu extends Sprite{
 
-    Font mFont;
     Text text;
 
     public ButtonMenu(float multiplier, ITextureRegion pTextureRegion,
