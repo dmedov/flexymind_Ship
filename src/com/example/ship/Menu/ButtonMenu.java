@@ -1,4 +1,4 @@
-package com.example.ship.ButtonMenu;
+package com.example.ship.Menu;
 
 import android.graphics.Typeface;
 import android.util.Log;

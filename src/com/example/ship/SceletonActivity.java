@@ -1,24 +1,19 @@
 package com.example.ship;
 
 import android.graphics.Typeface;
-import android.util.Log;
 import android.widget.Toast;
 import com.example.ship.Atlas.ResourceManager;
-import com.example.ship.ButtonMenu.ButtonMenu;
+import com.example.ship.Menu.ButtonMenu;
+import com.example.ship.Menu.ShipMenuScene;
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
-import org.andengine.entity.sprite.Sprite;
-import org.andengine.entity.text.Text;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
-import org.andengine.opengl.texture.TextureOptions;
-import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
-import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.ui.activity.BaseGameActivity;
 import org.andengine.util.color.Color;
 
@@ -48,107 +43,12 @@ public class SceletonActivity extends BaseGameActivity {
                 Typeface.NORMAL), 32f, true, Color.BLACK_ABGR_PACKED_INT);
         mFont.load();
         pOnCreateResourcesCallback.onCreateResourcesFinished();
+
     }
 
     @Override
     public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback) {
-        scene = new Scene();
-
-        ButtonMenu startButtonSprite = new ButtonMenu( 1
-                                                     , resMan.getLoadedTextureRegion("button_menu")
-                                                     , mEngine.getVertexBufferObjectManager()
-                                                     , "Start"
-                                                     , mFont ){
-            @Override
-            public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
-                    float pTouchAreaLocalX, float pTouchAreaLocalY){
-                if ( pSceneTouchEvent.isActionDown() ){
-                    runOnUiThread(new Runnable(){
-                        @Override
-                        public void run() {
-                            Toast.makeText(getApplicationContext(), "Start Button Pressed!", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
-                return super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX,
-                        pTouchAreaLocalY);
-            }
-        };
-
-        ButtonMenu highscoresButtonSprite = new ButtonMenu( 2
-                                                          , resMan.getLoadedTextureRegion("button_menu")
-                                                          , mEngine.getVertexBufferObjectManager()
-                                                          , "HighScores"
-                                                          , mFont ){
-            @Override
-            public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
-                    float pTouchAreaLocalX, float pTouchAreaLocalY){
-                if ( pSceneTouchEvent.isActionDown() ){
-                    runOnUiThread(new Runnable(){
-                        @Override
-                        public void run() {
-                            Toast.makeText(getApplicationContext(), "HighScores Button Pressed!", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
-                return super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX,
-                        pTouchAreaLocalY);
-            }
-        };
-
-        ButtonMenu creditsButtonSprite = new ButtonMenu( 3
-                                                       , resMan.getLoadedTextureRegion("button_menu")
-                                                       , mEngine.getVertexBufferObjectManager()
-                                                       , "Credit"
-                                                       , mFont ){
-            @Override
-            public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
-                    float pTouchAreaLocalX, float pTouchAreaLocalY){
-                if ( pSceneTouchEvent.isActionDown() ){
-                    runOnUiThread(new Runnable(){
-                        @Override
-                        public void run() {
-                            Toast.makeText(getApplicationContext(), "Credit Button Pressed!", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
-                return super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX,
-                        pTouchAreaLocalY);
-            }
-        };
-
-        ButtonMenu exitButtonSprite = new ButtonMenu( 4
-                                                    , resMan.getLoadedTextureRegion("button_menu")
-                                                    , mEngine.getVertexBufferObjectManager()
-                                                    , "Exit"
-                                                    , mFont ){
-            @Override
-            public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
-                    float pTouchAreaLocalX, float pTouchAreaLocalY){
-                if ( pSceneTouchEvent.isActionDown() ){
-                    runOnUiThread(new Runnable(){
-                        @Override
-                        public void run() {
-                            Toast.makeText(getApplicationContext(), "Exit Button Pressed!", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
-                return super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX,
-                        pTouchAreaLocalY);
-            }
-        };
-
-        scene.registerTouchArea(startButtonSprite);
-        scene.registerTouchArea(highscoresButtonSprite);
-        scene.registerTouchArea(creditsButtonSprite);
-        scene.registerTouchArea(exitButtonSprite);
-        scene.attachChild(startButtonSprite);
-        scene.attachChild(highscoresButtonSprite);
-        scene.attachChild(creditsButtonSprite);
-        scene.attachChild(exitButtonSprite);
-        Color backgroundColor = new Color(0.09804f, 0.6274f, 0.8784f);
-        scene.setBackground(new Background(backgroundColor));
-        scene.setTouchAreaBindingOnActionDownEnabled(true);
+        scene = new ShipMenuScene(this, CAMERA_WIDTH, CAMERA_HEIGHT, resMan);
         pOnCreateSceneCallback.onCreateSceneFinished(scene);
     }
 
