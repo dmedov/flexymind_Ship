@@ -1,5 +1,6 @@
 package com.example.ship.Menu;
 
+import android.graphics.Point;
 import android.graphics.Typeface;
 import android.util.Log;
 import org.andengine.entity.sprite.Sprite;
@@ -14,16 +15,14 @@ import org.andengine.util.color.Color;
 
 public class ButtonMenu extends Sprite{
 
-    private static final int CAMERA_WIDTH = 960;
-    private static final int CAMERA_HEIGHT = 600;
     Font mFont;
     Text text;
 
     public ButtonMenu(float multiplier, ITextureRegion pTextureRegion,
-            VertexBufferObjectManager pVertexBufferObjectManager, String nameButton, Font mFont) {
+            VertexBufferObjectManager pVertexBufferObjectManager, String nameButton, Font mFont, Point textureSize) {
 
-        super( CAMERA_WIDTH * 0.5f - pTextureRegion.getWidth() * 0.5f
-             , CAMERA_HEIGHT * 0.2f * multiplier + 0.1f
+        super( textureSize.x * 0.5f - pTextureRegion.getWidth() * 0.5f
+             , textureSize.y * 0.2f * multiplier + 0.1f
              , pTextureRegion
              , pVertexBufferObjectManager);
 

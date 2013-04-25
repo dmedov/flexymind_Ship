@@ -42,7 +42,8 @@ public class ShipMenuScene extends Scene {
                 ,resourceManager.getLoadedTextureRegion("button_menu")
                 , mEngine.getVertexBufferObjectManager()
                 , "Start"
-                , font ){
+                , font
+                , textureSize){
             @Override
             public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
                                          float pTouchAreaLocalX, float pTouchAreaLocalY){
@@ -63,7 +64,8 @@ public class ShipMenuScene extends Scene {
                 , resourceManager.getLoadedTextureRegion("button_menu")
                 , mEngine.getVertexBufferObjectManager()
                 , "HighScores"
-                , font ){
+                , font
+                , textureSize){
             @Override
             public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
                                          float pTouchAreaLocalX, float pTouchAreaLocalY){
@@ -84,7 +86,8 @@ public class ShipMenuScene extends Scene {
                 , resourceManager.getLoadedTextureRegion("button_menu")
                 , mEngine.getVertexBufferObjectManager()
                 , "Credit"
-                , font ){
+                , font
+                , textureSize){
             @Override
             public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
                                          float pTouchAreaLocalX, float pTouchAreaLocalY){
@@ -105,7 +108,8 @@ public class ShipMenuScene extends Scene {
                 , resourceManager.getLoadedTextureRegion("button_menu")
                 , mEngine.getVertexBufferObjectManager()
                 , "Exit"
-                , font ){
+                , font
+                , textureSize){
             @Override
             public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
                                          float pTouchAreaLocalX, float pTouchAreaLocalY){
