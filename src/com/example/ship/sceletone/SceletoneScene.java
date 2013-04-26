@@ -2,7 +2,6 @@ package com.example.ship.sceletone;
 
 import android.graphics.Point;
 import android.graphics.PointF;
-import android.graphics.Typeface;
 import com.example.ship.Atlas.ResourceManager;
 import com.example.ship.Events;
 import com.example.ship.SceletonActivity;
@@ -11,10 +10,7 @@ import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.input.touch.TouchEvent;
-import org.andengine.opengl.font.Font;
-import org.andengine.opengl.font.FontFactory;
 import org.andengine.opengl.texture.region.ITextureRegion;
-import org.andengine.ui.activity.BaseGameActivity;
 import org.andengine.util.color.Color;
 
 /**
@@ -77,7 +73,7 @@ public class SceletoneScene extends Scene {
                                         , float pTouchAreaLocalY) {
 
                 if (pSceneTouchEvent.isActionUp()) {
-                    touchableSceletobeSprite.onAreaButtonMenuReleased(childScene);
+                    touchableSceletobeSprite.onSceletoneSpiteReleased(childScene);
                 }
                 return super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
             }

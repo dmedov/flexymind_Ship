@@ -11,6 +11,6 @@ import org.andengine.entity.scene.Scene;
  * To change this template use File | Settings | File Templates.
  */
 public interface TouchableSceletobeSprite {
-    public void onAreaButtonMenuTouched();
-    public void onAreaButtonMenuReleased(Scene child);
+    public void onSceletoneSpriteTouched();
+    public void onSceletoneSpiteReleased(Scene child);
 }

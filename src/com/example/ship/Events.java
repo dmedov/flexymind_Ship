@@ -37,7 +37,7 @@ public class Events implements TouchableMenuButtonSprite
 
     @Override
     public void onAreaButtonMenuReleased(final ButtonMenuSprite button) {
-        activity.runOnUiThread(new Runnable(){
+        activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 String message = new StringBuilder().append(button.getName())
@@ -48,13 +48,13 @@ public class Events implements TouchableMenuButtonSprite
     }
 
     @Override
-    public void onAreaButtonMenuTouched() {
+    public void onSceletoneSpriteTouched() {
 
     }
 
     @Override
-    public void onAreaButtonMenuReleased(final Scene child) {
-        activity.runOnUiThread(new Runnable(){
+    public void onSceletoneSpiteReleased(final Scene child) {
+        activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 activity.getEngine().setScene(child);
