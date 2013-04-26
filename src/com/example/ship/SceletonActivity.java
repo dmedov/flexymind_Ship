@@ -21,8 +21,8 @@ import org.andengine.ui.activity.BaseGameActivity;
 import org.andengine.util.color.Color;
 
 public class SceletonActivity extends BaseGameActivity {
-    private static final int TEXTURE_WIDTH = 960;
-    private static final int TEXTURE_HEIGHT = 600;
+    private static final int TEXTURE_WIDTH = 1739;
+    private static final int TEXTURE_HEIGHT = 900;
     private Scene sceletoneScene;
     private Scene menuScene;
     private ResourceManager resourceManager;

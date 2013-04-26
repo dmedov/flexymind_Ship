@@ -50,17 +50,7 @@ public class SceletoneScene extends Scene {
     }
 
     private void createBackground() {
-        ITextureRegion backTextureRegion = resourceManager.getLoadedTextureRegion("back");
 
-        final PointF backgroundPosition = new PointF(textureSize.x * 0.5f - backTextureRegion.getWidth() * 0.5f
-                , textureSize.y * 0.5f - backTextureRegion.getHeight() * 0.5f);
-
-        Sprite backSprite = new Sprite(backgroundPosition.x
-                , backgroundPosition.y
-                , backTextureRegion
-                , engine.getVertexBufferObjectManager());
-
-        this.attachChild(backSprite);
         Color backgroundColor = new Color(0.09804f, 0.6274f, 0.8784f);
         this.setBackground(new Background(backgroundColor));
     }
