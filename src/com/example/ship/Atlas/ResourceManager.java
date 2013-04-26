@@ -44,104 +44,98 @@ getLoadedTextureRegion ( " [Сюда пишем имя, которое мы за
 */
 
 public class ResourceManager {
-    public final ArrayList<Texture> loadedTextures;                     // List для записи загруженных текстур
-    protected final ArrayList<BuildableBitmapTextureAtlas> atlasList;      // List для записи всех атласов
 
-    //=== Constructor ===//
+    private final ArrayList<Texture> loadedTextures;                     
+    protected final ArrayList<BuildableBitmapTextureAtlas> atlasList;      
+
     public ResourceManager () {
+
         loadedTextures = new ArrayList<Texture>();
         atlasList = new ArrayList<BuildableBitmapTextureAtlas>();
     }
 
-    //=== Methods ===//
     public ITextureRegion getLoadedTextureRegion ( String pname ) {
-        for (int i = 0; i < loadedTextures.size(); i++ )
-            if ( loadedTextures.get(i).name.equalsIgnoreCase(pname) )   // IgnoreCase - сравнение без учёта регистра
-                return loadedTextures.get(i).textureRegion;             // Возвращаем Texture Region по имени текстуры.
+
+        for (Texture loadedTexture : loadedTextures) {
+            if ( loadedTexture.name.equalsIgnoreCase(pname) ) {   
+                return loadedTexture.textureRegion;
+				}
+			}             
         return null;
     }
 
     public void loadAllTextures ( Context context, TextureManager pTextureManager ) {
-        int curr_atlas = 0;         // Счётчик атласов
-        BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/"); // Установили default-путь к текстурам
+
+        int currAtlas = 0;
+        BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/"); 
 
         try {
-            XmlPullParser parser = context.getResources().getXml( R.xml.atlas ); // Инициализировали парсер xml
+            XmlPullParser parser = context.getResources().getXml( R.xml.atlas );
 
             while ( parser.getEventType() != XmlPullParser.END_DOCUMENT ) {
-//============================ Парсер =========================================//
-
-                //==== Случай START_TAG - атлас ====//
                 if (       ( parser.getEventType() == XmlPullParser.START_TAG )
                         && ( parser.getName().equals("Atlas") )
-                        && ( parser.getDepth() == 2 ) ) {               // Глубина вложенности - 2
-                    //=== Обработка ===//
-                    int atlas_height = 1;
-                    int atlas_width = 1;
+                        && ( parser.getDepth() == 2 ) ) {                        
+                    int atlasHeight = 1;
+                    int atlasWidth = 1;
                     TextureOptions textureOptions = TextureOptions.DEFAULT;
 
                     for (int i = 0; i < parser.getAttributeCount(); i++ ) {
                         if( parser.getAttributeName(i).equals("width") )
-                            atlas_width = Integer.parseInt(parser.getAttributeValue(i));
-                        if( parser.getAttributeName(i).equals("height") )               // Вытаскиваем параметры атласа
-                            atlas_height = Integer.parseInt( parser.getAttributeValue(i) );
+                            atlasWidth = Integer.parseInt(parser.getAttributeValue(i));
+                        if( parser.getAttributeName(i).equals("height") )               
+                            atlasHeight = Integer.parseInt( parser.getAttributeValue(i) );
                         if( parser.getAttributeName(i).equals("type") )
                             textureOptions = stringToTextureOptions(parser.getAttributeValue(i));
                     }
 
                     atlasList.add( new BuildableBitmapTextureAtlas(   pTextureManager
-                                                                    , atlas_width
-                                                                    , atlas_height
-                                                                    , textureOptions ) ); // Создаём новый атлас
+                                                                    , atlasWidth
+                                                                    , atlasHeight
+                                                                    , textureOptions ) ); 
                     // XXX: ДОБАВИТЬ TEXTURE FORMAT!
-                    //=================//
                 }
-                //==================================//
 
-                //===== Случай END_TAG - атлас =====//
                 if (       ( parser.getEventType() == XmlPullParser.END_TAG )
                         && ( parser.getName().equals("Atlas") )
                         && ( parser.getDepth() == 2 ) ) {
-                    //=== Обработка ===//
+
                     try {
-                        atlasList.get(curr_atlas).build(       // Генерируем новый атлас с текущим номером curr_atlas
+                        atlasList.get(currAtlas).build(       
                                 new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0,1,1));
-                                                               // 1 - source padding; 1 - source space
+                                                               
                     }
                     catch (ITextureAtlasBuilder.TextureAtlasBuilderException e) {
                         // XXX: Обработка исключения
                     }
-
-                    atlasList.get(curr_atlas).load();          // Загрузка атласа в память
-                    curr_atlas++;
-                    //=================//
+                    atlasList.get(currAtlas).load();          
+                    currAtlas++;
                 }
-                //==================================//
-
-                //=== Случай START_TAG - текстура ===//
+               
                 if (       ( parser.getEventType() == XmlPullParser.START_TAG )
                         && ( parser.getName().equals("texture") )
-                        && ( parser.getDepth() == 3 ) ) {           // Глубина вложенности - 3
-                    String path = "";
-                    String tname = "";
+                        && ( parser.getDepth() == 3 ) ) {           
+                    try {
+						String path = "";
+						String tname = "";
 
-                    for ( int i = 0; i < parser.getAttributeCount(); i++ ) { // Вытаскиваем параметры текстуры
-                        if ( parser.getAttributeName(i).equals("name") ) tname = parser.getAttributeValue(i);
-                        if ( parser.getAttributeName(i).equals("path") ) path = parser.getAttributeValue(i);
-                    }
+						for ( int i = 0; i < parser.getAttributeCount(); i++ ) { 
+							if ( parser.getAttributeName(i).equals("name") ) tname = parser.getAttributeValue(i);
+							if ( parser.getAttributeName(i).equals("path") ) path = parser.getAttributeValue(i);
+						}
 
-                    // Создаём новый TextureRegion и записываем его в loadedTextures
-                    ITextureRegion textReg =
-                            BitmapTextureAtlasTextureRegionFactory.createFromAsset(
-                                                                             atlasList.get(curr_atlas)
-                                                                            ,context
-                                                                            ,path );
-                    loadedTextures.add( new Texture(tname, textReg) );
-                }
-                //==================================//
-
+                    
+						ITextureRegion textReg =
+								BitmapTextureAtlasTextureRegionFactory.createFromAsset(   atlasList.get(currAtlas)
+																						, context
+																						, path );
+						loadedTextures.add( new Texture(tname, textReg) );
+						}
+						catch ( Throwable t ) {
+							// XXX: Обработка исключения
+						}
+                }               
                 parser.next();
-//=============================================================================//
             }
         }
         catch ( Throwable t ) {
