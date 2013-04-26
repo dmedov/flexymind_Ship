@@ -1,5 +1,6 @@
 package com.example.ship;
 
+import android.graphics.Point;
 import android.graphics.Typeface;
 import com.example.ship.Atlas.ResourceManager;
 import com.example.ship.Menu.ShipMenuScene;
@@ -67,7 +68,7 @@ public class SceletonActivity extends BaseGameActivity {
 
     @Override
     public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback) {
-        menuScene = new ShipMenuScene(this, TEXTURE_WIDTH, TEXTURE_HEIGHT, resourceManager);
+        menuScene = new ShipMenuScene(this);
         menuScene.setEventsToChildren(events);
         sceletoneScene = new SceletoneScene(this, TEXTURE_WIDTH, TEXTURE_HEIGHT, resourceManager, menuScene);
 
@@ -79,5 +80,13 @@ public class SceletonActivity extends BaseGameActivity {
                                 OnPopulateSceneCallback pOnPopulateSceneCallback) {
 
         pOnPopulateSceneCallback.onPopulateSceneFinished();
+    }
+
+    public ResourceManager getResourceManager() {
+        return resourceManager;
+    }
+
+    public Point getTextureSize() {
+        return new Point(TEXTURE_WIDTH, TEXTURE_HEIGHT);
     }
 }

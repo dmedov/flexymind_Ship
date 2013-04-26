@@ -4,6 +4,7 @@ import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.Typeface;
 import com.example.ship.Atlas.ResourceManager;
+import com.example.ship.SceletonActivity;
 import org.andengine.engine.Engine;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
@@ -23,26 +24,19 @@ import org.andengine.util.color.Color;
  * To change this template use File | Settings | File Templates.
  */
 public class SceletoneScene extends Scene {
-    private final BaseGameActivity activity;
+    private final SceletonActivity activity;
     private final Engine engine;
     private final ResourceManager resourceManager;
     private final Scene childScene;
     private Point textureSize;
 
-    public SceletoneScene( final BaseGameActivity activity, int textureWidth
-                         , int textureHeight, ResourceManager resourceManager, final Scene childScene) {
-
-        this(activity, new Point(textureWidth, textureHeight), resourceManager, childScene);
-    }
-
-    public SceletoneScene( final BaseGameActivity activity, Point textureSize
-                         , ResourceManager resourceManager, final Scene childScene) {
+    public SceletoneScene(final SceletonActivity activity, final Scene childScene) {
         super();
 
         this.activity = activity;
         this.engine = activity.getEngine();
-        this.textureSize = textureSize;
-        this.resourceManager = resourceManager;
+        this.textureSize = activity.getTextureSize();
+        this.resourceManager = activity.getResourceManager();
         this.childScene = childScene;
 
         createBackground();

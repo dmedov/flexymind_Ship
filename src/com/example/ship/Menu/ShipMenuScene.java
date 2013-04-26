@@ -5,6 +5,7 @@ import android.graphics.Typeface;
 import android.widget.Toast;
 import com.example.ship.Atlas.ResourceManager;
 import com.example.ship.Events;
+import com.example.ship.SceletonActivity;
 import org.andengine.engine.Engine;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
@@ -26,25 +27,19 @@ import java.util.ArrayList;
  * To change this template use File | Settings | File Templates.
  */
 public class ShipMenuScene extends Scene {
-    private final BaseGameActivity activity;
+    private final SceletonActivity activity;
     private final Engine mEngine;
     private final ResourceManager resourceManager;
     private       Point textureSize;
     private       ArrayList<ButtonMenuSprite> buttons;
     private       Font buttonFont;
 
-    public ShipMenuScene( final BaseGameActivity activity, int textureWidth
-            , int textureHeight, ResourceManager resourceManager) {
-
-        this(activity, new Point(textureWidth, textureHeight), resourceManager);
-    }
-
-    public ShipMenuScene(final BaseGameActivity activity, Point textureSize, ResourceManager resourceManager) {
+    public ShipMenuScene( final SceletonActivity activity) {
         super();
         this.activity = activity;
         this.mEngine = activity.getEngine();
-        this.textureSize = textureSize;
-        this.resourceManager = resourceManager;
+        this.textureSize = activity.getTextureSize();
+        this.resourceManager = activity.getResourceManager();
 
         buttons = new ArrayList<ButtonMenuSprite>();
 
