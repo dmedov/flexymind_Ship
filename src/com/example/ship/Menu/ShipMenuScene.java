@@ -7,6 +7,7 @@ import com.example.ship.Atlas.ResourceManager;
 import com.example.ship.Events;
 import com.example.ship.SceletonActivity;
 import org.andengine.engine.Engine;
+import org.andengine.engine.camera.hud.HUD;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.sprite.Sprite;
@@ -33,6 +34,7 @@ public class ShipMenuScene extends Scene {
     private       Point textureSize;
     private       ArrayList<ButtonMenuSprite> buttons;
     private       Font buttonFont;
+    private       HUD hud;
 
     public ShipMenuScene( final SceletonActivity activity) {
         super();
@@ -93,9 +95,11 @@ public class ShipMenuScene extends Scene {
         buttons.add(creditsButtonSprite);
         buttons.add(exitButtonSprite);
 
+        hud = new HUD();
+
         for (ButtonMenuSprite button: buttons){
             this.registerTouchArea(button);
-            this.attachChild(button);
+            hud.attachChild(button);
         }
 
         this.setTouchAreaBindingOnActionDownEnabled(true);
@@ -112,5 +116,9 @@ public class ShipMenuScene extends Scene {
         for (ButtonMenuSprite button: buttons){
             button.setEvents(events);
         }
+    }
+
+    public HUD getHud(){
+        return hud;
     }
 }

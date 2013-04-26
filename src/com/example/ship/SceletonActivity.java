@@ -7,6 +7,7 @@ import com.example.ship.Menu.ShipMenuScene;
 import android.graphics.PointF;
 import android.util.DisplayMetrics;
 import com.example.ship.sceletone.SceletoneScene;
+import org.andengine.engine.camera.Camera;
 import org.andengine.engine.camera.ZoomCamera;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
@@ -28,6 +29,7 @@ public class SceletonActivity extends BaseGameActivity {
     private ShipMenuScene menuScene;
     private ResourceManager resourceManager;
     private Events events;
+    private ZoomCamera zoomCamera;
 
     private ZoomCamera createZoomCamera(){
         DisplayMetrics metrics = new DisplayMetrics();
@@ -48,9 +50,9 @@ public class SceletonActivity extends BaseGameActivity {
 
     @Override
     public EngineOptions onCreateEngineOptions() {
-        ZoomCamera camera = createZoomCamera();
+        zoomCamera = createZoomCamera();
         EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED,
-                new FillResolutionPolicy(), camera);
+                new FillResolutionPolicy(), zoomCamera);
         return engineOptions;
     }
 
@@ -89,5 +91,9 @@ public class SceletonActivity extends BaseGameActivity {
 
     public Point getTextureSize() {
         return new Point(TEXTURE_WIDTH, TEXTURE_HEIGHT);
+    }
+
+    public Camera getCamera(){
+        return zoomCamera;
     }
 }

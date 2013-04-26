@@ -2,10 +2,10 @@ package com.example.ship;
 
 import android.widget.Toast;
 import com.example.ship.Menu.ButtonMenuSprite;
+import com.example.ship.Menu.ShipMenuScene;
 import com.example.ship.Menu.TouchableMenuButtonSprite;
 import com.example.ship.sceletone.TouchableSceletobeSprite;
 import org.andengine.entity.scene.Scene;
-import org.andengine.ui.activity.BaseGameActivity;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,9 +17,9 @@ import org.andengine.ui.activity.BaseGameActivity;
 public class Events implements TouchableMenuButtonSprite
                              , TouchableSceletobeSprite {
 
-    private final BaseGameActivity activity;
+    private final SceletonActivity activity;
 
-    public Events(BaseGameActivity activity) {
+    public Events(SceletonActivity activity) {
         this.activity = activity;
     }
 
@@ -58,6 +58,7 @@ public class Events implements TouchableMenuButtonSprite
             @Override
             public void run() {
                 activity.getEngine().setScene(child);
+                activity.getCamera().setHUD(((ShipMenuScene)child).getHud());
             }
         });
     }
