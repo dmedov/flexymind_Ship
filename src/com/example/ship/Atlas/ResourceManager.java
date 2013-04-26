@@ -73,11 +73,20 @@ public class ResourceManager {
         this.textureManager = textureManager;
         this.currAtlas = 0;
         this.context = context;
+        int eventType = 0;
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
+
+
 
         try {
             parser = context.getResources().getXml(R.xml.atlas);
-            while (parser.getEventType() != XmlPullParser.END_DOCUMENT) {
+            eventType = parser.getEventType();
+        } catch (XmlPullParserException e) {
+            handleException(e, "xml parser initialization error");
+        }
+
+        while (eventType != XmlPullParser.END_DOCUMENT) {
+            try {
                 // try parse atlas start tag
                 if ((parser.getEventType() == XmlPullParser.START_TAG)
                         && (parser.getName().equals("Atlas"))
@@ -100,19 +109,21 @@ public class ResourceManager {
                     parseTextureStartTag();
                 }
                 parser.next();
+                eventType = parser.getEventType();
+
+            } catch (XmlPullParserException e) {
+                String error = "xml parsing error with"
+                        + parser.getName()
+                        + "in atlas number"
+                        + Integer.toString(currAtlas);
+                handleException(e, error);
+            } catch (IOException e) {
+                String error = "io error in xml parsing with"
+                        + parser.getName()
+                        + "in atlas number"
+                        + Integer.toString(currAtlas);
+                handleException(e, error);
             }
-        } catch (XmlPullParserException e) {
-            String error = "xml parsing error with"
-                           + parser.getName()
-                           + "in atlas number"
-                           + Integer.toString(currAtlas);
-            handleException(e, error);
-        } catch (IOException e) {
-            String error = "io error in xml parsing with"
-                            + parser.getName()
-                            + "in atlas number"
-                            + Integer.toString(currAtlas);
-            handleException(e, error);
         }
     }
 
