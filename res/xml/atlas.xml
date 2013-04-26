@@ -2,5 +2,6 @@
 <resources>
             <Atlas type="BILINEAR" width="1024" height="1024">
                 <texture path="ship.png" name="ship" />
+                <texture path="back.png" name="back" />
             </Atlas>
 </resources>

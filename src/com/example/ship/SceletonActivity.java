@@ -64,7 +64,7 @@ public class SceletonActivity extends BaseGameActivity {
                                         , shipTextureRegion
                                         , mEngine.getVertexBufferObjectManager());
 
-        ITextureRegion backTextureRegion = resMan.getLoadedTextureRegion("ship");
+        ITextureRegion backTextureRegion = resMan.getLoadedTextureRegion("back");
         final PointF back = new PointF(TEXTURE_WIDTH * 0.5f - backTextureRegion.getWidth() * 0.5f
                                         , TEXTURE_HEIGHT * 0.5f - backTextureRegion.getHeight() * 0.5f);
 
