@@ -8,7 +8,7 @@ import org.andengine.opengl.font.Font;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
-public class ButtonMenuSprite extends Sprite{
+public class ButtonMenuSprite extends Sprite {
 
     private Text text;
     private TouchableMenuButtonSprite touchableMenuButtonSprite;
@@ -29,7 +29,7 @@ public class ButtonMenuSprite extends Sprite{
 
     @Override
     public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-        if ( pSceneTouchEvent.isActionDown() ){
+        if (pSceneTouchEvent.isActionDown()) {
             touchableMenuButtonSprite.onAreaButtonMenuTouched(this);
         }
         return true;
