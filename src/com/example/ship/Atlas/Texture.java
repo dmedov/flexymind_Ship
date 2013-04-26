@@ -12,8 +12,7 @@ public class Texture {
     public String name;
     public ITextureRegion textureRegion;
 
-    public Texture ( String name, ITextureRegion textureRegion) {
-
+    public Texture (String name, ITextureRegion textureRegion) {
         this.name = name;
         this.textureRegion = textureRegion;
     }
