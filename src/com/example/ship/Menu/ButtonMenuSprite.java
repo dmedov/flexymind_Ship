@@ -32,6 +32,9 @@ public class ButtonMenuSprite extends Sprite {
         if (pSceneTouchEvent.isActionDown()) {
             touchableMenuButtonSprite.onAreaButtonMenuTouched(this);
         }
+        if (pSceneTouchEvent.isActionUp()) {
+            touchableMenuButtonSprite.onAreaButtonMenuReleased(this);
+        }
         return true;
     }
 

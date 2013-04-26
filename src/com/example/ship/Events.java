@@ -29,7 +29,7 @@ public class Events implements TouchableMenuButtonSprite
             @Override
             public void run() {
                 String message = new StringBuilder().append(button.getName())
-                                                    .append(" Button Released!").toString();
+                                                    .append(" Button Pressed!").toString();
                 Toast.makeText(activity.getApplicationContext(), message, Toast.LENGTH_SHORT).show();
             }
         });
