@@ -24,7 +24,7 @@ import org.andengine.util.color.Color;
 public class SceletonActivity extends BaseGameActivity {
     private static final int TEXTURE_WIDTH = 960;
     private static final int TEXTURE_HEIGHT = 600;
-    private Scene sceletoneScene;
+    private SceletoneScene sceletoneScene;
     private ShipMenuScene menuScene;
     private ResourceManager resourceManager;
     private Events events;
@@ -70,7 +70,8 @@ public class SceletonActivity extends BaseGameActivity {
     public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback) {
         menuScene = new ShipMenuScene(this);
         menuScene.setEventsToChildren(events);
-        sceletoneScene = new SceletoneScene(this, TEXTURE_WIDTH, TEXTURE_HEIGHT, resourceManager, menuScene);
+        sceletoneScene = new SceletoneScene(this, menuScene);
+        sceletoneScene.setEvents(events);
 
         pOnCreateSceneCallback.onCreateSceneFinished(sceletoneScene);
     }

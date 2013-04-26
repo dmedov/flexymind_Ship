@@ -3,6 +3,8 @@ package com.example.ship;
 import android.widget.Toast;
 import com.example.ship.Menu.ButtonMenuSprite;
 import com.example.ship.Menu.TouchableMenuButtonSprite;
+import com.example.ship.sceletone.TouchableSceletobeSprite;
+import org.andengine.entity.scene.Scene;
 import org.andengine.ui.activity.BaseGameActivity;
 
 /**
@@ -12,7 +14,8 @@ import org.andengine.ui.activity.BaseGameActivity;
  * Time: 15:47
  * To change this template use File | Settings | File Templates.
  */
-public class Events implements TouchableMenuButtonSprite {
+public class Events implements TouchableMenuButtonSprite
+                             , TouchableSceletobeSprite {
 
     private final BaseGameActivity activity;
 
@@ -40,6 +43,21 @@ public class Events implements TouchableMenuButtonSprite {
                 String message = new StringBuilder().append(button.getName())
                                                     .append(" Button Released!").toString();
                 Toast.makeText(activity.getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    @Override
+    public void onAreaButtonMenuTouched() {
+
+    }
+
+    @Override
+    public void onAreaButtonMenuReleased(final Scene child) {
+        activity.runOnUiThread(new Runnable(){
+            @Override
+            public void run() {
+                activity.getEngine().setScene(child);
             }
         });
     }

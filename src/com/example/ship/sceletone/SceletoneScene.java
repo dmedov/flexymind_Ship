@@ -4,6 +4,7 @@ import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.Typeface;
 import com.example.ship.Atlas.ResourceManager;
+import com.example.ship.Events;
 import com.example.ship.SceletonActivity;
 import org.andengine.engine.Engine;
 import org.andengine.entity.scene.Scene;
@@ -28,7 +29,8 @@ public class SceletoneScene extends Scene {
     private final Engine engine;
     private final ResourceManager resourceManager;
     private final Scene childScene;
-    private Point textureSize;
+    private       Point textureSize;
+    private       TouchableSceletobeSprite touchableSceletobeSprite;
 
     public SceletoneScene(final SceletonActivity activity, final Scene childScene) {
         super();
@@ -46,15 +48,15 @@ public class SceletoneScene extends Scene {
     private void createBackground() {
         ITextureRegion backTextureRegion = resourceManager.getLoadedTextureRegion("back");
 
-        final PointF backgroundPosition = new PointF(textureSize.x * 0.5f - backTextureRegion.getWidth() * 0.5f
-                , textureSize.y * 0.5f - backTextureRegion.getHeight() * 0.5f);
+        final PointF backgroundPosition = new PointF( textureSize.x * 0.5f - backTextureRegion.getWidth() * 0.5f
+                                                    , textureSize.y * 0.5f - backTextureRegion.getHeight() * 0.5f);
 
-        Sprite backSprite = new Sprite(backgroundPosition.x
-                , backgroundPosition.y
-                , backTextureRegion
-                , engine.getVertexBufferObjectManager());
-
+        Sprite backSprite = new Sprite( backgroundPosition.x
+                                      , backgroundPosition.y
+                                      , backTextureRegion
+                                      , engine.getVertexBufferObjectManager());
         this.attachChild(backSprite);
+
         Color backgroundColor = new Color(0.09804f, 0.6274f, 0.8784f);
         this.setBackground(new Background(backgroundColor));
     }
@@ -62,22 +64,20 @@ public class SceletoneScene extends Scene {
     private void createShipLogo() {
         ITextureRegion shipTextureRegion = resourceManager.getLoadedTextureRegion("ship");
 
-        final PointF shipPosition = new PointF(textureSize.x * 0.5f - shipTextureRegion.getWidth() * 0.5f
-                , textureSize.y * 0.5f - shipTextureRegion.getHeight() * 0.5f);
+        final PointF shipPosition = new PointF( textureSize.x * 0.5f - shipTextureRegion.getWidth() * 0.5f
+                                              , textureSize.y * 0.5f - shipTextureRegion.getHeight() * 0.5f);
 
-        Sprite shipSprite = new Sprite(shipPosition.x
-                , shipPosition.y
-                , shipTextureRegion
-                , engine.getVertexBufferObjectManager()){
+        Sprite shipSprite = new Sprite( shipPosition.x
+                                      , shipPosition.y
+                                      , shipTextureRegion
+                                      , engine.getVertexBufferObjectManager()) {
             @Override
-            public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-                if ( pSceneTouchEvent.isActionDown() ){
-                    activity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            engine.setScene(childScene);
-                        }
-                    });
+            public boolean onAreaTouched( TouchEvent pSceneTouchEvent
+                                        , float pTouchAreaLocalX
+                                        , float pTouchAreaLocalY) {
+
+                if (pSceneTouchEvent.isActionUp()) {
+                    touchableSceletobeSprite.onAreaButtonMenuReleased(childScene);
                 }
                 return super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
             }
@@ -85,5 +85,9 @@ public class SceletoneScene extends Scene {
 
         this.registerTouchArea(shipSprite);
         this.attachChild(shipSprite);
+    }
+
+    public void setEvents(Events events) {
+        this.touchableSceletobeSprite = events;
     }
 }
