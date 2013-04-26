@@ -17,16 +17,15 @@ public class ButtonMenu extends Sprite{
 
     Text text;
 
-    public ButtonMenu(float multiplier, ITextureRegion pTextureRegion,
-            VertexBufferObjectManager pVertexBufferObjectManager, String nameButton, Font mFont, Point textureSize) {
+    public ButtonMenu( ITextureRegion pTextureRegion
+                     , VertexBufferObjectManager pVertexBufferObjectManager
+                     , String nameButton, Font mFont) {
 
-        super( textureSize.x * 0.5f - pTextureRegion.getWidth() * 0.5f
-             , textureSize.y * 0.2f * multiplier + 0.1f
-             , pTextureRegion
-             , pVertexBufferObjectManager);
+        super(0, 0, pTextureRegion, pVertexBufferObjectManager);
 
         text = new Text(0.0f,0.0f, mFont,nameButton, pVertexBufferObjectManager);
-        text.setPosition(this.getWidth() * 0.5f - text.getWidth() * 0.5f,this.getHeight() * 0.5f - text.getHeight() * 0.5f);
+        text.setPosition(this.getWidth() * 0.5f - text.getWidth() * 0.5f,this.getHeight() * 0.5f
+                        - text.getHeight() * 0.5f);
         this.attachChild(text);
     }
 

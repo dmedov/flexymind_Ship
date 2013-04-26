@@ -27,8 +27,6 @@ public class ShipMenuScene extends Scene {
     private final Engine mEngine;
     private final ResourceManager resourceManager;
     private Point textureSize;
-    private Font buttonFont;
-    private Font titleFont;
 
     public ShipMenuScene( final BaseGameActivity activity, int textureWidth
             , int textureHeight, ResourceManager resourceManager) {
@@ -40,10 +38,7 @@ public class ShipMenuScene extends Scene {
         super();
         this.activity = activity;
         this.mEngine = activity.getEngine();
-        buttonFont = FontFactory.create( mEngine.getFontManager(), mEngine.getTextureManager()
-                , 256, 256, Typeface.create(Typeface.DEFAULT,Typeface.NORMAL)
-                , 32f, true, Color.BLACK_ABGR_PACKED_INT);
-        buttonFont.load();
+
         this.textureSize = textureSize;
         this.resourceManager = resourceManager;
 
@@ -55,9 +50,9 @@ public class ShipMenuScene extends Scene {
     }
 
     private void createTitle() {
-        titleFont = FontFactory.createFromAsset(activity.getFontManager(), activity.getTextureManager()
-                , 256, 256, activity.getAssets(), "zelda.ttf", 50f
-                , true, android.graphics.Color.BLACK);
+        Font titleFont = FontFactory.createFromAsset( activity.getFontManager(), activity.getTextureManager()
+                                                    , 256, 256, activity.getAssets(), "zelda.ttf", 50f
+                                                    , true, android.graphics.Color.BLACK);
         titleFont.load();
         Text title = new Text(0, 0, titleFont, "SHIPS", mEngine.getVertexBufferObjectManager());
         title.setPosition(textureSize.x * 0.5f - title.getWidth() * 0.5f, textureSize.y * 0.075f);
@@ -65,8 +60,8 @@ public class ShipMenuScene extends Scene {
     }
 
     private void createBackground() {
-        Sprite backgroundImage = new Sprite(0, 0, resourceManager.getLoadedTextureRegion("bg_ship")
-                , mEngine.getVertexBufferObjectManager());
+        Sprite backgroundImage = new Sprite( 0, 0, resourceManager.getLoadedTextureRegion("bg_ship")
+                                           , mEngine.getVertexBufferObjectManager());
         //backgroundImage.setScale (textureSize.y / backgroundImage.getHeight());
         this.attachChild(backgroundImage);
         Color backgroundColor = new Color(0.09804f, 0.6274f, 0.8784f);
@@ -74,13 +69,15 @@ public class ShipMenuScene extends Scene {
     }
 
     private void createButtons() {
+        Font buttonFont = FontFactory.create( mEngine.getFontManager(), mEngine.getTextureManager()
+                                            , 256, 256, Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)
+                                            , 32f, true, Color.BLACK_ABGR_PACKED_INT);
+        buttonFont.load();
 
-        ButtonMenu startButtonSprite = new ButtonMenu( 1
-                ,resourceManager.getLoadedTextureRegion("button_menu")
-                , mEngine.getVertexBufferObjectManager()
-                , "Start"
-                , buttonFont
-                , textureSize){
+        ButtonMenu startButtonSprite = new ButtonMenu( resourceManager.getLoadedTextureRegion("button_menu")
+                                                     , mEngine.getVertexBufferObjectManager()
+                                                     , "Start"
+                                                     , buttonFont){
             @Override
             public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
                                          float pTouchAreaLocalX, float pTouchAreaLocalY){
@@ -97,12 +94,10 @@ public class ShipMenuScene extends Scene {
             }
         };
 
-        ButtonMenu highscoresButtonSprite = new ButtonMenu( 2
-                , resourceManager.getLoadedTextureRegion("button_menu")
-                , mEngine.getVertexBufferObjectManager()
-                , "HighScores"
-                , buttonFont
-                , textureSize){
+        ButtonMenu highscoresButtonSprite = new ButtonMenu( resourceManager.getLoadedTextureRegion("button_menu")
+                                                          , mEngine.getVertexBufferObjectManager()
+                                                          , "HighScores"
+                                                          , buttonFont){
             @Override
             public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
                                          float pTouchAreaLocalX, float pTouchAreaLocalY){
@@ -119,12 +114,10 @@ public class ShipMenuScene extends Scene {
             }
         };
 
-        ButtonMenu creditsButtonSprite = new ButtonMenu( 3
-                , resourceManager.getLoadedTextureRegion("button_menu")
-                , mEngine.getVertexBufferObjectManager()
-                , "Credit"
-                , buttonFont
-                , textureSize){
+        ButtonMenu creditsButtonSprite = new ButtonMenu( resourceManager.getLoadedTextureRegion("button_menu")
+                                                       , mEngine.getVertexBufferObjectManager()
+                                                       , "Credits"
+                                                       , buttonFont){
             @Override
             public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
                                          float pTouchAreaLocalX, float pTouchAreaLocalY){
@@ -141,12 +134,10 @@ public class ShipMenuScene extends Scene {
             }
         };
 
-        ButtonMenu exitButtonSprite = new ButtonMenu( 4
-                , resourceManager.getLoadedTextureRegion("button_menu")
-                , mEngine.getVertexBufferObjectManager()
-                , "Exit"
-                , buttonFont
-                , textureSize){
+        ButtonMenu exitButtonSprite = new ButtonMenu( resourceManager.getLoadedTextureRegion("button_menu")
+                                                    , mEngine.getVertexBufferObjectManager()
+                                                    , "Exit"
+                                                    , buttonFont){
             @Override
             public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
                                          float pTouchAreaLocalX, float pTouchAreaLocalY){
@@ -162,6 +153,17 @@ public class ShipMenuScene extends Scene {
                         pTouchAreaLocalY);
             }
         };
+
+
+        startButtonSprite.setPosition( textureSize.x * 0.25f - startButtonSprite.getWidth() * 0.5f
+                                     , textureSize.y * 0.4f);
+        highscoresButtonSprite.setPosition( textureSize.x * 0.75f - startButtonSprite.getWidth() * 0.5f
+                                          , textureSize.y * 0.4f);
+        creditsButtonSprite.setPosition( textureSize.x * 0.25f - startButtonSprite.getWidth() * 0.5f
+                                       , textureSize.y * 0.8f);
+        exitButtonSprite.setPosition( textureSize.x * 0.75f - startButtonSprite.getWidth() * 0.5f
+                                    , textureSize.y * 0.8f);
+
         this.registerTouchArea(startButtonSprite);
         this.registerTouchArea(highscoresButtonSprite);
         this.registerTouchArea(creditsButtonSprite);
