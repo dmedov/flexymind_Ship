@@ -76,8 +76,6 @@ public class ResourceManager {
         int eventType = 0;
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 
-
-
         try {
             parser = context.getResources().getXml(R.xml.atlas);
             eventType = parser.getEventType();
