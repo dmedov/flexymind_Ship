@@ -24,8 +24,9 @@ public class SceletonActivity extends BaseGameActivity {
     private static final int TEXTURE_WIDTH = 960;
     private static final int TEXTURE_HEIGHT = 600;
     private Scene sceletoneScene;
-    private Scene menuScene;
+    private ShipMenuScene menuScene;
     private ResourceManager resourceManager;
+    private Events events;
 
     private ZoomCamera createZoomCamera(){
         DisplayMetrics metrics = new DisplayMetrics();
@@ -59,12 +60,15 @@ public class SceletonActivity extends BaseGameActivity {
 
         FontFactory.setAssetBasePath("font/");
 
+        events = new Events(this);
+
         pOnCreateResourcesCallback.onCreateResourcesFinished();
     }
 
     @Override
     public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback) {
         menuScene = new ShipMenuScene(this, TEXTURE_WIDTH, TEXTURE_HEIGHT, resourceManager);
+        menuScene.setEventsToChildren(events);
         sceletoneScene = new SceletoneScene(this, TEXTURE_WIDTH, TEXTURE_HEIGHT, resourceManager, menuScene);
 
         pOnCreateSceneCallback.onCreateSceneFinished(sceletoneScene);

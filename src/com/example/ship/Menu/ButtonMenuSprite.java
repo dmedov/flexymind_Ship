@@ -3,6 +3,8 @@ package com.example.ship.Menu;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import android.util.Log;
+import android.widget.Toast;
+import com.example.ship.Events;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.input.touch.TouchEvent;
@@ -15,7 +17,8 @@ import org.andengine.util.color.Color;
 
 public class ButtonMenuSprite extends Sprite{
 
-    Text text;
+    private Text text;
+    private ButtonMenuSpriteTouchable buttonMenuSpriteTouchable;
 
     public ButtonMenuSprite(ITextureRegion pTextureRegion
             , VertexBufferObjectManager pVertexBufferObjectManager
@@ -29,4 +32,20 @@ public class ButtonMenuSprite extends Sprite{
         this.attachChild(text);
     }
 
+    @Override
+    public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+        if ( pSceneTouchEvent.isActionDown() ){
+            buttonMenuSpriteTouchable.onAreaButtonMenuTouched(text.getText().toString());
+        }
+        return true;
+    }
+
+    public void setEvents(Events events) {
+        this.buttonMenuSpriteTouchable = events;
+    }
+
+    public interface ButtonMenuSpriteTouchable {
+        public void onAreaButtonMenuTouched(String buttonName);
+        public void onAreaButtonMenuReleased();
+    }
 }

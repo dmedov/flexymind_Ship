@@ -4,6 +4,7 @@ import android.graphics.Point;
 import android.graphics.Typeface;
 import android.widget.Toast;
 import com.example.ship.Atlas.ResourceManager;
+import com.example.ship.Events;
 import org.andengine.engine.Engine;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
@@ -14,6 +15,8 @@ import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
 import org.andengine.ui.activity.BaseGameActivity;
 import org.andengine.util.color.Color;
+
+import java.util.ArrayList;
 
 /**
  * Created with IntelliJ IDEA.
@@ -27,6 +30,7 @@ public class ShipMenuScene extends Scene {
     private final Engine mEngine;
     private final ResourceManager resourceManager;
     private Point textureSize;
+    private ArrayList<ButtonMenuSprite> buttons;
 
     public ShipMenuScene( final BaseGameActivity activity, int textureWidth
             , int textureHeight, ResourceManager resourceManager) {
@@ -41,6 +45,8 @@ public class ShipMenuScene extends Scene {
 
         this.textureSize = textureSize;
         this.resourceManager = resourceManager;
+
+        buttons = new ArrayList<ButtonMenuSprite>();
 
         createBackground();
 
@@ -69,6 +75,8 @@ public class ShipMenuScene extends Scene {
     }
 
     private void createButtons() {
+        buttons = new ArrayList<ButtonMenuSprite>();
+
         Font buttonFont = FontFactory.create( mEngine.getFontManager(), mEngine.getTextureManager()
                                             , 256, 256, Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)
                                             , 32f, true, Color.BLACK_ABGR_PACKED_INT);
@@ -77,101 +85,48 @@ public class ShipMenuScene extends Scene {
         ButtonMenuSprite startButtonSprite = new ButtonMenuSprite( resourceManager.getLoadedTextureRegion("button_menu")
                                                      , mEngine.getVertexBufferObjectManager()
                                                      , "Start"
-                                                     , buttonFont){
-            @Override
-            public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
-                                         float pTouchAreaLocalX, float pTouchAreaLocalY){
-                if ( pSceneTouchEvent.isActionDown() ){
-                    activity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(activity.getApplicationContext(), "Start Button Pressed!", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
-                return super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX,
-                        pTouchAreaLocalY);
-            }
-        };
+                                                     , buttonFont);
 
         ButtonMenuSprite highscoresButtonSprite = new ButtonMenuSprite( resourceManager.getLoadedTextureRegion("button_menu")
                                                           , mEngine.getVertexBufferObjectManager()
                                                           , "HighScores"
-                                                          , buttonFont){
-            @Override
-            public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
-                                         float pTouchAreaLocalX, float pTouchAreaLocalY){
-                if ( pSceneTouchEvent.isActionDown() ){
-                    activity.runOnUiThread(new Runnable(){
-                        @Override
-                        public void run() {
-                            Toast.makeText(activity.getApplicationContext(), "HighScores Button Pressed!", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
-                return super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX,
-                        pTouchAreaLocalY);
-            }
-        };
+                                                          , buttonFont);
 
         ButtonMenuSprite creditsButtonSprite = new ButtonMenuSprite( resourceManager.getLoadedTextureRegion("button_menu")
                                                        , mEngine.getVertexBufferObjectManager()
                                                        , "Credits"
-                                                       , buttonFont){
-            @Override
-            public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
-                                         float pTouchAreaLocalX, float pTouchAreaLocalY){
-                if ( pSceneTouchEvent.isActionDown() ){
-                    activity.runOnUiThread(new Runnable(){
-                        @Override
-                        public void run() {
-                            Toast.makeText(activity.getApplicationContext(), "Credit Button Pressed!", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
-                return super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX,
-                        pTouchAreaLocalY);
-            }
-        };
+                                                       , buttonFont);
 
         ButtonMenuSprite exitButtonSprite = new ButtonMenuSprite( resourceManager.getLoadedTextureRegion("button_menu")
                                                     , mEngine.getVertexBufferObjectManager()
                                                     , "Exit"
-                                                    , buttonFont){
-            @Override
-            public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
-                                         float pTouchAreaLocalX, float pTouchAreaLocalY){
-                if ( pSceneTouchEvent.isActionDown() ){
-                    activity.runOnUiThread(new Runnable(){
-                        @Override
-                        public void run() {
-                            Toast.makeText(activity.getApplicationContext(), "Exit Button Pressed!", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
-                return super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX,
-                        pTouchAreaLocalY);
-            }
-        };
-
+                                                    , buttonFont);
 
         startButtonSprite.setPosition( textureSize.x * 0.25f - startButtonSprite.getWidth() * 0.5f
                                      , textureSize.y * 0.4f);
         highscoresButtonSprite.setPosition( textureSize.x * 0.75f - startButtonSprite.getWidth() * 0.5f
                                           , textureSize.y * 0.4f);
         creditsButtonSprite.setPosition( textureSize.x * 0.25f - startButtonSprite.getWidth() * 0.5f
-                                       , textureSize.y * 0.8f);
+                                       , textureSize.y * 0.7f);
         exitButtonSprite.setPosition( textureSize.x * 0.75f - startButtonSprite.getWidth() * 0.5f
-                                    , textureSize.y * 0.8f);
+                                    , textureSize.y * 0.7f);
 
-        this.registerTouchArea(startButtonSprite);
-        this.registerTouchArea(highscoresButtonSprite);
-        this.registerTouchArea(creditsButtonSprite);
-        this.registerTouchArea(exitButtonSprite);
-        this.attachChild(startButtonSprite);
-        this.attachChild(highscoresButtonSprite);
-        this.attachChild(creditsButtonSprite);
-        this.attachChild(exitButtonSprite);
+        buttons.add(startButtonSprite);
+        buttons.add(highscoresButtonSprite);
+        buttons.add(creditsButtonSprite);
+        buttons.add(exitButtonSprite);
+
+        for (ButtonMenuSprite button: buttons){
+            this.registerTouchArea(button);
+            this.attachChild(button);
+        }
+
         this.setTouchAreaBindingOnActionDownEnabled(true);
+    }
+
+    public void setEventsToChildren(Events events) {
+        for (ButtonMenuSprite button: buttons){
+            button.setEvents(events);
+        }
     }
 }
