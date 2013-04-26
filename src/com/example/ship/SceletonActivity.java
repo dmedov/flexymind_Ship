@@ -26,7 +26,6 @@ public class SceletonActivity extends BaseGameActivity {
     private Scene sceletoneScene;
     private Scene menuScene;
     private ResourceManager resourceManager;
-    private Font mFont;
 
     private ZoomCamera createZoomCamera(){
         DisplayMetrics metrics = new DisplayMetrics();
@@ -57,10 +56,7 @@ public class SceletonActivity extends BaseGameActivity {
     public void onCreateResources(OnCreateResourcesCallback pOnCreateResourcesCallback) {
         resourceManager = new ResourceManager();
         resourceManager.loadAllTextures(this, mEngine.getTextureManager());
-        mFont = FontFactory.create(mEngine.getFontManager(), mEngine.
-                getTextureManager(), 256, 256, Typeface.create(Typeface.DEFAULT,
-                Typeface.NORMAL), 32f, true, Color.BLACK_ABGR_PACKED_INT);
-        mFont.load();
+
         pOnCreateResourcesCallback.onCreateResourcesFinished();
     }
 

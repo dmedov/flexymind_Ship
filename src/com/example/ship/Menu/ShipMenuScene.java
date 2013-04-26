@@ -1,7 +1,6 @@
 package com.example.ship.Menu;
 
 import android.graphics.Point;
-import android.graphics.PointF;
 import android.graphics.Typeface;
 import android.widget.Toast;
 import com.example.ship.Atlas.ResourceManager;
@@ -9,6 +8,7 @@ import org.andengine.engine.Engine;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.entity.text.Text;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
@@ -27,10 +27,11 @@ public class ShipMenuScene extends Scene {
     private final Engine mEngine;
     private final ResourceManager resourceManager;
     private Point textureSize;
-    private Font font;
+    private Font buttonFont;
+    private Font titleFont;
 
-    public ShipMenuScene(final BaseGameActivity activity, int textureWidth
-                         , int textureHeight, ResourceManager resourceManager) {
+    public ShipMenuScene( final BaseGameActivity activity, int textureWidth
+            , int textureHeight, ResourceManager resourceManager) {
 
         this(activity, new Point(textureWidth, textureHeight), resourceManager);
     }
@@ -39,16 +40,28 @@ public class ShipMenuScene extends Scene {
         super();
         this.activity = activity;
         this.mEngine = activity.getEngine();
-        font = FontFactory.create(mEngine.getFontManager(), mEngine.
-                getTextureManager(), 256, 256, Typeface.create(Typeface.DEFAULT,
-                Typeface.NORMAL), 32f, true, Color.BLACK_ABGR_PACKED_INT);
-        font.load();
+        buttonFont = FontFactory.create( mEngine.getFontManager(), mEngine.getTextureManager()
+                , 256, 256, Typeface.create(Typeface.DEFAULT,Typeface.NORMAL)
+                , 32f, true, Color.BLACK_ABGR_PACKED_INT);
+        buttonFont.load();
         this.textureSize = textureSize;
         this.resourceManager = resourceManager;
 
         createBackground();
 
         createButtons();
+
+        createTitle();
+    }
+
+    private void createTitle() {
+        //titleFont = FontFactory.createFromAsset(activity.getFontManager(), activity.getTextureManager()
+         //       , 256, 256, activity.getAssets(), "font/zelda.ttf", 50f
+         //       , true, android.graphics.Color.BLACK);
+        //titleFont.load();
+        Text title = new Text(0, 0, buttonFont, "SHIPS", mEngine.getVertexBufferObjectManager());
+        title.setPosition(textureSize.x * 0.5f - title.getWidth() * 0.5f, textureSize.y * 0.075f);
+        this.attachChild(title);
     }
 
     private void createBackground() {
@@ -66,7 +79,7 @@ public class ShipMenuScene extends Scene {
                 ,resourceManager.getLoadedTextureRegion("button_menu")
                 , mEngine.getVertexBufferObjectManager()
                 , "Start"
-                , font
+                , buttonFont
                 , textureSize){
             @Override
             public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
@@ -88,7 +101,7 @@ public class ShipMenuScene extends Scene {
                 , resourceManager.getLoadedTextureRegion("button_menu")
                 , mEngine.getVertexBufferObjectManager()
                 , "HighScores"
-                , font
+                , buttonFont
                 , textureSize){
             @Override
             public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
@@ -110,7 +123,7 @@ public class ShipMenuScene extends Scene {
                 , resourceManager.getLoadedTextureRegion("button_menu")
                 , mEngine.getVertexBufferObjectManager()
                 , "Credit"
-                , font
+                , buttonFont
                 , textureSize){
             @Override
             public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
@@ -132,7 +145,7 @@ public class ShipMenuScene extends Scene {
                 , resourceManager.getLoadedTextureRegion("button_menu")
                 , mEngine.getVertexBufferObjectManager()
                 , "Exit"
-                , font
+                , buttonFont
                 , textureSize){
             @Override
             public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
@@ -141,7 +154,7 @@ public class ShipMenuScene extends Scene {
                     activity.runOnUiThread(new Runnable(){
                         @Override
                         public void run() {
-                           Toast.makeText(activity.getApplicationContext(), "Exit Button Pressed!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(activity.getApplicationContext(), "Exit Button Pressed!", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
