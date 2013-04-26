@@ -43,7 +43,7 @@ public class ShipMenuScene extends Scene {
         this.mEngine = activity.getEngine();
         buttonFont = FontFactory.create( mEngine.getFontManager(), mEngine.getTextureManager()
                 , 256, 256, Typeface.create(Typeface.DEFAULT,Typeface.NORMAL)
-                , 32f, true, Color.BLACK_ABGR_PACKED_INT);
+                , 36f, true, Color.BLACK_ABGR_PACKED_INT);
         buttonFont.load();
         this.textureSize = textureSize;
         this.resourceManager = resourceManager;
