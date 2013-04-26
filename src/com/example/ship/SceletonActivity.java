@@ -61,7 +61,7 @@ public class SceletonActivity extends BaseGameActivity {
         resourceManager = new ResourceManager();
         resourceManager.loadAllTextures(this, mEngine.getTextureManager());
 
-        FontFactory.setAssetBasePath("font/");
+        FontFactory.setAssetBasePath("fonts/");
 
         events = new Events(this);
 
