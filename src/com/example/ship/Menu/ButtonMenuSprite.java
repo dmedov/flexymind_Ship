@@ -20,22 +20,24 @@ public class ButtonMenuSprite extends Sprite{
     private Text text;
     private ButtonMenuSpriteTouchable buttonMenuSpriteTouchable;
 
-    public ButtonMenuSprite(ITextureRegion pTextureRegion
-            , VertexBufferObjectManager pVertexBufferObjectManager
-            , String nameButton, Font mFont) {
+    public ButtonMenuSprite( ITextureRegion pTextureRegion
+                           , VertexBufferObjectManager pVertexBufferObjectManager
+                           , String buttonName
+                           , Font font) {
 
         super(0, 0, pTextureRegion, pVertexBufferObjectManager);
 
-        text = new Text(0.0f,0.0f, mFont,nameButton, pVertexBufferObjectManager);
-        text.setPosition(this.getWidth() * 0.5f - text.getWidth() * 0.5f,this.getHeight() * 0.5f
-                        - text.getHeight() * 0.5f);
+        text = new Text(0,0, font, buttonName, pVertexBufferObjectManager);
+        text.setPosition( this.getWidth() * 0.5f - text.getWidth() * 0.5f
+                        , this.getHeight() * 0.5f - text.getHeight() * 0.5f);
+
         this.attachChild(text);
     }
 
     @Override
     public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
         if ( pSceneTouchEvent.isActionDown() ){
-            buttonMenuSpriteTouchable.onAreaButtonMenuTouched(text.getText().toString());
+            buttonMenuSpriteTouchable.onAreaButtonMenuTouched(this);
         }
         return true;
     }
@@ -44,8 +46,12 @@ public class ButtonMenuSprite extends Sprite{
         this.buttonMenuSpriteTouchable = events;
     }
 
+    public String getName() {
+        return text.getText().toString();
+    }
+
     public interface ButtonMenuSpriteTouchable {
-        public void onAreaButtonMenuTouched(String buttonName);
-        public void onAreaButtonMenuReleased();
+        public void onAreaButtonMenuTouched(ButtonMenuSprite button);
+        public void onAreaButtonMenuReleased(ButtonMenuSprite button);
     }
 }
