@@ -53,7 +53,7 @@ public class ResourceManager {
     private XmlPullParser parser = null;
     private TextureManager textureManager = null;
     private Context context;
-    private int currAtlas;
+    private int currentAtlasId;
 
     public ResourceManager() {
         loadedTextures = new ArrayList<Texture>();
@@ -71,7 +71,7 @@ public class ResourceManager {
 
     public void loadAllTextures(Context context, TextureManager textureManager) {
         this.textureManager = textureManager;
-        this.currAtlas = 0;
+        this.currentAtlasId = 0;
         this.context = context;
         int eventType = 0;
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
@@ -115,13 +115,13 @@ public class ResourceManager {
                 String error = "xml parsing error with"
                         + parser.getName()
                         + "in atlas number"
-                        + Integer.toString(currAtlas);
+                        + Integer.toString(currentAtlasId);
                 handleException(e, error);
             } catch (IOException e) {
                 String error = "io error in xml parsing with"
                         + parser.getName()
                         + "in atlas number"
-                        + Integer.toString(currAtlas);
+                        + Integer.toString(currentAtlasId);
                 handleException(e, error);
             }
         }
@@ -154,15 +154,15 @@ public class ResourceManager {
 
     private void parseAtlasEndTag() {
         try {
-            atlasList.get(currAtlas).build(
+            atlasList.get(currentAtlasId).build(
                     new BlackPawnTextureAtlasBuilder< IBitmapTextureAtlasSource
                                                     , BitmapTextureAtlas>(0, 1, 1));
 
         } catch (ITextureAtlasBuilder.TextureAtlasBuilderException e) {
-            handleException(e, "problem with build atlas number" + Integer.toString(currAtlas));
+            handleException(e, "problem with build atlas number" + Integer.toString(currentAtlasId));
         }
-        atlasList.get(currAtlas).load();
-        currAtlas++;
+        atlasList.get(currentAtlasId).load();
+        currentAtlasId++;
     }
 
     private void parseTextureStartTag() {
@@ -179,7 +179,7 @@ public class ResourceManager {
             }
 
             ITextureRegion textureRegion =
-                    BitmapTextureAtlasTextureRegionFactory.createFromAsset( atlasList.get(currAtlas)
+                    BitmapTextureAtlasTextureRegionFactory.createFromAsset( atlasList.get(currentAtlasId)
                                                                           , context
                                                                           , texturePath);
             loadedTextures.add(new Texture(textureName, textureRegion));
