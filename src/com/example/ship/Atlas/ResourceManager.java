@@ -82,18 +82,21 @@ public class ResourceManager {
                 if ((parser.getEventType() == XmlPullParser.START_TAG)
                         && (parser.getName().equals("Atlas"))
                         && (parser.getDepth() == 2)) {
+
                     parseAtlasStartTag();
                 } else
                 // try parse atlas end tag
                 if ((parser.getEventType() == XmlPullParser.END_TAG)
                         && (parser.getName().equals("Atlas"))
                         && (parser.getDepth() == 2)) {
+
                     parseAtlasEndTag();
                 } else
                 // try parse texture start tag
                 if ((parser.getEventType() == XmlPullParser.START_TAG)
                         && (parser.getName().equals("texture"))
                         && (parser.getDepth() == 3)) {
+
                     parseTextureStartTag();
                 }
                 parser.next();
