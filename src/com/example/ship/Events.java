@@ -2,6 +2,7 @@ package com.example.ship;
 
 import android.widget.Toast;
 import com.example.ship.Menu.ButtonMenuSprite;
+import org.andengine.entity.modifier.MoveModifier;
 import org.andengine.ui.activity.BaseGameActivity;
 
 /**
@@ -15,24 +16,31 @@ public class Events implements ButtonMenuSprite.ButtonMenuSpriteTouchable {
 
     private final BaseGameActivity activity;
 
-    public Events(BaseGameActivity activity){
+    public Events(BaseGameActivity activity) {
         this.activity = activity;
     }
 
     @Override
-    public void onAreaButtonMenuTouched(final String buttonName) {
+    public void onAreaButtonMenuTouched(final ButtonMenuSprite button) {
         activity.runOnUiThread(new Runnable(){
             @Override
             public void run() {
-                String message = new StringBuilder().append(buttonName)
-                        .append(" Button Pressed!").toString();
+                String message = new StringBuilder().append(button.getName())
+                                                    .append(" Button Released!").toString();
                 Toast.makeText(activity.getApplicationContext(), message, Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     @Override
-    public void onAreaButtonMenuReleased() {
-        //To change body of implemented methods use File | Settings | File Templates.
+    public void onAreaButtonMenuReleased(final ButtonMenuSprite button) {
+        activity.runOnUiThread(new Runnable(){
+            @Override
+            public void run() {
+                String message = new StringBuilder().append(button.getName())
+                                                    .append(" Button Released!").toString();
+                Toast.makeText(activity.getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
