@@ -2,7 +2,6 @@ package com.example.ship.Menu;
 
 import android.graphics.Point;
 import android.graphics.Typeface;
-import android.widget.Toast;
 import com.example.ship.Atlas.ResourceManager;
 import com.example.ship.Events;
 import com.example.ship.SceletonActivity;
@@ -12,10 +11,8 @@ import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
-import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
-import org.andengine.ui.activity.BaseGameActivity;
 import org.andengine.util.color.Color;
 
 import java.util.ArrayList;
@@ -28,6 +25,9 @@ import java.util.ArrayList;
  * To change this template use File | Settings | File Templates.
  */
 public class ShipMenuScene extends Scene {
+    private final static int FONT_ATLAS_SIDE = 256;
+    private final static int TITLE_FONT_HEIGHT = 50;
+    private final static int BUTTON_FONT_HEIGHT = 32;
     private final SceletonActivity activity;
     private final Engine mEngine;
     private final ResourceManager resourceManager;
@@ -51,9 +51,15 @@ public class ShipMenuScene extends Scene {
     }
 
     private void createTitle() {
-        Font titleFont = FontFactory.createFromAsset( activity.getFontManager(), activity.getTextureManager()
-                                                    , 256, 256, activity.getAssets(), "zelda.ttf", 50f
-                                                    , true, android.graphics.Color.BLACK);
+        Font titleFont = FontFactory.createFromAsset( activity.getFontManager()
+                                                    , activity.getTextureManager()
+                                                    , FONT_ATLAS_SIDE
+                                                    , FONT_ATLAS_SIDE
+                                                    , activity.getAssets()
+                                                    , "zelda.ttf"
+                                                    , TITLE_FONT_HEIGHT
+                                                    , true
+                                                    , android.graphics.Color.BLACK);
         titleFont.load();
         Text title = new Text(0, 0, titleFont, "SHIPS", mEngine.getVertexBufferObjectManager());
         title.setPosition(textureSize.x * 0.5f - title.getWidth() * 0.5f, textureSize.y * 0.075f);
@@ -71,9 +77,14 @@ public class ShipMenuScene extends Scene {
     private void createButtons() {
         buttons = new ArrayList<ButtonMenuSprite>();
 
-        buttonFont = FontFactory.create( mEngine.getFontManager(), mEngine.getTextureManager()
-                                            , 256, 256, Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)
-                                            , 32f, true, Color.BLACK_ABGR_PACKED_INT);
+        buttonFont = FontFactory.create( mEngine.getFontManager()
+                                       , mEngine.getTextureManager()
+                                       , FONT_ATLAS_SIDE
+                                       , FONT_ATLAS_SIDE
+                                       , Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)
+                                       , BUTTON_FONT_HEIGHT
+                                       , true
+                                       , Color.BLACK_ABGR_PACKED_INT);
         buttonFont.load();
 
         ButtonMenuSprite startButtonSprite = createButtonMenuSprite("Start");
@@ -97,7 +108,7 @@ public class ShipMenuScene extends Scene {
 
         hud = new HUD();
 
-        for (ButtonMenuSprite button: buttons){
+        for (ButtonMenuSprite button: buttons) {
             this.registerTouchArea(button);
             hud.attachChild(button);
         }
@@ -113,12 +124,12 @@ public class ShipMenuScene extends Scene {
     }
 
     public void setEventsToChildren(Events events) {
-        for (ButtonMenuSprite button: buttons){
+        for (ButtonMenuSprite button: buttons) {
             button.setEvents(events);
         }
     }
 
-    public HUD getHud(){
+    public HUD getHud() {
         return hud;
     }
 }
