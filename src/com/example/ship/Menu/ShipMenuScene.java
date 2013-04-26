@@ -4,6 +4,7 @@ import android.graphics.Point;
 import android.graphics.Typeface;
 import android.widget.Toast;
 import com.example.ship.Atlas.ResourceManager;
+import com.example.ship.R;
 import org.andengine.engine.Engine;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
@@ -59,7 +60,7 @@ public class ShipMenuScene extends Scene {
                 , 256, 256, activity.getAssets(), "fonts/zelda.ttf", 50f
                 , true, android.graphics.Color.BLACK);
         titleFont.load();
-        Text title = new Text(0, 0, titleFont, "SHIPS", mEngine.getVertexBufferObjectManager());
+        Text title = new Text(0, 0, titleFont, activity.getResources().getString(R.string.title), mEngine.getVertexBufferObjectManager());
         title.setPosition(textureSize.x * 0.5f - title.getWidth() * 0.5f, textureSize.y * 0.075f);
         this.attachChild(title);
     }
@@ -78,7 +79,7 @@ public class ShipMenuScene extends Scene {
         ButtonMenu startButtonSprite = new ButtonMenu( 1
                 ,resourceManager.getLoadedTextureRegion("button_menu")
                 , mEngine.getVertexBufferObjectManager()
-                , "Start"
+                , activity.getResources().getString(R.string.start)
                 , buttonFont
                 , textureSize){
             @Override
@@ -100,7 +101,7 @@ public class ShipMenuScene extends Scene {
         ButtonMenu highscoresButtonSprite = new ButtonMenu( 2
                 , resourceManager.getLoadedTextureRegion("button_menu")
                 , mEngine.getVertexBufferObjectManager()
-                , "HighScores"
+                , activity.getResources().getString(R.string.highscores)
                 , buttonFont
                 , textureSize){
             @Override
@@ -122,7 +123,7 @@ public class ShipMenuScene extends Scene {
         ButtonMenu creditsButtonSprite = new ButtonMenu( 3
                 , resourceManager.getLoadedTextureRegion("button_menu")
                 , mEngine.getVertexBufferObjectManager()
-                , "Credit"
+                , activity.getResources().getString(R.string.credits)
                 , buttonFont
                 , textureSize){
             @Override
@@ -144,7 +145,7 @@ public class ShipMenuScene extends Scene {
         ButtonMenu exitButtonSprite = new ButtonMenu( 4
                 , resourceManager.getLoadedTextureRegion("button_menu")
                 , mEngine.getVertexBufferObjectManager()
-                , "Exit"
+                , activity.getResources().getString(R.string.exit)
                 , buttonFont
                 , textureSize){
             @Override

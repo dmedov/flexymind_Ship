@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ship</string>
+    <string name="title">Корабли</string>
+    <string name="start">Старт</string>
+    <string name="highscores">Рекорды</string>
+    <string name="credits">Создатели</string>
+    <string name="exit">Выход</string>
+</resources>

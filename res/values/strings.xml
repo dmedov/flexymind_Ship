@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">ship</string>
-    <string name="hello">Start!</string>
+    <string name="title">SHIPS</string>
+    <string name="start">Start</string>
+    <string name="highscores">High Scores</string>
+    <string name="credits">Credits</string>
+    <string name="exit">Exit</string>
 </resources>
