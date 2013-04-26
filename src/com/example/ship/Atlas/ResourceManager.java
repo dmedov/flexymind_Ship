@@ -113,7 +113,7 @@ public class ResourceManager {
         }
     }
 
-    public void parseAtlasStartTag() {
+    private void parseAtlasStartTag() {
         int atlasHeight = 1;
         int atlasWidth = 1;
         TextureOptions textureOptions = TextureOptions.DEFAULT;
