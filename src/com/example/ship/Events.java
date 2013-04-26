@@ -2,7 +2,7 @@ package com.example.ship;
 
 import android.widget.Toast;
 import com.example.ship.Menu.ButtonMenuSprite;
-import org.andengine.entity.modifier.MoveModifier;
+import com.example.ship.Menu.TouchableMenuButtonSprite;
 import org.andengine.ui.activity.BaseGameActivity;
 
 /**
@@ -12,7 +12,7 @@ import org.andengine.ui.activity.BaseGameActivity;
  * Time: 15:47
  * To change this template use File | Settings | File Templates.
  */
-public class Events implements ButtonMenuSprite.ButtonMenuSpriteTouchable {
+public class Events implements TouchableMenuButtonSprite {
 
     private final BaseGameActivity activity;
 
