@@ -74,7 +74,7 @@ public class ShipMenuScene extends Scene {
                                             , 32f, true, Color.BLACK_ABGR_PACKED_INT);
         buttonFont.load();
 
-        ButtonMenu startButtonSprite = new ButtonMenu( resourceManager.getLoadedTextureRegion("button_menu")
+        ButtonMenuSprite startButtonSprite = new ButtonMenuSprite( resourceManager.getLoadedTextureRegion("button_menu")
                                                      , mEngine.getVertexBufferObjectManager()
                                                      , "Start"
                                                      , buttonFont){
@@ -94,7 +94,7 @@ public class ShipMenuScene extends Scene {
             }
         };
 
-        ButtonMenu highscoresButtonSprite = new ButtonMenu( resourceManager.getLoadedTextureRegion("button_menu")
+        ButtonMenuSprite highscoresButtonSprite = new ButtonMenuSprite( resourceManager.getLoadedTextureRegion("button_menu")
                                                           , mEngine.getVertexBufferObjectManager()
                                                           , "HighScores"
                                                           , buttonFont){
@@ -114,7 +114,7 @@ public class ShipMenuScene extends Scene {
             }
         };
 
-        ButtonMenu creditsButtonSprite = new ButtonMenu( resourceManager.getLoadedTextureRegion("button_menu")
+        ButtonMenuSprite creditsButtonSprite = new ButtonMenuSprite( resourceManager.getLoadedTextureRegion("button_menu")
                                                        , mEngine.getVertexBufferObjectManager()
                                                        , "Credits"
                                                        , buttonFont){
@@ -134,7 +134,7 @@ public class ShipMenuScene extends Scene {
             }
         };
 
-        ButtonMenu exitButtonSprite = new ButtonMenu( resourceManager.getLoadedTextureRegion("button_menu")
+        ButtonMenuSprite exitButtonSprite = new ButtonMenuSprite( resourceManager.getLoadedTextureRegion("button_menu")
                                                     , mEngine.getVertexBufferObjectManager()
                                                     , "Exit"
                                                     , buttonFont){

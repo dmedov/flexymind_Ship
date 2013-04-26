@@ -13,13 +13,13 @@ import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.ui.activity.BaseGameActivity;
 import org.andengine.util.color.Color;
 
-public class ButtonMenu extends Sprite{
+public class ButtonMenuSprite extends Sprite{
 
     Text text;
 
-    public ButtonMenu( ITextureRegion pTextureRegion
-                     , VertexBufferObjectManager pVertexBufferObjectManager
-                     , String nameButton, Font mFont) {
+    public ButtonMenuSprite(ITextureRegion pTextureRegion
+            , VertexBufferObjectManager pVertexBufferObjectManager
+            , String nameButton, Font mFont) {
 
         super(0, 0, pTextureRegion, pVertexBufferObjectManager);
 
