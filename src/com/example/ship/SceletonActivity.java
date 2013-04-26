@@ -2,31 +2,23 @@ package com.example.ship;
 
 import android.graphics.PointF;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import org.andengine.engine.camera.ZoomCamera;
+import com.example.ship.Atlas.ResourceManager;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.sprite.Sprite;
-import org.andengine.opengl.texture.TextureOptions;
-import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
-import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
-import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
-import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
-import org.andengine.opengl.texture.atlas.buildable.builder.BlackPawnTextureAtlasBuilder;
-import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder;
-import org.andengine.opengl.texture.region.TextureRegion;
+import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.ui.activity.BaseGameActivity;
 import org.andengine.util.color.Color;
 
 public class SceletonActivity extends BaseGameActivity {
     private static final int TEXTURE_WIDTH = 960;
     private static final int TEXTURE_HEIGHT = 600;
-    private TextureRegion shipTextureRegion;
-    private TextureRegion backTextureRegion;
     private Scene scene;
+    private ResourceManager resMan;
 
     private ZoomCamera createZoomCamera(){
         DisplayMetrics metrics = new DisplayMetrics();
@@ -55,37 +47,15 @@ public class SceletonActivity extends BaseGameActivity {
 
     @Override
     public void onCreateResources(OnCreateResourcesCallback pOnCreateResourcesCallback) {
-        final int atlasWidth  = 1024;
-        final int atlasHeight = 1024;
-        // full path assets/gfx
-        BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
-        // create atlas
-        BuildableBitmapTextureAtlas atlas =
-                new BuildableBitmapTextureAtlas(mEngine.getTextureManager()
-                                                , atlasWidth
-                                                , atlasHeight
-                                                , TextureOptions.BILINEAR);
-
-        shipTextureRegion = BitmapTextureAtlasTextureRegionFactory.
-                createFromAsset(atlas, this, "ship.png");  // ship.png in assets/gfx folder
-
-        backTextureRegion = BitmapTextureAtlasTextureRegionFactory.
-                createFromAsset(atlas, this, "back.png");
-        // Build the bitmap texture atlas
-        try {
-            atlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource
-                    , BitmapTextureAtlas>(0, 1, 1));
-        } catch (ITextureAtlasBuilder.TextureAtlasBuilderException e) {
-            e.printStackTrace();
-        }
-        // Load the bitmap texture atlas into the device's gpu memory
-        atlas.load();
+        resMan = new ResourceManager();
+        resMan.loadAllTextures(this,mEngine.getTextureManager());
         pOnCreateResourcesCallback.onCreateResourcesFinished();
     }
 
     @Override
     public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback) {
         scene = new Scene();
+        ITextureRegion shipTextureRegion = resMan.getLoadedTextureRegion("ship");
         final PointF ship = new PointF(TEXTURE_WIDTH * 0.5f - shipTextureRegion.getWidth() * 0.5f
                                     , TEXTURE_HEIGHT * 0.5f - shipTextureRegion.getHeight() * 0.5f);
         // create ship sprite
@@ -94,9 +64,11 @@ public class SceletonActivity extends BaseGameActivity {
                                         , shipTextureRegion
                                         , mEngine.getVertexBufferObjectManager());
 
+        ITextureRegion backTextureRegion = resMan.getLoadedTextureRegion("ship");
         final PointF back = new PointF(TEXTURE_WIDTH * 0.5f - backTextureRegion.getWidth() * 0.5f
                                         , TEXTURE_HEIGHT * 0.5f - backTextureRegion.getHeight() * 0.5f);
 
+        
         Sprite backSprite = new Sprite(back.x
                                         , back.y
                                         , backTextureRegion
@@ -113,6 +85,7 @@ public class SceletonActivity extends BaseGameActivity {
     @Override
     public void onPopulateScene(Scene pScene,
                                 OnPopulateSceneCallback pOnPopulateSceneCallback) {
+
         pOnPopulateSceneCallback.onPopulateSceneFinished();
     }
 

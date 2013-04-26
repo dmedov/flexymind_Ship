@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+            <Atlas type="BILINEAR" width="1024" height="1024">
+                <texture path="ship.png" name="ship" />
+            </Atlas>
+</resources>
