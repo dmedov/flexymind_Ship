@@ -55,11 +55,11 @@ public class ShipMenuScene extends Scene {
     }
 
     private void createTitle() {
-        //titleFont = FontFactory.createFromAsset(activity.getFontManager(), activity.getTextureManager()
-         //       , 256, 256, activity.getAssets(), "font/zelda.ttf", 50f
-         //       , true, android.graphics.Color.BLACK);
-        //titleFont.load();
-        Text title = new Text(0, 0, buttonFont, "SHIPS", mEngine.getVertexBufferObjectManager());
+        titleFont = FontFactory.createFromAsset(activity.getFontManager(), activity.getTextureManager()
+                , 256, 256, activity.getAssets(), "zelda.ttf", 50f
+                , true, android.graphics.Color.BLACK);
+        titleFont.load();
+        Text title = new Text(0, 0, titleFont, "SHIPS", mEngine.getVertexBufferObjectManager());
         title.setPosition(textureSize.x * 0.5f - title.getWidth() * 0.5f, textureSize.y * 0.075f);
         this.attachChild(title);
     }
