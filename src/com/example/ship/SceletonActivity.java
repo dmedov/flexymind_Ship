@@ -1,11 +1,13 @@
 package com.example.ship;
 
+import android.graphics.Point;
 import android.graphics.Typeface;
 import com.example.ship.Atlas.ResourceManager;
 import com.example.ship.Menu.ShipMenuScene;
 import android.graphics.PointF;
 import android.util.DisplayMetrics;
 import com.example.ship.sceletone.SceletoneScene;
+import org.andengine.engine.camera.Camera;
 import org.andengine.engine.camera.ZoomCamera;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
@@ -23,9 +25,11 @@ import org.andengine.util.color.Color;
 public class SceletonActivity extends BaseGameActivity {
     private static final int TEXTURE_WIDTH = 1739;
     private static final int TEXTURE_HEIGHT = 900;
-    private Scene sceletoneScene;
-    private Scene menuScene;
+    private SceletoneScene sceletoneScene;
+    private ShipMenuScene menuScene;
     private ResourceManager resourceManager;
+    private Events events;
+    private ZoomCamera zoomCamera;
 
     private ZoomCamera createZoomCamera(){
         DisplayMetrics metrics = new DisplayMetrics();
@@ -46,9 +50,9 @@ public class SceletonActivity extends BaseGameActivity {
 
     @Override
     public EngineOptions onCreateEngineOptions() {
-        ZoomCamera camera = createZoomCamera();
+        zoomCamera = createZoomCamera();
         EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED,
-                new FillResolutionPolicy(), camera);
+                new FillResolutionPolicy(), zoomCamera);
         return engineOptions;
     }
 
@@ -57,13 +61,19 @@ public class SceletonActivity extends BaseGameActivity {
         resourceManager = new ResourceManager();
         resourceManager.loadAllTextures(this, mEngine.getTextureManager());
 
+        FontFactory.setAssetBasePath("font/");
+
+        events = new Events(this);
+
         pOnCreateResourcesCallback.onCreateResourcesFinished();
     }
 
     @Override
     public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback) {
-        menuScene = new ShipMenuScene(this, TEXTURE_WIDTH, TEXTURE_HEIGHT, resourceManager);
-        sceletoneScene = new SceletoneScene(this, TEXTURE_WIDTH, TEXTURE_HEIGHT, resourceManager, menuScene);
+        menuScene = new ShipMenuScene(this);
+        menuScene.setEventsToChildren(events);
+        sceletoneScene = new SceletoneScene(this, menuScene);
+        sceletoneScene.setEvents(events);
 
         pOnCreateSceneCallback.onCreateSceneFinished(sceletoneScene);
     }
@@ -73,5 +83,17 @@ public class SceletonActivity extends BaseGameActivity {
                                 OnPopulateSceneCallback pOnPopulateSceneCallback) {
 
         pOnPopulateSceneCallback.onPopulateSceneFinished();
+    }
+
+    public ResourceManager getResourceManager() {
+        return resourceManager;
+    }
+
+    public Point getTextureSize() {
+        return new Point(TEXTURE_WIDTH, TEXTURE_HEIGHT);
+    }
+
+    public Camera getCamera(){
+        return zoomCamera;
     }
 }
