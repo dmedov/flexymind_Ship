@@ -120,12 +120,15 @@ public class ResourceManager {
 
         // parse atlas attributes
         for (int i = 0; i < parser.getAttributeCount(); i++) {
-            if (parser.getAttributeName(i).equals("width"))
-                atlasWidth = Integer.parseInt(parser.getAttributeValue(i));
-            if (parser.getAttributeName(i).equals("height"))
-                atlasHeight = Integer.parseInt(parser.getAttributeValue(i));
-            if (parser.getAttributeName(i).equals("type"))
-                textureOptions = stringToTextureOptions(parser.getAttributeValue(i));
+            String attribute = parser.getAttributeName(i);
+            String value = parser.getAttributeValue(i);
+            if (attribute.equals("width")) {
+                atlasWidth = Integer.parseInt(value);
+            } else if (attribute.equals("height")) {
+                atlasHeight = Integer.parseInt(value);
+            } else if (attribute.equals("type")) {
+                textureOptions = stringToTextureOptions(value);
+            }
         }
 
         atlasList.add(new BuildableBitmapTextureAtlas( textureManager
@@ -138,7 +141,8 @@ public class ResourceManager {
     private void parseAtlasEndTag() {
         try {
             atlasList.get(currAtlas).build(
-                    new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 1, 1));
+                    new BlackPawnTextureAtlasBuilder< IBitmapTextureAtlasSource
+                                                    , BitmapTextureAtlas>(0, 1, 1));
 
         } catch (ITextureAtlasBuilder.TextureAtlasBuilderException e) {
             handleException(e, "problem with build atlas number" + Integer.toString(currAtlas));
@@ -152,8 +156,12 @@ public class ResourceManager {
             String textureName = "";
 
             for (int i = 0; i < parser.getAttributeCount(); i++) {
-                if (parser.getAttributeName(i).equals("name")) textureName = parser.getAttributeValue(i);
-                if (parser.getAttributeName(i).equals("path")) texturePath = parser.getAttributeValue(i);
+                if (parser.getAttributeName(i).equals("name")) {
+                    textureName = parser.getAttributeValue(i);
+                }
+                if (parser.getAttributeName(i).equals("path")) {
+                    texturePath = parser.getAttributeValue(i);
+                }
             }
 
             ITextureRegion textureRegion =
@@ -164,22 +172,30 @@ public class ResourceManager {
     }
 
     private TextureOptions stringToTextureOptions(String option) {
-        if (option.equals("NEAREST"))
+        if (option.equals("NEAREST")) {
             return TextureOptions.NEAREST;
-        if (option.equals("BILINEAR"))
+        }
+        if (option.equals("BILINEAR")) {
             return TextureOptions.BILINEAR;
-        if (option.equals("REPEATING_NEAREST"))
+        }
+        if (option.equals("REPEATING_NEAREST")) {
             return TextureOptions.REPEATING_NEAREST;
-        if (option.equals("REPEATING_BILINEAR"))
+        }
+        if (option.equals("REPEATING_BILINEAR")) {
             return TextureOptions.REPEATING_BILINEAR;
-        if (option.equals("NEAREST_PREMULTIPLYALPHA"))
+        }
+        if (option.equals("NEAREST_PREMULTIPLYALPHA")) {
             return TextureOptions.NEAREST_PREMULTIPLYALPHA;
-        if (option.equals("BILINEAR_PREMULTIPLYALPHA"))
+        }
+        if (option.equals("BILINEAR_PREMULTIPLYALPHA")) {
             return TextureOptions.BILINEAR_PREMULTIPLYALPHA;
-        if (option.equals("REPEATING_NEAREST_PREMULTIPLYALPHA"))
+        }
+        if (option.equals("REPEATING_NEAREST_PREMULTIPLYALPHA")) {
             return TextureOptions.REPEATING_NEAREST_PREMULTIPLYALPHA;
-        if (option.equals("REPEATING_BILINEAR_PREMULTIPLYALPHA"))
+        }
+        if (option.equals("REPEATING_BILINEAR_PREMULTIPLYALPHA")) {
             return TextureOptions.REPEATING_BILINEAR_PREMULTIPLYALPHA;
+        }
         return TextureOptions.DEFAULT;
     }
 
