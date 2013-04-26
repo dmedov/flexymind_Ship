@@ -43,7 +43,7 @@ public class ShipMenuScene extends Scene {
         this.mEngine = activity.getEngine();
         buttonFont = FontFactory.create( mEngine.getFontManager(), mEngine.getTextureManager()
                 , 256, 256, Typeface.create(Typeface.DEFAULT,Typeface.NORMAL)
-                , 36f, true, Color.BLACK_ABGR_PACKED_INT);
+                , 50f, true, Color.WHITE_ABGR_PACKED_INT);
         buttonFont.load();
         this.textureSize = textureSize;
         this.resourceManager = resourceManager;
@@ -57,7 +57,7 @@ public class ShipMenuScene extends Scene {
 
     private void createTitle() {
         titleFont = FontFactory.createFromAsset(activity.getFontManager(), activity.getTextureManager()
-                , 256, 256, activity.getAssets(), "fonts/zelda.ttf", 50f
+                , 256, 256, activity.getAssets(), "fonts/Plok.ttf", 70f
                 , true, android.graphics.Color.BLACK);
         titleFont.load();
         Text title = new Text(0, 0, titleFont, activity.getResources().getString(R.string.title), mEngine.getVertexBufferObjectManager());
