@@ -3,6 +3,8 @@ package com.example.ship.Menu;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import com.example.ship.Atlas.ResourceManager;
+import com.example.ship.Events;
+import com.example.ship.SceletonActivity;
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.entity.scene.Scene;
@@ -66,7 +68,7 @@ public class ShipMenuScene extends Scene {
 
     private void createBackground() {
         Sprite backgroundImage = new Sprite( 0, 0, resourceManager.getLoadedTextureRegion("bg_ship")
-                                           , mEngine.getVertexBufferObjectManager());
+                , mEngine.getVertexBufferObjectManager());
         this.attachChild(backgroundImage);
         Color backgroundColor = new Color(0.09804f, 0.6274f, 0.8784f);
         this.setBackground(new Background(backgroundColor));
