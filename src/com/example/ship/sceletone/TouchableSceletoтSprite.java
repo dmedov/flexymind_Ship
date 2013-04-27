@@ -9,7 +9,7 @@ import org.andengine.entity.scene.Scene;
  * Time: 23:52
  * To change this template use File | Settings | File Templates.
  */
-public interface TouchableSceletobeSprite {
+public interface TouchableSceletoтSprite {
     public void onSceletoneSpriteTouched();
     public void onSceletoneSpiteReleased(Scene child);
 }

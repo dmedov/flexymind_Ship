@@ -4,7 +4,7 @@ import android.widget.Toast;
 import com.example.ship.Menu.MenuButtonSprite;
 import com.example.ship.Menu.ShipMenuScene;
 import com.example.ship.Menu.TouchableMenuButtonSprite;
-import com.example.ship.sceletone.TouchableSceletobeSprite;
+import com.example.ship.sceletone.TouchableSceletoтSprite;
 import org.andengine.entity.scene.Scene;
 
 /**
@@ -15,7 +15,7 @@ import org.andengine.entity.scene.Scene;
  * To change this template use File | Settings | File Templates.
  */
 public class Events implements TouchableMenuButtonSprite
-                             , TouchableSceletobeSprite {
+                             , TouchableSceletoтSprite {
 
     private final SceletonActivity activity;
 
