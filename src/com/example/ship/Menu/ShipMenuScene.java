@@ -14,6 +14,7 @@ import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
+import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.util.color.Color;
 
 import java.util.ArrayList;
@@ -83,10 +84,11 @@ public class ShipMenuScene extends Scene {
     }
 
     private void createBackground() {
+        ITextureRegion backgroundTexture = resourceManager.getLoadedTextureRegion(
+                getStringResource(R.string.MENU_BACKGROUND_TEXTURE));
         Sprite backgroundImage = new Sprite( 0
                                            , 0
-                                           , resourceManager.getLoadedTextureRegion(
-                                                    getStringResource(R.string.MENU_BACKGROUND_TEXTURE))
+                                           , backgroundTexture
                                            , mEngine.getVertexBufferObjectManager());
         this.attachChild(backgroundImage);
         Color backgroundColor = new Color(0.09804f, 0.6274f, 0.8784f);
@@ -115,14 +117,6 @@ public class ShipMenuScene extends Scene {
         MenuButtonSprite exitButtonSprite = createMenuButtonSprite(
                 getStringResource(R.string.EXIT_BUTTON_LABEL));
 
-        startButtonSprite.setPosition( textureSize.x * 0.25f - startButtonSprite.getWidth() * 0.5f
-                                     , textureSize.y * 0.4f);
-        highscoresButtonSprite.setPosition( textureSize.x * 0.75f - startButtonSprite.getWidth() * 0.5f
-                                          , textureSize.y * 0.4f);
-        creditsButtonSprite.setPosition( textureSize.x * 0.25f - startButtonSprite.getWidth() * 0.5f
-                                       , textureSize.y * 0.7f);
-        exitButtonSprite.setPosition( textureSize.x * 0.75f - startButtonSprite.getWidth() * 0.5f
-                                    , textureSize.y * 0.7f);
 
         buttons.add(startButtonSprite);
         buttons.add(highscoresButtonSprite);
@@ -130,8 +124,12 @@ public class ShipMenuScene extends Scene {
         buttons.add(exitButtonSprite);
 
         hud = new HUD();
+        float positionOffset = textureSize.y * 0.25f;
 
         for (MenuButtonSprite button: buttons) {
+            button.setPosition( textureSize.x * 0.5f - startButtonSprite.getWidth() * 0.5f
+                    , positionOffset);
+            positionOffset += startButtonSprite.getHeight() + textureSize.y * 0.02f;
             this.registerTouchArea(button);
             hud.attachChild(button);
         }

@@ -27,7 +27,7 @@ public class SceletonScene extends Scene {
     private final ResourceManager resourceManager;
     private final Scene childScene;
     private       Point textureSize;
-    private TouchableSceletoтSprite touchableSceletoтSprite;
+    private       TouchableSceletonSprite touchableSceletonSprite;
 
     public SceletonScene(final SceletonActivity activity, final Scene childScene) {
         super();
@@ -65,7 +65,7 @@ public class SceletonScene extends Scene {
                                         , float pTouchAreaLocalY) {
 
                 if (pSceneTouchEvent.isActionUp()) {
-                    touchableSceletoтSprite.onSceletoneSpiteReleased(childScene);
+                    touchableSceletonSprite.onSceletoneSpriteReleased(childScene);
                 }
                 return super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
             }
@@ -76,6 +76,6 @@ public class SceletonScene extends Scene {
     }
 
     public void setEvents(Events events) {
-        this.touchableSceletoтSprite = events;
+        this.touchableSceletonSprite = events;
     }
 }
