@@ -28,8 +28,7 @@ public class Events implements TouchableMenuButtonSprite
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                String message = new StringBuilder().append(button.getName())
-                                                    .append(" Button Pressed!").toString();
+                String message = String.format("%s Button Pressed!", button.getName());
                 Toast.makeText(activity.getApplicationContext(), message, Toast.LENGTH_SHORT).show();
             }
         });
@@ -40,8 +39,7 @@ public class Events implements TouchableMenuButtonSprite
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                String message = new StringBuilder().append(button.getName())
-                                                    .append(" Button Released!").toString();
+                String message = String.format("%s Button Released!", button.getName());
                 Toast.makeText(activity.getApplicationContext(), message, Toast.LENGTH_SHORT).show();
             }
         });
