@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ship</string>
+    <string name="APP_TITLE">SHIPS</string>
+    <string name="START_BUTTON_LABEL">Start</string>
+    <string name="HS_BUTTON_LABEL">High Scores</string>
+    <string name="CREDITS_BUTTON_LABEL">Credits</string>
+    <string name="EXIT_BUTTON_LABEL">Exit</string>
+    <string name="SCELETONE_LOGO_TEXTURE">ship</string>
+    <string name="FONT_BASE_ASSET_PATH">fonts/</string>
+    <string name="FONT_PLOK_FILE">Plok.ttf</string>
+    <string name="MENU_BACKGROUND_TEXTURE">menuBackground</string>
+    <string name="MENU_BUTTON_TEXTURE">menuButton</string>
+</resources>
