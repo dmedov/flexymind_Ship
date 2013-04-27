@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ship</string>
+    <string name="APP_TITLE">SHIPS</string>
+    <string name="START_BUTTON_LABEL">Старт</string>
+    <string name="HS_BUTTON_LABEL">Рекорды</string>
+    <string name="CREDITS_BUTTON_LABEL">Титры</string>
+    <string name="EXIT_BUTTON_LABEL">Выход</string>
+</resources>

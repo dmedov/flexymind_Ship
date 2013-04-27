@@ -1,26 +1,30 @@
 package com.example.ship;
 
+import android.graphics.Point;
+import com.example.ship.Atlas.ResourceManager;
+import com.example.ship.Menu.ShipMenuScene;
 import android.graphics.PointF;
 import android.util.DisplayMetrics;
+import com.example.ship.sceletone.SceletonScene;
+import org.andengine.engine.camera.Camera;
 import org.andengine.engine.camera.ZoomCamera;
-import com.example.ship.Atlas.ResourceManager;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
 import org.andengine.entity.scene.Scene;
-import org.andengine.entity.scene.background.Background;
-import org.andengine.entity.sprite.Sprite;
-import org.andengine.opengl.texture.region.ITextureRegion;
+import org.andengine.opengl.font.FontFactory;
 import org.andengine.ui.activity.BaseGameActivity;
-import org.andengine.util.color.Color;
 
 public class SceletonActivity extends BaseGameActivity {
-    private static final int TEXTURE_WIDTH = 960;
-    private static final int TEXTURE_HEIGHT = 600;
-    private Scene scene;
-    private ResourceManager resMan;
+    private static final int TEXTURE_WIDTH = 1739;
+    private static final int TEXTURE_HEIGHT = 900;
+    private SceletonScene sceletonScene;
+    private ShipMenuScene menuScene;
+    private ResourceManager resourceManager;
+    private Events events;
+    private ZoomCamera zoomCamera;
 
-    private ZoomCamera createZoomCamera(){
+    private ZoomCamera createZoomCamera() {
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         ZoomCamera camera;
@@ -39,55 +43,53 @@ public class SceletonActivity extends BaseGameActivity {
 
     @Override
     public EngineOptions onCreateEngineOptions() {
-        ZoomCamera camera = createZoomCamera();
-        EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED,
-                new FillResolutionPolicy(), camera);
+        zoomCamera = createZoomCamera();
+        EngineOptions engineOptions = new EngineOptions( true
+                                                       , ScreenOrientation.LANDSCAPE_FIXED
+                                                       , new FillResolutionPolicy()
+                                                       , zoomCamera);
+
         return engineOptions;
     }
 
     @Override
     public void onCreateResources(OnCreateResourcesCallback pOnCreateResourcesCallback) {
-        resMan = new ResourceManager();
-        resMan.loadAllTextures(this,mEngine.getTextureManager());
+        resourceManager = new ResourceManager();
+        resourceManager.loadAllTextures(this, mEngine.getTextureManager());
+
+        FontFactory.setAssetBasePath(getResources().getString(R.string.FONT_BASE_ASSET_PATH));
+
+        events = new Events(this);
+
         pOnCreateResourcesCallback.onCreateResourcesFinished();
     }
 
     @Override
     public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback) {
-        scene = new Scene();
-        ITextureRegion shipTextureRegion = resMan.getLoadedTextureRegion("ship");
-        final PointF ship = new PointF(TEXTURE_WIDTH * 0.5f - shipTextureRegion.getWidth() * 0.5f
-                                    , TEXTURE_HEIGHT * 0.5f - shipTextureRegion.getHeight() * 0.5f);
-        // create ship sprite
-        Sprite shipSprite = new Sprite(ship.x
-                                        , ship.y
-                                        , shipTextureRegion
-                                        , mEngine.getVertexBufferObjectManager());
+        menuScene = new ShipMenuScene(this);
+        menuScene.setEventsToChildren(events);
+        sceletonScene = new SceletonScene(this, menuScene);
+        sceletonScene.setEvents(events);
 
-        ITextureRegion backTextureRegion = resMan.getLoadedTextureRegion("back");
-        final PointF back = new PointF(TEXTURE_WIDTH * 0.5f - backTextureRegion.getWidth() * 0.5f
-                                        , TEXTURE_HEIGHT * 0.5f - backTextureRegion.getHeight() * 0.5f);
-
-        
-        Sprite backSprite = new Sprite(back.x
-                                        , back.y
-                                        , backTextureRegion
-                                        , mEngine.getVertexBufferObjectManager());
-
-        scene.attachChild(backSprite);
-        scene.attachChild(shipSprite);
-
-        Color backgroundColor = new Color(0.09804f, 0.6274f, 0.8784f);
-        scene.setBackground(new Background(backgroundColor));
-        pOnCreateSceneCallback.onCreateSceneFinished(scene);
+        pOnCreateSceneCallback.onCreateSceneFinished(sceletonScene);
     }
 
     @Override
-    public void onPopulateScene(Scene pScene,
-                                OnPopulateSceneCallback pOnPopulateSceneCallback) {
+    public void onPopulateScene( Scene pScene
+                               , OnPopulateSceneCallback pOnPopulateSceneCallback) {
 
         pOnPopulateSceneCallback.onPopulateSceneFinished();
     }
 
+    public ResourceManager getResourceManager() {
+        return resourceManager;
+    }
 
+    public Point getTextureSize() {
+        return new Point(TEXTURE_WIDTH, TEXTURE_HEIGHT);
+    }
+
+    public Camera getCamera() {
+        return zoomCamera;
+    }
 }
