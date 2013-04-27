@@ -8,13 +8,13 @@ Date: 22.04.13
  */
 
 public class Texture {
+
     public String name;
     public ITextureRegion textureRegion;
 
-    //=== Constructor ===//
-    public Texture ( String pname, ITextureRegion pITextureRegion) {
-        name = pname;
-        textureRegion = pITextureRegion;
+    public Texture (String name, ITextureRegion textureRegion) {
+        this.name = name;
+        this.textureRegion = textureRegion;
     }
 
 }
