@@ -8,19 +8,19 @@ import org.andengine.opengl.font.Font;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
-public class ButtonMenuSprite extends Sprite {
+public class MenuButtonSprite extends Sprite {
 
     private Text text;
     private TouchableMenuButtonSprite touchableMenuButtonSprite;
 
-    public ButtonMenuSprite( ITextureRegion pTextureRegion
+    public MenuButtonSprite( ITextureRegion pTextureRegion
                            , VertexBufferObjectManager pVertexBufferObjectManager
                            , String buttonName
                            , Font font) {
 
         super(0, 0, pTextureRegion, pVertexBufferObjectManager);
 
-        text = new Text(0,0, font, buttonName, pVertexBufferObjectManager);
+        text = new Text(0, 0, font, buttonName, pVertexBufferObjectManager);
         text.setPosition( this.getWidth() * 0.5f - text.getWidth() * 0.5f
                         , this.getHeight() * 0.5f - text.getHeight() * 0.5f);
 
@@ -28,7 +28,9 @@ public class ButtonMenuSprite extends Sprite {
     }
 
     @Override
-    public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+    public boolean onAreaTouched( TouchEvent pSceneTouchEvent
+                                , float pTouchAreaLocalX
+                                , float pTouchAreaLocalY) {
         if (pSceneTouchEvent.isActionDown()) {
             touchableMenuButtonSprite.onAreaButtonMenuTouched(this);
         }

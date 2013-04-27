@@ -1,6 +1,5 @@
 package com.example.ship.sceletone;
 
-import com.example.ship.Menu.ButtonMenuSprite;
 import org.andengine.entity.scene.Scene;
 
 /**

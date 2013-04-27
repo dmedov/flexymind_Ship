@@ -1,7 +1,7 @@
 package com.example.ship;
 
 import android.widget.Toast;
-import com.example.ship.Menu.ButtonMenuSprite;
+import com.example.ship.Menu.MenuButtonSprite;
 import com.example.ship.Menu.ShipMenuScene;
 import com.example.ship.Menu.TouchableMenuButtonSprite;
 import com.example.ship.sceletone.TouchableSceletobeSprite;
@@ -24,8 +24,8 @@ public class Events implements TouchableMenuButtonSprite
     }
 
     @Override
-    public void onAreaButtonMenuTouched(final ButtonMenuSprite button) {
-        activity.runOnUiThread(new Runnable(){
+    public void onAreaButtonMenuTouched(final MenuButtonSprite button) {
+        activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 String message = new StringBuilder().append(button.getName())
@@ -36,7 +36,7 @@ public class Events implements TouchableMenuButtonSprite
     }
 
     @Override
-    public void onAreaButtonMenuReleased(final ButtonMenuSprite button) {
+    public void onAreaButtonMenuReleased(final MenuButtonSprite button) {
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {

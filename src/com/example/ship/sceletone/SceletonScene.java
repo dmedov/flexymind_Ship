@@ -2,19 +2,16 @@ package com.example.ship.sceletone;
 
 import android.graphics.Point;
 import android.graphics.PointF;
-import android.graphics.Typeface;
 import com.example.ship.Atlas.ResourceManager;
 import com.example.ship.Events;
+import com.example.ship.R;
 import com.example.ship.SceletonActivity;
 import org.andengine.engine.Engine;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.input.touch.TouchEvent;
-import org.andengine.opengl.font.Font;
-import org.andengine.opengl.font.FontFactory;
 import org.andengine.opengl.texture.region.ITextureRegion;
-import org.andengine.ui.activity.BaseGameActivity;
 import org.andengine.util.color.Color;
 
 /**
@@ -24,7 +21,7 @@ import org.andengine.util.color.Color;
  * Time: 21:27
  * To change this template use File | Settings | File Templates.
  */
-public class SceletoneScene extends Scene {
+public class SceletonScene extends Scene {
     private final SceletonActivity activity;
     private final Engine engine;
     private final ResourceManager resourceManager;
@@ -32,7 +29,7 @@ public class SceletoneScene extends Scene {
     private       Point textureSize;
     private       TouchableSceletobeSprite touchableSceletobeSprite;
 
-    public SceletoneScene(final SceletonActivity activity, final Scene childScene) {
+    public SceletonScene(final SceletonActivity activity, final Scene childScene) {
         super();
 
         this.activity = activity;
@@ -52,7 +49,8 @@ public class SceletoneScene extends Scene {
     }
 
     private void createShipLogo() {
-        ITextureRegion shipTextureRegion = resourceManager.getLoadedTextureRegion("ship");
+        ITextureRegion shipTextureRegion = resourceManager.getLoadedTextureRegion(
+                activity.getResources().getString(R.string.SCELETONE_LOGO_TEXTURE));
 
         final PointF shipPosition = new PointF( textureSize.x * 0.5f - shipTextureRegion.getWidth() * 0.5f
                                               , textureSize.y * 0.5f - shipTextureRegion.getHeight() * 0.5f);

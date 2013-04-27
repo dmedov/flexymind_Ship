@@ -8,6 +8,6 @@ package com.example.ship.Menu;
  * To change this template use File | Settings | File Templates.
  */
 public interface TouchableMenuButtonSprite {
-    public void onAreaButtonMenuTouched(ButtonMenuSprite button);
-    public void onAreaButtonMenuReleased(ButtonMenuSprite button);
+    public void onAreaButtonMenuTouched(MenuButtonSprite button);
+    public void onAreaButtonMenuReleased(MenuButtonSprite button);
 }

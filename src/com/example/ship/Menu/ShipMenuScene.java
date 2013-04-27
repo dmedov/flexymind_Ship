@@ -4,6 +4,7 @@ import android.graphics.Point;
 import android.graphics.Typeface;
 import com.example.ship.Atlas.ResourceManager;
 import com.example.ship.Events;
+import com.example.ship.R;
 import com.example.ship.SceletonActivity;
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.hud.HUD;
@@ -32,7 +33,7 @@ public class ShipMenuScene extends Scene {
     private final Engine mEngine;
     private final ResourceManager resourceManager;
     private       Point textureSize;
-    private       ArrayList<ButtonMenuSprite> buttons;
+    private       ArrayList<MenuButtonSprite> buttons;
     private       Font buttonFont;
     private       HUD hud;
 
@@ -43,11 +44,21 @@ public class ShipMenuScene extends Scene {
         this.textureSize = activity.getTextureSize();
         this.resourceManager = activity.getResourceManager();
 
-        buttons = new ArrayList<ButtonMenuSprite>();
+        buttons = new ArrayList<MenuButtonSprite>();
 
         createBackground();
         createButtons();
         createTitle();
+    }
+
+    public void setEventsToChildren(Events events) {
+        for (MenuButtonSprite button: buttons) {
+            button.setEvents(events);
+        }
+    }
+
+    public HUD getHud() {
+        return hud;
     }
 
     private void createTitle() {
@@ -56,26 +67,34 @@ public class ShipMenuScene extends Scene {
                                                     , FONT_ATLAS_SIDE
                                                     , FONT_ATLAS_SIDE
                                                     , activity.getAssets()
-                                                    , "Plok.ttf"
+                                                    , getStringResource(R.string.FONT_PLOK_FILE)
                                                     , TITLE_FONT_HEIGHT
                                                     , true
                                                     , android.graphics.Color.BLACK);
         titleFont.load();
-        Text title = new Text(0, 0, titleFont, "SHIPS", mEngine.getVertexBufferObjectManager());
+        Text title = new Text( 0
+                             , 0
+                             , titleFont
+                             , getStringResource(R.string.APP_TITLE)
+                             , mEngine.getVertexBufferObjectManager());
+
         title.setPosition(textureSize.x * 0.5f - title.getWidth() * 0.5f, textureSize.y * 0.075f);
         this.attachChild(title);
     }
 
     private void createBackground() {
-        Sprite backgroundImage = new Sprite( 0, 0, resourceManager.getLoadedTextureRegion("bg_ship")
-                , mEngine.getVertexBufferObjectManager());
+        Sprite backgroundImage = new Sprite( 0
+                                           , 0
+                                           , resourceManager.getLoadedTextureRegion(
+                                                    getStringResource(R.string.MENU_BACKGROUND_TEXTURE))
+                                           , mEngine.getVertexBufferObjectManager());
         this.attachChild(backgroundImage);
         Color backgroundColor = new Color(0.09804f, 0.6274f, 0.8784f);
         this.setBackground(new Background(backgroundColor));
     }
 
     private void createButtons() {
-        buttons = new ArrayList<ButtonMenuSprite>();
+        buttons = new ArrayList<MenuButtonSprite>();
 
         buttonFont = FontFactory.create( mEngine.getFontManager()
                                        , mEngine.getTextureManager()
@@ -87,10 +106,14 @@ public class ShipMenuScene extends Scene {
                                        , Color.BLACK_ABGR_PACKED_INT);
         buttonFont.load();
 
-        ButtonMenuSprite startButtonSprite = createButtonMenuSprite("Start");
-        ButtonMenuSprite highscoresButtonSprite = createButtonMenuSprite("High scores");
-        ButtonMenuSprite creditsButtonSprite = createButtonMenuSprite("Credits");
-        ButtonMenuSprite exitButtonSprite = createButtonMenuSprite("Exit");
+        MenuButtonSprite startButtonSprite = createMenuButtonSprite(
+                getStringResource(R.string.START_BUTTON_LABEL));
+        MenuButtonSprite highscoresButtonSprite = createMenuButtonSprite(
+                getStringResource(R.string.HS_BUTTON_LABEL));
+        MenuButtonSprite creditsButtonSprite = createMenuButtonSprite(
+                getStringResource(R.string.CREDITS_BUTTON_LABEL));
+        MenuButtonSprite exitButtonSprite = createMenuButtonSprite(
+                getStringResource(R.string.EXIT_BUTTON_LABEL));
 
         startButtonSprite.setPosition( textureSize.x * 0.25f - startButtonSprite.getWidth() * 0.5f
                                      , textureSize.y * 0.4f);
@@ -108,7 +131,7 @@ public class ShipMenuScene extends Scene {
 
         hud = new HUD();
 
-        for (ButtonMenuSprite button: buttons) {
+        for (MenuButtonSprite button: buttons) {
             this.registerTouchArea(button);
             hud.attachChild(button);
         }
@@ -116,20 +139,15 @@ public class ShipMenuScene extends Scene {
         this.setTouchAreaBindingOnActionDownEnabled(true);
     }
 
-    private ButtonMenuSprite createButtonMenuSprite(String label) {
-        return new ButtonMenuSprite( resourceManager.getLoadedTextureRegion("button_menu")
+    private MenuButtonSprite createMenuButtonSprite(String label) {
+        return new MenuButtonSprite( resourceManager.getLoadedTextureRegion(
+                                            getStringResource(R.string.MENU_BUTTON_TEXTURE))
                                    , mEngine.getVertexBufferObjectManager()
                                    , label
                                    , buttonFont);
     }
 
-    public void setEventsToChildren(Events events) {
-        for (ButtonMenuSprite button: buttons) {
-            button.setEvents(events);
-        }
-    }
-
-    public HUD getHud() {
-        return hud;
+    private String getStringResource(int id) {
+        return activity.getResources().getString(id);
     }
 }
