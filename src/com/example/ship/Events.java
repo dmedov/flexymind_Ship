@@ -28,20 +28,16 @@ public class Events implements TouchableMenuButtonSprite
             public void run() {
                 switch (button.getId()) {
                     case R.string.MENU_START_BUTTON:
-                        button.setPosition(button.getX(), button.getY() - 10);
-                        startGame(button);
+                        button.setPosition(button.getX(), button.getY() - activity.getTextureSize().y * 0.001f);
                         break;
                     case R.string.MENU_HS_BUTTON:
-                        button.setPosition(button.getX(), button.getY() - 10);
-                        showHighscores(button);
+                        button.setPosition(button.getX(), button.getY() - activity.getTextureSize().y * 0.001f);
                         break;
                     case R.string.MENU_CREDITS_BUTTON:
-                        button.setPosition(button.getX(), button.getY() - 10);
-                        showCredits(button);
+                        button.setPosition(button.getX(), button.getY() - activity.getTextureSize().y * 0.001f);
                         break;
                     case R.string.MENU_EXIT_BUTTON:
-                        button.setPosition(button.getX(), button.getY() - 10);
-                        exitApplication(button);
+                        button.setPosition(button.getX(), button.getY() - activity.getTextureSize().y * 0.001f);
                         break;
                     default:
                         Toast.makeText(activity.getApplicationContext(), "Unknown Button Pressed", Toast.LENGTH_SHORT).show();
@@ -57,43 +53,41 @@ public class Events implements TouchableMenuButtonSprite
             public void run() {
                 switch (button.getId()) {
                     case R.string.MENU_START_BUTTON:
-                        button.setPosition(button.getX(), button.getY() + 10);
-                        startGame(button);
+                        button.setPosition(button.getX(), button.getY() + activity.getTextureSize().y * 0.001f);
+                        startGame();
                         break;
                     case R.string.MENU_HS_BUTTON:
-                        button.setPosition(button.getX(), button.getY() + 10);
-                        //showHighscores(button);
+                        button.setPosition(button.getX(), button.getY() + activity.getTextureSize().y * 0.001f);
+                        //showHighscores();
                         break;
                     case R.string.MENU_CREDITS_BUTTON:
-                        button.setPosition(button.getX(), button.getY() + 10);
-                        //showCredits(button);
+                        button.setPosition(button.getX(), button.getY() + activity.getTextureSize().y * 0.001f);
+                        //showCredits();
                         break;
                     case R.string.MENU_EXIT_BUTTON:
-                        button.setPosition(button.getX(), button.getY() + 10);
-                        exitApplication(button);
+                        button.setPosition(button.getX(), button.getY() + activity.getTextureSize().y * 0.001f);
+                        exitApplication();
                         break;
                     default:
-                        Toast.makeText(activity.getApplicationContext(), "Unknown Button Pressed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(activity.getApplicationContext(), "Unknown Button Released", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
 
-    private void startGame(MenuButtonSprite button) {
-
-        activity.getSceneSwitcher().switchToRootScene();
+    private void startGame() {
+        activity.getSceneSwitcher().switchToGameScene();
     }
 
-    private void showCredits(MenuButtonSprite button) {
+    private void showCredits() {
         //To change body of created methods use File | Settings | File Templates.
     }
 
-    private void showHighscores(MenuButtonSprite button) {
+    private void showHighscores() {
         //To change body of created methods use File | Settings | File Templates.
     }
 
-    private void exitApplication(MenuButtonSprite button) {
-
+    private void exitApplication() {
         activity.finish();
     }
 

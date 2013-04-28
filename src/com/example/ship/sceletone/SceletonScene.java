@@ -40,8 +40,11 @@ public class SceletonScene extends Scene {
         createShipLogo();
     }
 
-    private void createBackground() {
+    public void setEvents(Events events) {
+        this.touchableSceletonSprite = events;
+    }
 
+    private void createBackground() {
         Color backgroundColor = new Color(0.09804f, 0.6274f, 0.8784f);
         this.setBackground(new Background(backgroundColor));
     }
@@ -71,9 +74,5 @@ public class SceletonScene extends Scene {
 
         this.registerTouchArea(shipSprite);
         this.attachChild(shipSprite);
-    }
-
-    public void setEvents(Events events) {
-        this.touchableSceletonSprite = events;
     }
 }

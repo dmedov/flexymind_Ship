@@ -87,9 +87,9 @@ public class ShipMenuScene extends Scene {
         ITextureRegion backgroundTexture = resourceManager.getLoadedTextureRegion(
                 getStringResource(R.string.MENU_BACKGROUND_TEXTURE));
         Sprite backgroundImage = new Sprite( 0
-                , 0
-                , backgroundTexture
-                , mEngine.getVertexBufferObjectManager());
+                                           , 0
+                                           , backgroundTexture
+                                           , mEngine.getVertexBufferObjectManager());
         this.attachChild(backgroundImage);
         Color backgroundColor = new Color(0.09804f, 0.6274f, 0.8784f);
         this.setBackground(new Background(backgroundColor));
@@ -127,7 +127,7 @@ public class ShipMenuScene extends Scene {
 
         for (MenuButtonSprite button: buttons) {
             button.setPosition( textureSize.x * 0.5f - startButtonSprite.getWidth() * 0.5f
-                    , positionOffset);
+                              , positionOffset);
             positionOffset += startButtonSprite.getHeight() + textureSize.y * 0.02f;
 
             hud.registerTouchArea(button);

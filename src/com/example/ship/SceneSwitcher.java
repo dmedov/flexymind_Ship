@@ -40,7 +40,7 @@ public class SceneSwitcher {
         activity.getCamera().setHUD(menuScene.getHud());
     }
 
-    public void switchToGsmeScene() {
+    public void switchToGameScene() {
         if (rootScene.hasChildScene()) {
             rootScene.clearChildScene();
         }

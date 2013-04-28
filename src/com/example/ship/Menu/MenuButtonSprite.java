@@ -25,7 +25,7 @@ public class MenuButtonSprite extends Sprite {
 
         text = new Text(0, 0, font, buttonName, pVertexBufferObjectManager);
         text.setPosition( this.getWidth() * 0.5f - text.getWidth() * 0.5f
-                , this.getHeight() * 0.5f - text.getHeight() * 0.5f);
+                        , this.getHeight() * 0.5f - text.getHeight() * 0.5f);
 
         this.attachChild(text);
     }
@@ -44,8 +44,9 @@ public class MenuButtonSprite extends Sprite {
 
     @Override
     public boolean onAreaTouched( TouchEvent pSceneTouchEvent
-            , float pTouchAreaLocalX
-            , float pTouchAreaLocalY) {
+                                , float pTouchAreaLocalX
+                                , float pTouchAreaLocalY) {
+
         if (pSceneTouchEvent.isActionDown()) {
             touchableMenuButtonSprite.onAreaButtonMenuTouched(this);
         }
