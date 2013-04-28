@@ -11,5 +11,5 @@ import org.andengine.entity.scene.Scene;
  */
 public interface TouchableSceletonSprite {
     public void onSceletoneSpriteTouched();
-    public void onSceletoneSpriteReleased(Scene child);
+    public void onSceletoneSpriteReleased();
 }

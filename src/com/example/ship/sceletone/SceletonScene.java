@@ -25,18 +25,16 @@ public class SceletonScene extends Scene {
     private final SceletonActivity activity;
     private final Engine engine;
     private final ResourceManager resourceManager;
-    private final Scene childScene;
     private       Point textureSize;
     private       TouchableSceletonSprite touchableSceletonSprite;
 
-    public SceletonScene(final SceletonActivity activity, final Scene childScene) {
+    public SceletonScene(final SceletonActivity activity) {
         super();
 
         this.activity = activity;
         this.engine = activity.getEngine();
         this.textureSize = activity.getTextureSize();
         this.resourceManager = activity.getResourceManager();
-        this.childScene = childScene;
 
         createBackground();
         createShipLogo();
@@ -65,7 +63,7 @@ public class SceletonScene extends Scene {
                                         , float pTouchAreaLocalY) {
 
                 if (pSceneTouchEvent.isActionUp()) {
-                    touchableSceletonSprite.onSceletoneSpriteReleased(childScene);
+                    touchableSceletonSprite.onSceletoneSpriteReleased();
                 }
                 return super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
             }

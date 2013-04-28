@@ -2,10 +2,8 @@ package com.example.ship;
 
 import android.widget.Toast;
 import com.example.ship.Menu.MenuButtonSprite;
-import com.example.ship.Menu.ShipMenuScene;
 import com.example.ship.Menu.TouchableMenuButtonSprite;
 import com.example.ship.sceletone.TouchableSceletonSprite;
-import org.andengine.entity.scene.Scene;
 
 /**
  * Created with IntelliJ IDEA.
@@ -82,8 +80,8 @@ public class Events implements TouchableMenuButtonSprite
     }
 
     private void startGame(MenuButtonSprite button) {
-        activity.getRootScene().clearChildScene();
-        //To change body of created methods use File | Settings | File Templates.
+
+        activity.getSceneSwitcher().switchToRootScene();
     }
 
     private void showCredits(MenuButtonSprite button) {
@@ -106,12 +104,11 @@ public class Events implements TouchableMenuButtonSprite
     }
 
     @Override
-    public void onSceletoneSpriteReleased(final Scene child) {
+    public void onSceletoneSpriteReleased() {
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                activity.getRootScene().setChildScene(child);
-                activity.getCamera().setHUD(((ShipMenuScene)child).getHud());
+                activity.getSceneSwitcher().switchToMenuScene();
             }
         });
     }

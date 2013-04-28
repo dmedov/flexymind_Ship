@@ -64,20 +64,20 @@ public class ShipMenuScene extends Scene {
 
     private void createTitle() {
         Font titleFont = FontFactory.createFromAsset( activity.getFontManager()
-                , activity.getTextureManager()
-                , FONT_ATLAS_SIDE
-                , FONT_ATLAS_SIDE
-                , activity.getAssets()
-                , getStringResource(R.string.FONT_PLOK_FILE)
-                , TITLE_FONT_HEIGHT
-                , true
-                , android.graphics.Color.BLACK);
+                                                    , activity.getTextureManager()
+                                                    , FONT_ATLAS_SIDE
+                                                    , FONT_ATLAS_SIDE
+                                                    , activity.getAssets()
+                                                    , getStringResource(R.string.FONT_PLOK_FILE)
+                                                    , TITLE_FONT_HEIGHT
+                                                    , true
+                                                    , android.graphics.Color.BLACK);
         titleFont.load();
         Text title = new Text( 0
-                , 0
-                , titleFont
-                , getStringResource(R.string.APP_TITLE)
-                , mEngine.getVertexBufferObjectManager());
+                             , 0
+                             , titleFont
+                             , getStringResource(R.string.APP_TITLE)
+                             , mEngine.getVertexBufferObjectManager());
 
         title.setPosition(textureSize.x * 0.5f - title.getWidth() * 0.5f, textureSize.y * 0.075f);
         this.attachChild(title);
@@ -99,13 +99,13 @@ public class ShipMenuScene extends Scene {
         buttons = new ArrayList<MenuButtonSprite>();
 
         buttonFont = FontFactory.create( mEngine.getFontManager()
-                , mEngine.getTextureManager()
-                , FONT_ATLAS_SIDE
-                , FONT_ATLAS_SIDE
-                , Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)
-                , BUTTON_FONT_HEIGHT
-                , true
-                , Color.WHITE_ABGR_PACKED_INT);
+                                       , mEngine.getTextureManager()
+                                       , FONT_ATLAS_SIDE
+                                       , FONT_ATLAS_SIDE
+                                       , Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)
+                                       , BUTTON_FONT_HEIGHT
+                                       , true
+                                       , Color.WHITE_ABGR_PACKED_INT);
         buttonFont.load();
 
         MenuButtonSprite startButtonSprite = createMenuButtonSprite( R.string.MENU_START_BUTTON_LABEL
@@ -116,7 +116,6 @@ public class ShipMenuScene extends Scene {
                                                                      , R.string.MENU_CREDITS_BUTTON);
         MenuButtonSprite exitButtonSprite = createMenuButtonSprite( R.string.MENU_EXIT_BUTTON_LABEL
                                                                   , R.string.MENU_EXIT_BUTTON);
-
 
         buttons.add(startButtonSprite);
         buttons.add(highscoresButtonSprite);
@@ -140,11 +139,11 @@ public class ShipMenuScene extends Scene {
 
     private MenuButtonSprite createMenuButtonSprite(int labelId, int buttonId) {
         return new MenuButtonSprite( resourceManager.getLoadedTextureRegion(
-                getStringResource(R.string.MENU_BUTTON_TEXTURE))
-                , mEngine.getVertexBufferObjectManager()
-                , buttonId
-                , getStringResource(labelId)
-                , buttonFont);
+                                            getStringResource(R.string.MENU_BUTTON_TEXTURE))
+                                   , mEngine.getVertexBufferObjectManager()
+                                   , buttonId
+                                   , getStringResource(labelId)
+                                   , buttonFont);
     }
 
     private String getStringResource(int id) {
