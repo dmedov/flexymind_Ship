@@ -4,7 +4,7 @@
     <string name="APP_TITLE">SHIPS</string>
     <string name="FONT_BASE_ASSET_PATH">fonts/</string>
     <string name="FONT_PLOK_FILE">Plok.ttf</string>
-    <!--Textures-->
+    <!--Textures пока не добавлять сюда ничего-->
     <string name="SCELETONE_LOGO_TEXTURE">ship</string>
     <string name="MENU_BACKGROUND_TEXTURE">menuBackground</string>
     <string name="MENU_BUTTON_TEXTURE">menuButton</string>
