@@ -31,42 +31,25 @@ public class Events implements TouchableMenuButtonSprite
                 switch (button.getId()) {
                     case R.string.MENU_START_BUTTON:
                         button.setPosition(button.getX(), button.getY() - 10);
-                        //startGame(button);
+                        startGame(button);
                         break;
                     case R.string.MENU_HS_BUTTON:
                         button.setPosition(button.getX(), button.getY() - 10);
-                        //showHighscores(button);
+                        showHighscores(button);
                         break;
                     case R.string.MENU_CREDITS_BUTTON:
                         button.setPosition(button.getX(), button.getY() - 10);
-                        //showCredits(button);
+                        showCredits(button);
                         break;
                     case R.string.MENU_EXIT_BUTTON:
                         button.setPosition(button.getX(), button.getY() - 10);
-                        //exitApplication(button);
+                        exitApplication(button);
                         break;
                     default:
                         Toast.makeText(activity.getApplicationContext(), "Unknown Button Pressed", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-    }
-
-    private void startGame(MenuButtonSprite button) {
-        //To change body of created methods use File | Settings | File Templates.
-    }
-
-    private void showCredits(MenuButtonSprite button) {
-        //To change body of created methods use File | Settings | File Templates.
-    }
-
-    private void showHighscores(MenuButtonSprite button) {
-        //To change body of created methods use File | Settings | File Templates.
-    }
-
-    private void exitApplication(MenuButtonSprite button) {
-
-        activity.finish();
     }
 
     @Override
@@ -77,7 +60,7 @@ public class Events implements TouchableMenuButtonSprite
                 switch (button.getId()) {
                     case R.string.MENU_START_BUTTON:
                         button.setPosition(button.getX(), button.getY() + 10);
-                        //startGame(button);
+                        startGame(button);
                         break;
                     case R.string.MENU_HS_BUTTON:
                         button.setPosition(button.getX(), button.getY() + 10);
@@ -98,6 +81,25 @@ public class Events implements TouchableMenuButtonSprite
         });
     }
 
+    private void startGame(MenuButtonSprite button) {
+        activity.getRootScene().clearChildScene();
+        //To change body of created methods use File | Settings | File Templates.
+    }
+
+    private void showCredits(MenuButtonSprite button) {
+        //To change body of created methods use File | Settings | File Templates.
+    }
+
+    private void showHighscores(MenuButtonSprite button) {
+        //To change body of created methods use File | Settings | File Templates.
+    }
+
+    private void exitApplication(MenuButtonSprite button) {
+
+        activity.finish();
+    }
+
+
     @Override
     public void onSceletoneSpriteTouched() {
 
@@ -108,7 +110,7 @@ public class Events implements TouchableMenuButtonSprite
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                activity.getEngine().setScene(child);
+                activity.getRootScene().setChildScene(child);
                 activity.getCamera().setHUD(((ShipMenuScene)child).getHud());
             }
         });

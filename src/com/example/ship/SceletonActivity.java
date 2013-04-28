@@ -81,6 +81,10 @@ public class SceletonActivity extends BaseGameActivity {
         pOnPopulateSceneCallback.onPopulateSceneFinished();
     }
 
+    public Scene getRootScene() {
+        return sceletonScene;
+    }
+
     public ResourceManager getResourceManager() {
         return resourceManager;
     }
