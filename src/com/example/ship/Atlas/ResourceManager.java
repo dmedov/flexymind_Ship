@@ -130,7 +130,7 @@ public class ResourceManager {
         int atlasHeight = 1;
         int atlasWidth = 1;
         TextureOptions textureOptions = TextureOptions.DEFAULT;
-        BitmapTextureFormat textureFormat = BitmapTextureFormat.RGBA_8888;
+        BitmapTextureFormat textureFormat = BitmapTextureFormat.RGBA_4444;
 
         // parse atlas attributes
         for (int i = 0; i < parser.getAttributeCount(); i++) {
@@ -228,7 +228,7 @@ public class ResourceManager {
         if (option.equals("A_8")) {
             return BitmapTextureFormat.A_8;
         }
-        return BitmapTextureFormat.RGBA_8888;
+        return BitmapTextureFormat.RGBA_4444;
     }
 
     private void handleException(Exception e, String error) {
