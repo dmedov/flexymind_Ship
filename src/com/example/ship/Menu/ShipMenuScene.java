@@ -105,17 +105,17 @@ public class ShipMenuScene extends Scene {
                 , Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)
                 , BUTTON_FONT_HEIGHT
                 , true
-                , Color.BLACK_ABGR_PACKED_INT);
+                , Color.WHITE_ABGR_PACKED_INT);
         buttonFont.load();
 
-        MenuButtonSprite startButtonSprite = createMenuButtonSprite(
-                getStringResource(R.string.MENU_START_BUTTON_LABEL), R.string.MENU_START_BUTTON);
-        MenuButtonSprite highscoresButtonSprite = createMenuButtonSprite(
-                getStringResource(R.string.MENU_HS_BUTTON_LABEL), R.string.MENU_HS_BUTTON);
-        MenuButtonSprite creditsButtonSprite = createMenuButtonSprite(
-                getStringResource(R.string.MENU_CREDITS_BUTTON_LABEL), R.string.MENU_CREDITS_BUTTON);
-        MenuButtonSprite exitButtonSprite = createMenuButtonSprite(
-                getStringResource(R.string.MENU_EXIT_BUTTON_LABEL), R.string.MENU_EXIT_BUTTON);
+        MenuButtonSprite startButtonSprite = createMenuButtonSprite( R.string.MENU_START_BUTTON_LABEL
+                                                                   , R.string.MENU_START_BUTTON);
+        MenuButtonSprite highscoresButtonSprite = createMenuButtonSprite( R.string.MENU_HS_BUTTON_LABEL
+                                                                        , R.string.MENU_HS_BUTTON);
+        MenuButtonSprite creditsButtonSprite = createMenuButtonSprite( R.string.MENU_CREDITS_BUTTON_LABEL
+                                                                     , R.string.MENU_CREDITS_BUTTON);
+        MenuButtonSprite exitButtonSprite = createMenuButtonSprite( R.string.MENU_EXIT_BUTTON_LABEL
+                                                                  , R.string.MENU_EXIT_BUTTON);
 
 
         buttons.add(startButtonSprite);
@@ -138,12 +138,12 @@ public class ShipMenuScene extends Scene {
         this.setTouchAreaBindingOnActionDownEnabled(true);
     }
 
-    private MenuButtonSprite createMenuButtonSprite(String label, int buttonId) {
+    private MenuButtonSprite createMenuButtonSprite(int labelId, int buttonId) {
         return new MenuButtonSprite( resourceManager.getLoadedTextureRegion(
                 getStringResource(R.string.MENU_BUTTON_TEXTURE))
                 , mEngine.getVertexBufferObjectManager()
                 , buttonId
-                , label
+                , getStringResource(labelId)
                 , buttonFont);
     }
 
