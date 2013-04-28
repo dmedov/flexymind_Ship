@@ -30,16 +30,20 @@ public class Events implements TouchableMenuButtonSprite
             public void run() {
                 switch (button.getId()) {
                     case R.string.MENU_START_BUTTON:
-                        startGame(button);
+                        button.setPosition(button.getX(), button.getY()+10);
+                        //startGame(button);
                         break;
                     case R.string.MENU_HS_BUTTON:
-                        showHighscores(button);
+                        button.setPosition(button.getX(), button.getY()+10);
+                        //showHighscores(button);
                         break;
                     case R.string.MENU_CREDITS_BUTTON:
-                        showCredits(button);
+                        button.setPosition(button.getX(), button.getY()+10);
+                        //showCredits(button);
                         break;
                     case R.string.MENU_EXIT_BUTTON:
-                        exitApplication(button);
+                        button.setPosition(button.getX(), button.getY()+10);
+                        //exitApplication(button);
                         break;
                     default:
                         Toast.makeText(activity.getApplicationContext(), "Unknown Button Pressed", Toast.LENGTH_SHORT).show();
@@ -69,7 +73,7 @@ public class Events implements TouchableMenuButtonSprite
     private void exitApplication(MenuButtonSprite button) {
         String message = String.format("%s Button pressed!", button.getName());
         Toast.makeText(activity.getApplicationContext(), message, Toast.LENGTH_SHORT).show();
-        activity.finish();
+        //activity.finish();
     }
 
     @Override
@@ -77,8 +81,26 @@ public class Events implements TouchableMenuButtonSprite
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                String message = String.format("%s Button Released!", button.getName());
-                Toast.makeText(activity.getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                switch (button.getId()) {
+                    case R.string.MENU_START_BUTTON:
+                        button.setPosition(button.getX(), button.getY() - 10);
+                        //startGame(button);
+                        break;
+                    case R.string.MENU_HS_BUTTON:
+                        button.setPosition(button.getX(), button.getY() - 10);
+                        //showHighscores(button);
+                        break;
+                    case R.string.MENU_CREDITS_BUTTON:
+                        button.setPosition(button.getX(), button.getY() - 10);
+                        //showCredits(button);
+                        break;
+                    case R.string.MENU_EXIT_BUTTON:
+                        button.setPosition(button.getX(), button.getY() - 10);
+                        //exitApplication(button);
+                        break;
+                    default:
+                        Toast.makeText(activity.getApplicationContext(), "Unknown Button Pressed", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
