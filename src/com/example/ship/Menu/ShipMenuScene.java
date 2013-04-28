@@ -130,7 +130,8 @@ public class ShipMenuScene extends Scene {
             button.setPosition( textureSize.x * 0.5f - startButtonSprite.getWidth() * 0.5f
                     , positionOffset);
             positionOffset += startButtonSprite.getHeight() + textureSize.y * 0.02f;
-            this.registerTouchArea(button);
+
+            hud.registerTouchArea(button);
             hud.attachChild(button);
         }
 

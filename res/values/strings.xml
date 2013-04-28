@@ -2,17 +2,20 @@
 <resources>
     <string name="app_name">ship</string>
     <string name="APP_TITLE">SHIPS</string>
-    <string name="MENU_START_BUTTON_LABEL">Start</string>
-    <string name="MENU_START_BUTTON"> </string>
-    <string name="MENU_HS_BUTTON_LABEL">High Scores</string>
-    <string name="MENU_HS_BUTTON"> </string>
-    <string name="MENU_CREDITS_BUTTON_LABEL">Credits</string>
-    <string name="MENU_CREDITS_BUTTON"> </string>
-    <string name="MENU_EXIT_BUTTON_LABEL">Exit</string>
-    <string name="MENU_EXIT_BUTTON"> </string>
-    <string name="SCELETONE_LOGO_TEXTURE">ship</string>
     <string name="FONT_BASE_ASSET_PATH">fonts/</string>
     <string name="FONT_PLOK_FILE">Plok.ttf</string>
+    <!--Textures-->
+    <string name="SCELETONE_LOGO_TEXTURE">ship</string>
     <string name="MENU_BACKGROUND_TEXTURE">menuBackground</string>
     <string name="MENU_BUTTON_TEXTURE">menuButton</string>
+    <!--Menu Button ID-->
+    <string name="MENU_START_BUTTON">startID</string>
+    <string name="MENU_HS_BUTTON">highscoresID</string>
+    <string name="MENU_CREDITS_BUTTON">creditsID</string>
+    <string name="MENU_EXIT_BUTTON">exitID</string>
+    <!--Menu Button Labels-->
+    <string name="MENU_START_BUTTON_LABEL">Start</string>
+    <string name="MENU_HS_BUTTON_LABEL">High Scores</string>
+    <string name="MENU_CREDITS_BUTTON_LABEL">Credits</string>
+    <string name="MENU_EXIT_BUTTON_LABEL">Exit</string>
 </resources>
