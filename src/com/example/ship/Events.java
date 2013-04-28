@@ -28,10 +28,48 @@ public class Events implements TouchableMenuButtonSprite
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                String message = String.format("%s Button Pressed!", button.getName());
-                Toast.makeText(activity.getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                switch (button.getId()) {
+                    case R.string.MENU_START_BUTTON:
+                        startGame(button);
+                        break;
+                    case R.string.MENU_HS_BUTTON:
+                        showHighscores(button);
+                        break;
+                    case R.string.MENU_CREDITS_BUTTON:
+                        showCredits(button);
+                        break;
+                    case R.string.MENU_EXIT_BUTTON:
+                        exitApplication(button);
+                        break;
+                    default:
+                        Toast.makeText(activity.getApplicationContext(), "Unknown Button Pressed", Toast.LENGTH_SHORT).show();
+                }
             }
         });
+    }
+
+    private void startGame(MenuButtonSprite button) {
+        String message = String.format("%s Button pressed!", button.getName());
+        Toast.makeText(activity.getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+        //To change body of created methods use File | Settings | File Templates.
+    }
+
+    private void showCredits(MenuButtonSprite button) {
+        String message = String.format("%s Button pressed!", button.getName());
+        Toast.makeText(activity.getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+        //To change body of created methods use File | Settings | File Templates.
+    }
+
+    private void showHighscores(MenuButtonSprite button) {
+        String message = String.format("%s Button pressed!", button.getName());
+        Toast.makeText(activity.getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+        //To change body of created methods use File | Settings | File Templates.
+    }
+
+    private void exitApplication(MenuButtonSprite button) {
+        String message = String.format("%s Button pressed!", button.getName());
+        Toast.makeText(activity.getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+        activity.finish();
     }
 
     @Override

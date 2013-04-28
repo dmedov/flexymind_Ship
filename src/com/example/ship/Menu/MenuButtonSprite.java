@@ -15,10 +15,10 @@ public class MenuButtonSprite extends Sprite {
     private TouchableMenuButtonSprite touchableMenuButtonSprite;
 
     public MenuButtonSprite( ITextureRegion pTextureRegion
-            , VertexBufferObjectManager pVertexBufferObjectManager
-            , int id
-            , String buttonName
-            , Font font) {
+                           , VertexBufferObjectManager pVertexBufferObjectManager
+                           , int id
+                           , String buttonName
+                           , Font font) {
 
         super(0, 0, pTextureRegion, pVertexBufferObjectManager);
         this.id = id;
