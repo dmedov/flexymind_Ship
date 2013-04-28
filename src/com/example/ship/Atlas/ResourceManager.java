@@ -11,6 +11,7 @@ import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
 import org.andengine.opengl.texture.atlas.buildable.builder.BlackPawnTextureAtlasBuilder;
 import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder;
+import org.andengine.opengl.texture.bitmap.BitmapTextureFormat;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -129,6 +130,7 @@ public class ResourceManager {
         int atlasHeight = 1;
         int atlasWidth = 1;
         TextureOptions textureOptions = TextureOptions.DEFAULT;
+        BitmapTextureFormat textureFormat = BitmapTextureFormat.RGBA_8888;
 
         // parse atlas attributes
         for (int i = 0; i < parser.getAttributeCount(); i++) {
@@ -140,14 +142,16 @@ public class ResourceManager {
                 atlasHeight = Integer.parseInt(value);
             } else if (attribute.equals("type")) {
                 textureOptions = stringToTextureOptions(value);
+            } else if (attribute.equals("format")) {
+                textureFormat = stringToTextureFormat(value);
             }
         }
 
         atlasList.add(new BuildableBitmapTextureAtlas( textureManager
                                                      , atlasWidth
                                                      , atlasHeight
+                                                     , textureFormat
                                                      , textureOptions));
-        // XXX: ДОБАВИТЬ TEXTURE FORMAT!
     }
 
     private void parseAtlasEndTag() {
@@ -209,6 +213,22 @@ public class ResourceManager {
             return TextureOptions.REPEATING_BILINEAR_PREMULTIPLYALPHA;
         }
         return TextureOptions.DEFAULT;
+    }
+
+    private BitmapTextureFormat stringToTextureFormat (String option) {
+        if (option.equals("RGBA_8888")) {
+            return BitmapTextureFormat.RGBA_8888;
+        }
+        if (option.equals("RGBA_4444")) {
+            return BitmapTextureFormat.RGBA_4444;
+        }
+        if (option.equals("RGB_565")) {
+            return BitmapTextureFormat.RGB_565;
+        }
+        if (option.equals("A_8")) {
+            return BitmapTextureFormat.A_8;
+        }
+        return BitmapTextureFormat.RGBA_8888;
     }
 
     private void handleException(Exception e, String error) {
