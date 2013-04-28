@@ -23,6 +23,7 @@ public class SceletonActivity extends BaseGameActivity {
     private ResourceManager resourceManager;
     private Events events;
     private ZoomCamera zoomCamera;
+    private SceneSwitcher sceneSwitcher;
 
     private ZoomCamera createZoomCamera() {
         DisplayMetrics metrics = new DisplayMetrics();
@@ -66,12 +67,9 @@ public class SceletonActivity extends BaseGameActivity {
 
     @Override
     public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback) {
-        menuScene = new ShipMenuScene(this);
-        menuScene.setEventsToChildren(events);
-        sceletonScene = new SceletonScene(this, menuScene);
-        sceletonScene.setEvents(events);
+        sceneSwitcher = new SceneSwitcher(this);
 
-        pOnCreateSceneCallback.onCreateSceneFinished(sceletonScene);
+        pOnCreateSceneCallback.onCreateSceneFinished(sceneSwitcher.getRootScene());
     }
 
     @Override
@@ -79,6 +77,10 @@ public class SceletonActivity extends BaseGameActivity {
                                , OnPopulateSceneCallback pOnPopulateSceneCallback) {
 
         pOnPopulateSceneCallback.onPopulateSceneFinished();
+    }
+
+    public Events getEvents() {
+        return events;
     }
 
     public ResourceManager getResourceManager() {
@@ -91,5 +93,9 @@ public class SceletonActivity extends BaseGameActivity {
 
     public Camera getCamera() {
         return zoomCamera;
+    }
+
+    public SceneSwitcher getSceneSwitcher() {
+        return sceneSwitcher;
     }
 }
