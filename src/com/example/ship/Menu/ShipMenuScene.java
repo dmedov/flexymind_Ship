@@ -105,18 +105,17 @@ public class ShipMenuScene extends Scene {
                                        , Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)
                                        , BUTTON_FONT_HEIGHT
                                        , true
-                                       , Color.BLACK_ABGR_PACKED_INT);
+                                       , Color.WHITE_ABGR_PACKED_INT);
         buttonFont.load();
 
-        MenuButtonSprite startButtonSprite = createMenuButtonSprite(
-                getStringResource(R.string.START_BUTTON_LABEL));
-        MenuButtonSprite highscoresButtonSprite = createMenuButtonSprite(
-                getStringResource(R.string.HS_BUTTON_LABEL));
-        MenuButtonSprite creditsButtonSprite = createMenuButtonSprite(
-                getStringResource(R.string.CREDITS_BUTTON_LABEL));
-        MenuButtonSprite exitButtonSprite = createMenuButtonSprite(
-                getStringResource(R.string.EXIT_BUTTON_LABEL));
-
+        MenuButtonSprite startButtonSprite = createMenuButtonSprite( R.string.MENU_START_BUTTON_LABEL
+                                                                   , R.string.MENU_START_BUTTON);
+        MenuButtonSprite highscoresButtonSprite = createMenuButtonSprite( R.string.MENU_HS_BUTTON_LABEL
+                                                                        , R.string.MENU_HS_BUTTON);
+        MenuButtonSprite creditsButtonSprite = createMenuButtonSprite( R.string.MENU_CREDITS_BUTTON_LABEL
+                                                                     , R.string.MENU_CREDITS_BUTTON);
+        MenuButtonSprite exitButtonSprite = createMenuButtonSprite( R.string.MENU_EXIT_BUTTON_LABEL
+                                                                  , R.string.MENU_EXIT_BUTTON);
 
         buttons.add(startButtonSprite);
         buttons.add(highscoresButtonSprite);
@@ -128,20 +127,22 @@ public class ShipMenuScene extends Scene {
 
         for (MenuButtonSprite button: buttons) {
             button.setPosition( textureSize.x * 0.5f - startButtonSprite.getWidth() * 0.5f
-                    , positionOffset);
+                              , positionOffset);
             positionOffset += startButtonSprite.getHeight() + textureSize.y * 0.02f;
-            this.registerTouchArea(button);
+
+            hud.registerTouchArea(button);
             hud.attachChild(button);
         }
 
         this.setTouchAreaBindingOnActionDownEnabled(true);
     }
 
-    private MenuButtonSprite createMenuButtonSprite(String label) {
+    private MenuButtonSprite createMenuButtonSprite(int labelId, int buttonId) {
         return new MenuButtonSprite( resourceManager.getLoadedTextureRegion(
                                             getStringResource(R.string.MENU_BUTTON_TEXTURE))
                                    , mEngine.getVertexBufferObjectManager()
-                                   , label
+                                   , buttonId
+                                   , getStringResource(labelId)
                                    , buttonFont);
     }
 
