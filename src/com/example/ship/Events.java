@@ -28,10 +28,40 @@ public class Events implements TouchableMenuButtonSprite
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                String message = String.format("%s Button Pressed!", button.getName());
-                Toast.makeText(activity.getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                switch (button.getId()) {
+                    case R.string.MENU_EXIT_BUTTON:
+                        exitApplication();
+                        break;
+                    case R.string.MENU_HS_BUTTON:
+                        showHighscores();
+                        break;
+                    case R.string.MENU_CREDITS_BUTTON:
+                        showCredits();
+                        break;
+                    case R.string.MENU_START_BUTTON:
+                        startGame();
+                        break;
+                    default:
+                        Toast.makeText(activity.getApplicationContext(), "Unknown Button Pressed", Toast.LENGTH_SHORT).show();
+                }
             }
         });
+    }
+
+    private void startGame() {
+        //To change body of created methods use File | Settings | File Templates.
+    }
+
+    private void showCredits() {
+        //To change body of created methods use File | Settings | File Templates.
+    }
+
+    private void showHighscores() {
+        //To change body of created methods use File | Settings | File Templates.
+    }
+
+    private void exitApplication() {
+        //To change body of created methods use File | Settings | File Templates.
     }
 
     @Override
