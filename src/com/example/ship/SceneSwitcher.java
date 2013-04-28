@@ -1,5 +1,6 @@
 package com.example.ship;
 
+import com.example.ship.Game.GameScene;
 import com.example.ship.Menu.ShipMenuScene;
 import com.example.ship.SceletonActivity;
 import com.example.ship.sceletone.SceletonScene;
@@ -17,12 +18,13 @@ public class SceneSwitcher {
     private final SceletonActivity activity;
     private SceletonScene rootScene;
     private ShipMenuScene menuScene;
-    private Scene gameScene;
+    private GameScene gameScene;
 
     public SceneSwitcher(SceletonActivity activity) {
         this.activity = activity;
         menuScene = new ShipMenuScene(activity);
         menuScene.setEventsToChildren(activity.getEvents());
+        gameScene = new GameScene(activity);
         rootScene = new SceletonScene(activity);
         rootScene.setEvents(activity.getEvents());
     }
