@@ -7,5 +7,6 @@
             </Atlas>
             <Atlas type="BILINEAR" width="2048" height="2048" format="RGBA_8888">
                 <texture path="gameBackground.png" name="gameBackground"/>
+                <texture path="wave.png" name="wave"/>
             </Atlas>
 </resources>

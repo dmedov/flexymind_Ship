@@ -42,16 +42,22 @@ public class GameScene extends Scene {
         }
 
         ITextureRegion backgroundTexture = resourceManager.getLoadedTextureRegion("gameBackground");
-        Sprite backgroundImage = new Sprite( 0
-                , 0
-                , backgroundTexture
-                , mEngine.getVertexBufferObjectManager());
-        Sprite backgroundImage1 = new Sprite( 1740
-                , 0
-                , backgroundTexture
-                , mEngine.getVertexBufferObjectManager());
-        this.getChildByIndex(LAYER_BACKGROUND).attachChild(backgroundImage);
-        this.getChildByIndex(LAYER_BACKGROUND).attachChild(backgroundImage1);
+        Sprite backgroundFirstHalfImage = new Sprite( 0
+                                                    , 0
+                                                    , backgroundTexture
+                                                    , mEngine.getVertexBufferObjectManager());
+        Sprite backgroundSecondHalfImage = new Sprite( 1740
+                                                     , 0
+                                                     , backgroundTexture
+                                                     , mEngine.getVertexBufferObjectManager());
+        ITextureRegion waveTexture = resourceManager.getLoadedTextureRegion("wave");
+        Sprite waveImage = new Sprite( 0
+                                     , 680
+                                     , waveTexture
+                                     , mEngine.getVertexBufferObjectManager());
+        this.getChildByIndex(LAYER_BACKGROUND).attachChild(backgroundFirstHalfImage);
+        this.getChildByIndex(LAYER_BACKGROUND).attachChild(backgroundSecondHalfImage);
+        this.getChildByIndex(LAYER_FIRST_WAVE).attachChild(waveImage);
         Color backgroundColor = new Color(0.09804f, 0.6274f, 0.8784f);
         this.setBackground(new Background(backgroundColor));
     }
