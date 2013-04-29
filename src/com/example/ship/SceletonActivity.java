@@ -38,7 +38,7 @@ public class SceletonActivity extends BaseGameActivity {
         camera.setCenter(cameraCenter.x, cameraCenter.y );
 
         final float zoomFactor = cameraHeight / TEXTURE_HEIGHT;
-        camera.setZoomFactor(zoomFactor);
+        camera.setZoomFactor(zoomFactor/4);
         return camera;
     }
 

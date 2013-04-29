@@ -55,9 +55,15 @@ public class GameScene extends Scene {
                                      , 680
                                      , waveTexture
                                      , mEngine.getVertexBufferObjectManager());
+        ITextureRegion periscopeTexture = resourceManager.getLoadedTextureRegion("periscope");
+        Sprite periscopeImage = new Sprite( 0
+                                          , 0
+                                          , periscopeTexture
+                                          , mEngine.getVertexBufferObjectManager());
         this.getChildByIndex(LAYER_BACKGROUND).attachChild(backgroundFirstHalfImage);
         this.getChildByIndex(LAYER_BACKGROUND).attachChild(backgroundSecondHalfImage);
         this.getChildByIndex(LAYER_FIRST_WAVE).attachChild(waveImage);
+        this.getChildByIndex(LAYER_PERISCOPE).attachChild(periscopeImage);
         Color backgroundColor = new Color(0.09804f, 0.6274f, 0.8784f);
         this.setBackground(new Background(backgroundColor));
     }
