@@ -18,7 +18,7 @@ public class GameScene extends Scene {
     private final SceletonActivity activity;
     private final Engine mEngine;
     private final ResourceManager resourceManager;
-    private static final int LAYER_COUNT = 5;
+    private static final int LAYER_COUNT = 4;
 
     private static final int LAYER_BACKGROUND = 0;
     private static final int LAYER_FIRST_WAVE = LAYER_BACKGROUND + 1;
@@ -42,31 +42,19 @@ public class GameScene extends Scene {
         }
 
         ITextureRegion backgroundTexture = resourceManager.getLoadedTextureRegion("gameBackground");
-        Sprite backgroundFirstHalfImage = new Sprite( 0
-                                                    , 0
-                                                    , backgroundTexture
-                                                    , mEngine.getVertexBufferObjectManager());
-        Sprite backgroundSecondHalfImage = new Sprite( 1740
-                                                     , 0
-                                                     , backgroundTexture
-                                                     , mEngine.getVertexBufferObjectManager());
+        Sprite backgroundImage = new Sprite( 0
+                                           , 0
+                                           , backgroundTexture
+                                           , mEngine.getVertexBufferObjectManager());
 
         ITextureRegion waveTexture = resourceManager.getLoadedTextureRegion("wave");
         Sprite waveImage = new Sprite( 0
-                                     , 680
+                                     , 300
                                      , waveTexture
                                      , mEngine.getVertexBufferObjectManager());
 
-        ITextureRegion periscopeTexture = resourceManager.getLoadedTextureRegion("periscope");
-        Sprite periscopeImage = new Sprite( 0
-                                          , 0
-                                          , periscopeTexture
-                                          , mEngine.getVertexBufferObjectManager());
-
-        this.getChildByIndex(LAYER_BACKGROUND).attachChild(backgroundFirstHalfImage);
-        this.getChildByIndex(LAYER_BACKGROUND).attachChild(backgroundSecondHalfImage);
+        this.getChildByIndex(LAYER_BACKGROUND).attachChild(backgroundImage);
         this.getChildByIndex(LAYER_FIRST_WAVE).attachChild(waveImage);
-        this.getChildByIndex(LAYER_PERISCOPE).attachChild(periscopeImage);
         Color backgroundColor = new Color(0.09804f, 0.6274f, 0.8784f);
         this.setBackground(new Background(backgroundColor));
     }
