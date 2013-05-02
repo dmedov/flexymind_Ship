@@ -1,4 +1,4 @@
-package com.example.ship.Atlas;
+package com.example.ship.atlas;
 
 import org.andengine.opengl.texture.region.ITextureRegion;
 
@@ -9,11 +9,11 @@ Date: 22.04.13
 
 public class Texture {
 
-    public String name;
+    public int ID;
     public ITextureRegion textureRegion;
 
-    public Texture (String name, ITextureRegion textureRegion) {
-        this.name = name;
+    public Texture (int ID, ITextureRegion textureRegion) {
+        this.ID = ID;
         this.textureRegion = textureRegion;
     }
 

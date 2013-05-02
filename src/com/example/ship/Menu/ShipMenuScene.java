@@ -2,7 +2,7 @@ package com.example.ship.Menu;
 
 import android.graphics.Point;
 import android.graphics.Typeface;
-import com.example.ship.Atlas.ResourceManager;
+import com.example.ship.atlas.ResourceManager;
 import com.example.ship.Events;
 import com.example.ship.R;
 import com.example.ship.SceletonActivity;
@@ -84,8 +84,7 @@ public class ShipMenuScene extends Scene {
     }
 
     private void createBackground() {
-        ITextureRegion backgroundTexture = resourceManager.getLoadedTextureRegion(
-                getStringResource(R.string.MENU_BACKGROUND_TEXTURE));
+        ITextureRegion backgroundTexture = resourceManager.getLoadedTextureRegion(R.drawable.menubackground);
         Sprite backgroundImage = new Sprite( 0
                                            , 0
                                            , backgroundTexture
@@ -138,8 +137,7 @@ public class ShipMenuScene extends Scene {
     }
 
     private MenuButtonSprite createMenuButtonSprite(int labelId, int buttonId) {
-        return new MenuButtonSprite( resourceManager.getLoadedTextureRegion(
-                                            getStringResource(R.string.MENU_BUTTON_TEXTURE))
+        return new MenuButtonSprite( resourceManager.getLoadedTextureRegion(R.drawable.menubutton)
                                    , mEngine.getVertexBufferObjectManager()
                                    , buttonId
                                    , getStringResource(labelId)

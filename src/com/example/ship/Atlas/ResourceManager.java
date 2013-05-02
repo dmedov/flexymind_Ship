@@ -1,4 +1,4 @@
-package com.example.ship.Atlas;
+package com.example.ship.atlas;
 
 import android.content.Context;
 import android.util.Log;
@@ -28,15 +28,16 @@ Date: 22.04.13
 <?xml version="1.0" encoding="utf-8" ?>
 <resources>
             <Atlas type=" [Сюда писать тип атласа ( BILINEAR, REPEATE, ... )] "
+                   format=" [Сюда писать формат атласа (RGBA_8888, RGBA_4444, RGB_565, A_8)] "
                    width=" [Сюда писать ширину атласа] "
                    height=" [Сюда писать высоту атласа] ">
 
                 [Здесь перечисляем все текстуры, которые нужно впихнуть в этот атлас]
-                <texture path=" [Сюда пишем путь к текстуре относительно assets/gfx/] "
-                         name=" [Сюда пишем имя текстуры, по которому мы будем к ней обращаться из программы] " />
+                <texture name=" [Сюда пишем имя файла текстуры без расширения] " />
 
             </Atlas>
 </resources>
+Сами текстурв кладём в папку res/drawable/
 
 Теперь в BaseGameActivity создаём экземпляр класса ResourceManager.
 И в методе OnCreateResources у BaseGameActivity вызываем метод класса
@@ -44,7 +45,7 @@ loadAllTextures ( this, mEngine.getTextureManager() );
 Посде этого все ресурсы загружены
 
 Для получения ITextureRegion нужного ресурса вызываем метод класса
-getLoadedTextureRegion ( " [Сюда пишем имя, которое мы забили в xml] " );
+getLoadedTextureRegion ( " [Сюда пишем ID ресурса (например: R.drawable.ship)] " );
 */
 
 public class ResourceManager {
@@ -61,9 +62,9 @@ public class ResourceManager {
         atlasList = new ArrayList<BuildableBitmapTextureAtlas>();
     }
 
-    public ITextureRegion getLoadedTextureRegion(String textureName) {
+    public ITextureRegion getLoadedTextureRegion(int ResourceID) {
         for (Texture loadedTexture : loadedTextures) {
-            if (loadedTexture.name.equalsIgnoreCase(textureName)) {
+            if (loadedTexture.ID == ResourceID) {
                 return loadedTexture.textureRegion;
             }
         }
@@ -75,7 +76,6 @@ public class ResourceManager {
         this.currentAtlasId = 0;
         this.context = context;
         int eventType = 0;
-        BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 
         try {
             parser = context.getResources().getXml(R.xml.atlas);
@@ -168,23 +168,27 @@ public class ResourceManager {
     }
 
     private void parseTextureStartTag() {
-            String texturePath = "";
+            int textureID = 0;
             String textureName = "";
 
             for (int i = 0; i < parser.getAttributeCount(); i++) {
                 if (parser.getAttributeName(i).equals("name")) {
                     textureName = parser.getAttributeValue(i);
-                }
-                if (parser.getAttributeName(i).equals("path")) {
-                    texturePath = parser.getAttributeValue(i);
+                    textureID = context.getResources().getIdentifier(
+                                                     textureName
+                                                   , "drawable"
+                                                   , context.getPackageName()
+                                                                    );
                 }
             }
 
             ITextureRegion textureRegion =
-                    BitmapTextureAtlasTextureRegionFactory.createFromAsset( atlasList.get(currentAtlasId)
+                    BitmapTextureAtlasTextureRegionFactory.createFromResource(
+                                                                            atlasList.get(currentAtlasId)
                                                                           , context
-                                                                          , texturePath);
-            loadedTextures.add(new Texture(textureName, textureRegion));
+                                                                          , textureID
+                                                                             );
+            loadedTextures.add(new Texture(textureID, textureRegion));
     }
 
     private TextureOptions stringToTextureOptions(String option) {
