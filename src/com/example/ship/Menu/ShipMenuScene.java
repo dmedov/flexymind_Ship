@@ -1,13 +1,10 @@
-package com.example.ship.Menu;
+package com.example.ship.menu;
 
 import android.graphics.Point;
-import android.graphics.Typeface;
 import com.example.ship.Atlas.ResourceManager;
-import com.example.ship.Events;
 import com.example.ship.R;
 import com.example.ship.SceletonActivity;
 import org.andengine.engine.Engine;
-import org.andengine.engine.camera.hud.HUD;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.sprite.Sprite;
@@ -16,8 +13,6 @@ import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.util.color.Color;
-
-import java.util.ArrayList;
 
 /**
  * Created with IntelliJ IDEA.
