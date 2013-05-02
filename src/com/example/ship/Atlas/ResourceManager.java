@@ -28,15 +28,16 @@ Date: 22.04.13
 <?xml version="1.0" encoding="utf-8" ?>
 <resources>
             <Atlas type=" [Сюда писать тип атласа ( BILINEAR, REPEATE, ... )] "
+                   format=" [Сюда писать формат атласа (RGBA_8888, RGBA_4444, RGB_565, A_8)] "
                    width=" [Сюда писать ширину атласа] "
                    height=" [Сюда писать высоту атласа] ">
 
                 [Здесь перечисляем все текстуры, которые нужно впихнуть в этот атлас]
-                <texture path=" [Сюда пишем путь к текстуре относительно assets/gfx/] "
-                         name=" [Сюда пишем имя текстуры, по которому мы будем к ней обращаться из программы] " />
+                <texture name=" [Сюда пишем имя файла текстуры без расширения] " />
 
             </Atlas>
 </resources>
+Сами текстурв кладём в папку res/drawable/
 
 Теперь в BaseGameActivity создаём экземпляр класса ResourceManager.
 И в методе OnCreateResources у BaseGameActivity вызываем метод класса
@@ -44,7 +45,7 @@ loadAllTextures ( this, mEngine.getTextureManager() );
 Посде этого все ресурсы загружены
 
 Для получения ITextureRegion нужного ресурса вызываем метод класса
-getLoadedTextureRegion ( " [Сюда пишем имя, которое мы забили в xml] " );
+getLoadedTextureRegion ( " [Сюда пишем ID ресурса (например: R.drawable.ship)] " );
 */
 
 public class ResourceManager {
