@@ -28,18 +28,15 @@ public class Events implements TouchableMenuButtonSprite
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                menuButtonJump(button, true);
                 switch (button.getId()) {
                     case R.string.MENU_START_BUTTON:
-                        menuButtonJump(button, true);
                         break;
                     case R.string.MENU_HS_BUTTON:
-                        menuButtonJump(button, true);
                         break;
                     case R.string.MENU_CREDITS_BUTTON:
-                        menuButtonJump(button, true);
                         break;
                     case R.string.MENU_EXIT_BUTTON:
-                        menuButtonJump(button, true);
                         break;
                     default:
                         Toast.makeText(activity.getApplicationContext(), "Unknown Button Pressed", Toast.LENGTH_SHORT).show();
@@ -53,21 +50,18 @@ public class Events implements TouchableMenuButtonSprite
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                menuButtonJump(button, false);
                 switch (button.getId()) {
                     case R.string.MENU_START_BUTTON:
-                        menuButtonJump(button, false);
                         startGame();
                         break;
                     case R.string.MENU_HS_BUTTON:
-                        menuButtonJump(button, false);
                         //showHighscores();
                         break;
                     case R.string.MENU_CREDITS_BUTTON:
-                        menuButtonJump(button, false);
                         //showCredits();
                         break;
                     case R.string.MENU_EXIT_BUTTON:
-                        menuButtonJump(button, false);
                         exitApplication();
                         break;
                     default:
