@@ -49,7 +49,7 @@ public class GameScene extends Scene {
 
         ITextureRegion waveTexture = resourceManager.getLoadedTextureRegion("wave");
         Sprite waveImage = new Sprite( 0
-                                     , 300
+                                     , backgroundTexture.getHeight() / 3
                                      , waveTexture
                                      , mEngine.getVertexBufferObjectManager());
 
