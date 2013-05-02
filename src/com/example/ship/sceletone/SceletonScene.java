@@ -2,7 +2,7 @@ package com.example.ship.sceletone;
 
 import android.graphics.Point;
 import android.graphics.PointF;
-import com.example.ship.Atlas.ResourceManager;
+import com.example.ship.atlas.ResourceManager;
 import com.example.ship.Events;
 import com.example.ship.R;
 import com.example.ship.SceletonActivity;

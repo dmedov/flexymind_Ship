@@ -1,7 +1,7 @@
 package com.example.ship;
 
 import android.graphics.Point;
-import com.example.ship.Atlas.ResourceManager;
+import com.example.ship.atlas.ResourceManager;
 import com.example.ship.Menu.ShipMenuScene;
 import android.graphics.PointF;
 import android.util.DisplayMetrics;
