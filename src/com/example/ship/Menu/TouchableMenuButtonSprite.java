@@ -1,4 +1,4 @@
-package com.example.ship.Menu;
+package com.example.ship.menu;
 
 /**
  * Created with IntelliJ IDEA.

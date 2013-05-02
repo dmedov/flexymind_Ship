@@ -1,4 +1,4 @@
-package com.example.ship.Menu;
+package com.example.ship.menu;
 
 import com.example.ship.Events;
 import org.andengine.entity.sprite.Sprite;
