@@ -91,7 +91,7 @@ public class SceletonActivity extends BaseGameActivity {
         return new Point(TEXTURE_WIDTH, TEXTURE_HEIGHT);
     }
 
-    public Camera getCamera() {
+    public ZoomCamera getCamera() {
         return zoomCamera;
     }
 

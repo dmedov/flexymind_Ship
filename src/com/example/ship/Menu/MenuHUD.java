@@ -1,9 +1,7 @@
 package com.example.ship.Menu;
 
-import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.Typeface;
-import com.example.ship.Atlas.ResourceManager;
 import com.example.ship.Events;
 import com.example.ship.R;
 import com.example.ship.SceletonActivity;
@@ -11,7 +9,6 @@ import org.andengine.engine.Engine;
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
-import org.andengine.ui.activity.BaseGameActivity;
 import org.andengine.util.color.Color;
 
 import java.util.ArrayList;
@@ -30,15 +27,16 @@ public class MenuHUD extends HUD {
     private ArrayList<MenuButtonSprite> buttons;
     private Engine engine;
     private PointF cameraSize;
+    private PointF cameraScale;
     private Font buttonFont;
 
     public MenuHUD(final SceletonActivity activity) {
         super();
 
-        engine = activity.getEngine();
-        cameraSize = new PointF( activity.getCamera().getWidth()
-                               , activity.getCamera().getHeight());
         this.activity = activity;
+        engine = this.activity.getEngine();
+        cameraSize = new PointF( this.activity.getCamera().getWidth() * activity.getCamera().getZoomFactor()
+                               , this.activity.getCamera().getHeight() * activity.getCamera().getZoomFactor());
 
         createFont();
         createButtons();
@@ -70,9 +68,11 @@ public class MenuHUD extends HUD {
         float positionOffset = cameraSize.y * 0.25f;
 
         for (MenuButtonSprite button: buttons) {
-            button.setPosition( cameraSize.x * 0.5f - startButtonSprite.getWidth() * 0.5f
+            float buttonScale = cameraSize.y * 0.15f / button.getHeight();
+            button.setScale(buttonScale);
+            button.setPosition( cameraSize.x * 0.5f - button.getWidth() * 0.5f
                               , positionOffset);
-            positionOffset += startButtonSprite.getHeight() + cameraSize.y * 0.02f;
+            positionOffset += cameraSize.y * 0.175f;
 
             this.registerTouchArea(button);
             this.attachChild(button);
