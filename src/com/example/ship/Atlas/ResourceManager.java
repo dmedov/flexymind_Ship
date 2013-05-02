@@ -62,9 +62,9 @@ public class ResourceManager {
         atlasList = new ArrayList<BuildableBitmapTextureAtlas>();
     }
 
-    public ITextureRegion getLoadedTextureRegion(int ResourceID) {
+    public ITextureRegion getLoadedTextureRegion(int resourceID) {
         for (Texture loadedTexture : loadedTextures) {
-            if (loadedTexture.ID == ResourceID) {
+            if (loadedTexture.id == resourceID) {
                 return loadedTexture.textureRegion;
             }
         }

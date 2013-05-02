@@ -9,11 +9,11 @@ Date: 22.04.13
 
 public class Texture {
 
-    public int ID;
+    public int id;
     public ITextureRegion textureRegion;
 
-    public Texture (int ID, ITextureRegion textureRegion) {
-        this.ID = ID;
+    public Texture (int id, ITextureRegion textureRegion) {
+        this.id = id;
         this.textureRegion = textureRegion;
     }
 
