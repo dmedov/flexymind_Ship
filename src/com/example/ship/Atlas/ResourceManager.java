@@ -61,9 +61,9 @@ public class ResourceManager {
         atlasList = new ArrayList<BuildableBitmapTextureAtlas>();
     }
 
-    public ITextureRegion getLoadedTextureRegion(String textureName) {
+    public ITextureRegion getLoadedTextureRegion(int ResourceID) {
         for (Texture loadedTexture : loadedTextures) {
-            if (loadedTexture.name.equalsIgnoreCase(textureName)) {
+            if (loadedTexture.ID == ResourceID) {
                 return loadedTexture.textureRegion;
             }
         }
@@ -75,7 +75,6 @@ public class ResourceManager {
         this.currentAtlasId = 0;
         this.context = context;
         int eventType = 0;
-        BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 
         try {
             parser = context.getResources().getXml(R.xml.atlas);
@@ -168,23 +167,27 @@ public class ResourceManager {
     }
 
     private void parseTextureStartTag() {
-            String texturePath = "";
+            int textureID = 0;
             String textureName = "";
 
             for (int i = 0; i < parser.getAttributeCount(); i++) {
                 if (parser.getAttributeName(i).equals("name")) {
                     textureName = parser.getAttributeValue(i);
-                }
-                if (parser.getAttributeName(i).equals("path")) {
-                    texturePath = parser.getAttributeValue(i);
+                    textureID = context.getResources().getIdentifier(
+                                                     textureName
+                                                   , "drawable"
+                                                   , context.getPackageName()
+                                                                    );
                 }
             }
 
             ITextureRegion textureRegion =
-                    BitmapTextureAtlasTextureRegionFactory.createFromAsset( atlasList.get(currentAtlasId)
+                    BitmapTextureAtlasTextureRegionFactory.createFromResource(
+                                                                            atlasList.get(currentAtlasId)
                                                                           , context
-                                                                          , texturePath);
-            loadedTextures.add(new Texture(textureName, textureRegion));
+                                                                          , textureID
+                                                                             );
+            loadedTextures.add(new Texture(textureID, textureRegion));
     }
 
     private TextureOptions stringToTextureOptions(String option) {

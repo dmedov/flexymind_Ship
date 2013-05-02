@@ -50,8 +50,7 @@ public class SceletonScene extends Scene {
     }
 
     private void createShipLogo() {
-        ITextureRegion shipTextureRegion = resourceManager.getLoadedTextureRegion(
-                activity.getResources().getString(R.string.SCELETONE_LOGO_TEXTURE));
+        ITextureRegion shipTextureRegion = resourceManager.getLoadedTextureRegion(R.drawable.ship);
 
         final PointF shipPosition = new PointF( textureSize.x * 0.5f - shipTextureRegion.getWidth() * 0.5f
                                               , textureSize.y * 0.5f - shipTextureRegion.getHeight() * 0.5f);
