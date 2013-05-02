@@ -18,6 +18,8 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /*
 Created by: IVAN
@@ -49,7 +51,7 @@ getLoadedTextureRegion ( " [Сюда пишем ID ресурса (наприм�
 */
 
 public class ResourceManager {
-    private final ArrayList<Texture> loadedTextures;
+    private final Map<Integer, ITextureRegion> loadedTextures;
     protected final ArrayList<BuildableBitmapTextureAtlas> atlasList;
 
     private XmlPullParser parser = null;
@@ -58,17 +60,12 @@ public class ResourceManager {
     private int currentAtlasId;
 
     public ResourceManager() {
-        loadedTextures = new ArrayList<Texture>();
+        loadedTextures = new HashMap<Integer, ITextureRegion>();
         atlasList = new ArrayList<BuildableBitmapTextureAtlas>();
     }
 
     public ITextureRegion getLoadedTextureRegion(int resourceID) {
-        for (Texture loadedTexture : loadedTextures) {
-            if (loadedTexture.id == resourceID) {
-                return loadedTexture.textureRegion;
-            }
-        }
-        return null;
+        return loadedTextures.get(resourceID);
     }
 
     public void loadAllTextures(Context context, TextureManager textureManager) {
@@ -188,7 +185,7 @@ public class ResourceManager {
                                                                           , context
                                                                           , textureID
                                                                              );
-            loadedTextures.add(new Texture(textureID, textureRegion));
+            loadedTextures.put(textureID, textureRegion);
     }
 
     private TextureOptions stringToTextureOptions(String option) {
