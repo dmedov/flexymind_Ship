@@ -4,6 +4,7 @@ import android.widget.Toast;
 import com.example.ship.menu.MenuButtonSprite;
 import com.example.ship.menu.TouchableMenuButtonSprite;
 import com.example.ship.sceletone.TouchableSceletonSprite;
+import org.andengine.entity.sprite.Sprite;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,7 +16,7 @@ import com.example.ship.sceletone.TouchableSceletonSprite;
 public class Events implements TouchableMenuButtonSprite
                              , TouchableSceletonSprite {
 
-    private final static float BUTTON_JUMP_AMPLITUDE = 0.005f;
+    private final static float RELATIVE_BUTTON_JUMP_AMPLITUDE = 0.005f;
     private final SceletonActivity activity;
 
     public Events(SceletonActivity activity) {
@@ -29,20 +30,16 @@ public class Events implements TouchableMenuButtonSprite
             public void run() {
                 switch (button.getId()) {
                     case R.string.MENU_START_BUTTON:
-                        button.setPosition( button.getX()
-                                          , button.getY() - activity.getTextureSize().y * BUTTON_JUMP_AMPLITUDE);
+                        menuButtonJump(button, true);
                         break;
                     case R.string.MENU_HS_BUTTON:
-                        button.setPosition( button.getX()
-                                          , button.getY() - activity.getTextureSize().y * BUTTON_JUMP_AMPLITUDE);
+                        menuButtonJump(button, true);
                         break;
                     case R.string.MENU_CREDITS_BUTTON:
-                        button.setPosition( button.getX()
-                                          , button.getY() - activity.getTextureSize().y * BUTTON_JUMP_AMPLITUDE);
+                        menuButtonJump(button, true);
                         break;
                     case R.string.MENU_EXIT_BUTTON:
-                        button.setPosition( button.getX()
-                                          , button.getY() - activity.getTextureSize().y * BUTTON_JUMP_AMPLITUDE);
+                        menuButtonJump(button, true);
                         break;
                     default:
                         Toast.makeText(activity.getApplicationContext(), "Unknown Button Pressed", Toast.LENGTH_SHORT).show();
@@ -58,23 +55,19 @@ public class Events implements TouchableMenuButtonSprite
             public void run() {
                 switch (button.getId()) {
                     case R.string.MENU_START_BUTTON:
-                        button.setPosition( button.getX()
-                                          , button.getY() + activity.getTextureSize().y * BUTTON_JUMP_AMPLITUDE);
+                        menuButtonJump(button, false);
                         startGame();
                         break;
                     case R.string.MENU_HS_BUTTON:
-                        button.setPosition( button.getX()
-                                          , button.getY() + activity.getTextureSize().y * BUTTON_JUMP_AMPLITUDE);
+                        menuButtonJump(button, false);
                         //showHighscores();
                         break;
                     case R.string.MENU_CREDITS_BUTTON:
-                        button.setPosition( button.getX()
-                                          , button.getY() + activity.getTextureSize().y * BUTTON_JUMP_AMPLITUDE);
+                        menuButtonJump(button, false);
                         //showCredits();
                         break;
                     case R.string.MENU_EXIT_BUTTON:
-                        button.setPosition( button.getX()
-                                          , button.getY() + activity.getTextureSize().y * BUTTON_JUMP_AMPLITUDE);
+                        menuButtonJump(button, false);
                         exitApplication();
                         break;
                     default:
@@ -82,6 +75,15 @@ public class Events implements TouchableMenuButtonSprite
                 }
             }
         });
+    }
+
+    private void menuButtonJump (Sprite button, boolean up) {
+        float jumpAmplitude = activity.getTextureSize().y * RELATIVE_BUTTON_JUMP_AMPLITUDE;
+        if (up){
+            button.setPosition( button.getX(), button.getY() - jumpAmplitude);
+        } else {
+            button.setPosition( button.getX(), button.getY() + jumpAmplitude);
+        }
     }
 
     private void startGame() {
