@@ -1,4 +1,4 @@
-package com.example.ship.Game;
+package com.example.ship.game;
 
 import com.example.ship.Atlas.ResourceManager;
 import com.example.ship.SceletonActivity;
