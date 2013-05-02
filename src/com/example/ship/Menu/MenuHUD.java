@@ -23,6 +23,9 @@ import java.util.ArrayList;
 public class MenuHUD extends HUD {
     private final static int BUTTON_FONT_HEIGHT = 50;
     private final static int FONT_ATLAS_SIDE = 256;
+    private final static float RELATIVE_TITLE_HEIGHT = 0.25f;
+    private final static float RELATIVE_BUTTON_HEIGHT = 0.15f;
+    private final static float RELATIVE_BUTTON_OFFSET_HEIGHT = 0.175f;
     private final SceletonActivity activity;
     private ArrayList<MenuButtonSprite> buttons;
     private Engine engine;
@@ -65,14 +68,15 @@ public class MenuHUD extends HUD {
         buttons.add(creditsButtonSprite);
         buttons.add(exitButtonSprite);
 
-        float positionOffset = cameraSize.y * 0.25f;
+        float positionOffset = cameraSize.y * RELATIVE_TITLE_HEIGHT;
 
         for (MenuButtonSprite button: buttons) {
-            float buttonScale = cameraSize.y * 0.15f / button.getHeight();
+            float buttonScale = cameraSize.y * RELATIVE_BUTTON_HEIGHT / button.getHeight();
             button.setScale(buttonScale);
+
             button.setPosition( cameraSize.x * 0.5f - button.getWidth() * 0.5f
                               , positionOffset);
-            positionOffset += cameraSize.y * 0.175f;
+            positionOffset += cameraSize.y * RELATIVE_BUTTON_OFFSET_HEIGHT;
 
             this.registerTouchArea(button);
             this.attachChild(button);
