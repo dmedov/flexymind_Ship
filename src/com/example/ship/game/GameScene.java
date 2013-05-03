@@ -18,6 +18,7 @@ public class GameScene extends Scene {
     private static final int LAYER_SECOND_WAVE = layerCount++;
     private static final int LAYER_THIRD_WAVE  = layerCount++;
     private static final int LAYER_PERISCOPE   = layerCount++;
+    private static final int WAVES_NUMBER = 3;
 
     private final SceletonActivity activity;
     private final Engine mEngine;
@@ -62,7 +63,7 @@ public class GameScene extends Scene {
 
         ITextureRegion waveSprite = resourceManager.getLoadedTextureRegion(R.drawable.wave);
         Sprite waveImage = new Sprite( 0
-                                     , backgroundTexture.getHeight() / 3
+                                     , backgroundTexture.getHeight() / WAVES_NUMBER
                                      , waveSprite
                                      , mEngine.getVertexBufferObjectManager());
 

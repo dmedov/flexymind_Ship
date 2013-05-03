@@ -18,12 +18,12 @@ import java.util.ArrayList;
  */
 public class GameHUD extends HUD {
 
-    private final SceletonActivity activity;
-    private final Engine engine;
     private static final float RELATIVE_BUTTON_HEIGHT = 0.15f;
     private static final float RELATIVE_SPACE_BETWEEN_CONTROLS = 0.01f;
     private static final float RELATIVE_BORDER = 0.02f;
     private static final float BUTTON_ALPHA = 0.75f;
+    private final SceletonActivity activity;
+    private final Engine engine;
     private       PointF cameraSize;
     private       ArrayList<GameButtonSprite> buttons;
 

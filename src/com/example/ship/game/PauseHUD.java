@@ -22,10 +22,10 @@ public class PauseHUD extends HUD {
 
     private static final float RELATIVE_BUTTON_HEIGHT = 0.15f;
     private static final float RELATIVE_BORDER = 0.02f;
+    private static final float BACKGROUND_ALPHA = 0.7f;
     private final SceletonActivity activity;
     private final Engine engine;
     private final PointF cameraSize;
-    private static final float BACKGROUND_ALPHA = 0.7f;
     private ArrayList<GameButtonSprite> buttons;
 
     public PauseHUD(SceletonActivity activity) {
@@ -72,7 +72,12 @@ public class PauseHUD extends HUD {
     }
 
     private void createBackground() {
-        Rectangle background = new Rectangle(0, 0, cameraSize.x, cameraSize.y, engine.getVertexBufferObjectManager());
+        Rectangle background = new Rectangle( 0
+                                            , 0
+                                            , cameraSize.x
+                                            , cameraSize.y
+                                            , engine.getVertexBufferObjectManager());
+
         Color backgroundColor = new Color(0.0f, 0.0f, 0.0f);
 
         background.setColor(backgroundColor);
