@@ -1,6 +1,7 @@
 package com.example.ship.game;
 
 import android.graphics.PointF;
+import com.example.ship.R;
 import com.example.ship.SceletonActivity;
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.hud.HUD;
@@ -16,6 +17,8 @@ public class GameHUD extends HUD {
 
     private final SceletonActivity activity;
     private final Engine engine;
+    private static final float RELATIVE_BUTTON_HEIGHT = 0.1f;
+    private static final float RELATIVE_BORDER = 0.05f;
     private       PointF cameraSize;
 
     public GameHUD(SceletonActivity activity) {
@@ -26,5 +29,21 @@ public class GameHUD extends HUD {
         cameraSize = new PointF( this.activity.getCamera().getWidth() * activity.getCamera().getZoomFactor()
                                , this.activity.getCamera().getHeight() * activity.getCamera().getZoomFactor());
 
+        createButtons();
+
+    }
+
+    private void createButtons() {
+        GameButtonSprite pauseButton;
+        pauseButton = new GameButtonSprite( activity.getResourceManager().getLoadedTextureRegion(R.drawable.menubutton)
+                                          , engine.getVertexBufferObjectManager()
+                                          , R.string.GAME_PAUSE_BUTTON);
+
+        pauseButton.setScale(cameraSize.y * RELATIVE_BUTTON_HEIGHT / pauseButton.getHeight());
+        pauseButton.setPosition( RELATIVE_BORDER * cameraSize.x
+                               , RELATIVE_BORDER * cameraSize.y);
+
+        this.registerTouchArea(pauseButton);
+        this.attachChild(pauseButton);
     }
 }
