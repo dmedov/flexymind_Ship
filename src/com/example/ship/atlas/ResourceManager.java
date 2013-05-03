@@ -1,4 +1,4 @@
-package com.example.ship.Atlas;
+package com.example.ship.atlas;
 
 import android.content.Context;
 import android.util.Log;
