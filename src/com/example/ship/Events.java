@@ -1,8 +1,8 @@
 package com.example.ship;
 
 import android.widget.Toast;
-import com.example.ship.Menu.MenuButtonSprite;
-import com.example.ship.Menu.TouchableMenuButtonSprite;
+import com.example.ship.menu.MenuButtonSprite;
+import com.example.ship.menu.TouchableMenuButtonSprite;
 import com.example.ship.sceletone.TouchableSceletonSprite;
 
 /**

@@ -1,7 +1,6 @@
 package com.example.ship;
 
-import com.example.ship.Menu.ShipMenuScene;
-import com.example.ship.SceletonActivity;
+import com.example.ship.menu.ShipMenuScene;
 import com.example.ship.sceletone.SceletonScene;
 import org.andengine.entity.scene.Scene;
 
