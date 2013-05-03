@@ -33,8 +33,8 @@ public class PauseHUD extends HUD {
 
         this.activity = activity;
         engine = this.activity.getEngine();
-        cameraSize = new PointF( this.activity.getCamera().getWidth() * activity.getCamera().getZoomFactor()
-                               , this.activity.getCamera().getHeight() * activity.getCamera().getZoomFactor());
+        cameraSize = new PointF( this.activity.getCamera().getWidthRaw()
+                               , this.activity.getCamera().getHeightRaw());
 
         createBackground();
         createButtons();
