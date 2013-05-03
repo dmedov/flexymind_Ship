@@ -8,5 +8,11 @@
             <Atlas type="BILINEAR" width="2048" height="2048" format="RGBA_8888">
                 <texture name="gamebackground"/>
                 <texture name="wave"/>
+                <texture name="pausebutton"/>
+                <texture name="playbutton"/>
+                <texture name="backbutton"/>
+                <texture name="leftbutton"/>
+                <texture name="rightbutton"/>
+                <texture name="firebutton"/>
             </Atlas>
 </resources>

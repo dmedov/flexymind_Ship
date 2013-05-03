@@ -37,6 +37,7 @@ public class SceneSwitcher {
         if (rootScene.hasChildScene()) {
             rootScene.clearChildScene();
         }
+        rootScene.unregisterTouchArea();
         rootScene.setChildScene(menuScene);
 
         MenuHUD menuHUD = new MenuHUD(activity);
@@ -51,7 +52,15 @@ public class SceneSwitcher {
         }
         rootScene.unregisterTouchArea();
         rootScene.setChildScene(gameScene);
-        activity.getCamera().setHUD(null);
+        gameScene.switchToGameHUD();
+    }
+
+    public void switchToGameHUD() {
+        gameScene.switchToGameHUD();
+    }
+
+    public void switchToPauseHUD() {
+        gameScene.switchToPauseHUD();
     }
 
     public SceletonScene getRootScene() {

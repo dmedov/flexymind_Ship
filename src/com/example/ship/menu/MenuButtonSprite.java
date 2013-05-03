@@ -34,10 +34,6 @@ public class MenuButtonSprite extends Sprite {
         this.touchableMenuButtonSprite = events;
     }
 
-    public String getName() {
-        return text.getText().toString();
-    }
-
     public int getId() {
         return id;
     }

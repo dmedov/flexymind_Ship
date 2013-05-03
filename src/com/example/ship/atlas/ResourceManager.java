@@ -166,7 +166,7 @@ public class ResourceManager {
 
     private void parseTextureStartTag() {
             int textureID = 0;
-            String textureName = "";
+            String textureName;
 
             for (int i = 0; i < parser.getAttributeCount(); i++) {
                 if (parser.getAttributeName(i).equals("name")) {
@@ -174,8 +174,7 @@ public class ResourceManager {
                     textureID = context.getResources().getIdentifier(
                                                      textureName
                                                    , "drawable"
-                                                   , context.getPackageName()
-                                                                    );
+                                                   , context.getPackageName());
                 }
             }
 
@@ -183,8 +182,7 @@ public class ResourceManager {
                     BitmapTextureAtlasTextureRegionFactory.createFromResource(
                                                                             atlasList.get(currentAtlasId)
                                                                           , context
-                                                                          , textureID
-                                                                             );
+                                                                          , textureID);
             loadedTextures.put(textureID, textureRegion);
     }
 
