@@ -1,6 +1,5 @@
 package com.example.ship;
 
-import android.widget.Toast;
 import com.example.ship.game.GameButtonSprite;
 import com.example.ship.game.TouchableGameButtonSprite;
 import com.example.ship.menu.MenuButtonSprite;
@@ -56,8 +55,6 @@ public class Events implements TouchableMenuButtonSprite
                     case R.string.MENU_EXIT_BUTTON:
                         exitApplication();
                         break;
-                    default:
-                        Toast.makeText(activity.getApplicationContext(), "Unknown Button Released", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -69,6 +66,14 @@ public class Events implements TouchableMenuButtonSprite
             @Override
             public void run() {
                 menuButtonPulse(button, true);
+                switch (button.getId()) {
+                    case R.string.GAME_LEFT_BUTTON:
+                        moveLeft();
+                        break;
+                    case R.string.GAME_RIGHT_BUTTON:
+                        moveRight();
+                        break;
+                }
             }
         });
     }
@@ -92,11 +97,6 @@ public class Events implements TouchableMenuButtonSprite
                     case R.string.GAME_FIRE_BUTTON:
                         fire();
                         break;
-                    case R.string.GAME_MOVE_BUTTON:
-                        fire();
-                        break;
-                    default:
-                        Toast.makeText(activity.getApplicationContext(), "Unknown Button Released", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -123,6 +123,13 @@ public class Events implements TouchableMenuButtonSprite
         //To change body of created methods use File | Settings | File Templates.
     }
 
+    private void moveRight() {
+        //To change body of created methods use File | Settings | File Templates.
+    }
+
+    private void moveLeft() {
+        //To change body of created methods use File | Settings | File Templates.
+    }
 
     private void startGame() {
         activity.getSceneSwitcher().switchToGameScene();

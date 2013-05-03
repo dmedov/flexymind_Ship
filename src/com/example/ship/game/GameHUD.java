@@ -21,6 +21,7 @@ public class GameHUD extends HUD {
     private final SceletonActivity activity;
     private final Engine engine;
     private static final float RELATIVE_BUTTON_HEIGHT = 0.15f;
+    private static final float RELATIVE_SPACE_BETWEEN_CONTROLS = 0.01f;
     private static final float RELATIVE_BORDER = 0.02f;
     private static final float BUTTON_ALPHA = 0.75f;
     private       PointF cameraSize;
@@ -55,12 +56,19 @@ public class GameHUD extends HUD {
                                          , R.string.GAME_FIRE_BUTTON);
         buttons.add(fireButton);
 
-        GameButtonSprite moveButton;
-        moveButton = new GameButtonSprite( activity.getResourceManager()
-                                                    .getLoadedTextureRegion(R.drawable.movebutton)
+        GameButtonSprite moveLeftButton;
+        moveLeftButton = new GameButtonSprite( activity.getResourceManager()
+                                                    .getLoadedTextureRegion(R.drawable.leftbutton)
                                           , engine.getVertexBufferObjectManager()
-                                          , R.string.GAME_MOVE_BUTTON);
-        buttons.add(moveButton);
+                                          , R.string.GAME_LEFT_BUTTON);
+        buttons.add(moveLeftButton);
+
+        GameButtonSprite moveRightButton;
+        moveRightButton = new GameButtonSprite( activity.getResourceManager()
+                                                        .getLoadedTextureRegion(R.drawable.rightbutton)
+                                              , engine.getVertexBufferObjectManager()
+                                              , R.string.GAME_RIGHT_BUTTON);
+        buttons.add(moveRightButton);
 
         for (GameButtonSprite button: buttons) {
             button.setAlpha(BUTTON_ALPHA);
@@ -72,9 +80,12 @@ public class GameHUD extends HUD {
         pauseButton.setPosition( RELATIVE_BORDER * cameraSize.x
                                , RELATIVE_BORDER * cameraSize.y);
         fireButton.setPosition( (1 - RELATIVE_BORDER) * cameraSize.x - fireButton.getWidth()
-                              , (1 - RELATIVE_BORDER) * cameraSize.y - fireButton.getWidth());
-        moveButton.setPosition( RELATIVE_BORDER * cameraSize.x
-                              , (1 - RELATIVE_BORDER) * cameraSize.y - fireButton.getWidth());
+                              , (1 - RELATIVE_BORDER) * cameraSize.y - fireButton.getHeight());
+        moveLeftButton.setPosition( RELATIVE_BORDER * cameraSize.x
+                                  , (1 - RELATIVE_BORDER) * cameraSize.y - moveLeftButton.getHeight());
+        moveRightButton.setPosition( (RELATIVE_BORDER + RELATIVE_SPACE_BETWEEN_CONTROLS) * cameraSize.x
+                                                + moveRightButton.getWidth()
+                                   , (1 - RELATIVE_BORDER) * cameraSize.y - moveRightButton.getHeight());
     }
 
     public void setEventsToChildren(Events events) {
