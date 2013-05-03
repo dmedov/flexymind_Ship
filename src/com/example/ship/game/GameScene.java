@@ -25,7 +25,7 @@ public class GameScene extends Scene {
     private GameHUD gameHUD;
     private PauseHUD pauseHUD;
 
-    public GameScene(final SceletonActivity activity){
+    public GameScene(final SceletonActivity activity) {
         super();
         this.activity = activity;
         this.mEngine = activity.getEngine();
