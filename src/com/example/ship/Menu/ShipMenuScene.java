@@ -1,4 +1,4 @@
-package com.example.ship.Menu;
+package com.example.ship.menu;
 
 import android.graphics.Point;
 import android.graphics.Typeface;
