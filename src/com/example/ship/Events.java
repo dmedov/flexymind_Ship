@@ -33,18 +33,6 @@ public class Events implements TouchableMenuButtonSprite
             @Override
             public void run() {
                 menuButtonJump(button, true);
-                switch (button.getId()) {
-                    case R.string.MENU_START_BUTTON:
-                        break;
-                    case R.string.MENU_HS_BUTTON:
-                        break;
-                    case R.string.MENU_CREDITS_BUTTON:
-                        break;
-                    case R.string.MENU_EXIT_BUTTON:
-                        break;
-                    default:
-                        Toast.makeText(activity.getApplicationContext(), "Unknown Button Pressed", Toast.LENGTH_SHORT).show();
-                }
             }
         });
     }
@@ -60,10 +48,10 @@ public class Events implements TouchableMenuButtonSprite
                         startGame();
                         break;
                     case R.string.MENU_HS_BUTTON:
-                        //showHighscores();
+                        showHighscores();
                         break;
                     case R.string.MENU_CREDITS_BUTTON:
-                        //showCredits();
+                        showCredits();
                         break;
                     case R.string.MENU_EXIT_BUTTON:
                         exitApplication();
@@ -81,12 +69,6 @@ public class Events implements TouchableMenuButtonSprite
             @Override
             public void run() {
                 menuButtonPulse(button, true);
-                switch (button.getId()) {
-                    case R.string.GAME_PAUSE_BUTTON:
-                        break;
-                    default:
-                        Toast.makeText(activity.getApplicationContext(), "Unknown Button Pressed", Toast.LENGTH_SHORT).show();
-                }
             }
         });
     }
@@ -99,7 +81,13 @@ public class Events implements TouchableMenuButtonSprite
                 menuButtonPulse(button, false);
                 switch (button.getId()) {
                     case R.string.GAME_PAUSE_BUTTON:
-                        activity.getSceneSwitcher().switchToRootScene();
+                        pauseGame();
+                        break;
+                    case R.string.GAME_PAUSE_MENU_BUTTON:
+                        backToMenu();
+                        break;
+                    case R.string.GAME_PAUSE_BACK_BUTTON:
+                        backToGame();
                         break;
                     default:
                         Toast.makeText(activity.getApplicationContext(), "Unknown Button Released", Toast.LENGTH_SHORT).show();
@@ -123,8 +111,8 @@ public class Events implements TouchableMenuButtonSprite
                               , button.getY() - button.getHeight() * RELATIVE_BUTTON_PULSE_AMPLITUDE * 0.5f);
             button.setScale(RELATIVE_BUTTON_PULSE_AMPLITUDE + 1);
         } else {
-            button.setPosition( button.getX() + button.getWidth() / RELATIVE_BUTTON_PULSE_AMPLITUDE * 0.5f
-                              , button.getY() + button.getHeight() / RELATIVE_BUTTON_PULSE_AMPLITUDE * 0.5f);
+            button.setPosition( button.getX() + button.getWidth() / (1 + RELATIVE_BUTTON_PULSE_AMPLITUDE) * 0.5f
+                              , button.getY() + button.getHeight() / (1 + RELATIVE_BUTTON_PULSE_AMPLITUDE) * 0.5f);
             button.setScale(1);
         }
     }
@@ -145,6 +133,17 @@ public class Events implements TouchableMenuButtonSprite
         activity.finish();
     }
 
+    private void pauseGame() {
+        activity.getSceneSwitcher().switchToPauseHUD();
+    }
+
+    private void backToGame() {
+        activity.getSceneSwitcher().switchToGameHUD();
+    }
+
+    private void backToMenu() {
+        activity.getSceneSwitcher().switchToMenuScene();
+    }
 
     @Override
     public void onSceletoneSpriteTouched() {

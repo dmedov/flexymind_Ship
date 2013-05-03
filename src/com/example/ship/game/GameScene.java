@@ -22,7 +22,8 @@ public class GameScene extends Scene {
     private final SceletonActivity activity;
     private final Engine mEngine;
     private final ResourceManager resourceManager;
-
+    private GameHUD gameHUD;
+    private PauseHUD pauseHUD;
 
     public GameScene(final SceletonActivity activity){
         super();
@@ -31,6 +32,20 @@ public class GameScene extends Scene {
         this.resourceManager = activity.getResourceManager();
 
         createBackground();
+
+        gameHUD = new GameHUD(activity);
+        gameHUD.setEventsToChildren(activity.getEvents());
+
+        pauseHUD = new PauseHUD(activity);
+        pauseHUD.setEventsToChildren(activity.getEvents());
+    }
+
+    public void switchToPauseHUD() {
+        activity.getCamera().setHUD(pauseHUD);
+    }
+
+    public void switchToGameHUD() {
+        activity.getCamera().setHUD(gameHUD);
     }
 
     private void createBackground() {
@@ -56,5 +71,4 @@ public class GameScene extends Scene {
         Color backgroundColor = new Color(0.09804f, 0.6274f, 0.8784f);
         this.setBackground(new Background(backgroundColor));
     }
-
 }
