@@ -62,8 +62,7 @@ public class ShipMenuScene extends Scene {
     }
 
     private void createBackground() {
-        ITextureRegion backgroundTexture = resourceManager.getLoadedTextureRegion(
-                getStringResource(R.string.MENU_BACKGROUND_TEXTURE));
+        ITextureRegion backgroundTexture = resourceManager.getLoadedTextureRegion(R.drawable.menubackground);
         Sprite backgroundImage = new Sprite( 0
                                            , 0
                                            , backgroundTexture

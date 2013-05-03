@@ -96,8 +96,7 @@ public class MenuHUD extends HUD {
     }
 
     private MenuButtonSprite createMenuButtonSprite(int labelId, int buttonId) {
-        return new MenuButtonSprite( activity.getResourceManager().getLoadedTextureRegion(
-                                            getStringResource(R.string.MENU_BUTTON_TEXTURE))
+        return new MenuButtonSprite( activity.getResourceManager().getLoadedTextureRegion(R.drawable.menubutton)
                                    , engine.getVertexBufferObjectManager()
                                    , buttonId
                                    , getStringResource(labelId)
