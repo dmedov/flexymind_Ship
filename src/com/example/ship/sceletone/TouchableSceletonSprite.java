@@ -1,7 +1,5 @@
 package com.example.ship.sceletone;
 
-import org.andengine.entity.scene.Scene;
-
 /**
  * Created with IntelliJ IDEA.
  * User: Vasya
