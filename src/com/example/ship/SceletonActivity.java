@@ -1,12 +1,11 @@
 package com.example.ship;
 
 import android.graphics.Point;
-import com.example.ship.atlas.ResourceManager;
-import com.example.ship.menu.ShipMenuScene;
 import android.graphics.PointF;
 import android.util.DisplayMetrics;
+import com.example.ship.atlas.ResourceManager;
+import com.example.ship.menu.ShipMenuScene;
 import com.example.ship.sceletone.SceletonScene;
-import org.andengine.engine.camera.Camera;
 import org.andengine.engine.camera.ZoomCamera;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
@@ -91,7 +90,7 @@ public class SceletonActivity extends BaseGameActivity {
         return new Point(TEXTURE_WIDTH, TEXTURE_HEIGHT);
     }
 
-    public Camera getCamera() {
+    public ZoomCamera getCamera() {
         return zoomCamera;
     }
 

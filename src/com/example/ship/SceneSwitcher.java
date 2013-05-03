@@ -21,7 +21,6 @@ public class SceneSwitcher {
     public SceneSwitcher(SceletonActivity activity) {
         this.activity = activity;
         menuScene = new ShipMenuScene(activity);
-        menuScene.setEventsToChildren(activity.getEvents());
         rootScene = new SceletonScene(activity);
         rootScene.setEvents(activity.getEvents());
     }
@@ -36,7 +35,6 @@ public class SceneSwitcher {
             rootScene.clearChildScene();
         }
         rootScene.setChildScene(menuScene);
-        activity.getCamera().setHUD(menuScene.getHud());
     }
 
     public void switchToGameScene() {
