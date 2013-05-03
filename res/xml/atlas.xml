@@ -11,5 +11,7 @@
                 <texture name="pausebutton"/>
                 <texture name="playbutton"/>
                 <texture name="backbutton"/>
+                <texture name="movebutton"/>
+                <texture name="firebutton"/>
             </Atlas>
 </resources>

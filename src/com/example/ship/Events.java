@@ -92,6 +92,9 @@ public class Events implements TouchableMenuButtonSprite
                     case R.string.GAME_FIRE_BUTTON:
                         fire();
                         break;
+                    case R.string.GAME_MOVE_BUTTON:
+                        fire();
+                        break;
                     default:
                         Toast.makeText(activity.getApplicationContext(), "Unknown Button Released", Toast.LENGTH_SHORT).show();
                 }
