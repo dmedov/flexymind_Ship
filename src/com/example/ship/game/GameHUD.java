@@ -46,18 +46,35 @@ public class GameHUD extends HUD {
                                                     .getLoadedTextureRegion(R.drawable.pausebutton)
                                           , engine.getVertexBufferObjectManager()
                                           , R.string.GAME_PAUSE_BUTTON);
-
-        pauseButton.setScale(cameraSize.y * RELATIVE_BUTTON_HEIGHT / pauseButton.getHeight());
-        pauseButton.setPosition( RELATIVE_BORDER * cameraSize.x
-                               , RELATIVE_BORDER * cameraSize.y);
-
-        pauseButton.setAlpha(BUTTON_ALPHA);
-
         buttons.add(pauseButton);
+
+        GameButtonSprite fireButton;
+        fireButton = new GameButtonSprite( activity.getResourceManager()
+                                                    .getLoadedTextureRegion(R.drawable.firebutton)
+                                         , engine.getVertexBufferObjectManager()
+                                         , R.string.GAME_FIRE_BUTTON);
+        buttons.add(fireButton);
+
+        GameButtonSprite moveButton;
+        moveButton = new GameButtonSprite( activity.getResourceManager()
+                                                    .getLoadedTextureRegion(R.drawable.movebutton)
+                                          , engine.getVertexBufferObjectManager()
+                                          , R.string.GAME_MOVE_BUTTON);
+        buttons.add(moveButton);
+
         for (GameButtonSprite button: buttons) {
+            button.setAlpha(BUTTON_ALPHA);
+            button.setScale(cameraSize.y * RELATIVE_BUTTON_HEIGHT / fireButton.getHeight());
             this.registerTouchArea(button);
             this.attachChild(button);
         }
+
+        pauseButton.setPosition( RELATIVE_BORDER * cameraSize.x
+                               , RELATIVE_BORDER * cameraSize.y);
+        fireButton.setPosition( (1 - RELATIVE_BORDER) * cameraSize.x - fireButton.getWidth()
+                              , (1 - RELATIVE_BORDER) * cameraSize.y - fireButton.getWidth());
+        moveButton.setPosition( RELATIVE_BORDER * cameraSize.x
+                              , (1 - RELATIVE_BORDER) * cameraSize.y - fireButton.getWidth());
     }
 
     public void setEventsToChildren(Events events) {

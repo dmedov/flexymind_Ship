@@ -89,6 +89,9 @@ public class Events implements TouchableMenuButtonSprite
                     case R.string.GAME_PAUSE_BACK_BUTTON:
                         backToGame();
                         break;
+                    case R.string.GAME_FIRE_BUTTON:
+                        fire();
+                        break;
                     default:
                         Toast.makeText(activity.getApplicationContext(), "Unknown Button Released", Toast.LENGTH_SHORT).show();
                 }
@@ -112,6 +115,11 @@ public class Events implements TouchableMenuButtonSprite
             button.setScale(1);
         }
     }
+
+    private void fire() {
+        //To change body of created methods use File | Settings | File Templates.
+    }
+
 
     private void startGame() {
         activity.getSceneSwitcher().switchToGameScene();
