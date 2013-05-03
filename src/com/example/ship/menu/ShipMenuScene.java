@@ -1,7 +1,7 @@
 package com.example.ship.menu;
 
 import android.graphics.Point;
-import com.example.ship.Atlas.ResourceManager;
+import com.example.ship.atlas.ResourceManager;
 import com.example.ship.R;
 import com.example.ship.SceletonActivity;
 import org.andengine.engine.Engine;

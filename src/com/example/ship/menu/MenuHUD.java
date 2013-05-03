@@ -96,12 +96,13 @@ public class MenuHUD extends HUD {
     }
 
     private MenuButtonSprite createMenuButtonSprite(int labelId, int buttonId) {
-        return new MenuButtonSprite( activity.getResourceManager().getLoadedTextureRegion(
-                                            getStringResource(R.string.MENU_BUTTON_TEXTURE))
-                                   , engine.getVertexBufferObjectManager()
-                                   , buttonId
-                                   , getStringResource(labelId)
-                                   , buttonFont);
+//        return new MenuButtonSprite( activity.getResourceManager().getLoadedTextureRegion(
+//                                            getStringResource(R.string.MENU_BUTTON_TEXTURE))
+//                                   , engine.getVertexBufferObjectManager()
+//                                   , buttonId
+//                                   , getStringResource(labelId)
+//                                   , buttonFont);
+        return null;
     }
 
     private String getStringResource(int id) {
