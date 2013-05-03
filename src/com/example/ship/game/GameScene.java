@@ -1,5 +1,6 @@
 package com.example.ship.game;
 
+import com.example.ship.R;
 import com.example.ship.atlas.ResourceManager;
 import com.example.ship.SceletonActivity;
 import org.andengine.engine.Engine;
@@ -38,13 +39,13 @@ public class GameScene extends Scene {
             this.attachChild(new Entity());
         }
 
-        ITextureRegion backgroundTexture = resourceManager.getLoadedTextureRegion("gameBackground");
+        ITextureRegion backgroundTexture = resourceManager.getLoadedTextureRegion(R.drawable.gamebackground);
         Sprite backgroundSprite = new Sprite( 0
                                             , 0
                                             , backgroundTexture
                                             , mEngine.getVertexBufferObjectManager());
 
-        ITextureRegion waveSprite = resourceManager.getLoadedTextureRegion("wave");
+        ITextureRegion waveSprite = resourceManager.getLoadedTextureRegion(R.drawable.wave);
         Sprite waveImage = new Sprite( 0
                                      , backgroundTexture.getHeight() / 3
                                      , waveSprite

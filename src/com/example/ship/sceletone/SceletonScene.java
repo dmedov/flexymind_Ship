@@ -27,6 +27,7 @@ public class SceletonScene extends Scene {
     private final ResourceManager resourceManager;
     private       Point textureSize;
     private       TouchableSceletonSprite touchableSceletonSprite;
+    private       Sprite shipSprite;
 
     public SceletonScene(final SceletonActivity activity) {
         super();
@@ -44,6 +45,14 @@ public class SceletonScene extends Scene {
         this.touchableSceletonSprite = events;
     }
 
+    public void unregisterTouchArea() {
+        this.unregisterTouchArea(shipSprite);
+    }
+
+    public void registerTouchArea() {
+        this.registerTouchArea(shipSprite);
+    }
+
     private void createBackground() {
         Color backgroundColor = new Color(0.09804f, 0.6274f, 0.8784f);
         this.setBackground(new Background(backgroundColor));
@@ -55,7 +64,7 @@ public class SceletonScene extends Scene {
         final PointF shipPosition = new PointF( textureSize.x * 0.5f - shipTextureRegion.getWidth() * 0.5f
                                               , textureSize.y * 0.5f - shipTextureRegion.getHeight() * 0.5f);
 
-        Sprite shipSprite = new Sprite( shipPosition.x
+        shipSprite = new Sprite( shipPosition.x
                                       , shipPosition.y
                                       , shipTextureRegion
                                       , engine.getVertexBufferObjectManager()) {
@@ -71,7 +80,7 @@ public class SceletonScene extends Scene {
             }
         };
 
-        this.registerTouchArea(shipSprite);
+        registerTouchArea();
         this.attachChild(shipSprite);
     }
 }

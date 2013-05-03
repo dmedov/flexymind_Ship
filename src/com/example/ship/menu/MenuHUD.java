@@ -30,7 +30,6 @@ public class MenuHUD extends HUD {
     private ArrayList<MenuButtonSprite> buttons;
     private Engine engine;
     private PointF cameraSize;
-    private PointF cameraScale;
     private Font buttonFont;
 
     public MenuHUD(final SceletonActivity activity) {
