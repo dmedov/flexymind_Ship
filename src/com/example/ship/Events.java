@@ -1,6 +1,8 @@
 package com.example.ship;
 
 import android.widget.Toast;
+import com.example.ship.game.GameButtonSprite;
+import com.example.ship.game.TouchableGameButtonSprite;
 import com.example.ship.menu.MenuButtonSprite;
 import com.example.ship.menu.TouchableMenuButtonSprite;
 import com.example.ship.sceletone.TouchableSceletonSprite;
@@ -14,6 +16,7 @@ import org.andengine.entity.sprite.Sprite;
  * To change this template use File | Settings | File Templates.
  */
 public class Events implements TouchableMenuButtonSprite
+                             , TouchableGameButtonSprite
                              , TouchableSceletonSprite {
 
     private final static float RELATIVE_BUTTON_JUMP_AMPLITUDE = 0.005f;
@@ -78,6 +81,16 @@ public class Events implements TouchableMenuButtonSprite
         } else {
             button.setPosition( button.getX(), button.getY() + jumpAmplitude);
         }
+    }
+
+    @Override
+    public void onAreaGameButtonTouched(GameButtonSprite button) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void onAreaGameButtonReleased(GameButtonSprite button) {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     private void startGame() {

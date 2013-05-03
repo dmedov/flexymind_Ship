@@ -14,4 +14,6 @@
     <string name="MENU_HS_BUTTON_LABEL">High Scores</string>
     <string name="MENU_CREDITS_BUTTON_LABEL">Credits</string>
     <string name="MENU_EXIT_BUTTON_LABEL">Exit</string>
+    <!--Game Button ID-->
+    <string name="GAME_PAUSE_BUTTON">pauseID</string>
 </resources>
