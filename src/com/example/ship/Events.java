@@ -20,7 +20,7 @@ public class Events implements TouchableMenuButtonSprite
                              , TouchableSceletonSprite {
 
     private final static float RELATIVE_BUTTON_JUMP_AMPLITUDE = 0.005f;
-    private final static float RELATIVE_BUTTON_PULSE_AMPLITUDE = 0.005f;
+    private final static float RELATIVE_BUTTON_PULSE_AMPLITUDE = 0.1f;
     private final SceletonActivity activity;
 
     public Events(SceletonActivity activity) {
@@ -80,7 +80,7 @@ public class Events implements TouchableMenuButtonSprite
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                menuButtonJump(button, true);
+                menuButtonPulse(button, true);
                 switch (button.getId()) {
                     case R.string.GAME_PAUSE_BUTTON:
                         break;
@@ -96,7 +96,7 @@ public class Events implements TouchableMenuButtonSprite
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                menuButtonJump(button, true);
+                menuButtonPulse(button, false);
                 switch (button.getId()) {
                     case R.string.GAME_PAUSE_BUTTON:
                         activity.getSceneSwitcher().switchToRootScene();
@@ -114,6 +114,18 @@ public class Events implements TouchableMenuButtonSprite
             button.setPosition( button.getX(), button.getY() - jumpAmplitude);
         } else {
             button.setPosition( button.getX(), button.getY() + jumpAmplitude);
+        }
+    }
+
+    private void menuButtonPulse (Sprite button, boolean up) {
+        if (up){
+            button.setPosition( button.getX() - button.getWidth() * RELATIVE_BUTTON_PULSE_AMPLITUDE * 0.5f
+                              , button.getY() - button.getHeight() * RELATIVE_BUTTON_PULSE_AMPLITUDE * 0.5f);
+            button.setScale(RELATIVE_BUTTON_PULSE_AMPLITUDE + 1);
+        } else {
+            button.setPosition( button.getX() + button.getWidth() / RELATIVE_BUTTON_PULSE_AMPLITUDE * 0.5f
+                              , button.getY() + button.getHeight() / RELATIVE_BUTTON_PULSE_AMPLITUDE * 0.5f);
+            button.setScale(1);
         }
     }
 

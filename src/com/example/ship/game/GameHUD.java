@@ -21,7 +21,8 @@ public class GameHUD extends HUD {
     private final SceletonActivity activity;
     private final Engine engine;
     private static final float RELATIVE_BUTTON_HEIGHT = 0.15f;
-    private static final float RELATIVE_BORDER = 0.01f;
+    private static final float RELATIVE_BORDER = 0.02f;
+    private static final float BUTTON_ALPHA = 0.75f;
     private       PointF cameraSize;
     private       ArrayList<GameButtonSprite> buttons;
 
@@ -49,6 +50,8 @@ public class GameHUD extends HUD {
         pauseButton.setScale(cameraSize.y * RELATIVE_BUTTON_HEIGHT / pauseButton.getHeight());
         pauseButton.setPosition( RELATIVE_BORDER * cameraSize.x
                                , RELATIVE_BORDER * cameraSize.y);
+
+        pauseButton.setAlpha(BUTTON_ALPHA);
 
         buttons.add(pauseButton);
         for (GameButtonSprite button: buttons) {
