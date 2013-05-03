@@ -40,7 +40,7 @@ public class PauseHUD extends HUD {
 
         GameButtonSprite backButton;
         backButton = new GameButtonSprite( activity.getResourceManager()
-                                                   .getLoadedTextureRegion(R.drawable.pausebutton)
+                                                   .getLoadedTextureRegion(R.drawable.playbutton)
                                           , engine.getVertexBufferObjectManager()
                                           , R.string.GAME_PAUSE_BACK_BUTTON);
 
@@ -50,7 +50,7 @@ public class PauseHUD extends HUD {
 
         GameButtonSprite menuButton;
         menuButton = new GameButtonSprite( activity.getResourceManager()
-                                                    .getLoadedTextureRegion(R.drawable.pausebutton)
+                                                    .getLoadedTextureRegion(R.drawable.backbutton)
                                           , engine.getVertexBufferObjectManager()
                                           , R.string.GAME_PAUSE_MENU_BUTTON);
 
