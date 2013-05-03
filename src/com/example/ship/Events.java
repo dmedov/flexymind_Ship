@@ -20,6 +20,7 @@ public class Events implements TouchableMenuButtonSprite
                              , TouchableSceletonSprite {
 
     private final static float RELATIVE_BUTTON_JUMP_AMPLITUDE = 0.005f;
+    private final static float RELATIVE_BUTTON_PULSE_AMPLITUDE = 0.005f;
     private final SceletonActivity activity;
 
     public Events(SceletonActivity activity) {
@@ -74,6 +75,39 @@ public class Events implements TouchableMenuButtonSprite
         });
     }
 
+    @Override
+    public void onAreaGameButtonTouched(final GameButtonSprite button) {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                menuButtonJump(button, true);
+                switch (button.getId()) {
+                    case R.string.GAME_PAUSE_BUTTON:
+                        break;
+                    default:
+                        Toast.makeText(activity.getApplicationContext(), "Unknown Button Pressed", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onAreaGameButtonReleased(final GameButtonSprite button) {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                menuButtonJump(button, true);
+                switch (button.getId()) {
+                    case R.string.GAME_PAUSE_BUTTON:
+                        activity.getSceneSwitcher().switchToRootScene();
+                        break;
+                    default:
+                        Toast.makeText(activity.getApplicationContext(), "Unknown Button Released", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
     private void menuButtonJump (Sprite button, boolean up) {
         float jumpAmplitude = activity.getTextureSize().y * RELATIVE_BUTTON_JUMP_AMPLITUDE;
         if (up){
@@ -81,16 +115,6 @@ public class Events implements TouchableMenuButtonSprite
         } else {
             button.setPosition( button.getX(), button.getY() + jumpAmplitude);
         }
-    }
-
-    @Override
-    public void onAreaGameButtonTouched(GameButtonSprite button) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public void onAreaGameButtonReleased(GameButtonSprite button) {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     private void startGame() {

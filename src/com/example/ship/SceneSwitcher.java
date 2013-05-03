@@ -1,5 +1,6 @@
 package com.example.ship;
 
+import com.example.ship.game.GameHUD;
 import com.example.ship.game.GameScene;
 import com.example.ship.menu.MenuHUD;
 import com.example.ship.menu.ShipMenuScene;
@@ -37,6 +38,7 @@ public class SceneSwitcher {
         if (rootScene.hasChildScene()) {
             rootScene.clearChildScene();
         }
+        rootScene.unregisterTouchArea();
         rootScene.setChildScene(menuScene);
 
         MenuHUD menuHUD = new MenuHUD(activity);
@@ -51,7 +53,11 @@ public class SceneSwitcher {
         }
         rootScene.unregisterTouchArea();
         rootScene.setChildScene(gameScene);
-        activity.getCamera().setHUD(null);
+
+        GameHUD gameHUD = new GameHUD(activity);
+        gameHUD.setEventsToChildren(activity.getEvents());
+
+        activity.getCamera().setHUD(gameHUD);
     }
 
     public SceletonScene getRootScene() {
