@@ -18,19 +18,35 @@ public class GameScene extends Scene {
     private static final int LAYER_SECOND_WAVE = layerCount++;
     private static final int LAYER_THIRD_WAVE  = layerCount++;
     private static final int LAYER_PERISCOPE   = layerCount++;
+    private static final int WAVES_NUMBER = 3;
 
     private final SceletonActivity activity;
     private final Engine mEngine;
     private final ResourceManager resourceManager;
+    private GameHUD gameHUD;
+    private PauseHUD pauseHUD;
 
-
-    public GameScene(final SceletonActivity activity){
+    public GameScene(final SceletonActivity activity) {
         super();
         this.activity = activity;
         this.mEngine = activity.getEngine();
         this.resourceManager = activity.getResourceManager();
 
         createBackground();
+
+        gameHUD = new GameHUD(activity);
+        gameHUD.setEventsToChildren(activity.getEvents());
+
+        pauseHUD = new PauseHUD(activity);
+        pauseHUD.setEventsToChildren(activity.getEvents());
+    }
+
+    public void switchToPauseHUD() {
+        activity.getCamera().setHUD(pauseHUD);
+    }
+
+    public void switchToGameHUD() {
+        activity.getCamera().setHUD(gameHUD);
     }
 
     private void createBackground() {
@@ -47,7 +63,7 @@ public class GameScene extends Scene {
 
         ITextureRegion waveSprite = resourceManager.getLoadedTextureRegion(R.drawable.wave);
         Sprite waveImage = new Sprite( 0
-                                     , backgroundTexture.getHeight() / 3
+                                     , backgroundTexture.getHeight() / WAVES_NUMBER
                                      , waveSprite
                                      , mEngine.getVertexBufferObjectManager());
 
@@ -56,5 +72,4 @@ public class GameScene extends Scene {
         Color backgroundColor = new Color(0.09804f, 0.6274f, 0.8784f);
         this.setBackground(new Background(backgroundColor));
     }
-
 }
