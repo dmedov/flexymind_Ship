@@ -11,12 +11,15 @@ import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
 import org.andengine.opengl.texture.atlas.buildable.builder.BlackPawnTextureAtlasBuilder;
 import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder;
+import org.andengine.opengl.texture.bitmap.BitmapTextureFormat;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /*
 Created by: IVAN
@@ -27,15 +30,16 @@ Date: 22.04.13
 <?xml version="1.0" encoding="utf-8" ?>
 <resources>
             <Atlas type=" [Сюда писать тип атласа ( BILINEAR, REPEATE, ... )] "
+                   format=" [Сюда писать формат атласа (RGBA_8888, RGBA_4444, RGB_565, A_8)] "
                    width=" [Сюда писать ширину атласа] "
                    height=" [Сюда писать высоту атласа] ">
 
                 [Здесь перечисляем все текстуры, которые нужно впихнуть в этот атлас]
-                <texture path=" [Сюда пишем путь к текстуре относительно assets/gfx/] "
-                         name=" [Сюда пишем имя текстуры, по которому мы будем к ней обращаться из программы] " />
+                <texture name=" [Сюда пишем имя файла текстуры без расширения] " />
 
             </Atlas>
 </resources>
+Сами текстурв кладём в папку res/drawable/
 
 Теперь в BaseGameActivity создаём экземпляр класса ResourceManager.
 И в методе OnCreateResources у BaseGameActivity вызываем метод класса
@@ -43,11 +47,11 @@ loadAllTextures ( this, mEngine.getTextureManager() );
 Посде этого все ресурсы загружены
 
 Для получения ITextureRegion нужного ресурса вызываем метод класса
-getLoadedTextureRegion ( " [Сюда пишем имя, которое мы забили в xml] " );
+getLoadedTextureRegion ( " [Сюда пишем ID ресурса (например: R.drawable.ship)] " );
 */
 
 public class ResourceManager {
-    private final ArrayList<Texture> loadedTextures;
+    private final Map<Integer, ITextureRegion> loadedTextures;
     protected final ArrayList<BuildableBitmapTextureAtlas> atlasList;
 
     private XmlPullParser parser = null;
@@ -56,17 +60,12 @@ public class ResourceManager {
     private int currentAtlasId;
 
     public ResourceManager() {
-        loadedTextures = new ArrayList<Texture>();
+        loadedTextures = new HashMap<Integer, ITextureRegion>();
         atlasList = new ArrayList<BuildableBitmapTextureAtlas>();
     }
 
-    public ITextureRegion getLoadedTextureRegion(String textureName) {
-        for (Texture loadedTexture : loadedTextures) {
-            if (loadedTexture.name.equalsIgnoreCase(textureName)) {
-                return loadedTexture.textureRegion;
-            }
-        }
-        return null;
+    public ITextureRegion getLoadedTextureRegion(int resourceID) {
+        return loadedTextures.get(resourceID);
     }
 
     public void loadAllTextures(Context context, TextureManager textureManager) {
@@ -74,7 +73,6 @@ public class ResourceManager {
         this.currentAtlasId = 0;
         this.context = context;
         int eventType = 0;
-        BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 
         try {
             parser = context.getResources().getXml(R.xml.atlas);
@@ -129,6 +127,7 @@ public class ResourceManager {
         int atlasHeight = 1;
         int atlasWidth = 1;
         TextureOptions textureOptions = TextureOptions.DEFAULT;
+        BitmapTextureFormat textureFormat = BitmapTextureFormat.RGBA_4444;
 
         // parse atlas attributes
         for (int i = 0; i < parser.getAttributeCount(); i++) {
@@ -140,14 +139,16 @@ public class ResourceManager {
                 atlasHeight = Integer.parseInt(value);
             } else if (attribute.equals("type")) {
                 textureOptions = stringToTextureOptions(value);
+            } else if (attribute.equals("format")) {
+                textureFormat = stringToTextureFormat(value);
             }
         }
 
         atlasList.add(new BuildableBitmapTextureAtlas( textureManager
                                                      , atlasWidth
                                                      , atlasHeight
+                                                     , textureFormat
                                                      , textureOptions));
-        // XXX: ДОБАВИТЬ TEXTURE FORMAT!
     }
 
     private void parseAtlasEndTag() {
@@ -164,23 +165,25 @@ public class ResourceManager {
     }
 
     private void parseTextureStartTag() {
-            String texturePath = "";
-            String textureName = "";
+            int textureID = 0;
+            String textureName;
 
             for (int i = 0; i < parser.getAttributeCount(); i++) {
                 if (parser.getAttributeName(i).equals("name")) {
                     textureName = parser.getAttributeValue(i);
-                }
-                if (parser.getAttributeName(i).equals("path")) {
-                    texturePath = parser.getAttributeValue(i);
+                    textureID = context.getResources().getIdentifier(
+                                                     textureName
+                                                   , "drawable"
+                                                   , context.getPackageName());
                 }
             }
 
             ITextureRegion textureRegion =
-                    BitmapTextureAtlasTextureRegionFactory.createFromAsset( atlasList.get(currentAtlasId)
+                    BitmapTextureAtlasTextureRegionFactory.createFromResource(
+                                                                            atlasList.get(currentAtlasId)
                                                                           , context
-                                                                          , texturePath);
-            loadedTextures.add(new Texture(textureName, textureRegion));
+                                                                          , textureID);
+            loadedTextures.put(textureID, textureRegion);
     }
 
     private TextureOptions stringToTextureOptions(String option) {
@@ -209,6 +212,22 @@ public class ResourceManager {
             return TextureOptions.REPEATING_BILINEAR_PREMULTIPLYALPHA;
         }
         return TextureOptions.DEFAULT;
+    }
+
+    private BitmapTextureFormat stringToTextureFormat (String option) {
+        if (option.equals("RGBA_8888")) {
+            return BitmapTextureFormat.RGBA_8888;
+        }
+        if (option.equals("RGBA_4444")) {
+            return BitmapTextureFormat.RGBA_4444;
+        }
+        if (option.equals("RGB_565")) {
+            return BitmapTextureFormat.RGB_565;
+        }
+        if (option.equals("A_8")) {
+            return BitmapTextureFormat.A_8;
+        }
+        return BitmapTextureFormat.RGBA_4444;
     }
 
     private void handleException(Exception e, String error) {

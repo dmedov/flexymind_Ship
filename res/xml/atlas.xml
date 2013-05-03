@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <resources>
-            <Atlas type="BILINEAR" width="2048" height="2048">
-                <texture path="menuButton.png" name="menuButton" />
-                <texture path="ship.png" name="ship" />
-                <texture path="menuBackground.png" name="menuBackground"/>
+            <Atlas type="BILINEAR" width="2048" height="2048" format="RGBA_8888">
+                <texture name="menubutton" />
+                <texture name="ship" />
+                <texture name="menubackground"/>
+            </Atlas>
+            <Atlas type="BILINEAR" width="2048" height="2048" format="RGBA_8888">
+                <texture name="gamebackground"/>
+                <texture name="wave"/>
+                <texture name="pausebutton"/>
+                <texture name="playbutton"/>
+                <texture name="backbutton"/>
+                <texture name="leftbutton"/>
+                <texture name="rightbutton"/>
+                <texture name="firebutton"/>
             </Atlas>
 </resources>

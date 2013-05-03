@@ -1,12 +1,11 @@
 package com.example.ship;
 
 import android.graphics.Point;
-import com.example.ship.atlas.ResourceManager;
-import com.example.ship.menu.ShipMenuScene;
 import android.graphics.PointF;
 import android.util.DisplayMetrics;
+import com.example.ship.atlas.ResourceManager;
+import com.example.ship.menu.ShipMenuScene;
 import com.example.ship.sceletone.SceletonScene;
-import org.andengine.engine.camera.Camera;
 import org.andengine.engine.camera.ZoomCamera;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
@@ -23,6 +22,7 @@ public class SceletonActivity extends BaseGameActivity {
     private ResourceManager resourceManager;
     private Events events;
     private ZoomCamera zoomCamera;
+    private SceneSwitcher sceneSwitcher;
 
     private ZoomCamera createZoomCamera() {
         DisplayMetrics metrics = new DisplayMetrics();
@@ -66,12 +66,9 @@ public class SceletonActivity extends BaseGameActivity {
 
     @Override
     public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback) {
-        menuScene = new ShipMenuScene(this);
-        menuScene.setEventsToChildren(events);
-        sceletonScene = new SceletonScene(this, menuScene);
-        sceletonScene.setEvents(events);
+        sceneSwitcher = new SceneSwitcher(this);
 
-        pOnCreateSceneCallback.onCreateSceneFinished(sceletonScene);
+        pOnCreateSceneCallback.onCreateSceneFinished(sceneSwitcher.getRootScene());
     }
 
     @Override
@@ -79,6 +76,10 @@ public class SceletonActivity extends BaseGameActivity {
                                , OnPopulateSceneCallback pOnPopulateSceneCallback) {
 
         pOnPopulateSceneCallback.onPopulateSceneFinished();
+    }
+
+    public Events getEvents() {
+        return events;
     }
 
     public ResourceManager getResourceManager() {
@@ -89,7 +90,11 @@ public class SceletonActivity extends BaseGameActivity {
         return new Point(TEXTURE_WIDTH, TEXTURE_HEIGHT);
     }
 
-    public Camera getCamera() {
+    public ZoomCamera getCamera() {
         return zoomCamera;
+    }
+
+    public SceneSwitcher getSceneSwitcher() {
+        return sceneSwitcher;
     }
 }

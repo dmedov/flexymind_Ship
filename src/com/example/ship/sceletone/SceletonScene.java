@@ -2,7 +2,7 @@ package com.example.ship.sceletone;
 
 import android.graphics.Point;
 import android.graphics.PointF;
-import com.example.ship.Atlas.ResourceManager;
+import com.example.ship.atlas.ResourceManager;
 import com.example.ship.Events;
 import com.example.ship.R;
 import com.example.ship.SceletonActivity;
@@ -25,37 +25,46 @@ public class SceletonScene extends Scene {
     private final SceletonActivity activity;
     private final Engine engine;
     private final ResourceManager resourceManager;
-    private final Scene childScene;
     private       Point textureSize;
     private       TouchableSceletonSprite touchableSceletonSprite;
+    private       Sprite shipSprite;
 
-    public SceletonScene(final SceletonActivity activity, final Scene childScene) {
+    public SceletonScene(final SceletonActivity activity) {
         super();
 
         this.activity = activity;
         this.engine = activity.getEngine();
         this.textureSize = activity.getTextureSize();
         this.resourceManager = activity.getResourceManager();
-        this.childScene = childScene;
 
         createBackground();
         createShipLogo();
     }
 
-    private void createBackground() {
+    public void setEvents(Events events) {
+        this.touchableSceletonSprite = events;
+    }
 
+    public void unregisterTouchArea() {
+        this.unregisterTouchArea(shipSprite);
+    }
+
+    public void registerTouchArea() {
+        this.registerTouchArea(shipSprite);
+    }
+
+    private void createBackground() {
         Color backgroundColor = new Color(0.09804f, 0.6274f, 0.8784f);
         this.setBackground(new Background(backgroundColor));
     }
 
     private void createShipLogo() {
-        ITextureRegion shipTextureRegion = resourceManager.getLoadedTextureRegion(
-                activity.getResources().getString(R.string.SCELETONE_LOGO_TEXTURE));
+        ITextureRegion shipTextureRegion = resourceManager.getLoadedTextureRegion(R.drawable.ship);
 
         final PointF shipPosition = new PointF( textureSize.x * 0.5f - shipTextureRegion.getWidth() * 0.5f
                                               , textureSize.y * 0.5f - shipTextureRegion.getHeight() * 0.5f);
 
-        Sprite shipSprite = new Sprite( shipPosition.x
+        shipSprite = new Sprite( shipPosition.x
                                       , shipPosition.y
                                       , shipTextureRegion
                                       , engine.getVertexBufferObjectManager()) {
@@ -65,17 +74,13 @@ public class SceletonScene extends Scene {
                                         , float pTouchAreaLocalY) {
 
                 if (pSceneTouchEvent.isActionUp()) {
-                    touchableSceletonSprite.onSceletoneSpriteReleased(childScene);
+                    touchableSceletonSprite.onSceletoneSpriteReleased();
                 }
                 return super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
             }
         };
 
-        this.registerTouchArea(shipSprite);
+        registerTouchArea();
         this.attachChild(shipSprite);
-    }
-
-    public void setEvents(Events events) {
-        this.touchableSceletonSprite = events;
     }
 }

@@ -1,7 +1,5 @@
 package com.example.ship.sceletone;
 
-import org.andengine.entity.scene.Scene;
-
 /**
  * Created with IntelliJ IDEA.
  * User: Vasya
@@ -11,5 +9,5 @@ import org.andengine.entity.scene.Scene;
  */
 public interface TouchableSceletonSprite {
     public void onSceletoneSpriteTouched();
-    public void onSceletoneSpriteReleased(Scene child);
+    public void onSceletoneSpriteReleased();
 }
