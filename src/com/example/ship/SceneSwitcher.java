@@ -1,6 +1,6 @@
 package com.example.ship;
 
-import com.example.ship.Menu.ShipMenuScene;
+import com.example.ship.menu.ShipMenuScene;
 import com.example.ship.game.GameScene;
 import com.example.ship.sceletone.SceletonScene;
 

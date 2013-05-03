@@ -1,8 +1,8 @@
-package com.example.ship.Menu;
+package com.example.ship.menu;
 
 import android.graphics.Point;
 import android.graphics.Typeface;
-import com.example.ship.Atlas.ResourceManager;
+import com.example.ship.atlas.ResourceManager;
 import com.example.ship.Events;
 import com.example.ship.R;
 import com.example.ship.SceletonActivity;

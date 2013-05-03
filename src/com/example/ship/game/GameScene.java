@@ -1,6 +1,6 @@
 package com.example.ship.game;
 
-import com.example.ship.Atlas.ResourceManager;
+import com.example.ship.atlas.ResourceManager;
 import com.example.ship.SceletonActivity;
 import org.andengine.engine.Engine;
 import org.andengine.entity.Entity;
