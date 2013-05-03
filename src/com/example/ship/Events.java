@@ -107,12 +107,8 @@ public class Events implements TouchableMenuButtonSprite
 
     private void menuButtonPulse (Sprite button, boolean up) {
         if (up){
-            button.setPosition( button.getX() - button.getWidth() * RELATIVE_BUTTON_PULSE_AMPLITUDE * 0.5f
-                              , button.getY() - button.getHeight() * RELATIVE_BUTTON_PULSE_AMPLITUDE * 0.5f);
             button.setScale(RELATIVE_BUTTON_PULSE_AMPLITUDE + 1);
         } else {
-            button.setPosition( button.getX() + button.getWidth() / (1 + RELATIVE_BUTTON_PULSE_AMPLITUDE) * 0.5f
-                              , button.getY() + button.getHeight() / (1 + RELATIVE_BUTTON_PULSE_AMPLITUDE) * 0.5f);
             button.setScale(1);
         }
     }
