@@ -1,9 +1,8 @@
 package com.example.ship;
 
-import com.example.ship.menu.MenuHUD;
 import com.example.ship.menu.ShipMenuScene;
+import com.example.ship.game.GameScene;
 import com.example.ship.sceletone.SceletonScene;
-import org.andengine.entity.scene.Scene;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,11 +16,12 @@ public class SceneSwitcher {
     private final SceletonActivity activity;
     private SceletonScene rootScene;
     private ShipMenuScene menuScene;
-    private Scene gameScene;
+    private GameScene gameScene;
 
     public SceneSwitcher(SceletonActivity activity) {
         this.activity = activity;
         menuScene = new ShipMenuScene(activity);
+        gameScene = new GameScene(activity);
         rootScene = new SceletonScene(activity);
         rootScene.setEvents(activity.getEvents());
     }
