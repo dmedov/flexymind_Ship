@@ -1,6 +1,7 @@
 package com.example.ship;
 
 import com.example.ship.game.GameButtonSprite;
+import com.example.ship.game.Gun;
 import com.example.ship.game.TouchableGameButtonSprite;
 import com.example.ship.menu.MenuButtonSprite;
 import com.example.ship.menu.TouchableMenuButtonSprite;
@@ -66,14 +67,6 @@ public class Events implements TouchableMenuButtonSprite
             @Override
             public void run() {
                 menuButtonPulse(button, true);
-                /*switch (button.getId()) {
-                    case R.string.GAME_LEFT_BUTTON:
-                        moveLeft();
-                        break;
-                    case R.string.GAME_RIGHT_BUTTON:
-                        moveRight();
-                        break;
-                } */
             }
         });
     }
@@ -85,10 +78,10 @@ public class Events implements TouchableMenuButtonSprite
             public void run() {
                 switch (button.getId()) {
                     case R.string.GAME_LEFT_BUTTON:
-                        moveLeft();
+                        rotateLeft();
                         break;
                     case R.string.GAME_RIGHT_BUTTON:
-                        moveRight();
+                        rotateRight();
                         break;
                 }
             }
@@ -140,16 +133,14 @@ public class Events implements TouchableMenuButtonSprite
         //To change body of created methods use File | Settings | File Templates.
     }
 
-    private void moveRight() {
-        //To change body of created methods use File | Settings | File Templates.
+    private void rotateRight() {
+        Gun gun = activity.getSceneSwitcher().getGameScene().getGun();
+        gun.rotateRight();
     }
 
-    private void moveLeft() {
-        Sprite gunSprite = activity.getSceneSwitcher().getGameScene().getGun();
-        gunSprite.setRotationCenter(gunSprite.getWidth() / 2, gunSprite.getHeight());
-        gunSprite.setRotation(gunSprite.getRotation() - 2.0f);
-
-        //To change body of created methods use File | Settings | File Templates.
+    private void rotateLeft() {
+        Gun gun = activity.getSceneSwitcher().getGameScene().getGun();
+        gun.rotateLeft();
     }
 
     private void startGame() {

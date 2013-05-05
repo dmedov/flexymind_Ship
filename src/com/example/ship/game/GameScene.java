@@ -1,11 +1,9 @@
 package com.example.ship.game;
 
-import android.graphics.PointF;
 import com.example.ship.R;
 import com.example.ship.SceletonActivity;
 import com.example.ship.atlas.ResourceManager;
 import org.andengine.engine.Engine;
-import org.andengine.engine.camera.ZoomCamera;
 import org.andengine.entity.Entity;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
@@ -27,7 +25,7 @@ public class GameScene extends Scene {
     private final ResourceManager resourceManager;
     private GameHUD gameHUD;
     private PauseHUD pauseHUD;
-    private Sprite gunSprite;
+    private Gun gun;
 
     public GameScene(final SceletonActivity activity) {
         super();
@@ -78,18 +76,11 @@ public class GameScene extends Scene {
     }
 
     private void createGun() {
-
-
-        ZoomCamera camera = activity.getCamera();
-        PointF gunPosition = new PointF( camera.getCenterX()
-                                       , camera.getYMax() -
-                                         gunTexture.getHeight() * 0.6f);
-
-
-        this.getChildByIndex(LAYER_GUN).attachChild(gunSprite);
+        gun = new Gun(activity);
+        this.getChildByIndex(LAYER_GUN).attachChild(gun.getSprite());
     }
 
-    public Sprite getGun() {
-        return gunSprite;
+    public Gun getGun() {
+        return gun;
     }
 }

@@ -3,6 +3,7 @@ package com.example.ship.game;
 import android.graphics.PointF;
 import com.example.ship.R;
 import com.example.ship.SceletonActivity;
+import org.andengine.engine.camera.ZoomCamera;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.ITextureRegion;
 
@@ -19,24 +20,29 @@ public class Gun {
 
     private Sprite gunSprite;
 
-    public Gun(SceletonActivity activity, PointF gunPosition) {
+    public Gun(SceletonActivity activity) {
         ITextureRegion gunTexture = activity.getResourceManager().getLoadedTextureRegion(R.drawable.gun);
+
+        ZoomCamera camera = activity.getCamera();
+
+        PointF gunPosition = new PointF( camera.getCenterX()
+                , camera.getYMax() -
+                gunTexture.getHeight() * 0.6f);
+
         gunSprite = new Sprite( gunPosition.x
                 , gunPosition.y
                 , gunTexture
                 , activity.getEngine().getVertexBufferObjectManager());
-    }
 
-    public void create() {
-
+        gunSprite.setRotationCenter(gunSprite.getWidth() / 2, gunSprite.getHeight());
     }
 
     public void rotateLeft() {
-
+        gunSprite.setRotation(gunSprite.getRotation() - ROTATION_VELOCITY);
     }
 
     public void rotateRight() {
-
+        gunSprite.setRotation(gunSprite.getRotation() + ROTATION_VELOCITY);
     }
 
     public PointF getShootStartPoint() {
