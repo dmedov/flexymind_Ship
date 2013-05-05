@@ -46,6 +46,10 @@ public class GameButtonSprite extends Sprite {
         if (pSceneTouchEvent.isActionUp()) {
             touchableGameButtonSprite.onAreaGameButtonReleased(this);
         }
+        if (pSceneTouchEvent.isActionMove()) { // when still pressed
+            touchableGameButtonSprite.onAreaGameButtonPressed(this);
+        }
+
         return true;
     }
 }
