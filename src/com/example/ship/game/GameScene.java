@@ -78,26 +78,14 @@ public class GameScene extends Scene {
     }
 
     private void createGun() {
-        ITextureRegion gunTexture = resourceManager.getLoadedTextureRegion(R.drawable.gun);
+
 
         ZoomCamera camera = activity.getCamera();
         PointF gunPosition = new PointF( camera.getCenterX()
                                        , camera.getYMax() -
                                          gunTexture.getHeight() * 0.6f);
-        gunSprite = new Sprite( gunPosition.x
-                                     , gunPosition.y
-                                     , gunTexture
-                                     , mEngine.getVertexBufferObjectManager());
-        /*
-        RotationAtModifier rotationAtModifier = new RotationAtModifier( 5.0f                      // duration
-                                                                      , 0.0f                      // start angle
-                                                                      , 360.0f                    // end angle
-                                                                      , gunTexture.getWidth() / 2 // center rotation
-                                                                      , gunTexture.getHeight());
 
 
-        gunSprite.registerEntityModifier(new LoopEntityModifier(rotationAtModifier));
-        */
         this.getChildByIndex(LAYER_GUN).attachChild(gunSprite);
     }
 
