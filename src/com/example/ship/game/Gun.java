@@ -16,7 +16,7 @@ import org.andengine.opengl.texture.region.ITextureRegion;
  */
 public class Gun {
 
-    private static final float ROTATION_VELOCITY = 0.1f;
+    private static final float ROTATION_VELOCITY = 0.4f;
 
     private Sprite gunSprite;
 
