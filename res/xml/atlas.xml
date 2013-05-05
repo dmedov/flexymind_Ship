@@ -14,6 +14,5 @@
                 <texture name="leftbutton"/>
                 <texture name="rightbutton"/>
                 <texture name="firebutton"/>
-                <texture name="torpedo"/>
             </Atlas>
 </resources>

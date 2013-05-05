@@ -1,8 +1,6 @@
 package com.example.ship;
 
-import android.graphics.PointF;
 import com.example.ship.game.GameButtonSprite;
-import com.example.ship.game.Torpedo;
 import com.example.ship.game.TouchableGameButtonSprite;
 import com.example.ship.menu.MenuButtonSprite;
 import com.example.ship.menu.TouchableMenuButtonSprite;
@@ -122,8 +120,7 @@ public class Events implements TouchableMenuButtonSprite
     }
 
     private void fire() {
-        Torpedo torpedo = new Torpedo(activity, new PointF(900, 900), 0);
-        activity.getSceneSwitcher().getGameScene().getChildByIndex(4).attachChild(torpedo);
+        //To change body of created methods use File | Settings | File Templates.
     }
 
     private void moveRight() {
