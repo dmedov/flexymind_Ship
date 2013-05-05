@@ -17,6 +17,7 @@ import org.andengine.ui.activity.BaseGameActivity;
 public class SceletonActivity extends BaseGameActivity {
     private static final int TEXTURE_WIDTH = 1739;
     private static final int TEXTURE_HEIGHT = 900;
+    private static final boolean DEBUG_GAME_SCENE = true;
     private SceletonScene sceletonScene;
     private ShipMenuScene menuScene;
     private ResourceManager resourceManager;
@@ -67,6 +68,10 @@ public class SceletonActivity extends BaseGameActivity {
     @Override
     public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback) {
         sceneSwitcher = new SceneSwitcher(this);
+
+        if (DEBUG_GAME_SCENE) {
+            sceneSwitcher.switchToGameScene();
+        }
 
         pOnCreateSceneCallback.onCreateSceneFinished(sceneSwitcher.getRootScene());
     }
