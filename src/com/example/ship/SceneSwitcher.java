@@ -66,4 +66,9 @@ public class SceneSwitcher {
     public SceletonScene getRootScene() {
         return rootScene;
     }
+
+    public GameScene getGameScene() {
+        return gameScene;
+    }
+
 }
