@@ -7,8 +7,6 @@ import com.example.ship.atlas.ResourceManager;
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.ZoomCamera;
 import org.andengine.entity.Entity;
-import org.andengine.entity.modifier.LoopEntityModifier;
-import org.andengine.entity.modifier.RotationAtModifier;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.sprite.Sprite;
@@ -29,6 +27,7 @@ public class GameScene extends Scene {
     private final ResourceManager resourceManager;
     private GameHUD gameHUD;
     private PauseHUD pauseHUD;
+    private Sprite gunSprite;
 
     public GameScene(final SceletonActivity activity) {
         super();
@@ -85,11 +84,11 @@ public class GameScene extends Scene {
         PointF gunPosition = new PointF( camera.getCenterX()
                                        , camera.getYMax() -
                                          gunTexture.getHeight() * 0.6f);
-        Sprite gunSprite = new Sprite( gunPosition.x
+        gunSprite = new Sprite( gunPosition.x
                                      , gunPosition.y
                                      , gunTexture
                                      , mEngine.getVertexBufferObjectManager());
-
+        /*
         RotationAtModifier rotationAtModifier = new RotationAtModifier( 5.0f                      // duration
                                                                       , 0.0f                      // start angle
                                                                       , 360.0f                    // end angle
@@ -98,7 +97,11 @@ public class GameScene extends Scene {
 
 
         gunSprite.registerEntityModifier(new LoopEntityModifier(rotationAtModifier));
-
+        */
         this.getChildByIndex(LAYER_GUN).attachChild(gunSprite);
+    }
+
+    public Sprite getGun() {
+        return gunSprite;
     }
 }

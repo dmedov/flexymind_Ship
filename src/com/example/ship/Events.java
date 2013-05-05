@@ -66,6 +66,23 @@ public class Events implements TouchableMenuButtonSprite
             @Override
             public void run() {
                 menuButtonPulse(button, true);
+                /*switch (button.getId()) {
+                    case R.string.GAME_LEFT_BUTTON:
+                        moveLeft();
+                        break;
+                    case R.string.GAME_RIGHT_BUTTON:
+                        moveRight();
+                        break;
+                } */
+            }
+        });
+    }
+
+    @Override
+    public void onAreaGameButtonPressed(final GameButtonSprite button) {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
                 switch (button.getId()) {
                     case R.string.GAME_LEFT_BUTTON:
                         moveLeft();
@@ -128,6 +145,10 @@ public class Events implements TouchableMenuButtonSprite
     }
 
     private void moveLeft() {
+        Sprite gunSprite = activity.getSceneSwitcher().getGameScene().getGun();
+        gunSprite.setRotationCenter(gunSprite.getWidth() / 2, gunSprite.getHeight());
+        gunSprite.setRotation(gunSprite.getRotation() - 2.0f);
+
         //To change body of created methods use File | Settings | File Templates.
     }
 
