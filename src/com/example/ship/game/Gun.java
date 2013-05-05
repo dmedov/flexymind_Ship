@@ -9,7 +9,7 @@ import org.andengine.opengl.texture.region.ITextureRegion;
 
 /**
  * Created with IntelliJ IDEA.
- * User: user8
+ * User: Denis
  * Date: 5/5/13
  * Time: 3:26 PM
  * To change this template use File | Settings | File Templates.
