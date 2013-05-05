@@ -17,7 +17,7 @@ import org.andengine.opengl.texture.region.ITextureRegion;
 public class Gun {
 
     private static final float ROTATION_VELOCITY = 0.4f;
-
+    private static final float ROTATION_MAX_ANGLE = 40f;
     private Sprite gunSprite;
 
     public Gun(SceletonActivity activity) {
@@ -37,11 +37,15 @@ public class Gun {
     }
 
     public void rotateLeft() {
-        gunSprite.setRotation(gunSprite.getRotation() - ROTATION_VELOCITY);
+        if (gunSprite.getRotation() > -ROTATION_MAX_ANGLE) {
+            gunSprite.setRotation(gunSprite.getRotation() - ROTATION_VELOCITY);
+        }
     }
 
     public void rotateRight() {
-        gunSprite.setRotation(gunSprite.getRotation() + ROTATION_VELOCITY);
+        if (gunSprite.getRotation() < ROTATION_MAX_ANGLE) {
+            gunSprite.setRotation(gunSprite.getRotation() + ROTATION_VELOCITY);
+        }
     }
 
     public PointF getShootStartPoint() {
