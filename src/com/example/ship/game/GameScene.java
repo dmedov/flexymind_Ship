@@ -63,14 +63,14 @@ public class GameScene extends Scene {
                                             , backgroundTexture
                                             , mEngine.getVertexBufferObjectManager());
 
-        ITextureRegion waveSprite = resourceManager.getLoadedTextureRegion(R.drawable.wave);
-        Sprite waveImage = new Sprite( 0
+        ITextureRegion waveTexture = resourceManager.getLoadedTextureRegion(R.drawable.wave);
+        Sprite waveSprite = new Sprite( 0
                                      , backgroundTexture.getHeight() / WAVES_NUMBER
-                                     , waveSprite
+                                     , waveTexture
                                      , mEngine.getVertexBufferObjectManager());
 
         this.getChildByIndex(LAYER_BACKGROUND).attachChild(backgroundSprite);
-        this.getChildByIndex(LAYER_FIRST_WAVE).attachChild(waveImage);
+        this.getChildByIndex(LAYER_FIRST_WAVE).attachChild(waveSprite);
         Color backgroundColor = new Color(0.09804f, 0.6274f, 0.8784f);
         this.setBackground(new Background(backgroundColor));
     }
