@@ -20,6 +20,7 @@ public class Gun {
     private static final float ROTATION_MAX_ANGLE = 40f;
     private Sprite gunSprite;
 
+
     public Gun(SceletonActivity activity) {
         ITextureRegion gunTexture = activity.getResourceManager().getLoadedTextureRegion(R.drawable.gun);
 
@@ -49,7 +50,9 @@ public class Gun {
     }
 
     public PointF getShootStartPoint() {
-        return null;
+        PointF shootStartPoint = new PointF( getSprite().getX() + gunSprite.getWidth() / 2
+                                           , getSprite().getY());
+        return shootStartPoint;
     }
 
     public Sprite getSprite() {
