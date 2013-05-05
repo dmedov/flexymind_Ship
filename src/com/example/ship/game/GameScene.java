@@ -5,9 +5,10 @@ import com.example.ship.R;
 import com.example.ship.SceletonActivity;
 import com.example.ship.atlas.ResourceManager;
 import org.andengine.engine.Engine;
+import org.andengine.engine.camera.ZoomCamera;
 import org.andengine.entity.Entity;
 import org.andengine.entity.modifier.LoopEntityModifier;
-import org.andengine.entity.modifier.RotationModifier;
+import org.andengine.entity.modifier.RotationAtModifier;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.sprite.Sprite;
@@ -80,19 +81,23 @@ public class GameScene extends Scene {
     private void createGun() {
         ITextureRegion gunTexture = resourceManager.getLoadedTextureRegion(R.drawable.gun);
 
-        PointF gunPosition = new PointF( activity.getCamera().getCenterX()
-                                       , activity.getCamera().getYMax() -
-                                         gunTexture.getHeight() * activity.getCamera().getZoomFactor() * 0.6f);
+        ZoomCamera camera = activity.getCamera();
+        PointF gunPosition = new PointF( camera.getCenterX()
+                                       , camera.getYMax() -
+                                         gunTexture.getHeight() * 0.6f);
         Sprite gunSprite = new Sprite( gunPosition.x
                                      , gunPosition.y
                                      , gunTexture
                                      , mEngine.getVertexBufferObjectManager());
 
-        RotationModifier rotationModifier = new RotationModifier( 100.0f   // duration
-                                                                , 1.0f   // start
-                                                                , 300.0f); //  end )
-        //gunSprite.setRotation(20.0f);
-        gunSprite.registerEntityModifier(new LoopEntityModifier(rotationModifier));
+        RotationAtModifier rotationAtModifier = new RotationAtModifier( 5.0f                      // duration
+                                                                      , 0.0f                      // start angle
+                                                                      , 360.0f                    // end angle
+                                                                      , gunTexture.getWidth() / 2 // center rotation
+                                                                      , gunTexture.getHeight());
+
+
+        gunSprite.registerEntityModifier(new LoopEntityModifier(rotationAtModifier));
 
         this.getChildByIndex(LAYER_GUN).attachChild(gunSprite);
     }
