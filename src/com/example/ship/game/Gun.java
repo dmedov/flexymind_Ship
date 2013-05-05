@@ -25,9 +25,8 @@ public class Gun {
 
         ZoomCamera camera = activity.getCamera();
 
-        PointF gunPosition = new PointF( camera.getCenterX()
-                , camera.getYMax() -
-                gunTexture.getHeight() * 0.6f);
+        PointF gunPosition = new PointF( camera.getCenterX() - gunTexture.getWidth()
+                                       , camera.getYMax() - gunTexture.getHeight() * 0.6f);
 
         gunSprite = new Sprite( gunPosition.x
                 , gunPosition.y
