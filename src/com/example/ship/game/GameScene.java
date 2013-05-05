@@ -1,10 +1,13 @@
 package com.example.ship.game;
 
+import android.graphics.PointF;
 import com.example.ship.R;
-import com.example.ship.atlas.ResourceManager;
 import com.example.ship.SceletonActivity;
+import com.example.ship.atlas.ResourceManager;
 import org.andengine.engine.Engine;
 import org.andengine.entity.Entity;
+import org.andengine.entity.modifier.LoopEntityModifier;
+import org.andengine.entity.modifier.RotationModifier;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.sprite.Sprite;
@@ -17,7 +20,7 @@ public class GameScene extends Scene {
     private static final int LAYER_FIRST_WAVE  = layerCount++;
     private static final int LAYER_SECOND_WAVE = layerCount++;
     private static final int LAYER_THIRD_WAVE  = layerCount++;
-    private static final int LAYER_PERISCOPE   = layerCount++;
+    private static final int LAYER_GUN         = layerCount++;
     private static final int WAVES_NUMBER = 3;
 
     private final SceletonActivity activity;
@@ -33,6 +36,7 @@ public class GameScene extends Scene {
         this.resourceManager = activity.getResourceManager();
 
         createBackground();
+        createGun();
 
         gameHUD = new GameHUD(activity);
         gameHUD.setEventsToChildren(activity.getEvents());
@@ -71,5 +75,25 @@ public class GameScene extends Scene {
         this.getChildByIndex(LAYER_FIRST_WAVE).attachChild(waveImage);
         Color backgroundColor = new Color(0.09804f, 0.6274f, 0.8784f);
         this.setBackground(new Background(backgroundColor));
+    }
+
+    private void createGun() {
+        ITextureRegion gunTexture = resourceManager.getLoadedTextureRegion(R.drawable.gun);
+
+        PointF gunPosition = new PointF( activity.getCamera().getCenterX()
+                                       , activity.getCamera().getYMax() -
+                                         gunTexture.getHeight() * activity.getCamera().getZoomFactor() * 0.6f);
+        Sprite gunSprite = new Sprite( gunPosition.x
+                                     , gunPosition.y
+                                     , gunTexture
+                                     , mEngine.getVertexBufferObjectManager());
+
+        RotationModifier rotationModifier = new RotationModifier( 100.0f   // duration
+                                                                , 1.0f   // start
+                                                                , 300.0f); //  end )
+        //gunSprite.setRotation(20.0f);
+        gunSprite.registerEntityModifier(new LoopEntityModifier(rotationModifier));
+
+        this.getChildByIndex(LAYER_GUN).attachChild(gunSprite);
     }
 }
