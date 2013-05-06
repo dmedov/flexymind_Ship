@@ -12,10 +12,10 @@ import org.andengine.util.modifier.ease.EaseLinear;
 
 public class Torpedo extends Sprite {
 
-    float pX;
-    float pY;
     PointF startPoint;
+    PointF finishPoint;
     SceletonActivity activity;
+    double radians;
 
 
 
@@ -25,16 +25,22 @@ public class Torpedo extends Sprite {
              , activity.getResourceManager().getLoadedTextureRegion(R.drawable.torpedo)
              , activity.getEngine().getVertexBufferObjectManager());
 
-        startPoint = new PointF(point.x, point.y);
+        this.startPoint = new PointF(point.x, point.y);
+        this.finishPoint = new PointF(0, 0);
         this.activity = activity;
+        this.radians = Math.toRadians(angle);
 
         createModifier();
     }
 
     private void createModifier(){
+
+        finishPoint.y = 0;
+        finishPoint.x = startPoint.x + (float) Math.tan(radians) * startPoint.y;
+
         LoopEntityModifier alphaLoopEntityModifier = new LoopEntityModifier(new AlphaModifier(1, 1, 0));
         ParallelEntityModifier parallelEntityModifier = new ParallelEntityModifier(alphaLoopEntityModifier,
-                new MoveModifier(5, startPoint.x, 500, startPoint.y, 0, EaseLinear.getInstance()));
+                new MoveModifier(5, startPoint.x, finishPoint.x, startPoint.y, finishPoint.y, EaseLinear.getInstance()));
         LoopEntityModifier loopEntityModifier = new LoopEntityModifier(parallelEntityModifier);
         this.registerEntityModifier(loopEntityModifier);
     }
@@ -42,7 +48,7 @@ public class Torpedo extends Sprite {
     @Override
     protected void onManagedUpdate(float pSecondsElapsed) {
 
-        if (activity.getSceneSwitcher().getGameScene().getBackgroundSprite().collidesWith(this)){
+        if (this.collidesWith(activity.getSceneSwitcher().getGameScene().getBackgroundSprite())){
             this.detachSelf();
         }
 
