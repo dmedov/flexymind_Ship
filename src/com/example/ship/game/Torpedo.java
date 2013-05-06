@@ -3,10 +3,8 @@ package com.example.ship.game;
 import android.graphics.PointF;
 import com.example.ship.R;
 import com.example.ship.SceletonActivity;
-import org.andengine.entity.modifier.AlphaModifier;
-import org.andengine.entity.modifier.LoopEntityModifier;
-import org.andengine.entity.modifier.MoveModifier;
-import org.andengine.entity.modifier.ParallelEntityModifier;
+import org.andengine.entity.Entity;
+import org.andengine.entity.modifier.*;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.util.modifier.ease.EaseExponentialIn;
 import org.andengine.util.modifier.ease.EaseExponentialOut;
@@ -18,6 +16,8 @@ public class Torpedo extends Sprite {
     private PointF finishPoint;
     private SceletonActivity activity;
     private double radians;
+    private float angle;
+    private static final float TIME_OF_FLIGHT = 25;
 
 
 
@@ -31,6 +31,7 @@ public class Torpedo extends Sprite {
         finishPoint = new PointF(0, 0);
         this.activity = activity;
         this.radians = Math.toRadians(angle);
+        this.angle = angle;
 
         createModifier();
     }
@@ -40,11 +41,30 @@ public class Torpedo extends Sprite {
         finishPoint.y = 0;
         finishPoint.x = startPoint.x + (float) Math.tan(radians) * startPoint.y;
 
+        RotationModifier rotationModifier = new RotationAtModifier( 0.01f
+                                                                  , 0
+                                                                  , angle
+                                                                  , this.getRotationCenterX()
+                                                                  , this.getRotationCenterY());
+
         LoopEntityModifier alphaLoopEntityModifier = new LoopEntityModifier(new AlphaModifier(1, 1, 0));
-        ParallelEntityModifier parallelEntityModifier = new ParallelEntityModifier(alphaLoopEntityModifier,
-                new MoveModifier(25, startPoint.x, finishPoint.x, startPoint.y, finishPoint.y, EaseExponentialOut.getInstance()));
+
+        MoveModifier moveModifier = new MoveModifier( TIME_OF_FLIGHT
+                                                    , startPoint.x
+                                                    , finishPoint.x
+                                                    , startPoint.y
+                                                    , finishPoint.y
+                                                    , EaseExponentialOut.getInstance());
+
+        ParallelEntityModifier parallelEntityModifier =
+                new ParallelEntityModifier(alphaLoopEntityModifier, moveModifier);
+
         LoopEntityModifier loopEntityModifier = new LoopEntityModifier(parallelEntityModifier);
-        this.registerEntityModifier(loopEntityModifier);
+
+        SequenceEntityModifier sequenceEntityModifier =
+                new SequenceEntityModifier(rotationModifier, loopEntityModifier);
+
+        this.registerEntityModifier(sequenceEntityModifier);
     }
 
 }

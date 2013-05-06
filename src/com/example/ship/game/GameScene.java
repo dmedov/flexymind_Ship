@@ -13,6 +13,7 @@ import org.andengine.entity.modifier.MoveModifier;
 import org.andengine.entity.modifier.ParallelEntityModifier;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
+import org.andengine.entity.scene.background.IBackground;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.util.adt.pool.GenericPool;
@@ -38,12 +39,15 @@ public class GameScene extends Scene {
     private GameHUD gameHUD;
     private PauseHUD pauseHUD;
     private Sprite backgroundSprite;
+    private Timer timer;
 
     public GameScene(final SceletonActivity activity) {
         super();
         this.activity = activity;
         this.mEngine = activity.getEngine();
         this.resourceManager = activity.getResourceManager();
+        timer = new Timer(activity);
+        timer.setTime();
 
         createBackground();
 
@@ -63,8 +67,10 @@ public class GameScene extends Scene {
     }
 
     public void createTorpedo(PointF point, float angle){
-        Torpedo torpedo = new Torpedo(activity, point, angle);
-        this.getChildByIndex(LAYER_TORPEDO).attachChild(torpedo);
+        if (timer.checkTime()){
+            Torpedo torpedo = new Torpedo(activity, point, angle);
+            this.getChildByIndex(LAYER_TORPEDO).attachChild(torpedo);
+        }
     }
 
     @Override
@@ -102,4 +108,5 @@ public class GameScene extends Scene {
         Color backgroundColor = new Color(0.09804f, 0.6274f, 0.8784f);
         this.setBackground(new Background(backgroundColor));
     }
+
 }
