@@ -7,6 +7,10 @@ import org.andengine.engine.camera.ZoomCamera;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.ITextureRegion;
 
+import static android.util.FloatMath.cos;
+import static android.util.FloatMath.sin;
+import static java.lang.Math.abs;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Denis
@@ -16,9 +20,10 @@ import org.andengine.opengl.texture.region.ITextureRegion;
  */
 public class Gun {
 
-    private static final float ROTATION_VELOCITY  = 0.4f;
-    private static final float ROTATION_MAX_ANGLE = 40.0f;
-    private static final float GUN_PART_ON_SCENE  = 0.6f;
+    private static final float ROTATION_VELOCITY   = 0.4f;
+    private static final float ROTATION_MAX_ANGLE  = 40.0f;
+    private static final float GUN_PART_ON_SCENE   = 0.6f;
+    public static final float GRAD_TO_RADIAN_KOEF = 3.1415f / 180f;
     private Sprite gunSprite;
 
 
@@ -51,8 +56,14 @@ public class Gun {
     }
 
     public PointF getShootStartPoint() {
-        PointF shootStartPoint = new PointF( getSprite().getX() + gunSprite.getWidth() * 0.5f
-                                           , getSprite().getY());
+        float gunAngle = gunSprite.getRotation();
+        PointF beginGunPoint = new PointF( gunSprite.getX() + gunSprite.getWidth() * 0.5f
+                                         , gunSprite.getY() + gunSprite.getHeight());
+
+
+        float gunWidth = gunSprite.getHeight();
+        PointF shootStartPoint = new PointF( beginGunPoint.x + gunWidth * sin(gunAngle * GRAD_TO_RADIAN_KOEF)
+                                           , beginGunPoint.y - gunWidth * abs(cos(gunAngle * GRAD_TO_RADIAN_KOEF)));
         return shootStartPoint;
     }
 

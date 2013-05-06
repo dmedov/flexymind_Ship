@@ -1,15 +1,22 @@
 package com.example.ship.game;
 
+import android.graphics.PointF;
+import android.util.Log;
 import com.example.ship.R;
 import com.example.ship.SceletonActivity;
 import com.example.ship.atlas.ResourceManager;
 import org.andengine.engine.Engine;
 import org.andengine.entity.Entity;
+import org.andengine.entity.primitive.Line;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.util.color.Color;
+
+import static android.util.FloatMath.cos;
+import static android.util.FloatMath.sin;
+import static java.lang.Math.abs;
 
 public class GameScene extends Scene {
     private static int layerCount = 0;
@@ -82,5 +89,31 @@ public class GameScene extends Scene {
 
     public Gun getGun() {
         return gun;
+    }
+
+
+    // test getShootStartPoint and getGunAngle methods in Gun class
+    public void testGunShoot() {
+        final float lineLength = 200f;
+        PointF startPosition = gun.getShootStartPoint();
+        final float gunAngle = gun.getGunAngle();
+
+        PointF endPosition = new PointF( startPosition.x +
+                                         lineLength * (sin(gunAngle * gun.GRAD_TO_RADIAN_KOEF))
+                                       , startPosition.y -
+                                         lineLength * abs(cos(gunAngle * gun.GRAD_TO_RADIAN_KOEF)));
+
+        Line line = new Line( startPosition.x
+                            , startPosition.y
+                            , endPosition.x
+                            , endPosition.y
+                            , mEngine.getVertexBufferObjectManager());
+
+        Log.i("COS_SIN_ANGLE", String.valueOf(cos(gun.getGunAngle()))
+                             + ":"
+                             + String.valueOf(sin(gun.getGunAngle()))
+                             + ":"
+                             + String.valueOf(gunAngle) );
+        this.attachChild(line);
     }
 }

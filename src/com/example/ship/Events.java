@@ -130,9 +130,9 @@ public class Events implements TouchableMenuButtonSprite
     }
 
     private void fire() {
-        //To change body of created methods use File | Settings | File Templates.
-    }
 
+        activity.getSceneSwitcher().getGameScene().testGunShoot();
+    }
     private void rotateRight() {
         Gun gun = activity.getSceneSwitcher().getGameScene().getGun();
         gun.rotateRight();
