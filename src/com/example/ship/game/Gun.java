@@ -56,6 +56,10 @@ public class Gun {
         return shootStartPoint;
     }
 
+    public float getGunAngle() {
+        return gunSprite.getRotation();
+    }
+
     public Sprite getSprite() {
         return gunSprite;
     }
