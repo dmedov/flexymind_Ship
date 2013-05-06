@@ -15,6 +15,7 @@ import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.ITextureRegion;
+import org.andengine.util.adt.pool.GenericPool;
 import org.andengine.util.color.Color;
 import org.andengine.util.modifier.ease.EaseExponentialOut;
 import org.andengine.util.modifier.ease.EaseLinear;
@@ -28,6 +29,7 @@ public class GameScene extends Scene {
     private static final int LAYER_SECOND_WAVE = layerCount++;
     private static final int LAYER_THIRD_WAVE  = layerCount++;
     private static final int LAYER_GUN   = layerCount++;
+    private static final int LAYER_TORPEDO = layerCount++;
     private static final int WAVES_NUMBER = 3;
 
     private final SceletonActivity activity;
@@ -66,7 +68,19 @@ public class GameScene extends Scene {
 
     public void createTorpedo(PointF point, float angle){
         Torpedo torpedo = new Torpedo(activity, point, angle);
-        this.getChildByIndex(LAYER_GUN).attachChild(torpedo);
+        this.getChildByIndex(LAYER_TORPEDO).attachChild(torpedo);
+    }
+
+    @Override
+    protected void onManagedUpdate(float pSecondsElapsed) {
+        Entity layer = (Entity) getChildByIndex(LAYER_TORPEDO);
+        for (int i = 0; i < layer.getChildCount(); i++){
+            Sprite sprite = (Sprite) layer.getChildByIndex(i);
+            if ( sprite.collidesWith(backgroundSprite)){
+                layer.getChildByIndex(i).detachSelf();
+            }
+        }
+        super.onManagedUpdate(pSecondsElapsed);
     }
 
     private void createBackground() {

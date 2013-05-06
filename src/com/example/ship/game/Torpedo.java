@@ -12,10 +12,10 @@ import org.andengine.util.modifier.ease.EaseLinear;
 
 public class Torpedo extends Sprite {
 
-    PointF startPoint;
-    PointF finishPoint;
-    SceletonActivity activity;
-    double radians;
+    private PointF startPoint;
+    private PointF finishPoint;
+    private SceletonActivity activity;
+    private double radians;
 
 
 
@@ -25,8 +25,8 @@ public class Torpedo extends Sprite {
              , activity.getResourceManager().getLoadedTextureRegion(R.drawable.torpedo)
              , activity.getEngine().getVertexBufferObjectManager());
 
-        this.startPoint = new PointF(point.x, point.y);
-        this.finishPoint = new PointF(0, 0);
+        startPoint = new PointF(point.x, point.y);
+        finishPoint = new PointF(0, 0);
         this.activity = activity;
         this.radians = Math.toRadians(angle);
 
@@ -49,7 +49,7 @@ public class Torpedo extends Sprite {
     protected void onManagedUpdate(float pSecondsElapsed) {
 
         if (this.collidesWith(activity.getSceneSwitcher().getGameScene().getBackgroundSprite())){
-            this.detachSelf();
+        //    this.detachSelf();
         }
 
         super.onManagedUpdate(pSecondsElapsed);
