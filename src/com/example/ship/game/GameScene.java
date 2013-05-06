@@ -62,10 +62,6 @@ public class GameScene extends Scene {
         activity.getCamera().setHUD(gameHUD);
     }
 
-    public Sprite getBackgroundSprite(){
-        return backgroundSprite;
-    }
-
     public void createTorpedo(PointF point, float angle){
         Torpedo torpedo = new Torpedo(activity, point, angle);
         this.getChildByIndex(LAYER_TORPEDO).attachChild(torpedo);

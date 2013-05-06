@@ -8,6 +8,8 @@ import org.andengine.entity.modifier.LoopEntityModifier;
 import org.andengine.entity.modifier.MoveModifier;
 import org.andengine.entity.modifier.ParallelEntityModifier;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.util.modifier.ease.EaseExponentialIn;
+import org.andengine.util.modifier.ease.EaseExponentialOut;
 import org.andengine.util.modifier.ease.EaseLinear;
 
 public class Torpedo extends Sprite {
@@ -40,18 +42,9 @@ public class Torpedo extends Sprite {
 
         LoopEntityModifier alphaLoopEntityModifier = new LoopEntityModifier(new AlphaModifier(1, 1, 0));
         ParallelEntityModifier parallelEntityModifier = new ParallelEntityModifier(alphaLoopEntityModifier,
-                new MoveModifier(5, startPoint.x, finishPoint.x, startPoint.y, finishPoint.y, EaseLinear.getInstance()));
+                new MoveModifier(25, startPoint.x, finishPoint.x, startPoint.y, finishPoint.y, EaseExponentialOut.getInstance()));
         LoopEntityModifier loopEntityModifier = new LoopEntityModifier(parallelEntityModifier);
         this.registerEntityModifier(loopEntityModifier);
     }
 
-    @Override
-    protected void onManagedUpdate(float pSecondsElapsed) {
-
-        if (this.collidesWith(activity.getSceneSwitcher().getGameScene().getBackgroundSprite())){
-        //    this.detachSelf();
-        }
-
-        super.onManagedUpdate(pSecondsElapsed);
-    }
 }
