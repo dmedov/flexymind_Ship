@@ -1,15 +1,25 @@
 package com.example.ship.game;
 
+import android.graphics.PointF;
 import com.example.ship.R;
 import com.example.ship.atlas.ResourceManager;
 import com.example.ship.SceletonActivity;
 import org.andengine.engine.Engine;
+import org.andengine.engine.camera.ZoomCamera;
 import org.andengine.entity.Entity;
+import org.andengine.entity.modifier.AlphaModifier;
+import org.andengine.entity.modifier.LoopEntityModifier;
+import org.andengine.entity.modifier.MoveModifier;
+import org.andengine.entity.modifier.ParallelEntityModifier;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.util.color.Color;
+import org.andengine.util.modifier.ease.EaseExponentialOut;
+import org.andengine.util.modifier.ease.EaseLinear;
+
+import java.util.ArrayList;
 
 public class GameScene extends Scene {
     private static int layerCount = 0;
@@ -17,7 +27,7 @@ public class GameScene extends Scene {
     private static final int LAYER_FIRST_WAVE  = layerCount++;
     private static final int LAYER_SECOND_WAVE = layerCount++;
     private static final int LAYER_THIRD_WAVE  = layerCount++;
-    private static final int LAYER_PERISCOPE   = layerCount++;
+    private static final int LAYER_GUN   = layerCount++;
     private static final int WAVES_NUMBER = 3;
 
     private final SceletonActivity activity;
@@ -25,6 +35,7 @@ public class GameScene extends Scene {
     private final ResourceManager resourceManager;
     private GameHUD gameHUD;
     private PauseHUD pauseHUD;
+    private Sprite backgroundSprite;
 
     public GameScene(final SceletonActivity activity) {
         super();
@@ -49,6 +60,15 @@ public class GameScene extends Scene {
         activity.getCamera().setHUD(gameHUD);
     }
 
+    public Sprite getBackgroundSprite(){
+        return backgroundSprite;
+    }
+
+    public void createTorpedo(PointF point, float angle){
+        Torpedo torpedo = new Torpedo(activity, point, angle);
+        this.getChildByIndex(LAYER_GUN).attachChild(torpedo);
+    }
+
     private void createBackground() {
 
         for(int i = 0; i < layerCount; i++) {
@@ -56,14 +76,14 @@ public class GameScene extends Scene {
         }
 
         ITextureRegion backgroundTexture = resourceManager.getLoadedTextureRegion(R.drawable.gamebackground);
-        Sprite backgroundSprite = new Sprite( 0
-                                            , 0
-                                            , backgroundTexture
-                                            , mEngine.getVertexBufferObjectManager());
+        this.backgroundSprite = new Sprite( 0
+                                          , 0
+                                          , backgroundTexture
+                                          , mEngine.getVertexBufferObjectManager());
 
         ITextureRegion waveSprite = resourceManager.getLoadedTextureRegion(R.drawable.wave);
         Sprite waveImage = new Sprite( 0
-                                     , backgroundTexture.getHeight() / WAVES_NUMBER
+                                     , backgroundTexture.getHeight()
                                      , waveSprite
                                      , mEngine.getVertexBufferObjectManager());
 
