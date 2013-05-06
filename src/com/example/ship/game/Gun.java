@@ -36,9 +36,9 @@ public class Gun {
                                        , camera.getYMax() - gunTexture.getHeight() * GUN_PART_ON_SCENE);
 
         gunSprite = new Sprite( gunPosition.x
-                , gunPosition.y
-                , gunTexture
-                , activity.getEngine().getVertexBufferObjectManager());
+                              , gunPosition.y
+                              , gunTexture
+                              , activity.getEngine().getVertexBufferObjectManager());
 
         gunSprite.setRotationCenter(gunSprite.getWidth() * 0.5f, gunSprite.getHeight());
     }
