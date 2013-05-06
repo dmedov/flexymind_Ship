@@ -45,11 +45,13 @@ public class SceletonActivity extends BaseGameActivity {
     @Override
     public EngineOptions onCreateEngineOptions() {
         zoomCamera = createZoomCamera();
+
+
         EngineOptions engineOptions = new EngineOptions( true
                                                        , ScreenOrientation.LANDSCAPE_FIXED
                                                        , new FillResolutionPolicy()
                                                        , zoomCamera);
-
+        engineOptions.getTouchOptions().setNeedsMultiTouch(true);
         return engineOptions;
     }
 

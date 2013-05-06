@@ -66,7 +66,11 @@ public class Events implements TouchableMenuButtonSprite
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                menuButtonPulse(button, true);
+                switch (button.getId()) {
+                    case R.string.GAME_FIRE_BUTTON:
+                        fire();
+                        break;
+                }
             }
         });
     }
@@ -93,7 +97,6 @@ public class Events implements TouchableMenuButtonSprite
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                menuButtonPulse(button, false);
                 switch (button.getId()) {
                     case R.string.GAME_PAUSE_BUTTON:
                         pauseGame();
@@ -103,9 +106,6 @@ public class Events implements TouchableMenuButtonSprite
                         break;
                     case R.string.GAME_PAUSE_BACK_BUTTON:
                         backToGame();
-                        break;
-                    case R.string.GAME_FIRE_BUTTON:
-                        fire();
                         break;
                 }
             }
