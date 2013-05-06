@@ -78,10 +78,10 @@ public class Events implements TouchableMenuButtonSprite
             public void run() {
                 switch (button.getId()) {
                     case R.string.GAME_LEFT_BUTTON:
-                        rotateLeft();
+                        rotateGunLeft();
                         break;
                     case R.string.GAME_RIGHT_BUTTON:
-                        rotateRight();
+                        rotateGunRight();
                         break;
                 }
             }
@@ -133,12 +133,12 @@ public class Events implements TouchableMenuButtonSprite
 
         activity.getSceneSwitcher().getGameScene().testGunShoot();
     }
-    private void rotateRight() {
+    private void rotateGunRight() {
         Gun gun = activity.getSceneSwitcher().getGameScene().getGun();
         gun.rotateRight();
     }
 
-    private void rotateLeft() {
+    private void rotateGunLeft() {
         Gun gun = activity.getSceneSwitcher().getGameScene().getGun();
         gun.rotateLeft();
     }
