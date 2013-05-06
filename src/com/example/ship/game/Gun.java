@@ -16,8 +16,9 @@ import org.andengine.opengl.texture.region.ITextureRegion;
  */
 public class Gun {
 
-    private static final float ROTATION_VELOCITY = 0.4f;
-    private static final float ROTATION_MAX_ANGLE = 40f;
+    private static final float ROTATION_VELOCITY  = 0.4f;
+    private static final float ROTATION_MAX_ANGLE = 40.0f;
+    private static final float GUN_PART_ON_SCENE  = 0.6f;
     private Sprite gunSprite;
 
 
@@ -26,15 +27,15 @@ public class Gun {
 
         ZoomCamera camera = activity.getCamera();
 
-        PointF gunPosition = new PointF( camera.getCenterX() - gunTexture.getWidth() / 2
-                                       , camera.getYMax() - gunTexture.getHeight() * 0.6f);
+        PointF gunPosition = new PointF( camera.getCenterX() - gunTexture.getWidth()  * 0.5f
+                                       , camera.getYMax() - gunTexture.getHeight() * GUN_PART_ON_SCENE);
 
         gunSprite = new Sprite( gunPosition.x
                 , gunPosition.y
                 , gunTexture
                 , activity.getEngine().getVertexBufferObjectManager());
 
-        gunSprite.setRotationCenter(gunSprite.getWidth() / 2, gunSprite.getHeight());
+        gunSprite.setRotationCenter(gunSprite.getWidth() * 0.5f, gunSprite.getHeight());
     }
 
     public void rotateLeft() {
@@ -50,7 +51,7 @@ public class Gun {
     }
 
     public PointF getShootStartPoint() {
-        PointF shootStartPoint = new PointF( getSprite().getX() + gunSprite.getWidth() / 2
+        PointF shootStartPoint = new PointF( getSprite().getX() + gunSprite.getWidth() * 0.5f
                                            , getSprite().getY());
         return shootStartPoint;
     }
