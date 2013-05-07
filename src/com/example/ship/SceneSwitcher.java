@@ -53,18 +53,20 @@ public class SceneSwitcher {
         }
         rootScene.unregisterTouchArea();
         rootScene.setChildScene(gameScene);
-        gameScene.switchToGameHUD();
         ShipSpawner shipSpawner = new ShipSpawner(activity);
         gameScene.setShipSpawner(shipSpawner);
-        shipSpawner.startSpawn();
+        switchToGameHUD();
+
     }
 
     public void switchToGameHUD() {
         gameScene.switchToGameHUD();
+        gameScene.getShipSpawner().startSpawn();
     }
 
     public void switchToPauseHUD() {
         gameScene.switchToPauseHUD();
+        gameScene.getShipSpawner().stopSpawn();
     }
 
     public SceletonScene getRootScene() {
