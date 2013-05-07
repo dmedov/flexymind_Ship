@@ -15,7 +15,6 @@ public class Torpedo extends Sprite {
     private PointF startPoint;
     private PointF finishPoint;
     private double radians;
-    private float angle;
     private static final float TIME_OF_FLIGHT = 30;
 
     public Torpedo(SceletonActivity activity, PointF point, float angle){
@@ -32,7 +31,6 @@ public class Torpedo extends Sprite {
                                           .getLoadedTextureRegion(R.drawable.torpedo).getHeight()/2);
         finishPoint = new PointF(0, 0);
         this.radians = Math.toRadians(angle);
-        this.angle = angle;
 
         createModifier();
     }
@@ -42,13 +40,6 @@ public class Torpedo extends Sprite {
         finishPoint.y = 0;
         finishPoint.x = startPoint.x + (float) Math.tan(radians) * startPoint.y;
 
-        // RotationModifier(время исполнения, угол сначала, угол в конце, относительно чего крутим, -//-)
-     /*   RotationModifier rotationModifier = new RotationAtModifier( 0.01f
-                                                                  , 0
-                                                                  , angle
-                                                                  , this.getRotationCenterX()
-                                                                  , this.getRotationCenterY());
-      */
         // AlphaModifier(время исполнения, изначальная прозрачность, конечная прозрачность)
         // LoopEntityModifier - выполняет модификатор пока не отменим
         LoopEntityModifier alphaLoopEntityModifier = new LoopEntityModifier(new AlphaModifier(1, 1, 0));
@@ -66,10 +57,6 @@ public class Torpedo extends Sprite {
                 new ParallelEntityModifier(alphaLoopEntityModifier, moveModifier);
 
         LoopEntityModifier loopEntityModifier = new LoopEntityModifier(parallelEntityModifier);
-
-        // SequenceEntityModifier - выполняет модификаторы последовательно
-    //    SequenceEntityModifier sequenceEntityModifier =
-    //            new SequenceEntityModifier(rotationModifier, loopEntityModifier);
 
         this.registerEntityModifier(loopEntityModifier);
     }
