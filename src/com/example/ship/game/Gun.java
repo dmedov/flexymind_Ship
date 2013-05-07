@@ -26,7 +26,6 @@ public class Gun {
     public static final float GRAD_TO_RADIAN_KOEF = 3.1415f / 180f;
     private Sprite gunSprite;
 
-
     public Gun(SceletonActivity activity) {
         ITextureRegion gunTexture = activity.getResourceManager().getLoadedTextureRegion(R.drawable.gun);
 
