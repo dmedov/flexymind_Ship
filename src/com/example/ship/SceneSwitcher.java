@@ -56,7 +56,7 @@ public class SceneSwitcher {
         gameScene.switchToGameHUD();
         ShipSpawner shipSpawner = new ShipSpawner(activity);
         gameScene.setShipSpawner(shipSpawner);
-        new Thread(shipSpawner).start();
+        shipSpawner.startSpawn();
     }
 
     public void switchToGameHUD() {

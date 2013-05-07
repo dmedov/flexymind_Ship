@@ -12,30 +12,38 @@ import org.andengine.engine.handler.timer.TimerHandler;
  * Time: 21:59
  * To change this template use File | Settings | File Templates.
  */
-public class ShipSpawner implements Runnable {
+public class ShipSpawner{
     private final SceletonActivity activity;
     private TimerHandler timerHandler;
+    private float delay;
 
     public ShipSpawner(SceletonActivity activity) {
         this.activity = activity;
-
+        delay = 0.1f;
     }
 
-    @Override
-    public void run() {
-        timerHandler = new TimerHandler(0.1f, new ITimerCallback() {
-            @Override
-            public void onTimePassed(TimerHandler timerHandler) {
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        GameScene gameScene = activity.getSceneSwitcher().getGameScene();
-                        Ship ship = new Ship(activity, 300, R.drawable.sailfish);
-                        gameScene.getChildByIndex(GameScene.LAYER_FIRST_WAVE).attachChild(ship.getSprite());
-                    }
-                });
-            }
-        });
+    public void startSpawn() {
+        timerHandler = new TimerHandler(delay, new TimerTask());
         activity.getEngine().registerUpdateHandler(timerHandler);
+    }
+
+    public void stopSpawn() {
+        timerHandler.reset();
+        timerHandler.setTimerSeconds(0);
+    }
+
+    class TimerTask implements ITimerCallback {
+
+        @Override
+        public void onTimePassed(TimerHandler timerHandler) {
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    GameScene gameScene = activity.getSceneSwitcher().getGameScene();
+                    Ship ship = new Ship(activity, 300, R.drawable.sailfish);
+                    gameScene.getChildByIndex(GameScene.LAYER_FIRST_WAVE).attachChild(ship.getSprite());
+                }
+            });
+        }
     }
 }
