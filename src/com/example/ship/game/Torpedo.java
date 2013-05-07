@@ -3,39 +3,37 @@ package com.example.ship.game;
 import android.graphics.PointF;
 import com.example.ship.R;
 import com.example.ship.SceletonActivity;
-import org.andengine.entity.Entity;
 import org.andengine.entity.modifier.*;
 import org.andengine.entity.sprite.Sprite;
-import org.andengine.util.modifier.ease.EaseExponentialIn;
 import org.andengine.util.modifier.ease.EaseExponentialOut;
-import org.andengine.util.modifier.ease.EaseLinear;
 
 public class Torpedo extends Sprite {
+
+    private static final float TIME_OF_FLIGHT = 30;
 
     private PointF startPoint;
     private PointF finishPoint;
     private double radians;
-    private static final float TIME_OF_FLIGHT = 30;
 
-    public Torpedo(SceletonActivity activity, PointF point, float angle){
-        super( point.x - activity.getResourceManager().getLoadedTextureRegion(R.drawable.torpedo)
-                         .getWidth()/2
-             , point.y - activity.getResourceManager().getLoadedTextureRegion(R.drawable.torpedo)
-                         .getHeight()/2
+    public Torpedo(SceletonActivity activity, PointF point, float angle) {
+        super( point.x
+             , point.y
              , activity.getResourceManager().getLoadedTextureRegion(R.drawable.torpedo)
              , activity.getEngine().getVertexBufferObjectManager());
 
-        startPoint = new PointF(point.x - activity.getResourceManager()
-                                          .getLoadedTextureRegion(R.drawable.torpedo).getWidth()/2
-                              , point.y - activity.getResourceManager()
-                                          .getLoadedTextureRegion(R.drawable.torpedo).getHeight()/2);
+        this.setPosition( point.x - this.getWidth() / 2
+                        , point.y - this.getHeight() / 2);
+
+        startPoint = new PointF( point.x - this.getWidth() / 2
+                               , point.y - this.getHeight() / 2);
         finishPoint = new PointF(0, 0);
+
         this.radians = Math.toRadians(angle);
 
         createModifier();
     }
 
-    private void createModifier(){
+    private void createModifier() {
 
         finishPoint.y = 0;
         finishPoint.x = startPoint.x + (float) Math.tan(radians) * startPoint.y;
@@ -64,7 +62,7 @@ public class Torpedo extends Sprite {
     @Override
     protected void onManagedUpdate(float pSecondsElapsed) {
         // постепенное уменьшение торпеды
-        this.setScaleY( (float) ( this.getY() / startPoint.y) );
+        this.setScaleY(this.getY() / startPoint.y);
         super.onManagedUpdate(pSecondsElapsed);
     }
 

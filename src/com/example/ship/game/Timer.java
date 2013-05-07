@@ -6,25 +6,24 @@ import org.andengine.engine.Engine;
 
 public class Timer {
 
-    private SceletonActivity activity;
+    private static final float fireTimePeriod = 2f;
+
     private Engine mEgine;
     private float temporaryCheckpoint;
     private float checkTime;
-    private static final float fireTimePeriod = 2f;
 
-    public Timer(SceletonActivity activity){
-        this.activity = activity;
+    public Timer(SceletonActivity activity) {
         this.mEgine = activity.getEngine();
     }
 
-    public void setTemporaryCheckpoint(){
+    public void setTemporaryCheckpoint() {
         temporaryCheckpoint = mEgine.getSecondsElapsedTotal();
     }
 
     // temporaryCheckpoint - время последнего выстрела,  checkTime - данный момент
-    public boolean checkTimeShoot(){
+    public boolean checkTimeShoot() {
         checkTime = mEgine.getSecondsElapsedTotal();
-        if (checkTime - temporaryCheckpoint > fireTimePeriod){
+        if (checkTime - temporaryCheckpoint > fireTimePeriod) {
             temporaryCheckpoint = checkTime;
             return true;
         } else {

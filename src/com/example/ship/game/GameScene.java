@@ -29,8 +29,8 @@ public class GameScene extends Scene {
     private static final int LAYER_FIRST_WAVE  = layerCount++;
     private static final int LAYER_SECOND_WAVE = layerCount++;
     private static final int LAYER_THIRD_WAVE  = layerCount++;
-    private static final int LAYER_GUN   = layerCount++;
     private static final int LAYER_TORPEDO = layerCount++;
+    private static final int LAYER_GUN   = layerCount++;
     private static final int WAVES_NUMBER = 3;
 
     private final SceletonActivity activity;
@@ -66,8 +66,8 @@ public class GameScene extends Scene {
         activity.getCamera().setHUD(gameHUD);
     }
 
-    public void createTorpedo(PointF point, float angle){
-        if (timer.checkTimeShoot()){
+    public void createTorpedo(PointF point, float angle) {
+        if (timer.checkTimeShoot()) {
             Torpedo torpedo = new Torpedo(activity, point, angle);
             this.getChildByIndex(LAYER_TORPEDO).attachChild(torpedo);
         }
@@ -77,9 +77,9 @@ public class GameScene extends Scene {
     protected void onManagedUpdate(float pSecondsElapsed) {
         // Ищем столкновение торпеды с небом
         Entity layer = (Entity) getChildByIndex(LAYER_TORPEDO);
-        for (int i = 0; i < layer.getChildCount(); i++){
+        for (int i = 0; i < layer.getChildCount(); i++) {
             Sprite sprite = (Sprite) layer.getChildByIndex(i);
-            if ( sprite.collidesWith(backgroundSprite)){
+            if ( sprite.collidesWith(backgroundSprite)) {
                 layer.getChildByIndex(i).detachSelf();
             }
         }
