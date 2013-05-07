@@ -39,6 +39,9 @@ public class GameScene extends Scene {
 
         pauseHUD = new PauseHUD(activity);
         pauseHUD.setEventsToChildren(activity.getEvents());
+
+        Ship ship = new Ship(activity,300,30);
+        this.getChildByIndex(LAYER_FIRST_WAVE).attachChild(ship.getSprite());
     }
 
     public void switchToPauseHUD() {

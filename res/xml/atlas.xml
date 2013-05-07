@@ -14,5 +14,6 @@
                 <texture name="leftbutton"/>
                 <texture name="rightbutton"/>
                 <texture name="firebutton"/>
+                <texture name="sailfish"/>
             </Atlas>
 </resources>
