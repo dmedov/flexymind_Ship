@@ -13,11 +13,11 @@ import org.andengine.util.color.Color;
 
 public class GameScene extends Scene {
     private static int layerCount = 0;
-    private static final int LAYER_BACKGROUND  = layerCount++;
-    private static final int LAYER_FIRST_WAVE  = layerCount++;
-    private static final int LAYER_SECOND_WAVE = layerCount++;
-    private static final int LAYER_THIRD_WAVE  = layerCount++;
-    private static final int LAYER_PERISCOPE   = layerCount++;
+    public static final int LAYER_BACKGROUND  = layerCount++;
+    public static final int LAYER_FIRST_WAVE  = layerCount++;
+    public static final int LAYER_SECOND_WAVE = layerCount++;
+    public static final int LAYER_THIRD_WAVE  = layerCount++;
+    public static final int LAYER_PERISCOPE   = layerCount++;
     private static final int WAVES_NUMBER = 3;
 
     private final SceletonActivity activity;
@@ -25,6 +25,7 @@ public class GameScene extends Scene {
     private final ResourceManager resourceManager;
     private GameHUD gameHUD;
     private PauseHUD pauseHUD;
+    private ShipSpawner shipSpawner;
 
     public GameScene(final SceletonActivity activity) {
         super();
@@ -40,8 +41,6 @@ public class GameScene extends Scene {
         pauseHUD = new PauseHUD(activity);
         pauseHUD.setEventsToChildren(activity.getEvents());
 
-        Ship ship = new Ship(activity,300,R.drawable.sailfish);
-        this.getChildByIndex(LAYER_FIRST_WAVE).attachChild(ship.getSprite());
     }
 
     public void switchToPauseHUD() {
@@ -74,5 +73,13 @@ public class GameScene extends Scene {
         this.getChildByIndex(LAYER_FIRST_WAVE).attachChild(waveImage);
         Color backgroundColor = new Color(0.09804f, 0.6274f, 0.8784f);
         this.setBackground(new Background(backgroundColor));
+    }
+
+    public ShipSpawner getShipSpawner() {
+        return shipSpawner;
+    }
+
+    public void setShipSpawner(ShipSpawner shipSpawner) {
+        this.shipSpawner = shipSpawner;
     }
 }
