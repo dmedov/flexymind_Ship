@@ -17,16 +17,20 @@ public class Ship {
     private PointF finishPoint;
     private Sprite shipSprite;
     private Sprite hitAreaSprite;
+
     private final float velocity;
+    public int health;
 
-    public Ship( SceletonActivity activity, float yBirthPoint, float velocity ) {
-        this.velocity = velocity;
+    public Ship( SceletonActivity activity, float yBirthPoint, int shipID ) {
+        this.velocity = 30;
         birthPoint = new PointF(activity.getCamera().getXMax(),yBirthPoint);
-        shipSprite = new Sprite(  birthPoint.x
-                                , birthPoint.y
-                                , activity.getResourceManager().getLoadedTextureRegion(R.drawable.sailfish)
-                                , activity.getEngine().getVertexBufferObjectManager());
-
+        switch (shipID) {
+            case R.drawable.sailfish:
+                shipSprite = new Sprite( birthPoint.x
+                                         , birthPoint.y
+                                         , activity.getResourceManager().getLoadedTextureRegion(shipID)
+                                         , activity.getEngine().getVertexBufferObjectManager());
+        }
         finishPoint = new PointF(activity.getCamera().getXMin() - shipSprite.getWidth(),yBirthPoint);
         createModifier();
     }

@@ -40,7 +40,7 @@ public class GameScene extends Scene {
         pauseHUD = new PauseHUD(activity);
         pauseHUD.setEventsToChildren(activity.getEvents());
 
-        Ship ship = new Ship(activity,300,30);
+        Ship ship = new Ship(activity,300,R.drawable.sailfish);
         this.getChildByIndex(LAYER_FIRST_WAVE).attachChild(ship.getSprite());
     }
 
