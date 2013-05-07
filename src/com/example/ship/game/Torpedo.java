@@ -38,12 +38,12 @@ public class Torpedo extends Sprite {
         finishPoint.x = startPoint.x + (float) Math.tan(radians) * startPoint.y;
 
         // RotationModifier(время исполнения, угол сначала, угол в конце, относительно чего крутим, -//-)
-        RotationModifier rotationModifier = new RotationAtModifier( 0.01f
+     /*   RotationModifier rotationModifier = new RotationAtModifier( 0.01f
                                                                   , 0
                                                                   , angle
                                                                   , this.getRotationCenterX()
                                                                   , this.getRotationCenterY());
-
+      */
         // AlphaModifier(время исполнения, изначальная прозрачность, конечная прозрачность)
         // LoopEntityModifier - выполняет модификатор пока не отменим
         LoopEntityModifier alphaLoopEntityModifier = new LoopEntityModifier(new AlphaModifier(1, 1, 0));
@@ -63,16 +63,16 @@ public class Torpedo extends Sprite {
         LoopEntityModifier loopEntityModifier = new LoopEntityModifier(parallelEntityModifier);
 
         // SequenceEntityModifier - выполняет модификаторы последовательно
-        SequenceEntityModifier sequenceEntityModifier =
-                new SequenceEntityModifier(rotationModifier, loopEntityModifier);
+    //    SequenceEntityModifier sequenceEntityModifier =
+    //            new SequenceEntityModifier(rotationModifier, loopEntityModifier);
 
-        this.registerEntityModifier(sequenceEntityModifier);
+        this.registerEntityModifier(loopEntityModifier);
     }
 
     @Override
     protected void onManagedUpdate(float pSecondsElapsed) {
         // постепенное уменьшение торпеды
-        this.setScale( (float) Math.sqrt( this.getY() / startPoint.y) );
+        this.setScaleY( (float) ( this.getY() / startPoint.y) );
         super.onManagedUpdate(pSecondsElapsed);
     }
 
