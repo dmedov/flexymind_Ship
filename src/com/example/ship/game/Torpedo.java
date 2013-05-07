@@ -19,12 +19,17 @@ public class Torpedo extends Sprite {
     private static final float TIME_OF_FLIGHT = 30;
 
     public Torpedo(SceletonActivity activity, PointF point, float angle){
-        super( point.x
-             , point.y
+        super( point.x - activity.getResourceManager().getLoadedTextureRegion(R.drawable.torpedo)
+                         .getWidth()/2
+             , point.y - activity.getResourceManager().getLoadedTextureRegion(R.drawable.torpedo)
+                         .getHeight()/2
              , activity.getResourceManager().getLoadedTextureRegion(R.drawable.torpedo)
              , activity.getEngine().getVertexBufferObjectManager());
 
-        startPoint = new PointF(point.x, point.y);
+        startPoint = new PointF(point.x - activity.getResourceManager()
+                                          .getLoadedTextureRegion(R.drawable.torpedo).getWidth()/2
+                              , point.y - activity.getResourceManager()
+                                          .getLoadedTextureRegion(R.drawable.torpedo).getHeight()/2);
         finishPoint = new PointF(0, 0);
         this.radians = Math.toRadians(angle);
         this.angle = angle;
