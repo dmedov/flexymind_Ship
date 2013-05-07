@@ -122,7 +122,9 @@ public class Events implements TouchableMenuButtonSprite
     }
 
     private void fire() {
-        activity.getSceneSwitcher().getGameScene().createTorpedo(new PointF(900, 900), 30);
+        PointF startPointF = new PointF(900, 900);
+        float angleFire = -20;
+        activity.getSceneSwitcher().getGameScene().createTorpedo(startPointF, angleFire);
     }
 
     private void moveRight() {
