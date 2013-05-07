@@ -47,7 +47,7 @@ public class GameScene extends Scene {
         this.mEngine = activity.getEngine();
         this.resourceManager = activity.getResourceManager();
         timer = new Timer(activity);
-        timer.setTime();
+        timer.setTemporaryCheckpoint();
 
         createBackground();
 
@@ -67,7 +67,7 @@ public class GameScene extends Scene {
     }
 
     public void createTorpedo(PointF point, float angle){
-        if (timer.checkTime()){
+        if (timer.checkTimeShoot()){
             Torpedo torpedo = new Torpedo(activity, point, angle);
             this.getChildByIndex(LAYER_TORPEDO).attachChild(torpedo);
         }
@@ -75,6 +75,7 @@ public class GameScene extends Scene {
 
     @Override
     protected void onManagedUpdate(float pSecondsElapsed) {
+        // Ищем столкновение торпеды с небом
         Entity layer = (Entity) getChildByIndex(LAYER_TORPEDO);
         for (int i = 0; i < layer.getChildCount(); i++){
             Sprite sprite = (Sprite) layer.getChildByIndex(i);

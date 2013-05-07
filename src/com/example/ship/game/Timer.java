@@ -8,23 +8,24 @@ public class Timer {
 
     private SceletonActivity activity;
     private Engine mEgine;
-    private float controlPoint;
-    private float checkPoint;
-    private static final float fireTime = 2f;
+    private float temporaryCheckpoint;
+    private float checkTime;
+    private static final float fireTimePeriod = 2f;
 
     public Timer(SceletonActivity activity){
         this.activity = activity;
         this.mEgine = activity.getEngine();
     }
 
-    public void setTime(){
-        controlPoint = mEgine.getSecondsElapsedTotal();
+    public void setTemporaryCheckpoint(){
+        temporaryCheckpoint = mEgine.getSecondsElapsedTotal();
     }
 
-    public boolean checkTime(){
-        checkPoint = mEgine.getSecondsElapsedTotal();
-        if (checkPoint - controlPoint > fireTime){
-            controlPoint = checkPoint;
+    // temporaryCheckpoint - время последнего выстрела,  checkTime - данный момент
+    public boolean checkTimeShoot(){
+        checkTime = mEgine.getSecondsElapsedTotal();
+        if (checkTime - temporaryCheckpoint > fireTimePeriod){
+            temporaryCheckpoint = checkTime;
             return true;
         } else {
             return false;
