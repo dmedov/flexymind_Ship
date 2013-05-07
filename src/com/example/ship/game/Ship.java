@@ -17,7 +17,6 @@ public class Ship {
     private PointF finishPoint;
     private Sprite shipSprite;
     private Sprite hitAreaSprite;
-
     private final float velocity;
     public int health;
 
@@ -47,6 +46,10 @@ public class Ship {
 
     public Sprite getSprite ( ) {
         return shipSprite;
+    }
+
+    public float getVelocity() {
+        return velocity;
     }
 
     private void createModifier() {
