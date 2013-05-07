@@ -60,7 +60,6 @@ public class Gun {
         PointF beginGunPoint = new PointF( gunSprite.getX() + gunSprite.getWidth() * 0.5f
                                          , gunSprite.getY() + gunSprite.getHeight());
 
-
         float gunWidth = gunSprite.getHeight();
         PointF shootStartPoint = new PointF( beginGunPoint.x + gunWidth * sin(gunAngle * GRAD_TO_RADIAN_KOEF)
                                            , beginGunPoint.y - gunWidth * abs(cos(gunAngle * GRAD_TO_RADIAN_KOEF)));

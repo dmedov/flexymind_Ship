@@ -91,7 +91,6 @@ public class GameScene extends Scene {
         return gun;
     }
 
-
     // test getShootStartPoint and getGunAngle methods in Gun class
     public void testGunShoot() {
         final float lineLength = 200f;
