@@ -16,9 +16,10 @@ import org.andengine.util.modifier.ease.EaseQuadInOut;
 public class Ship {
 
     private static final float RELATIVE_WATERLINE = 0.1f;
-    private static final float MAX_ROTATE_ANGLE = 7.0f;
+    private static final float MAX_ROTATE_ANGLE = 5.0f;
     private static final float ROTATE_DURATION = 3.0f;
     private static final int ROTATION_COUNT = 5;
+    public static final float RELATIVE_ROTATION_CENTER_Y_OFFSET = 1.75f;
     private final SceletonActivity activity;
     private final float y;
     private final int typeId;
@@ -89,6 +90,8 @@ public class Ship {
                                                     , startPoint.y
                                                     , finishPoint.y
                                                     , EaseLinear.getInstance());
+
+        shipSprite.setRotationCenterY(shipSprite.getRotationCenterX() * RELATIVE_ROTATION_CENTER_Y_OFFSET);
 
         RotationModifier rotateUpModifier = new RotationModifier( ROTATE_DURATION
                                                                 , MAX_ROTATE_ANGLE
