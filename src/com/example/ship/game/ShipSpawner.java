@@ -49,11 +49,10 @@ public class ShipSpawner{
 
         @Override
         public void onTimePassed(final TimerHandler timerHandler) {
-
             activity.runOnUiThread(new Runnable() {
-
                 @Override
                 public void run() {
+
                     if (spawning) {
                         delay += rnd.nextFloat() * MAX_SPAWN_DELAY;
                         timerHandler.setTimerSeconds(delay);
@@ -64,7 +63,8 @@ public class ShipSpawner{
                         GameScene gameScene = activity.getSceneSwitcher().getGameScene();
                         Ship ship = new Ship( activity
                                             , gameScene.getShipLinePosition(layerId)
-                                            , R.drawable.sailfish);
+                                            , R.drawable.sailfish
+                                            , rnd.nextBoolean());
                         gameScene.getChildByIndex(layerId).attachChild(ship.getSprite());
 
                         delay = ship.getSprite().getWidth() * ship.getVelocity() * REAL_SPEED_MULTIPLIER;
@@ -84,6 +84,9 @@ public class ShipSpawner{
                     break;
                 case 2:
                     layerId = GameScene.LAYER_THIRD_SHIP_LINE;
+                    break;
+                default:
+                    layerId = GameScene.LAYER_FIRST_SHIP_LINE;
                     break;
             }
             return layerId;

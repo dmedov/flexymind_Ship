@@ -14,15 +14,20 @@ import android.graphics.PointF;
 
 public class Ship {
 
-    private  static final float RELATIVE_WATERLINE = 0.1f;
-    private PointF birthPoint;
+    private static final float RELATIVE_WATERLINE = 0.1f;
+    private PointF startPoint;
     private PointF finishPoint;
     private Sprite shipSprite;
     private Sprite hitAreaSprite;
     private final float velocity;
+    private final SceletonActivity activity;
+    private final float y;
     public int health;
 
-    public Ship( SceletonActivity activity, float yBirthPoint, int shipID ) {
+    public Ship(SceletonActivity activity, float y, int shipID, boolean direction) {
+        this.activity = activity;
+        this.y = y;
+
         switch (shipID) {
             case R.drawable.sailfish:
                 this.velocity = 30;
@@ -40,11 +45,27 @@ public class Ship {
                                , activity.getResourceManager().getLoadedTextureRegion(shipID)
                                , activity.getEngine().getVertexBufferObjectManager());
 
-        birthPoint = new PointF(activity.getCamera().getXMax(),yBirthPoint - shipSprite.getHeight() * (1 - RELATIVE_WATERLINE));
-        shipSprite.setPosition(birthPoint.x, birthPoint.y);
+        setDirection(direction);
 
-        finishPoint = new PointF(activity.getCamera().getXMin() - shipSprite.getWidth(), birthPoint.y);
+        shipSprite.setPosition(startPoint.x, startPoint.y);
+
         createModifier();
+
+    }
+
+    private void setDirection(boolean direction) {
+        if (direction) {
+            startPoint = new PointF( activity.getCamera().getXMax()
+                                   , y - shipSprite.getHeight() * (1 - RELATIVE_WATERLINE));
+            finishPoint = new PointF( activity.getCamera().getXMin() - shipSprite.getWidth()
+                                    , startPoint.y);
+        } else {
+            startPoint = new PointF( activity.getCamera().getXMin() - shipSprite.getWidth()
+                                   , y - shipSprite.getHeight() * (1 - RELATIVE_WATERLINE));
+            finishPoint = new PointF( activity.getCamera().getXMax()
+                                    , startPoint.y);
+            shipSprite.setScaleX(-1);
+        }
     }
 
     public Sprite getSprite ( ) {
@@ -56,12 +77,12 @@ public class Ship {
     }
 
     private void createModifier() {
-        MoveModifier moveModifier = new MoveModifier(     velocity
-                                                        , birthPoint.x
-                                                        , finishPoint.x
-                                                        , birthPoint.y
-                                                        , finishPoint.y
-                                                        , EaseLinear.getInstance());
+        MoveModifier moveModifier = new MoveModifier( velocity
+                                                    , startPoint.x
+                                                    , finishPoint.x
+                                                    , startPoint.y
+                                                    , finishPoint.y
+                                                    , EaseLinear.getInstance());
         shipSprite.registerEntityModifier(moveModifier);
     }
 }
