@@ -70,14 +70,14 @@ public class Ship {
     private void setDirection(boolean direction) {
         if (direction) {
             startPoint = new PointF( activity.getCamera().getXMax()
-                    , y - shipSprite.getHeight() * (1 - RELATIVE_WATERLINE));
+                                   , y - shipSprite.getHeight() * (1 - RELATIVE_WATERLINE));
             finishPoint = new PointF( activity.getCamera().getXMin() - shipSprite.getWidth()
-                    , startPoint.y);
+                                    , startPoint.y);
         } else {
             startPoint = new PointF( activity.getCamera().getXMin() - shipSprite.getWidth()
-                    , y - shipSprite.getHeight() * (1 - RELATIVE_WATERLINE));
+                                   , y - shipSprite.getHeight() * (1 - RELATIVE_WATERLINE));
             finishPoint = new PointF( activity.getCamera().getXMax()
-                    , startPoint.y);
+                                    , startPoint.y);
             shipSprite.setScaleX(-1);
         }
     }
