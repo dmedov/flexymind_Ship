@@ -42,7 +42,6 @@ public class ShipSpawner{
     }
 
     private class TimerTask implements ITimerCallback {
-
         private TimerTask() {
             rnd = new Random();
         }

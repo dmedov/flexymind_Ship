@@ -24,10 +24,8 @@ public class GameScene extends Scene {
     public static final int LAYER_THIRD_SHIP_LINE  = layerCount++;
     public static final int LAYER_FOURTH_WAVE  = layerCount++;
     public static final int LAYER_PERISCOPE   = layerCount++;
-    private static final int WAVES_NUMBER = 3;
-
-    private final static float RELATIVE_SKY_HEIGHT = 0.15f;
-    private final static float RELATIVE_WAVE_HEIGHT = 0.125f;
+    private static final  float RELATIVE_SKY_HEIGHT = 0.15f;
+    private static final  float RELATIVE_WAVE_HEIGHT = 0.125f;
 
     private final SceletonActivity activity;
     private final Engine mEngine;
@@ -57,7 +55,6 @@ public class GameScene extends Scene {
 
         pauseHUD = new PauseHUD(activity);
         pauseHUD.setEventsToChildren(activity.getEvents());
-
     }
 
     public void switchToPauseHUD() {
