@@ -11,6 +11,8 @@ import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.util.color.Color;
 
+import java.util.HashMap;
+
 public class GameScene extends Scene {
     private static int layerCount = 0;
     public static final int LAYER_BACKGROUND  = layerCount++;
@@ -24,12 +26,16 @@ public class GameScene extends Scene {
     public static final int LAYER_PERISCOPE   = layerCount++;
     private static final int WAVES_NUMBER = 3;
 
+    private final static float RELATIVE_SKY_HEIGHT = 0.15f;
+    private final static float RELATIVE_WAVE_HEIGHT = 0.125f;
+
     private final SceletonActivity activity;
     private final Engine mEngine;
     private final ResourceManager resourceManager;
     private GameHUD gameHUD;
     private PauseHUD pauseHUD;
     private ShipSpawner shipSpawner;
+    private HashMap<Integer, Float> shipLinesPosition;
 
     public GameScene(final SceletonActivity activity) {
         super();
@@ -40,6 +46,8 @@ public class GameScene extends Scene {
         for(int i = LAYER_BACKGROUND; i < layerCount; i++) {
             this.attachChild(new Entity());
         }
+
+        shipLinesPosition = new HashMap<Integer, Float>();
 
         createBackground();
         createWaves();
@@ -60,6 +68,18 @@ public class GameScene extends Scene {
         activity.getCamera().setHUD(gameHUD);
     }
 
+    public ShipSpawner getShipSpawner() {
+        return shipSpawner;
+    }
+
+    public void setShipSpawner(ShipSpawner shipSpawner) {
+        this.shipSpawner = shipSpawner;
+    }
+
+    public float getShipLinePosition(int lineId) {
+        return shipLinesPosition.get(lineId);
+    }
+
     private void createBackground() {
         ITextureRegion backgroundTexture = resourceManager.getLoadedTextureRegion(R.drawable.gamebackground);
         Sprite backgroundSprite = new Sprite( 0
@@ -75,10 +95,21 @@ public class GameScene extends Scene {
 
     private void createWaves() {
         ITextureRegion waveTexture = resourceManager.getLoadedTextureRegion(R.drawable.wave);
-        attachTextureToLayer(waveTexture, LAYER_FIRST_WAVE, 200);
-        attachTextureToLayer(waveTexture, LAYER_SECOND_WAVE, 300);
-        attachTextureToLayer(waveTexture, LAYER_THIRD_WAVE, 400);
-        attachTextureToLayer(waveTexture, LAYER_FOURTH_WAVE, 500);
+        float offset = activity.getCamera().getHeightRaw() * RELATIVE_SKY_HEIGHT;
+
+        attachTextureToLayer(waveTexture, LAYER_FIRST_WAVE, offset);
+
+        offset += activity.getCamera().getHeightRaw() * RELATIVE_WAVE_HEIGHT;
+        shipLinesPosition.put(LAYER_FIRST_SHIP_LINE, offset);
+        attachTextureToLayer(waveTexture, LAYER_SECOND_WAVE, offset);
+
+        offset += activity.getCamera().getHeightRaw() * RELATIVE_WAVE_HEIGHT;
+        shipLinesPosition.put(LAYER_SECOND_SHIP_LINE, offset);
+        attachTextureToLayer(waveTexture, LAYER_THIRD_WAVE, offset);
+
+        offset += activity.getCamera().getHeightRaw() * RELATIVE_WAVE_HEIGHT;
+        shipLinesPosition.put(LAYER_THIRD_SHIP_LINE, offset);
+        attachTextureToLayer(waveTexture, LAYER_FOURTH_WAVE, offset);
     }
 
     private void attachTextureToLayer(ITextureRegion texture, int layerId, float yPosition) {
@@ -88,13 +119,5 @@ public class GameScene extends Scene {
                                       , mEngine.getVertexBufferObjectManager());
 
         this.getChildByIndex(layerId).attachChild(waveSprite);
-    }
-
-    public ShipSpawner getShipSpawner() {
-        return shipSpawner;
-    }
-
-    public void setShipSpawner(ShipSpawner shipSpawner) {
-        this.shipSpawner = shipSpawner;
     }
 }

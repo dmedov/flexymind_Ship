@@ -55,7 +55,9 @@ public class ShipSpawner{
                         timerHandler.reset();
 
                         GameScene gameScene = activity.getSceneSwitcher().getGameScene();
-                        Ship ship = new Ship(activity, 310, R.drawable.sailfish);
+                        Ship ship = new Ship( activity
+                                            , gameScene.getShipLinePosition(GameScene.LAYER_FIRST_SHIP_LINE)
+                                            , R.drawable.sailfish);
                         gameScene.getChildByIndex(GameScene.LAYER_FIRST_SHIP_LINE).attachChild(ship.getSprite());
 
                         delay = ship.getSprite().getWidth() * ship.getVelocity() * REAL_SPEED_MULTIPLIER;

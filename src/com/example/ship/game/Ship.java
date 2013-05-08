@@ -13,6 +13,8 @@ import org.andengine.util.modifier.ease.EaseLinear;
 import android.graphics.PointF;
 
 public class Ship {
+
+    private  static final float RELATIVE_WATERLINE = 0.1f;
     private PointF birthPoint;
     private PointF finishPoint;
     private Sprite shipSprite;
@@ -38,7 +40,7 @@ public class Ship {
                                , activity.getResourceManager().getLoadedTextureRegion(shipID)
                                , activity.getEngine().getVertexBufferObjectManager());
 
-        birthPoint = new PointF(activity.getCamera().getXMax(),yBirthPoint - shipSprite.getHeight());
+        birthPoint = new PointF(activity.getCamera().getXMax(),yBirthPoint - shipSprite.getHeight() * (1 - RELATIVE_WATERLINE));
         shipSprite.setPosition(birthPoint.x, birthPoint.y);
 
         finishPoint = new PointF(activity.getCamera().getXMin() - shipSprite.getWidth(), birthPoint.y);
