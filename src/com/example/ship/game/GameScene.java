@@ -15,8 +15,12 @@ public class GameScene extends Scene {
     private static int layerCount = 0;
     public static final int LAYER_BACKGROUND  = layerCount++;
     public static final int LAYER_FIRST_WAVE  = layerCount++;
+    public static final int LAYER_FIRST_SHIP_LINE  = layerCount++;
     public static final int LAYER_SECOND_WAVE = layerCount++;
+    public static final int LAYER_SECOND_SHIP_LINE = layerCount++;
     public static final int LAYER_THIRD_WAVE  = layerCount++;
+    public static final int LAYER_THIRD_SHIP_LINE  = layerCount++;
+    public static final int LAYER_FOURTH_WAVE  = layerCount++;
     public static final int LAYER_PERISCOPE   = layerCount++;
     private static final int WAVES_NUMBER = 3;
 
@@ -33,7 +37,12 @@ public class GameScene extends Scene {
         this.mEngine = activity.getEngine();
         this.resourceManager = activity.getResourceManager();
 
+        for(int i = LAYER_BACKGROUND; i < layerCount; i++) {
+            this.attachChild(new Entity());
+        }
+
         createBackground();
+        createWaves();
 
         gameHUD = new GameHUD(activity);
         gameHUD.setEventsToChildren(activity.getEvents());
@@ -52,27 +61,33 @@ public class GameScene extends Scene {
     }
 
     private void createBackground() {
-
-        for(int i = 0; i < layerCount; i++) {
-            this.attachChild(new Entity());
-        }
-
         ITextureRegion backgroundTexture = resourceManager.getLoadedTextureRegion(R.drawable.gamebackground);
         Sprite backgroundSprite = new Sprite( 0
                                             , 0
                                             , backgroundTexture
                                             , mEngine.getVertexBufferObjectManager());
 
-        ITextureRegion waveSprite = resourceManager.getLoadedTextureRegion(R.drawable.wave);
-        Sprite waveImage = new Sprite( 0
-                                     , backgroundTexture.getHeight() / WAVES_NUMBER
-                                     , waveSprite
-                                     , mEngine.getVertexBufferObjectManager());
-
         this.getChildByIndex(LAYER_BACKGROUND).attachChild(backgroundSprite);
-        this.getChildByIndex(LAYER_FIRST_WAVE).attachChild(waveImage);
+
         Color backgroundColor = new Color(0.09804f, 0.6274f, 0.8784f);
         this.setBackground(new Background(backgroundColor));
+    }
+
+    private void createWaves() {
+        ITextureRegion waveTexture = resourceManager.getLoadedTextureRegion(R.drawable.wave);
+        attachTextureToLayer(waveTexture, LAYER_FIRST_WAVE, 200);
+        attachTextureToLayer(waveTexture, LAYER_SECOND_WAVE, 300);
+        attachTextureToLayer(waveTexture, LAYER_THIRD_WAVE, 400);
+        attachTextureToLayer(waveTexture, LAYER_FOURTH_WAVE, 500);
+    }
+
+    private void attachTextureToLayer(ITextureRegion texture, int layerId, float yPosition) {
+        Sprite waveSprite = new Sprite( 0
+                                      , yPosition
+                                      , texture
+                                      , mEngine.getVertexBufferObjectManager());
+
+        this.getChildByIndex(layerId).attachChild(waveSprite);
     }
 
     public ShipSpawner getShipSpawner() {

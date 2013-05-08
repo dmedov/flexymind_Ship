@@ -21,8 +21,6 @@ public class Ship {
     public int health;
 
     public Ship( SceletonActivity activity, float yBirthPoint, int shipID ) {
-        birthPoint = new PointF(activity.getCamera().getXMax(),yBirthPoint);
-
         switch (shipID) {
             case R.drawable.sailfish:
                 this.velocity = 30;
@@ -35,12 +33,15 @@ public class Ship {
                 break;
         }
 
-        shipSprite = new Sprite(   birthPoint.x
-                                 , birthPoint.y
-                                 , activity.getResourceManager().getLoadedTextureRegion(shipID)
-                                 , activity.getEngine().getVertexBufferObjectManager());
+        shipSprite = new Sprite( 0
+                               , 0
+                               , activity.getResourceManager().getLoadedTextureRegion(shipID)
+                               , activity.getEngine().getVertexBufferObjectManager());
 
-        finishPoint = new PointF(activity.getCamera().getXMin() - shipSprite.getWidth(),yBirthPoint);
+        birthPoint = new PointF(activity.getCamera().getXMax(),yBirthPoint - shipSprite.getHeight());
+        shipSprite.setPosition(birthPoint.x, birthPoint.y);
+
+        finishPoint = new PointF(activity.getCamera().getXMin() - shipSprite.getWidth(), birthPoint.y);
         createModifier();
     }
 
