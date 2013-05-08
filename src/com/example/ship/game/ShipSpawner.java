@@ -16,12 +16,13 @@ import java.util.Random;
  */
 public class ShipSpawner{
     public static final float REAL_SPEED_MULTIPLIER = 0.0007f;
-    public static final float MAX_SPAWN_DELAY = 10f;
-    public static final float FIRST_SPAWN_DELAY = 0.1f;
+    public static final float MAX_SPAWN_DELAY = 2.0f;
+    public static final float FIRST_SPAWN_DELAY = 1.0f;
     private final SceletonActivity activity;
     private TimerHandler timerHandler;
     private float delay;
     private boolean spawning;
+    private Random rnd;
 
     public ShipSpawner(SceletonActivity activity) {
         this.activity = activity;
@@ -42,6 +43,10 @@ public class ShipSpawner{
 
     private class TimerTask implements ITimerCallback {
 
+        private TimerTask() {
+            rnd = new Random();
+        }
+
         @Override
         public void onTimePassed(final TimerHandler timerHandler) {
 
@@ -50,20 +55,38 @@ public class ShipSpawner{
                 @Override
                 public void run() {
                     if (spawning) {
-                        delay += new Random().nextFloat() * MAX_SPAWN_DELAY;
+                        delay += rnd.nextFloat() * MAX_SPAWN_DELAY;
                         timerHandler.setTimerSeconds(delay);
                         timerHandler.reset();
 
+                        int layerId = selectLayer();
+
                         GameScene gameScene = activity.getSceneSwitcher().getGameScene();
                         Ship ship = new Ship( activity
-                                            , gameScene.getShipLinePosition(GameScene.LAYER_FIRST_SHIP_LINE)
+                                            , gameScene.getShipLinePosition(layerId)
                                             , R.drawable.sailfish);
-                        gameScene.getChildByIndex(GameScene.LAYER_FIRST_SHIP_LINE).attachChild(ship.getSprite());
+                        gameScene.getChildByIndex(layerId).attachChild(ship.getSprite());
 
                         delay = ship.getSprite().getWidth() * ship.getVelocity() * REAL_SPEED_MULTIPLIER;
                     }
                 }
             });
+        }
+
+        private int selectLayer() {
+            int layerId = rnd.nextInt(3);
+            switch (layerId) {
+                case 0:
+                    layerId = GameScene.LAYER_FIRST_SHIP_LINE;
+                    break;
+                case 1:
+                    layerId = GameScene.LAYER_SECOND_SHIP_LINE;
+                    break;
+                case 2:
+                    layerId = GameScene.LAYER_THIRD_SHIP_LINE;
+                    break;
+            }
+            return layerId;
         }
     }
 }
