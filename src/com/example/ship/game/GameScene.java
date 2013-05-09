@@ -93,12 +93,13 @@ public class GameScene extends Scene {
         for (Ship ship: ships) {
             Sprite shipSprite = ship.getSprite();
             if (ship.getDirection()
-                    && (shipSprite.getX() < - shipSprite.getWidth())) {
+                    && (shipSprite.getX() < ( activity.getCamera().getXMin()
+                                            - shipSprite.getWidth()))) {
                 ship.missionDone();
                 Log.d("1log", "kill");
                 deadShip = ship;
             } else if (!ship.getDirection()
-                            && shipSprite.getX() > (activity.getCamera().getWidthRaw())) {
+                            && shipSprite.getX() > (activity.getCamera().getXMax())) {
                 ship.missionDone();
                 Log.d("1log", "kill");
                 deadShip = ship;

@@ -93,7 +93,8 @@ public class Ship {
         if (direction) {
             startPoint = new PointF( activity.getCamera().getXMax()
                                    , y - shipSprite.getHeight() * (1 - RELATIVE_WATERLINE));
-            finishPoint = new PointF( activity.getCamera().getXMin() - shipSprite.getWidth() - FINISH_OFFSET
+            finishPoint = new PointF( activity.getCamera().getXMin() - shipSprite.getWidth()
+                                                                     - FINISH_OFFSET
                                     , startPoint.y);
         } else {
             startPoint = new PointF( activity.getCamera().getXMin() - shipSprite.getWidth()
