@@ -16,13 +16,16 @@ import org.andengine.util.modifier.ease.EaseQuadInOut;
 public class Ship {
 
     private static final float RELATIVE_WATERLINE = 0.1f;
+    private static final float FINISH_OFFSET = 100.0f;
     private static final float MAX_ROTATE_ANGLE = 5.0f;
     private static final float ROTATE_DURATION = 3.0f;
+    private static final float RELATIVE_ROTATION_CENTER_Y_OFFSET = 1.75f;
     private static final int ROTATION_COUNT = 5;
-    public static final float RELATIVE_ROTATION_CENTER_Y_OFFSET = 1.75f;
+
     private final SceletonActivity activity;
     private final float y;
     private final int typeId;
+
     private PointF startPoint;
     private PointF finishPoint;
     private Sprite shipSprite;
@@ -58,8 +61,16 @@ public class Ship {
     private void initShipParametersById() {
         switch (typeId) {
             case R.drawable.sailfish:
-                this.velocity = 30;
+                this.velocity = 40;
                 this.health = 100;
+                break;
+            case R.drawable.missileboat:
+                this.velocity = 20;
+                this.health = 150;
+                break;
+            case R.drawable.battleship:
+                this.velocity = 50;
+                this.health = 500;
                 break;
             default:
                 this.velocity = 30;
@@ -72,12 +83,12 @@ public class Ship {
         if (direction) {
             startPoint = new PointF( activity.getCamera().getXMax()
                                    , y - shipSprite.getHeight() * (1 - RELATIVE_WATERLINE));
-            finishPoint = new PointF( activity.getCamera().getXMin() - shipSprite.getWidth()
+            finishPoint = new PointF( activity.getCamera().getXMin() - shipSprite.getWidth() - FINISH_OFFSET
                                     , startPoint.y);
         } else {
             startPoint = new PointF( activity.getCamera().getXMin() - shipSprite.getWidth()
                                    , y - shipSprite.getHeight() * (1 - RELATIVE_WATERLINE));
-            finishPoint = new PointF( activity.getCamera().getXMax()
+            finishPoint = new PointF( activity.getCamera().getXMax() + FINISH_OFFSET
                                     , startPoint.y);
             shipSprite.setScaleX(-1);
         }

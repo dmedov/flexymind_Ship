@@ -19,6 +19,9 @@ public class ShipSpawner{
     public static final float MAX_SPAWN_DELAY = 2.0f;
     public static final float FIRST_SPAWN_DELAY = 1.0f;
     private final SceletonActivity activity;
+    private static final int SAILFISH_SPAWN_PROBABILITY = 30;
+    private static final int MISSLE_BOAT_SPAWN_PROBABILITY = 50;
+    private static final int BATTLESHIP_SPAWN_PROBABILITY = 20;
     private TimerHandler timerHandler;
     private float delay;
     private boolean spawning;
@@ -62,7 +65,7 @@ public class ShipSpawner{
                         GameScene gameScene = activity.getSceneSwitcher().getGameScene();
                         Ship ship = new Ship( activity
                                             , gameScene.getShipLinePosition(layerId)
-                                            , R.drawable.sailfish
+                                            , selectShipType()
                                             , rnd.nextBoolean());
                         gameScene.getChildByIndex(layerId).attachChild(ship.getSprite());
 
@@ -70,6 +73,21 @@ public class ShipSpawner{
                     }
                 }
             });
+        }
+
+        private int selectShipType() {
+            int rndValue = rnd.nextInt(100) + 1;
+
+            if (rndValue < SAILFISH_SPAWN_PROBABILITY) {
+                return R.drawable.sailfish;
+
+            } else if (rndValue <   SAILFISH_SPAWN_PROBABILITY
+                                  + BATTLESHIP_SPAWN_PROBABILITY) {
+                return R.drawable.battleship;
+
+            } else {
+                return R.drawable.missileboat;
+            }
         }
 
         private int selectLayer() {
