@@ -20,7 +20,7 @@ public class Ship {
     private static final float MAX_ROTATE_ANGLE = 5.0f;
     private static final float ROTATE_DURATION = 3.0f;
     private static final float RELATIVE_ROTATION_CENTER_Y_OFFSET = 1.75f;
-    private static final int ROTATION_COUNT = 5;
+    private static final int ROTATION_COUNT = 10;
 
     private final SceletonActivity activity;
     private final float y;
@@ -61,20 +61,20 @@ public class Ship {
     private void initShipParametersById() {
         switch (typeId) {
             case R.drawable.sailfish:
-                this.velocity = 40;
-                this.health = 100;
+                this.velocity = activity.getIntResource(R.integer.SAILFISH_VELOCITY);
+                this.health = activity.getIntResource(R.integer.SAILFISH_HEALTH);
                 break;
             case R.drawable.missileboat:
-                this.velocity = 20;
-                this.health = 150;
+                this.velocity = activity.getIntResource(R.integer.MISSILEBOAT_VELOCITY);
+                this.health = activity.getIntResource(R.integer.MISSILEBOAT_HEALTH);
                 break;
             case R.drawable.battleship:
-                this.velocity = 50;
-                this.health = 500;
+                this.velocity = activity.getIntResource(R.integer.BATTLESHIP_VELOCITY);
+                this.health = activity.getIntResource(R.integer.BATTLESHIP_HEALTH);
                 break;
             default:
-                this.velocity = 30;
-                this.health = 100;
+                this.velocity = activity.getIntResource(R.integer.MISSILEBOAT_VELOCITY);
+                this.health = activity.getIntResource(R.integer.MISSILEBOAT_HEALTH);
                 break;
         }
     }

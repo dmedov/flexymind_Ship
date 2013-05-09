@@ -102,4 +102,8 @@ public class SceletonActivity extends BaseGameActivity {
     public SceneSwitcher getSceneSwitcher() {
         return sceneSwitcher;
     }
+
+    public int getIntResource(int id) {
+        return this.getResources().getInteger(id);
+    }
 }

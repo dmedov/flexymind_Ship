@@ -78,16 +78,19 @@ public class ShipSpawner{
         private int selectShipType() {
             int rndValue = rnd.nextInt(100) + 1;
 
-            if (rndValue < SAILFISH_SPAWN_PROBABILITY) {
+            if (rndValue < activity.getIntResource(R.integer.SAILFISH_SPAWN_PROBABILITY)) {
                 return R.drawable.sailfish;
-
-            } else if (rndValue <   SAILFISH_SPAWN_PROBABILITY
-                                  + BATTLESHIP_SPAWN_PROBABILITY) {
-                return R.drawable.battleship;
-
             } else {
-                return R.drawable.missileboat;
+                rndValue -= activity.getIntResource(R.integer.SAILFISH_SPAWN_PROBABILITY);
             }
+
+            if (rndValue < activity.getIntResource(R.integer.BATTLESHIP_SPAWN_PROBABILITY)) {
+                return R.drawable.battleship;
+            } else {
+                rndValue -= activity.getIntResource(R.integer.BATTLESHIP_SPAWN_PROBABILITY);
+            }
+
+            return R.drawable.missileboat;
         }
 
         private int selectLayer() {
