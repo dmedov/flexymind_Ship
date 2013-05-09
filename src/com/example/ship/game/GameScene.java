@@ -2,20 +2,15 @@ package com.example.ship.game;
 
 import android.graphics.PointF;
 import com.example.ship.R;
-import com.example.ship.atlas.ResourceManager;
 import com.example.ship.SceletonActivity;
 import com.example.ship.atlas.ResourceManager;
 import org.andengine.engine.Engine;
 import org.andengine.entity.Entity;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
-import org.andengine.entity.scene.background.IBackground;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.ITextureRegion;
-import org.andengine.util.adt.pool.GenericPool;
 import org.andengine.util.color.Color;
-import org.andengine.util.modifier.ease.EaseExponentialOut;
-import org.andengine.util.modifier.ease.EaseLinear;
 
 public class GameScene extends Scene {
     private static int layerCount = 0;

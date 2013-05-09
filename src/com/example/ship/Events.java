@@ -1,9 +1,7 @@
 package com.example.ship;
 
-import android.graphics.PointF;
 import com.example.ship.game.GameButtonSprite;
 import com.example.ship.game.Gun;
-import com.example.ship.game.Torpedo;
 import com.example.ship.game.TouchableGameButtonSprite;
 import com.example.ship.menu.MenuButtonSprite;
 import com.example.ship.menu.TouchableMenuButtonSprite;
@@ -133,7 +131,8 @@ public class Events implements TouchableMenuButtonSprite
 
     private void fire() {
         Gun gun = activity.getSceneSwitcher().getGameScene().getGun();
-        activity.getSceneSwitcher().getGameScene().createTorpedo(gun.getShootStartPoint(), gun.getGunAngle());
+        activity.getSceneSwitcher().getGameScene().createTorpedo( gun.getShootStartPoint()
+                                                                , gun.getGunAngle());
     }
     
     private void rotateGunRight() {
