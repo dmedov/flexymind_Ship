@@ -6,6 +6,7 @@ Date: 07.05.13
 */
 
 import android.graphics.PointF;
+import android.widget.Toast;
 import com.example.ship.R;
 import com.example.ship.SceletonActivity;
 import org.andengine.entity.modifier.*;
@@ -15,8 +16,11 @@ import org.andengine.util.modifier.ease.EaseQuadInOut;
 
 public class Ship {
 
+    public static final boolean TO_LEFT = true;
+    public static final boolean TO_RIGHT = false;
+
     private static final float RELATIVE_WATERLINE = 0.1f;
-    private static final float FINISH_OFFSET = 100.0f;
+    private static final float FINISH_OFFSET = 300.0f;
     private static final float MAX_ROTATE_ANGLE = 5.0f;
     private static final float ROTATE_DURATION = 3.0f;
     private static final float RELATIVE_ROTATION_CENTER_Y_OFFSET = 1.75f;
@@ -25,6 +29,7 @@ public class Ship {
     private final SceletonActivity activity;
     private final float y;
     private final int typeId;
+    private final boolean direction;
 
     private PointF startPoint;
     private PointF finishPoint;
@@ -37,6 +42,7 @@ public class Ship {
         this.activity = activity;
         this.y = y;
         this.typeId = shipTypeId;
+        this.direction = direction;
 
         initShipParametersById();
 
@@ -45,7 +51,7 @@ public class Ship {
                                , activity.getResourceManager().getLoadedTextureRegion(shipTypeId)
                                , activity.getEngine().getVertexBufferObjectManager());
 
-        setDirection(direction);
+        setDirection();
         shipSprite.setPosition(startPoint.x, startPoint.y);
         createModifier();
     }
@@ -56,6 +62,10 @@ public class Ship {
 
     public float getVelocity() {
         return velocity;
+    }
+
+    public boolean getDirection() {
+        return direction;
     }
 
     private void initShipParametersById() {
@@ -79,7 +89,7 @@ public class Ship {
         }
     }
 
-    private void setDirection(boolean direction) {
+    private void setDirection() {
         if (direction) {
             startPoint = new PointF( activity.getCamera().getXMax()
                                    , y - shipSprite.getHeight() * (1 - RELATIVE_WATERLINE));
@@ -122,6 +132,16 @@ public class Ship {
                                                                                     , moveModifier);
 
         shipSprite.registerEntityModifier(moveWithRotationModifier);
+    }
+
+    public void missionDone() {
+        shipSprite.detachSelf();
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(activity, "Корабль проплыл линию", Toast.LENGTH_LONG);
+            }
+        });
     }
 }
 

@@ -1,8 +1,9 @@
 package com.example.ship.game;
 
+import android.util.Log;
 import com.example.ship.R;
-import com.example.ship.atlas.ResourceManager;
 import com.example.ship.SceletonActivity;
+import com.example.ship.atlas.ResourceManager;
 import org.andengine.engine.Engine;
 import org.andengine.entity.Entity;
 import org.andengine.entity.scene.Scene;
@@ -11,6 +12,7 @@ import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.util.color.Color;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class GameScene extends Scene {
@@ -33,6 +35,7 @@ public class GameScene extends Scene {
     private GameHUD gameHUD;
     private PauseHUD pauseHUD;
     private ShipSpawner shipSpawner;
+    private ArrayList<Ship> ships;
     private HashMap<Integer, Float> shipLinesPosition;
 
     public GameScene(final SceletonActivity activity) {
@@ -46,6 +49,7 @@ public class GameScene extends Scene {
         }
 
         shipLinesPosition = new HashMap<Integer, Float>();
+        ships = new ArrayList<Ship>();
 
         createBackground();
         createWaves();
@@ -75,6 +79,37 @@ public class GameScene extends Scene {
 
     public float getShipLinePosition(int lineId) {
         return shipLinesPosition.get(lineId);
+    }
+
+    public ArrayList<Ship> getShips() {
+        return ships;
+    }
+
+    @Override
+    protected void onManagedUpdate(float pSecondsElapsed) {
+
+        Ship deadShip = null;
+
+        for (Ship ship: ships) {
+            Sprite shipSprite = ship.getSprite();
+            if (ship.getDirection()
+                    && (shipSprite.getX() < - shipSprite.getWidth())) {
+                ship.missionDone();
+                Log.d("1log", "kill");
+                deadShip = ship;
+            } else if (!ship.getDirection()
+                            && shipSprite.getX() > (activity.getCamera().getWidthRaw())) {
+                ship.missionDone();
+                Log.d("1log", "kill");
+                deadShip = ship;
+            }
+        }
+
+        if (deadShip != null) {
+            ships.remove(deadShip);
+        }
+
+        super.onManagedUpdate(pSecondsElapsed);
     }
 
     private void createBackground() {

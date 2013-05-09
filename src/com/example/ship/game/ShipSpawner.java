@@ -19,9 +19,6 @@ public class ShipSpawner{
     public static final float MAX_SPAWN_DELAY = 2.0f;
     public static final float FIRST_SPAWN_DELAY = 1.0f;
     private final SceletonActivity activity;
-    private static final int SAILFISH_SPAWN_PROBABILITY = 30;
-    private static final int MISSLE_BOAT_SPAWN_PROBABILITY = 50;
-    private static final int BATTLESHIP_SPAWN_PROBABILITY = 20;
     private TimerHandler timerHandler;
     private float delay;
     private boolean spawning;
@@ -67,6 +64,7 @@ public class ShipSpawner{
                                             , gameScene.getShipLinePosition(layerId)
                                             , selectShipType()
                                             , rnd.nextBoolean());
+                        gameScene.getShips().add(ship);
                         gameScene.getChildByIndex(layerId).attachChild(ship.getSprite());
 
                         delay = ship.getSprite().getWidth() * ship.getVelocity() * REAL_SPEED_MULTIPLIER;
