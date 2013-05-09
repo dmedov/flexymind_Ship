@@ -1,22 +1,21 @@
 package com.example.ship.game;
 
 import android.graphics.PointF;
-import android.util.Log;
 import com.example.ship.R;
+import com.example.ship.atlas.ResourceManager;
 import com.example.ship.SceletonActivity;
 import com.example.ship.atlas.ResourceManager;
 import org.andengine.engine.Engine;
 import org.andengine.entity.Entity;
-import org.andengine.entity.primitive.Line;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
+import org.andengine.entity.scene.background.IBackground;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.ITextureRegion;
+import org.andengine.util.adt.pool.GenericPool;
 import org.andengine.util.color.Color;
-
-import static android.util.FloatMath.cos;
-import static android.util.FloatMath.sin;
-import static java.lang.Math.abs;
+import org.andengine.util.modifier.ease.EaseExponentialOut;
+import org.andengine.util.modifier.ease.EaseLinear;
 
 public class GameScene extends Scene {
     private static int layerCount = 0;
@@ -24,7 +23,8 @@ public class GameScene extends Scene {
     private static final int LAYER_FIRST_WAVE  = layerCount++;
     private static final int LAYER_SECOND_WAVE = layerCount++;
     private static final int LAYER_THIRD_WAVE  = layerCount++;
-    private static final int LAYER_GUN         = layerCount++;
+    private static final int LAYER_TORPEDO = layerCount++;
+    private static final int LAYER_GUN   = layerCount++;
     private static final int WAVES_NUMBER = 3;
 
     private final SceletonActivity activity;
@@ -32,6 +32,8 @@ public class GameScene extends Scene {
     private final ResourceManager resourceManager;
     private GameHUD gameHUD;
     private PauseHUD pauseHUD;
+    private Sprite backgroundSprite;
+    private Timer timer;
     private Gun gun;
 
     public GameScene(final SceletonActivity activity) {
@@ -39,6 +41,8 @@ public class GameScene extends Scene {
         this.activity = activity;
         this.mEngine = activity.getEngine();
         this.resourceManager = activity.getResourceManager();
+        timer = new Timer(activity);
+        timer.setTemporaryCheckpoint();
 
         createBackground();
         createGun();
@@ -58,6 +62,26 @@ public class GameScene extends Scene {
         activity.getCamera().setHUD(gameHUD);
     }
 
+    public void createTorpedo(PointF point, float angle) {
+        if (timer.checkTimeShoot()) {
+            Torpedo torpedo = new Torpedo(activity, point, angle);
+            this.getChildByIndex(LAYER_TORPEDO).attachChild(torpedo);
+        }
+    }
+
+    @Override
+    protected void onManagedUpdate(float pSecondsElapsed) {
+        // Ищем столкновение торпеды с небом
+        Entity layer = (Entity) getChildByIndex(LAYER_TORPEDO);
+        for (int i = 0; i < layer.getChildCount(); i++) {
+            Sprite sprite = (Sprite) layer.getChildByIndex(i);
+            if ( sprite.collidesWith(backgroundSprite)) {
+                layer.getChildByIndex(i).detachSelf();
+            }
+        }
+        super.onManagedUpdate(pSecondsElapsed);
+    }
+
     private void createBackground() {
 
         for(int i = 0; i < layerCount; i++) {
@@ -65,14 +89,14 @@ public class GameScene extends Scene {
         }
 
         ITextureRegion backgroundTexture = resourceManager.getLoadedTextureRegion(R.drawable.gamebackground);
-        Sprite backgroundSprite = new Sprite( 0
-                                            , 0
-                                            , backgroundTexture
-                                            , mEngine.getVertexBufferObjectManager());
+        this.backgroundSprite = new Sprite( 0
+                                          , 0
+                                          , backgroundTexture
+                                          , mEngine.getVertexBufferObjectManager());
 
         ITextureRegion waveTexture = resourceManager.getLoadedTextureRegion(R.drawable.wave);
         Sprite waveSprite = new Sprite( 0
-                                     , backgroundTexture.getHeight() / WAVES_NUMBER
+                                     , backgroundTexture.getHeight()
                                      , waveTexture
                                      , mEngine.getVertexBufferObjectManager());
 
@@ -91,28 +115,5 @@ public class GameScene extends Scene {
         return gun;
     }
 
-    // test getShootStartPoint and getGunAngle methods in Gun class
-    public void testGunShoot() {
-        final float lineLength = 200f;
-        PointF startPosition = gun.getShootStartPoint();
-        final float gunAngle = gun.getGunAngle();
 
-        PointF endPosition = new PointF( startPosition.x +
-                                         lineLength * (sin(gunAngle * gun.GRAD_TO_RADIAN_KOEF))
-                                       , startPosition.y -
-                                         lineLength * abs(cos(gunAngle * gun.GRAD_TO_RADIAN_KOEF)));
-
-        Line line = new Line( startPosition.x
-                            , startPosition.y
-                            , endPosition.x
-                            , endPosition.y
-                            , mEngine.getVertexBufferObjectManager());
-
-        Log.i("COS_SIN_ANGLE", String.valueOf(cos(gun.getGunAngle()))
-                             + ":"
-                             + String.valueOf(sin(gun.getGunAngle()))
-                             + ":"
-                             + String.valueOf(gunAngle) );
-        this.attachChild(line);
-    }
 }
