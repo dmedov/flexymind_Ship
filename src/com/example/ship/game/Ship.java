@@ -27,7 +27,7 @@ public class Ship {
     private static final int ROTATION_COUNT = 10;
 
     private final SceletonActivity activity;
-    private final float y;
+    private final float yPosition;
     private final int typeId;
     private final boolean direction;
 
@@ -38,9 +38,9 @@ public class Ship {
     private float velocity;
     private int health;
 
-    public Ship(SceletonActivity activity, float y, int shipTypeId, boolean direction) {
+    public Ship(SceletonActivity activity, float yPosition, int shipTypeId, boolean direction) {
         this.activity = activity;
-        this.y = y;
+        this.yPosition = yPosition;
         this.typeId = shipTypeId;
         this.direction = direction;
 
@@ -92,13 +92,13 @@ public class Ship {
     private void setDirection() {
         if (direction) {
             startPoint = new PointF( activity.getCamera().getXMax()
-                                   , y - shipSprite.getHeight() * (1 - RELATIVE_WATERLINE));
+                                   , yPosition - shipSprite.getHeight() * (1 - RELATIVE_WATERLINE));
             finishPoint = new PointF( activity.getCamera().getXMin() - shipSprite.getWidth()
                                                                      - FINISH_OFFSET
                                     , startPoint.y);
         } else {
             startPoint = new PointF( activity.getCamera().getXMin() - shipSprite.getWidth()
-                                   , y - shipSprite.getHeight() * (1 - RELATIVE_WATERLINE));
+                                   , yPosition - shipSprite.getHeight() * (1 - RELATIVE_WATERLINE));
             finishPoint = new PointF( activity.getCamera().getXMax() + FINISH_OFFSET
                                     , startPoint.y);
             shipSprite.setScaleX(-1);
