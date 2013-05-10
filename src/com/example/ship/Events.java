@@ -146,28 +146,25 @@ public class Events implements TouchableMenuButtonSprite
         }
     }
 
-    private void fire() {
-        Gun gun = activity.getSceneSwitcher().getGameScene().getGun();
-        //activity.getSceneSwitcher().getGameScene().createTorpedo( gun.getShootStartPoint()
-        //                                                        , gun.getGunAngle());
-        gun.fire();
-    }
-    
 
+    private Gun getGun() {
+        return activity.getSceneSwitcher().getGameScene().getGun();
+    }
+
+    private void fire() {
+        getGun().fire();
+    }
 
     private void rotateGunRight() {
-        Gun gun = activity.getSceneSwitcher().getGameScene().getGun();
-        gun.rotateRight();
+        getGun().rotateRight();
     }
 
     private void rotateGunLeft() {
-        Gun gun = activity.getSceneSwitcher().getGameScene().getGun();
-        gun.rotateLeft();
+        getGun().rotateLeft();
     }
 
     private void stopGun() {
-        Gun gun = activity.getSceneSwitcher().getGameScene().getGun();
-        gun.stopRotate();
+        getGun().stopRotate();
     }
 
     private void startGame() {
