@@ -1,6 +1,7 @@
 package com.example.ship.game;
 
 import android.graphics.PointF;
+import android.util.Log;
 import com.example.ship.R;
 import com.example.ship.SceletonActivity;
 import com.example.ship.atlas.ResourceManager;
@@ -12,15 +13,27 @@ import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.util.color.Color;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class GameScene extends Scene {
     private static int layerCount = 0;
-    private static final int LAYER_BACKGROUND  = layerCount++;
-    private static final int LAYER_FIRST_WAVE  = layerCount++;
-    private static final int LAYER_SECOND_WAVE = layerCount++;
-    private static final int LAYER_THIRD_WAVE  = layerCount++;
+    public static final int LAYER_BACKGROUND  = layerCount++;
+    public static final int LAYER_FIRST_WAVE  = layerCount++;
+    public static final int LAYER_FIRST_SHIP_LINE  = layerCount++;
+    public static final int LAYER_SECOND_WAVE = layerCount++;
+    public static final int LAYER_SECOND_SHIP_LINE = layerCount++;
+    public static final int LAYER_THIRD_WAVE  = layerCount++;
+    public static final int LAYER_THIRD_SHIP_LINE  = layerCount++;
+    public static final int LAYER_FOURTH_WAVE  = layerCount++;
     private static final int LAYER_TORPEDO = layerCount++;
     private static final int LAYER_GUN   = layerCount++;
     private static final int WAVES_NUMBER = 3;
+    
+    private static final  float RELATIVE_SKY_HEIGHT = 0.15f;
+    private static final  float RELATIVE_WAVE_HEIGHT = 0.125f;
+
+
 
     private final SceletonActivity activity;
     private final Engine mEngine;
@@ -30,6 +43,9 @@ public class GameScene extends Scene {
     private Sprite backgroundSprite;
     private Timer timer;
     private Gun gun;
+    private ShipSpawner shipSpawner;
+    private ArrayList<Ship> ships;
+    private HashMap<Integer, Float> shipLinesPosition;
 
     public GameScene(final SceletonActivity activity) {
         super();
@@ -40,7 +56,15 @@ public class GameScene extends Scene {
         timer = new Timer(activity);
         timer.setTemporaryCheckpoint();
 
+        for(int i = LAYER_BACKGROUND; i < layerCount; i++) {
+            this.attachChild(new Entity());
+        }
+
+        shipLinesPosition = new HashMap<Integer, Float>();
+        ships = new ArrayList<Ship>();
+
         createBackground();
+        createWaves();
         createGun();
 
         gameHUD = new GameHUD(activity);
@@ -48,7 +72,6 @@ public class GameScene extends Scene {
 
         pauseHUD = new PauseHUD(activity);
         pauseHUD.setEventsToChildren(activity.getEvents());
-
     }
 
     public void switchToPauseHUD() {
@@ -68,6 +91,26 @@ public class GameScene extends Scene {
 
     @Override
     protected void onManagedUpdate(float pSecondsElapsed) {
+        Ship deadShip = null;
+
+        for (Ship ship: ships) {
+            Sprite shipSprite = ship.getSprite();
+            float maxX = activity.getCamera().getXMax();
+            float minX = activity.getCamera().getXMin() - shipSprite.getWidth();
+
+            if (   ship.getDirection() && (shipSprite.getX() < minX)
+                    || !ship.getDirection() && (shipSprite.getX() > maxX)) {
+
+                ship.missionDone();
+                Log.d("1log", "kill");
+                deadShip = ship;
+            }
+        }
+
+        if (deadShip != null) {
+            ships.remove(deadShip);
+        }
+        
         // Ищем столкновение торпеды с небом
         Entity layer = (Entity) getChildByIndex(LAYER_TORPEDO);
         for (int i = 0; i < layer.getChildCount(); i++) {
@@ -79,26 +122,31 @@ public class GameScene extends Scene {
         super.onManagedUpdate(pSecondsElapsed);
     }
 
+    public ShipSpawner getShipSpawner() {
+        return shipSpawner;
+    }
+
+    public void setShipSpawner(ShipSpawner shipSpawner) {
+        this.shipSpawner = shipSpawner;
+    }
+
+    public float getShipLinePosition(int lineId) {
+        return shipLinesPosition.get(lineId);
+    }
+
+    public ArrayList<Ship> getShips() {
+        return ships;
+    }
+ 
     private void createBackground() {
-
-        for(int i = 0; i < layerCount; i++) {
-            this.attachChild(new Entity());
-        }
-
         ITextureRegion backgroundTexture = resourceManager.getLoadedTextureRegion(R.drawable.gamebackground);
         this.backgroundSprite = new Sprite( 0
                                           , 0
                                           , backgroundTexture
                                           , mEngine.getVertexBufferObjectManager());
 
-        ITextureRegion waveTexture = resourceManager.getLoadedTextureRegion(R.drawable.wave);
-        Sprite waveSprite = new Sprite( 0
-                                     , backgroundTexture.getHeight()
-                                     , waveTexture
-                                     , mEngine.getVertexBufferObjectManager());
-
         this.getChildByIndex(LAYER_BACKGROUND).attachChild(backgroundSprite);
-        this.getChildByIndex(LAYER_FIRST_WAVE).attachChild(waveSprite);
+       
         Color backgroundColor = new Color(0.09804f, 0.6274f, 0.8784f);
         this.setBackground(new Background(backgroundColor));
     }
@@ -110,5 +158,33 @@ public class GameScene extends Scene {
 
     public Gun getGun() {
         return gun;
+    }
+
+    private void createWaves() {
+        ITextureRegion waveTexture = resourceManager.getLoadedTextureRegion(R.drawable.wave);
+        float offset = activity.getCamera().getHeightRaw() * RELATIVE_SKY_HEIGHT;
+
+        attachTextureToLayer(waveTexture, LAYER_FIRST_WAVE, offset);
+
+        offset += activity.getCamera().getHeightRaw() * RELATIVE_WAVE_HEIGHT;
+        shipLinesPosition.put(LAYER_FIRST_SHIP_LINE, offset);
+        attachTextureToLayer(waveTexture, LAYER_SECOND_WAVE, offset);
+
+        offset += activity.getCamera().getHeightRaw() * RELATIVE_WAVE_HEIGHT;
+        shipLinesPosition.put(LAYER_SECOND_SHIP_LINE, offset);
+        attachTextureToLayer(waveTexture, LAYER_THIRD_WAVE, offset);
+
+        offset += activity.getCamera().getHeightRaw() * RELATIVE_WAVE_HEIGHT;
+        shipLinesPosition.put(LAYER_THIRD_SHIP_LINE, offset);
+        attachTextureToLayer(waveTexture, LAYER_FOURTH_WAVE, offset);
+    }
+
+    private void attachTextureToLayer(ITextureRegion texture, int layerId, float yPosition) {
+        Sprite waveSprite = new Sprite( 0
+                                      , yPosition
+                                      , texture
+                                      , mEngine.getVertexBufferObjectManager());
+
+        this.getChildByIndex(layerId).attachChild(waveSprite);
     }
 }

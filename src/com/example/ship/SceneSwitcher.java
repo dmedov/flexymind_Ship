@@ -1,6 +1,7 @@
 package com.example.ship;
 
 import com.example.ship.game.GameScene;
+import com.example.ship.game.ShipSpawner;
 import com.example.ship.menu.MenuHUD;
 import com.example.ship.menu.ShipMenuScene;
 import com.example.ship.sceletone.SceletonScene;
@@ -52,15 +53,23 @@ public class SceneSwitcher {
         }
         rootScene.unregisterTouchArea();
         rootScene.setChildScene(gameScene);
-        gameScene.switchToGameHUD();
+        ShipSpawner shipSpawner = new ShipSpawner(activity);
+        gameScene.setShipSpawner(shipSpawner);
+        switchToGameHUD();
+
     }
 
     public void switchToGameHUD() {
         gameScene.switchToGameHUD();
+        gameScene.getShipSpawner().startSpawn();
+        if (!activity.getEngine().isRunning()) {
+            activity.getEngine().start();
+        }
     }
 
     public void switchToPauseHUD() {
         gameScene.switchToPauseHUD();
+        gameScene.getShipSpawner().stopSpawn();
     }
 
     public SceletonScene getRootScene() {
