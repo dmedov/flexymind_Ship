@@ -20,12 +20,13 @@ import static java.lang.Math.abs;
  */
 public class Gun {
 
+    public  static final float GRAD_TO_RADIAN_KOEF = 3.1415f / 180f;
     private static final float ROTATION_VELOCITY   = 0.4f;
     private static final float ROTATION_MAX_ANGLE  = 40.0f;
     private static final float GUN_PART_ON_SCENE   = 0.6f;
-    public static final float GRAD_TO_RADIAN_KOEF = 3.1415f / 180f;
-    public boolean rotateLeft;
-    public boolean rotationEnabled;
+
+    private boolean rotateLeft;
+    private boolean rotationEnabled;
     private Sprite gunSprite;
     private SceletonActivity activity;
 
