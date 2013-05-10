@@ -28,10 +28,8 @@ public class GameScene extends Scene {
     public static final int LAYER_FOURTH_WAVE  = layerCount++;
     private static final int LAYER_TORPEDO = layerCount++;
     private static final int LAYER_GUN   = layerCount++;
-    private static final  float RELATIVE_SKY_HEIGHT = 0.15f;
-    private static final  float RELATIVE_WAVE_HEIGHT = 0.125f;
-
-
+    private static final float RELATIVE_SKY_HEIGHT = 0.15f;
+    private static final float RELATIVE_WAVE_HEIGHT = 0.125f;
 
     private final SceletonActivity activity;
     private final Engine mEngine;
@@ -89,6 +87,22 @@ public class GameScene extends Scene {
         }
     }
 
+    public ShipSpawner getShipSpawner() {
+        return shipSpawner;
+    }
+
+    public void setShipSpawner(ShipSpawner shipSpawner) {
+        this.shipSpawner = shipSpawner;
+    }
+
+    public float getShipLinePosition(int lineId) {
+        return shipLinesPosition.get(lineId);
+    }
+
+    public ArrayList<Ship> getShips() {
+        return ships;
+    }
+
     @Override
     protected void onManagedUpdate(float pSecondsElapsed) {
         Ship deadShip = null;
@@ -110,7 +124,7 @@ public class GameScene extends Scene {
         if (deadShip != null) {
             ships.remove(deadShip);
         }
-        
+
         // Ищем столкновение торпеды с небом
         Entity layer = (Entity) getChildByIndex(LAYER_TORPEDO);
         for (int i = 0; i < layer.getChildCount(); i++) {
@@ -127,22 +141,6 @@ public class GameScene extends Scene {
             }
         }
         super.onManagedUpdate(pSecondsElapsed);
-    }
-
-    public ShipSpawner getShipSpawner() {
-        return shipSpawner;
-    }
-
-    public void setShipSpawner(ShipSpawner shipSpawner) {
-        this.shipSpawner = shipSpawner;
-    }
-
-    public float getShipLinePosition(int lineId) {
-        return shipLinesPosition.get(lineId);
-    }
-
-    public ArrayList<Ship> getShips() {
-        return ships;
     }
  
     private void createBackground() {

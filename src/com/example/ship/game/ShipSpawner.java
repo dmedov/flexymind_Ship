@@ -15,9 +15,9 @@ import java.util.Random;
  * To change this template use File | Settings | File Templates.
  */
 public class ShipSpawner {
-    public static final float MIN_SPAWN_DELAY = 1.0f;
-    public static final float MAX_SPAWN_DELAY = 4.0f;
-    public static final float FIRST_SPAWN_DELAY = 3.0f;
+    private static final float MIN_SPAWN_DELAY = 1.0f;
+    private static final float MAX_SPAWN_DELAY = 4.0f;
+    private static final float FIRST_SPAWN_DELAY = 3.0f;
     private final SceletonActivity activity;
     private TimerHandler timerHandler;
     private float delay;

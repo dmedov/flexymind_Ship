@@ -56,7 +56,7 @@ public class Ship {
         createModifier();
     }
 
-    public Sprite getSprite ( ) {
+    public Sprite getSprite () {
         return shipSprite;
     }
 
