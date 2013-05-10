@@ -29,7 +29,7 @@ public class GameHUD extends HUD {
 
     public GameHUD(SceletonActivity activity) {
         super();
-
+        setOnAreaTouchTraversalFrontToBack();
         this.activity = activity;
         engine = this.activity.getEngine();
         cameraSize = new PointF( this.activity.getCamera().getWidthRaw()
@@ -41,6 +41,14 @@ public class GameHUD extends HUD {
 
     private void createButtons() {
         buttons = new ArrayList<GameButtonSprite>();
+
+        GameButtonSprite testButton;
+        testButton = new GameButtonSprite( activity.getResourceManager()
+                                                   .getLoadedTextureRegion(R.drawable.pausebutton)
+                                         , engine.getVertexBufferObjectManager()
+                                         , R.string.GAME_TEST_BUTTON);
+        buttons.add(testButton);
+
 
         GameButtonSprite pauseButton;
         pauseButton = new GameButtonSprite( activity.getResourceManager()
@@ -76,6 +84,10 @@ public class GameHUD extends HUD {
             this.registerTouchArea(button);
             this.attachChild(button);
         }
+
+        testButton.setScale(3.0f);
+        testButton.setPosition( RELATIVE_BORDER * cameraSize.x
+                , (1 - RELATIVE_BORDER) * cameraSize.y - moveLeftButton.getHeight());
 
         pauseButton.setPosition( RELATIVE_BORDER * cameraSize.x
                                , RELATIVE_BORDER * cameraSize.y);

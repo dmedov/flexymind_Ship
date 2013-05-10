@@ -70,6 +70,12 @@ public class Events implements TouchableMenuButtonSprite
                     case R.string.GAME_FIRE_BUTTON:
                         fire();
                         break;
+                    case R.string.GAME_LEFT_BUTTON:
+                        rotateGunLeft();
+                        break;
+                    case R.string.GAME_RIGHT_BUTTON:
+                        rotateGunRight();
+                        break;
                 }
             }
         });
@@ -86,6 +92,12 @@ public class Events implements TouchableMenuButtonSprite
                         break;
                     case R.string.GAME_RIGHT_BUTTON:
                         rotateGunRight();
+                        break;
+                    //case R.string.GAME_TEST_BUTTON:
+                        //stopGun();
+                    //    break;
+                    case R.string.GAME_TEST_BUTTON:
+                        stopGun();
                         break;
                 }
             }
@@ -113,6 +125,8 @@ public class Events implements TouchableMenuButtonSprite
                     case R.string.GAME_RIGHT_BUTTON:
                         stopGun();
                         break;
+                    case R.string.GAME_TEST_BUTTON:
+                        stopGun();
                 }
             }
         });

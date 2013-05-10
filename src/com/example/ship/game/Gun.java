@@ -73,7 +73,6 @@ public class Gun {
     public void rotateRight() {
         rotateLeft = false;
         rotationEnabled = true;
-
     }
 
     public void stopRotate() {

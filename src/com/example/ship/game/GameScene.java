@@ -36,6 +36,7 @@ public class GameScene extends Scene {
         this.activity = activity;
         this.mEngine = activity.getEngine();
         this.resourceManager = activity.getResourceManager();
+
         timer = new Timer(activity);
         timer.setTemporaryCheckpoint();
 
@@ -47,6 +48,7 @@ public class GameScene extends Scene {
 
         pauseHUD = new PauseHUD(activity);
         pauseHUD.setEventsToChildren(activity.getEvents());
+
     }
 
     public void switchToPauseHUD() {
