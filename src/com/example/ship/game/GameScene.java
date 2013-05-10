@@ -111,6 +111,4 @@ public class GameScene extends Scene {
     public Gun getGun() {
         return gun;
     }
-
-
 }
