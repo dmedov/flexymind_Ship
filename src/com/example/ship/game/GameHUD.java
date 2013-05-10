@@ -20,7 +20,7 @@ public class GameHUD extends HUD {
 
     private static final float RELATIVE_BUTTON_HEIGHT = 0.15f;
     private static final float RELATIVE_SPACE_BETWEEN_CONTROLS = 0.01f;
-    private static final float RELATIVE_BORDER = 0.02f;
+    private static final float RELATIVE_SCREEN_BORDER = 0.02f;
     private static final float BUTTON_ALPHA = 0.75f;
     private final SceletonActivity activity;
     private final Engine engine;
@@ -29,19 +29,18 @@ public class GameHUD extends HUD {
 
     public GameHUD(SceletonActivity activity) {
         super();
-
+        setOnAreaTouchTraversalFrontToBack();
+        buttons = new ArrayList<GameButtonSprite>();
         this.activity = activity;
         engine = this.activity.getEngine();
         cameraSize = new PointF( this.activity.getCamera().getWidthRaw()
                                , this.activity.getCamera().getHeightRaw());
 
+        createBorderButton();
         createButtons();
-
     }
 
     private void createButtons() {
-        buttons = new ArrayList<GameButtonSprite>();
-
         GameButtonSprite pauseButton;
         pauseButton = new GameButtonSprite( activity.getResourceManager()
                                                     .getLoadedTextureRegion(R.drawable.pausebutton)
@@ -71,21 +70,44 @@ public class GameHUD extends HUD {
         buttons.add(moveRightButton);
 
         for (GameButtonSprite button: buttons) {
+            if (button.getId() == R.string.GAME_BORDER_BUTTON) {
+                continue;
+            }
             button.setAlpha(BUTTON_ALPHA);
             button.setScale(cameraSize.y * RELATIVE_BUTTON_HEIGHT / fireButton.getHeight());
             this.registerTouchArea(button);
             this.attachChild(button);
         }
 
-        pauseButton.setPosition( RELATIVE_BORDER * cameraSize.x
-                               , RELATIVE_BORDER * cameraSize.y);
-        fireButton.setPosition( (1 - RELATIVE_BORDER) * cameraSize.x - fireButton.getWidth()
-                              , (1 - RELATIVE_BORDER) * cameraSize.y - fireButton.getHeight());
-        moveLeftButton.setPosition( RELATIVE_BORDER * cameraSize.x
-                                  , (1 - RELATIVE_BORDER) * cameraSize.y - moveLeftButton.getHeight());
-        moveRightButton.setPosition( (RELATIVE_BORDER + RELATIVE_SPACE_BETWEEN_CONTROLS) * cameraSize.x
+        pauseButton.setPosition( RELATIVE_SCREEN_BORDER * cameraSize.x
+                               , RELATIVE_SCREEN_BORDER * cameraSize.y);
+        fireButton.setPosition( (1 - RELATIVE_SCREEN_BORDER) * cameraSize.x - fireButton.getWidth()
+                              , (1 - RELATIVE_SCREEN_BORDER) * cameraSize.y - fireButton.getHeight());
+        moveLeftButton.setPosition( RELATIVE_SCREEN_BORDER * cameraSize.x
+                                  , (1 - RELATIVE_SCREEN_BORDER) * cameraSize.y - moveLeftButton.getHeight());
+        moveRightButton.setPosition( (RELATIVE_SCREEN_BORDER + RELATIVE_SPACE_BETWEEN_CONTROLS) * cameraSize.x
                                                 + moveRightButton.getWidth()
-                                   , (1 - RELATIVE_BORDER) * cameraSize.y - moveRightButton.getHeight());
+                                   , (1 - RELATIVE_SCREEN_BORDER) * cameraSize.y - moveRightButton.getHeight());
+    }
+
+    // this method creates special invisible big button, under left and right controls button
+    // to detect situation, while touch move out from controls button, to stop gun rotation
+    private void createBorderButton() {
+        final float scale = 5.0f;
+        GameButtonSprite borderButton;
+        borderButton = new GameButtonSprite( activity.getResourceManager()
+                                                     .getLoadedTextureRegion(R.drawable.pausebutton)
+                                           , engine.getVertexBufferObjectManager()
+                                           , R.string.GAME_BORDER_BUTTON);
+
+        buttons.add(borderButton);
+        borderButton.setVisible(false);
+        borderButton.setScale(scale);
+
+        this.registerTouchArea(borderButton);
+        this.attachChild(borderButton);
+        borderButton.setPosition( (RELATIVE_SCREEN_BORDER + RELATIVE_SPACE_BETWEEN_CONTROLS) * cameraSize.x
+                                , (1 - RELATIVE_SCREEN_BORDER) * cameraSize.y - borderButton.getHeight());
     }
 
     public void setEventsToChildren(Events events) {
