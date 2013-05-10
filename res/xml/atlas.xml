@@ -15,5 +15,6 @@
                 <texture name="rightbutton"/>
                 <texture name="firebutton"/>
                 <texture name="torpedo"/>
+                <texture name="gun" />
             </Atlas>
 </resources>
