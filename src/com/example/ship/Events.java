@@ -1,8 +1,7 @@
 package com.example.ship;
 
-import android.graphics.PointF;
 import com.example.ship.game.GameButtonSprite;
-import com.example.ship.game.Torpedo;
+import com.example.ship.game.Gun;
 import com.example.ship.game.TouchableGameButtonSprite;
 import com.example.ship.menu.MenuButtonSprite;
 import com.example.ship.menu.TouchableMenuButtonSprite;
@@ -67,13 +66,35 @@ public class Events implements TouchableMenuButtonSprite
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                menuButtonPulse(button, true);
                 switch (button.getId()) {
+                    case R.string.GAME_FIRE_BUTTON:
+                        fire();
+                        break;
                     case R.string.GAME_LEFT_BUTTON:
-                        moveLeft();
+                        rotateGunLeft();
                         break;
                     case R.string.GAME_RIGHT_BUTTON:
-                        moveRight();
+                        rotateGunRight();
+                        break;
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onAreaGameButtonPressed(final GameButtonSprite button) {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                switch (button.getId()) {
+                    case R.string.GAME_LEFT_BUTTON:
+                        rotateGunLeft();
+                        break;
+                    case R.string.GAME_RIGHT_BUTTON:
+                        rotateGunRight();
+                        break;
+                    case R.string.GAME_BORDER_BUTTON:
+                        stopGun();
                         break;
                 }
             }
@@ -85,7 +106,6 @@ public class Events implements TouchableMenuButtonSprite
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                menuButtonPulse(button, false);
                 switch (button.getId()) {
                     case R.string.GAME_PAUSE_BUTTON:
                         pauseGame();
@@ -96,9 +116,14 @@ public class Events implements TouchableMenuButtonSprite
                     case R.string.GAME_PAUSE_BACK_BUTTON:
                         backToGame();
                         break;
-                    case R.string.GAME_FIRE_BUTTON:
-                        fire();
+                    case R.string.GAME_LEFT_BUTTON:
+                        stopGun();
                         break;
+                    case R.string.GAME_RIGHT_BUTTON:
+                        stopGun();
+                        break;
+                    case R.string.GAME_BORDER_BUTTON:
+                        stopGun();
                 }
             }
         });
@@ -121,18 +146,25 @@ public class Events implements TouchableMenuButtonSprite
         }
     }
 
+
+    private Gun getGun() {
+        return activity.getSceneSwitcher().getGameScene().getGun();
+    }
+
     private void fire() {
-        PointF startPointF = new PointF(900, 900);
-        float angleFire = -20;
-        activity.getSceneSwitcher().getGameScene().createTorpedo(startPointF, angleFire);
+        getGun().fire();
     }
 
-    private void moveRight() {
-        //To change body of created methods use File | Settings | File Templates.
+    private void rotateGunRight() {
+        getGun().rotateRight();
     }
 
-    private void moveLeft() {
-        //To change body of created methods use File | Settings | File Templates.
+    private void rotateGunLeft() {
+        getGun().rotateLeft();
+    }
+
+    private void stopGun() {
+        getGun().stopRotate();
     }
 
     private void startGame() {
