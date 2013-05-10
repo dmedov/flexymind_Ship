@@ -20,7 +20,7 @@ public class GameHUD extends HUD {
 
     private static final float RELATIVE_BUTTON_HEIGHT = 0.15f;
     private static final float RELATIVE_SPACE_BETWEEN_CONTROLS = 0.01f;
-    private static final float RELATIVE_BORDER = 0.02f;
+    private static final float RELATIVE_SCREEN_BORDER = 0.02f;
     private static final float BUTTON_ALPHA = 0.75f;
     private final SceletonActivity activity;
     private final Engine engine;
@@ -79,15 +79,15 @@ public class GameHUD extends HUD {
             this.attachChild(button);
         }
 
-        pauseButton.setPosition( RELATIVE_BORDER * cameraSize.x
-                               , RELATIVE_BORDER * cameraSize.y);
-        fireButton.setPosition( (1 - RELATIVE_BORDER) * cameraSize.x - fireButton.getWidth()
-                              , (1 - RELATIVE_BORDER) * cameraSize.y - fireButton.getHeight());
-        moveLeftButton.setPosition( RELATIVE_BORDER * cameraSize.x
-                                  , (1 - RELATIVE_BORDER) * cameraSize.y - moveLeftButton.getHeight());
-        moveRightButton.setPosition( (RELATIVE_BORDER + RELATIVE_SPACE_BETWEEN_CONTROLS) * cameraSize.x
+        pauseButton.setPosition( RELATIVE_SCREEN_BORDER * cameraSize.x
+                               , RELATIVE_SCREEN_BORDER * cameraSize.y);
+        fireButton.setPosition( (1 - RELATIVE_SCREEN_BORDER) * cameraSize.x - fireButton.getWidth()
+                              , (1 - RELATIVE_SCREEN_BORDER) * cameraSize.y - fireButton.getHeight());
+        moveLeftButton.setPosition( RELATIVE_SCREEN_BORDER * cameraSize.x
+                                  , (1 - RELATIVE_SCREEN_BORDER) * cameraSize.y - moveLeftButton.getHeight());
+        moveRightButton.setPosition( (RELATIVE_SCREEN_BORDER + RELATIVE_SPACE_BETWEEN_CONTROLS) * cameraSize.x
                                                 + moveRightButton.getWidth()
-                                   , (1 - RELATIVE_BORDER) * cameraSize.y - moveRightButton.getHeight());
+                                   , (1 - RELATIVE_SCREEN_BORDER) * cameraSize.y - moveRightButton.getHeight());
     }
 
     // this method creates special invisible big button, under left and right controls button
@@ -106,8 +106,8 @@ public class GameHUD extends HUD {
 
         this.registerTouchArea(borderButton);
         this.attachChild(borderButton);
-        borderButton.setPosition( (RELATIVE_BORDER + RELATIVE_SPACE_BETWEEN_CONTROLS) * cameraSize.x
-                                , (1 - RELATIVE_BORDER) * cameraSize.y - borderButton.getHeight());
+        borderButton.setPosition( (RELATIVE_SCREEN_BORDER + RELATIVE_SPACE_BETWEEN_CONTROLS) * cameraSize.x
+                                , (1 - RELATIVE_SCREEN_BORDER) * cameraSize.y - borderButton.getHeight());
     }
 
     public void setEventsToChildren(Events events) {
