@@ -107,6 +107,12 @@ public class Events implements TouchableMenuButtonSprite
                     case R.string.GAME_PAUSE_BACK_BUTTON:
                         backToGame();
                         break;
+                    case R.string.GAME_LEFT_BUTTON:
+                        stopGun();
+                        break;
+                    case R.string.GAME_RIGHT_BUTTON:
+                        stopGun();
+                        break;
                 }
             }
         });
@@ -143,6 +149,11 @@ public class Events implements TouchableMenuButtonSprite
     private void rotateGunLeft() {
         Gun gun = activity.getSceneSwitcher().getGameScene().getGun();
         gun.rotateLeft();
+    }
+
+    private void stopGun() {
+        Gun gun = activity.getSceneSwitcher().getGameScene().getGun();
+        gun.stopRotate();
     }
 
     private void startGame() {

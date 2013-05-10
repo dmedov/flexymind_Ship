@@ -24,9 +24,12 @@ public class Gun {
     private static final float ROTATION_MAX_ANGLE  = 40.0f;
     private static final float GUN_PART_ON_SCENE   = 0.6f;
     public static final float GRAD_TO_RADIAN_KOEF = 3.1415f / 180f;
+    public boolean rotateLeft;
+    public boolean rotationEnabled;
     private Sprite gunSprite;
 
     public Gun(SceletonActivity activity) {
+        rotationEnabled = false;
         ITextureRegion gunTexture = activity.getResourceManager().getLoadedTextureRegion(R.drawable.gun);
 
         ZoomCamera camera = activity.getCamera();
@@ -37,21 +40,44 @@ public class Gun {
         gunSprite = new Sprite( gunPosition.x
                               , gunPosition.y
                               , gunTexture
-                              , activity.getEngine().getVertexBufferObjectManager());
+                              , activity.getEngine().getVertexBufferObjectManager()) {
+            @Override
+            protected void onManagedUpdate(float pSecondsElapsed) {
+                super.onManagedUpdate(pSecondsElapsed);
+
+                if (!rotationEnabled) {
+                    return;
+                }
+
+                if (rotateLeft) {
+                    if (gunSprite.getRotation() > -ROTATION_MAX_ANGLE) {
+                        gunSprite.setRotation(gunSprite.getRotation() - ROTATION_VELOCITY);
+                    }
+                } else {
+                    if (gunSprite.getRotation() < ROTATION_MAX_ANGLE) {
+                        gunSprite.setRotation(gunSprite.getRotation() + ROTATION_VELOCITY);
+                    }
+                }
+            }
+
+        };
 
         gunSprite.setRotationCenter(gunSprite.getWidth() * 0.5f, gunSprite.getHeight());
     }
 
     public void rotateLeft() {
-        if (gunSprite.getRotation() > -ROTATION_MAX_ANGLE) {
-            gunSprite.setRotation(gunSprite.getRotation() - ROTATION_VELOCITY);
-        }
+        rotateLeft = true;
+        rotationEnabled = true;
     }
 
     public void rotateRight() {
-        if (gunSprite.getRotation() < ROTATION_MAX_ANGLE) {
-            gunSprite.setRotation(gunSprite.getRotation() + ROTATION_VELOCITY);
-        }
+        rotateLeft = false;
+        rotationEnabled = true;
+
+    }
+
+    public void stopRotate() {
+        rotationEnabled = false;
     }
 
     public PointF getShootStartPoint() {
