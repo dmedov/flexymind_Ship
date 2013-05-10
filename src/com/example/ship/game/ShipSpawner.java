@@ -14,7 +14,7 @@ import java.util.Random;
  * Time: 21:59
  * To change this template use File | Settings | File Templates.
  */
-public class ShipSpawner{
+public class ShipSpawner {
     public static final float MIN_SPAWN_DELAY = 1.0f;
     public static final float MAX_SPAWN_DELAY = 4.0f;
     public static final float FIRST_SPAWN_DELAY = 3.0f;
