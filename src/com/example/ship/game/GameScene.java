@@ -39,6 +39,7 @@ public class GameScene extends Scene {
     private GameHUD gameHUD;
     private PauseHUD pauseHUD;
     private Sprite backgroundSprite;
+    private ArrayList<Sprite> waveSprites;
     private Timer timer;
     private Gun gun;
     private ShipSpawner shipSpawner;
@@ -60,6 +61,7 @@ public class GameScene extends Scene {
 
         shipLinesPosition = new HashMap<Integer, Float>();
         ships = new ArrayList<Ship>();
+        waveSprites = new ArrayList<Sprite>();
 
         createBackground();
         createWaves();
@@ -113,7 +115,14 @@ public class GameScene extends Scene {
         Entity layer = (Entity) getChildByIndex(LAYER_TORPEDO);
         for (int i = 0; i < layer.getChildCount(); i++) {
             Sprite sprite = (Sprite) layer.getChildByIndex(i);
-            if ( sprite.collidesWith(backgroundSprite)) {
+            boolean seaEnd = true;
+            for (Sprite wave: waveSprites) {
+                if (sprite.collidesWith(wave)) {
+                    seaEnd = false;
+                    break;
+                }
+            }
+            if (seaEnd) {
                 layer.getChildByIndex(i).detachSelf();
             }
         }
@@ -183,6 +192,7 @@ public class GameScene extends Scene {
                                       , texture
                                       , mEngine.getVertexBufferObjectManager());
 
+        waveSprites.add(waveSprite);
         this.getChildByIndex(layerId).attachChild(waveSprite);
     }
 }
