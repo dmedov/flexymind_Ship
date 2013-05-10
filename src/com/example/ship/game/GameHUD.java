@@ -70,7 +70,7 @@ public class GameHUD extends HUD {
         buttons.add(moveRightButton);
 
         for (GameButtonSprite button: buttons) {
-            if (button.getId() == R.string.GAME_TEST_BUTTON) {
+            if (button.getId() == R.string.GAME_BORDER_BUTTON) {
                 continue;
             }
             button.setAlpha(BUTTON_ALPHA);
@@ -93,12 +93,12 @@ public class GameHUD extends HUD {
     // this method creates special invisible big button, under left and right controls button
     // to detect situation, while touch move out from controls button, to stop gun rotation
     private void createBorderButton() {
-        float scale = 5.0f;
+        final float scale = 5.0f;
         GameButtonSprite borderButton;
         borderButton = new GameButtonSprite( activity.getResourceManager()
                                                      .getLoadedTextureRegion(R.drawable.pausebutton)
                                            , engine.getVertexBufferObjectManager()
-                                           , R.string.GAME_TEST_BUTTON);
+                                           , R.string.GAME_BORDER_BUTTON);
 
         buttons.add(borderButton);
         borderButton.setVisible(false);
