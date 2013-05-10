@@ -14,5 +14,10 @@
                 <texture name="leftbutton"/>
                 <texture name="rightbutton"/>
                 <texture name="firebutton"/>
+                <texture name="torpedo"/>
+                <texture name="gun" />
+                <texture name="sailfish"/>
+                <texture name="missileboat"/>
+                <texture name="battleship"/>
             </Atlas>
 </resources>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Missile boat-->
+    <integer name="MISSILEBOAT_SPAWN_PROBABILITY">50</integer>
+    <integer name="MISSILEBOAT_VELOCITY">20</integer>
+    <integer name="MISSILEBOAT_HEALTH">150</integer>
+    <!--Sailfish-->
+    <integer name="SAILFISH_SPAWN_PROBABILITY">30</integer>
+    <integer name="SAILFISH_VELOCITY">40</integer>
+    <integer name="SAILFISH_HEALTH">70</integer>
+    <!--Battleship-->
+    <integer name="BATTLESHIP_SPAWN_PROBABILITY">20</integer>
+    <integer name="BATTLESHIP_VELOCITY">50</integer>
+    <integer name="BATTLESHIP_HEALTH">500</integer>
+</resources>
