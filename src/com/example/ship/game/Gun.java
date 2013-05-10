@@ -27,8 +27,10 @@ public class Gun {
     public boolean rotateLeft;
     public boolean rotationEnabled;
     private Sprite gunSprite;
+    private SceletonActivity activity;
 
     public Gun(SceletonActivity activity) {
+        this.activity = activity;
         rotationEnabled = false;
         ITextureRegion gunTexture = activity.getResourceManager().getLoadedTextureRegion(R.drawable.gun);
 
@@ -96,5 +98,10 @@ public class Gun {
 
     public Sprite getSprite() {
         return gunSprite;
+    }
+
+    public void fire() {
+        activity.getSceneSwitcher().getGameScene().createTorpedo( this.getShootStartPoint()
+                                                                , this.getGunAngle());
     }
 }
