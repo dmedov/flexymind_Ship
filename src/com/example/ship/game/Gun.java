@@ -33,7 +33,7 @@ public class Gun {
     private Sprite gunSprite;
     private SceletonActivity activity;
     private TimerHandler fireTimerHandler;
-    private boolean fireAvaible = true;
+    private boolean fireAvailable = true;
 
     public Gun(SceletonActivity activity) {
         this.activity = activity;
@@ -110,13 +110,13 @@ public class Gun {
     }
 
     public void fire() {
-        if (fireAvaible) {
+        if (fireAvailable) {
             Torpedo torpedo = new Torpedo( activity
                                          , getShootStartPoint()
                                          , getGunAngle());
             GameScene gameScene = activity.getSceneSwitcher().getGameScene();
             gameScene.attachSpriteToLayer(torpedo, GameScene.LAYER_TORPEDO);
-            fireAvaible = false;
+            fireAvailable = false;
             fireTimerHandler.reset();
         }
     }
@@ -125,7 +125,7 @@ public class Gun {
         fireTimerHandler = new TimerHandler(FIRE_DELAY, new ITimerCallback() {
             @Override
             public void onTimePassed(final TimerHandler timerHandler) {
-                fireAvaible = true;
+                fireAvailable = true;
             }
         });
     }
