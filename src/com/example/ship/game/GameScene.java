@@ -146,12 +146,14 @@ public class GameScene extends Scene {
             for (Ship ship: ships) {
                 if (torpedo.collidesWith(ship.getHitAreaSprite())) {
                     torpedo.detachSelf();
-                    ship.missionDone();
-                    if (ship != null) {
-                        //ships.remove(ship);
-                    }
+                    ship.killShip();
+                    deadShip = ship;
                 }
             }
+        }
+
+        if (deadShip != null) {
+            ships.remove(deadShip);
         }
 
         super.onManagedUpdate(pSecondsElapsed);

@@ -74,6 +74,22 @@ public class Ship {
         return direction;
     }
 
+    public void missionDone() {
+        hitAreaSprite.detachSelf();
+        shipSprite.detachSelf();
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(activity, "Корабль проплыл линию", Toast.LENGTH_LONG);
+            }
+        });
+    }
+
+    public void killShip() {
+        hitAreaSprite.detachSelf();
+        shipSprite.detachSelf();
+    }
+
     private void initShipParametersById() {
         switch (typeId) {
             case R.drawable.sailfish:
@@ -139,17 +155,6 @@ public class Ship {
                                                                                     , moveModifier);
 
         shipSprite.registerEntityModifier(moveWithRotationModifier);
-    }
-
-    public void missionDone() {
-        hitAreaSprite.detachSelf();
-        shipSprite.detachSelf();
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(activity, "Корабль проплыл линию", Toast.LENGTH_LONG);
-            }
-        });
     }
 
     private void createHitArea() {
