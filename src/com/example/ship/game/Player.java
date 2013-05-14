@@ -15,6 +15,10 @@ public class Player {
         return health;
     }
 
+    public void addHealth() {
+        health++;
+    }
+
     public void reduceHealth() {
         health--;
     }
