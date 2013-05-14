@@ -86,11 +86,16 @@ public class GameScene extends Scene {
         return gameHUD;
     }
 
+    public Player getPlayer(){
+        return player;
+    }
+
     public void createTorpedo(PointF point, float angle) {
         if (timer.checkTimeShoot()) {
             Torpedo torpedo = new Torpedo(activity, point, angle);
             this.getChildByIndex(LAYER_TORPEDO).attachChild(torpedo);
         }
+        player.addPoints(20);
     }
 
     public ShipSpawner getShipSpawner() {
@@ -124,6 +129,7 @@ public class GameScene extends Scene {
                 ship.missionDone();
                 Log.d("1log", "kill");
                 deadShip = ship;
+                player.reduceHealth();
             }
         }
 

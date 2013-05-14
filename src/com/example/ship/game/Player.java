@@ -32,10 +32,12 @@ public class Player {
 
     public void addPoints(int points) {
         score += points;
+        activity.getSceneSwitcher().getGameScene().getGameHUD().updateScore(score);
     }
 
     public void reducePoints(int points) {
         score -= points;
+        activity.getSceneSwitcher().getGameScene().getGameHUD().updateScore(score);
     }
 
     public int getScore(){

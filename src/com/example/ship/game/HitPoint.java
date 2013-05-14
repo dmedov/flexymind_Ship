@@ -9,22 +9,22 @@ public class HitPoint {
     private SceletonActivity activity;
     private Sprite onHit;
     private Sprite offHit;
-    private GameHUD gameHUD;
 
-    public HitPoint(SceletonActivity activity, GameHUD gameHUD, PointF point) {
+    public HitPoint(SceletonActivity activity, GameHUD gameHUD, PointF point, float scale) {
         this.activity = activity;
-        this.gameHUD = gameHUD;
 
         onHit = new Sprite( point.x
                           , point.y
                           , activity.getResourceManager().getLoadedTextureRegion(R.drawable.onhealth)
                           , activity.getEngine().getVertexBufferObjectManager());
+        onHit.setScale(scale);
         onHit.setVisible(true);
 
         offHit = new Sprite( point.x
                            , point.y
                            , activity.getResourceManager().getLoadedTextureRegion(R.drawable.offhealth)
                            , activity.getEngine().getVertexBufferObjectManager());
+        offHit.setScale(scale);
         offHit.setVisible(false);
 
         gameHUD.attachChild(onHit);

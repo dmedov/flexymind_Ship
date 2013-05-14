@@ -1,12 +1,17 @@
 package com.example.ship.game;
 
 import android.graphics.PointF;
+import android.graphics.Typeface;
 import com.example.ship.Events;
 import com.example.ship.R;
 import com.example.ship.SceletonActivity;
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.entity.text.Text;
+import org.andengine.opengl.font.Font;
+import org.andengine.opengl.font.FontFactory;
+import org.andengine.util.color.Color;
 
 import java.util.ArrayList;
 
@@ -22,8 +27,12 @@ public class GameHUD extends HUD {
     private static final float RELATIVE_BUTTON_HEIGHT = 0.15f;
     private static final float RELATIVE_SPACE_BETWEEN_CONTROLS = 0.01f;
     private static final float RELATIVE_SCREEN_BORDER = 0.02f;
+    private static final float RELATIVE_HP_HEIGHT = 0.05f;
     private static final float BUTTON_ALPHA = 0.75f;
     private final SceletonActivity activity;
+    private PointF positionHitPoint;
+    private Text textScore;
+    private Font scoreFont;
     private final Engine engine;
     private       PointF cameraSize;
     private       ArrayList<GameButtonSprite> buttons;
@@ -41,7 +50,7 @@ public class GameHUD extends HUD {
 
         createBorderButton();
         createButtons();
-        createHealth();
+        createStats();
     }
 
     private void createButtons() {
@@ -120,17 +129,55 @@ public class GameHUD extends HUD {
         }
     }
 
-    private void createHealth() {
-        float widthHealthTexture = activity.getResourceManager().getLoadedTextureRegion(R.drawable.onhealth).getWidth();
-        PointF positionHitPoint = new PointF( (1 - RELATIVE_SCREEN_BORDER) * cameraSize.x - widthHealthTexture
-                                         , RELATIVE_SCREEN_BORDER * cameraSize.y);
+    private void createStats() {
+        float heightHealthTexture =
+                activity.getResourceManager().getLoadedTextureRegion(R.drawable.onhealth).getHeight();
+        float scale = cameraSize.y * RELATIVE_HP_HEIGHT / heightHealthTexture;
+        float widthHealthTexture =
+                activity.getResourceManager().getLoadedTextureRegion(R.drawable.onhealth).getWidth() * scale;
+
+        positionHitPoint = new PointF( (1 - RELATIVE_SCREEN_BORDER) * cameraSize.x - widthHealthTexture
+                                     , RELATIVE_SCREEN_BORDER * cameraSize.y * scale);
+
         for (int i = 0; i < Player.FULL_HP; i++) {
             HitPoint hitPoint = new HitPoint( activity
                                             , this
-                                            , positionHitPoint);
+                                            , positionHitPoint
+                                            , scale);
             healths.add(hitPoint);
             positionHitPoint.x -= RELATIVE_SPACE_BETWEEN_CONTROLS * cameraSize.x + widthHealthTexture;
         }
+
+        scoreFont = FontFactory.create( activity.getEngine().getFontManager()
+                                       , activity.getEngine().getTextureManager()
+                                       , 256
+                                       , 70
+                                       , Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)
+                                       , 34 * scale
+                                       , true
+                                       , Color.WHITE_ABGR_PACKED_INT);
+        scoreFont.load();
+        textScore = new Text( positionHitPoint.x
+                            , positionHitPoint.y
+                            , scoreFont
+                            , "" + 0
+                            , activity.getEngine().getVertexBufferObjectManager());
+        textScore.setPosition( positionHitPoint.x - textScore.getWidth()
+                             , RELATIVE_SCREEN_BORDER * cameraSize.y);
+
+        this.attachChild(textScore);
+    }
+
+    public void updateScore(int score){
+        textScore.detachSelf();
+        textScore = new Text( positionHitPoint.x
+                            , positionHitPoint.y
+                            , scoreFont
+                            , "" + score
+                            , activity.getEngine().getVertexBufferObjectManager());
+        textScore.setPosition( positionHitPoint.x - textScore.getWidth()
+                             , RELATIVE_SCREEN_BORDER * cameraSize.y);
+        this.attachChild(textScore);
     }
 
     public void reduceHealth(int health){
