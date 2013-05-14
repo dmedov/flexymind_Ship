@@ -43,7 +43,7 @@ public class Torpedo extends Sprite {
         LoopEntityModifier alphaLoopEntityModifier = new LoopEntityModifier(new AlphaModifier(1, 1, 0));
 
         // EaseExponentialOut.getInstance() - способ передвижения
-        MoveModifier moveModifier = new MoveModifier( TIME_OF_FLIGHT
+        MoveModifier moveModifier = new MoveModifier( TIME_OF_FLIGHT / (float) Math.cos(radians)
                                                     , startPoint.x
                                                     , finishPoint.x
                                                     , startPoint.y
