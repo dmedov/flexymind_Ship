@@ -1,5 +1,6 @@
 package com.example.ship.game;
 
+import android.graphics.PointF;
 import android.util.Log;
 import com.example.ship.R;
 import com.example.ship.SceletonActivity;
@@ -25,15 +26,20 @@ public class GameScene extends Scene {
     public static final int LAYER_THIRD_WAVE  = layerCount++;
     public static final int LAYER_THIRD_SHIP_LINE  = layerCount++;
     public static final int LAYER_FOURTH_WAVE  = layerCount++;
-    public static final int LAYER_PERISCOPE   = layerCount++;
-    private static final  float RELATIVE_SKY_HEIGHT = 0.15f;
-    private static final  float RELATIVE_WAVE_HEIGHT = 0.125f;
+    private static final int LAYER_TORPEDO = layerCount++;
+    private static final int LAYER_GUN   = layerCount++;
+    private static final float RELATIVE_SKY_HEIGHT = 0.15f;
+    private static final float RELATIVE_WAVE_HEIGHT = 0.125f;
 
     private final SceletonActivity activity;
     private final Engine mEngine;
     private final ResourceManager resourceManager;
     private GameHUD gameHUD;
     private PauseHUD pauseHUD;
+    private Sprite backgroundSprite;
+    private ArrayList<Sprite> waveSprites;
+    private Timer timer;
+    private Gun gun;
     private ShipSpawner shipSpawner;
     private ArrayList<Ship> ships;
     private HashMap<Integer, Float> shipLinesPosition;
@@ -44,15 +50,20 @@ public class GameScene extends Scene {
         this.mEngine = activity.getEngine();
         this.resourceManager = activity.getResourceManager();
 
+        timer = new Timer(activity);
+        timer.setTemporaryCheckpoint();
+
         for(int i = LAYER_BACKGROUND; i < layerCount; i++) {
             this.attachChild(new Entity());
         }
 
         shipLinesPosition = new HashMap<Integer, Float>();
         ships = new ArrayList<Ship>();
+        waveSprites = new ArrayList<Sprite>();
 
         createBackground();
         createWaves();
+        createGun();
 
         gameHUD = new GameHUD(activity);
         gameHUD.setEventsToChildren(activity.getEvents());
@@ -67,6 +78,13 @@ public class GameScene extends Scene {
 
     public void switchToGameHUD() {
         activity.getCamera().setHUD(gameHUD);
+    }
+
+    public void createTorpedo(PointF point, float angle) {
+        if (timer.checkTimeShoot()) {
+            Torpedo torpedo = new Torpedo(activity, point, angle);
+            this.getChildByIndex(LAYER_TORPEDO).attachChild(torpedo);
+        }
     }
 
     public ShipSpawner getShipSpawner() {
@@ -87,7 +105,6 @@ public class GameScene extends Scene {
 
     @Override
     protected void onManagedUpdate(float pSecondsElapsed) {
-
         Ship deadShip = null;
 
         for (Ship ship: ships) {
@@ -96,7 +113,7 @@ public class GameScene extends Scene {
             float minX = activity.getCamera().getXMin() - shipSprite.getWidth();
 
             if (   ship.getDirection() && (shipSprite.getX() < minX)
-               || !ship.getDirection() && (shipSprite.getX() > maxX)) {
+                    || !ship.getDirection() && (shipSprite.getX() > maxX)) {
 
                 ship.missionDone();
                 Log.d("1log", "kill");
@@ -108,20 +125,44 @@ public class GameScene extends Scene {
             ships.remove(deadShip);
         }
 
+        // Ищем столкновение торпеды с небом
+        Entity layer = (Entity) getChildByIndex(LAYER_TORPEDO);
+        for (int i = 0; i < layer.getChildCount(); i++) {
+            Sprite sprite = (Sprite) layer.getChildByIndex(i);
+            boolean seaEnd = true;
+            for (Sprite wave: waveSprites) {
+                if (sprite.collidesWith(wave)) {
+                    seaEnd = false;
+                    break;
+                }
+            }
+            if (seaEnd) {
+                layer.getChildByIndex(i).detachSelf();
+            }
+        }
         super.onManagedUpdate(pSecondsElapsed);
     }
-
+ 
     private void createBackground() {
         ITextureRegion backgroundTexture = resourceManager.getLoadedTextureRegion(R.drawable.gamebackground);
-        Sprite backgroundSprite = new Sprite( 0
-                                            , 0
-                                            , backgroundTexture
-                                            , mEngine.getVertexBufferObjectManager());
+        this.backgroundSprite = new Sprite( 0
+                                          , 0
+                                          , backgroundTexture
+                                          , mEngine.getVertexBufferObjectManager());
 
         this.getChildByIndex(LAYER_BACKGROUND).attachChild(backgroundSprite);
-
+       
         Color backgroundColor = new Color(0.09804f, 0.6274f, 0.8784f);
         this.setBackground(new Background(backgroundColor));
+    }
+
+    private void createGun() {
+        gun = new Gun(activity);
+        this.getChildByIndex(LAYER_GUN).attachChild(gun.getSprite());
+    }
+
+    public Gun getGun() {
+        return gun;
     }
 
     private void createWaves() {
@@ -149,6 +190,7 @@ public class GameScene extends Scene {
                                       , texture
                                       , mEngine.getVertexBufferObjectManager());
 
+        waveSprites.add(waveSprite);
         this.getChildByIndex(layerId).attachChild(waveSprite);
     }
 }
