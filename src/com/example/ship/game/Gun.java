@@ -26,7 +26,7 @@ public class Gun {
     private static final float ROTATION_VELOCITY   = 0.4f;
     private static final float ROTATION_MAX_ANGLE  = 40.0f;
     private static final float GUN_PART_ON_SCENE   = 0.6f;
-    private static float FIRE_DELAY = 2f;
+    private static final float FIRE_DELAY = 2f;
 
     private boolean rotateLeft;
     private boolean rotationEnabled;
@@ -114,7 +114,8 @@ public class Gun {
             Torpedo torpedo = new Torpedo( activity
                                          , getShootStartPoint()
                                          , getGunAngle());
-            activity.getSceneSwitcher().getGameScene().createTorpedo(torpedo);
+            GameScene gameScene = activity.getSceneSwitcher().getGameScene();
+            gameScene.attachSpriteToLayer(torpedo, GameScene.LAYER_TORPEDO);
             fireAvaible = false;
             fireTimerHandler.reset();
         }
