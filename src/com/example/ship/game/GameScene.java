@@ -61,7 +61,7 @@ public class GameScene extends Scene {
         shipLinesPosition = new HashMap<Integer, Float>();
         ships = new ArrayList<Ship>();
         waveSprites = new ArrayList<Sprite>();
-        player = new Player(activity, "Crusher");
+        player = new Player(activity);
 
         createBackground();
         createWaves();

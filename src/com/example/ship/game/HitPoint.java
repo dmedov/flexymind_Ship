@@ -7,37 +7,32 @@ import org.andengine.entity.sprite.Sprite;
 
 public class HitPoint {
     private SceletonActivity activity;
-    private Sprite onHit;
-    private Sprite offHit;
+    private Sprite onHitPoint;
+    private Sprite offHitPoint;
 
     public HitPoint(SceletonActivity activity, GameHUD gameHUD, PointF point, float scale) {
         this.activity = activity;
 
-        onHit = new Sprite( point.x
+        onHitPoint = new Sprite( point.x
                           , point.y
                           , activity.getResourceManager().getLoadedTextureRegion(R.drawable.onhealth)
                           , activity.getEngine().getVertexBufferObjectManager());
-        onHit.setScale(scale);
-        onHit.setVisible(true);
+        onHitPoint.setScale(scale);
+        onHitPoint.setVisible(true);
 
-        offHit = new Sprite( point.x
+        offHitPoint = new Sprite( point.x
                            , point.y
                            , activity.getResourceManager().getLoadedTextureRegion(R.drawable.offhealth)
                            , activity.getEngine().getVertexBufferObjectManager());
-        offHit.setScale(scale);
-        offHit.setVisible(false);
+        offHitPoint.setScale(scale);
+        offHitPoint.setVisible(false);
 
-        gameHUD.attachChild(onHit);
-        gameHUD.attachChild(offHit);
+        gameHUD.attachChild(onHitPoint);
+        gameHUD.attachChild(offHitPoint);
     }
 
-    public void switchHitPoint(){
-        if (onHit.isVisible()){
-            onHit.setVisible(false);
-            offHit.setVisible(true);
-        } else {
-            onHit.setVisible(true);
-            offHit.setVisible(false);
-        }
+    public void switchHitPoint() {
+        offHitPoint.setVisible(!offHitPoint.isVisible());
+        onHitPoint.setVisible(!onHitPoint.isVisible());
     }
 }

@@ -30,11 +30,12 @@ public class GameHUD extends HUD {
     private static final float RELATIVE_HP_HEIGHT = 0.05f;
     private static final float BUTTON_ALPHA = 0.75f;
     private static final int FONT_ATLAS_SIDE = 256;
+    private static final int NUMBER_ZERO = 6;
     private final SceletonActivity activity;
-    private PointF positionHitPoint;
-    private Text textScore;
-    private Font scoreFont;
     private final Engine engine;
+    private PointF positionHitPoint;
+    private Text scoreText;
+    private Font scoreFont;
     private       PointF cameraSize;
     private       ArrayList<GameButtonSprite> buttons;
     private       ArrayList<HitPoint> hitPoints;
@@ -131,13 +132,13 @@ public class GameHUD extends HUD {
     }
 
     private void createStats() {
-        float heightHealthTexture =
+        float healthTextureHeight =
                 activity.getResourceManager().getLoadedTextureRegion(R.drawable.onhealth).getHeight();
-        float scale = cameraSize.y * RELATIVE_HP_HEIGHT / heightHealthTexture;
-        float widthHealthTexture =
+        float scale = cameraSize.y * RELATIVE_HP_HEIGHT / healthTextureHeight;
+        float healthTextureWidth =
                 activity.getResourceManager().getLoadedTextureRegion(R.drawable.onhealth).getWidth() * scale;
 
-        positionHitPoint = new PointF( (1 - RELATIVE_SCREEN_BORDER) * cameraSize.x - widthHealthTexture
+        positionHitPoint = new PointF( (1 - RELATIVE_SCREEN_BORDER) * cameraSize.x - healthTextureWidth
                                      , RELATIVE_SCREEN_BORDER * cameraSize.y * scale);
 
         for (int i = 0; i < Player.FULL_HP; i++) {
@@ -146,7 +147,7 @@ public class GameHUD extends HUD {
                                             , positionHitPoint
                                             , scale);
             hitPoints.add(hitPoint);
-            positionHitPoint.x -= RELATIVE_SPACE_BETWEEN_CONTROLS * cameraSize.x + widthHealthTexture;
+            positionHitPoint.x -= RELATIVE_SPACE_BETWEEN_CONTROLS * cameraSize.x + healthTextureWidth;
         }
 
         scoreFont = FontFactory.create( activity.getEngine().getFontManager()
@@ -154,40 +155,48 @@ public class GameHUD extends HUD {
                                       , FONT_ATLAS_SIDE
                                       , FONT_ATLAS_SIDE
                                       , Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)
-                                      , heightHealthTexture * scale
+                                      , healthTextureHeight * scale
                                       , true
                                       , Color.WHITE_ABGR_PACKED_INT);
         scoreFont.load();
 
         // создаем изначальные очки
-        textScore = new Text( positionHitPoint.x
+        scoreText = new Text( positionHitPoint.x
                             , positionHitPoint.y
                             , scoreFont
-                            , "Score: 000000"
+                            , activity.getResources().getString(R.string.SCORE) + ": 000000"
                             , activity.getEngine().getVertexBufferObjectManager());
-        textScore.setPosition( positionHitPoint.x - textScore.getWidth()
+        scoreText.setPosition( positionHitPoint.x - scoreText.getWidth()
                              , RELATIVE_SCREEN_BORDER * cameraSize.y);
 
-        this.attachChild(textScore);
+        this.attachChild(scoreText);
     }
 
-    public void updateScore(String score) {
-        textScore.detachSelf();
-        textScore = new Text( positionHitPoint.x
+    public void updateScore(int score) {
+        scoreText.detachSelf();
+        scoreText = new Text( positionHitPoint.x
                             , positionHitPoint.y
                             , scoreFont
-                            , score
+                            , getStringScore(score)
                             , activity.getEngine().getVertexBufferObjectManager());
-        textScore.setPosition( positionHitPoint.x - textScore.getWidth()
+        scoreText.setPosition( positionHitPoint.x - scoreText.getWidth()
                              , RELATIVE_SCREEN_BORDER * cameraSize.y);
-        this.attachChild(textScore);
+        this.attachChild(scoreText);
     }
 
-    public void reduceHealth(int health) {
+    public void updateHealth(int health) {
         hitPoints.get(health).switchHitPoint();
     }
 
-    public void addHealth(int health) {
-        hitPoints.get(health).switchHitPoint();
+    private String getStringScore(int score) {
+        // длина числа текущих Score
+        int digitNumber = ("" + score).length();
+        String scoreString  = activity.getResources().getString(R.string.SCORE) + ": ";
+        // дополняем наше Score нулями в начале
+        for (int i = 0; i < NUMBER_ZERO - digitNumber; i++) {
+            scoreString  += "0";
+        }
+        scoreString  += score;
+        return scoreString;
     }
 }
