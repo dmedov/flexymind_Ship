@@ -29,6 +29,7 @@ public class GameHUD extends HUD {
     private static final float RELATIVE_SCREEN_BORDER = 0.02f;
     private static final float RELATIVE_HP_HEIGHT = 0.05f;
     private static final float BUTTON_ALPHA = 0.75f;
+    private static final int FONT_ATLAS_SIDE = 256;
     private final SceletonActivity activity;
     private PointF positionHitPoint;
     private Text textScore;
@@ -36,13 +37,13 @@ public class GameHUD extends HUD {
     private final Engine engine;
     private       PointF cameraSize;
     private       ArrayList<GameButtonSprite> buttons;
-    private       ArrayList<HitPoint> healths;
+    private       ArrayList<HitPoint> hitPoints;
 
     public GameHUD(SceletonActivity activity) {
         super();
         setOnAreaTouchTraversalFrontToBack();
         buttons = new ArrayList<GameButtonSprite>();
-        healths = new ArrayList<HitPoint>();
+        hitPoints = new ArrayList<HitPoint>();
         this.activity = activity;
         engine = this.activity.getEngine();
         cameraSize = new PointF( this.activity.getCamera().getWidthRaw()
@@ -144,23 +145,25 @@ public class GameHUD extends HUD {
                                             , this
                                             , positionHitPoint
                                             , scale);
-            healths.add(hitPoint);
+            hitPoints.add(hitPoint);
             positionHitPoint.x -= RELATIVE_SPACE_BETWEEN_CONTROLS * cameraSize.x + widthHealthTexture;
         }
 
         scoreFont = FontFactory.create( activity.getEngine().getFontManager()
-                                       , activity.getEngine().getTextureManager()
-                                       , 256
-                                       , 70
-                                       , Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)
-                                       , 34 * scale
-                                       , true
-                                       , Color.WHITE_ABGR_PACKED_INT);
+                                      , activity.getEngine().getTextureManager()
+                                      , FONT_ATLAS_SIDE
+                                      , FONT_ATLAS_SIDE
+                                      , Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)
+                                      , heightHealthTexture * scale
+                                      , true
+                                      , Color.WHITE_ABGR_PACKED_INT);
         scoreFont.load();
+
+        // создаем изначальные очки
         textScore = new Text( positionHitPoint.x
                             , positionHitPoint.y
                             , scoreFont
-                            , "" + 0
+                            , "Score: 000000"
                             , activity.getEngine().getVertexBufferObjectManager());
         textScore.setPosition( positionHitPoint.x - textScore.getWidth()
                              , RELATIVE_SCREEN_BORDER * cameraSize.y);
@@ -168,23 +171,23 @@ public class GameHUD extends HUD {
         this.attachChild(textScore);
     }
 
-    public void updateScore(int score){
+    public void updateScore(String score) {
         textScore.detachSelf();
         textScore = new Text( positionHitPoint.x
                             , positionHitPoint.y
                             , scoreFont
-                            , "" + score
+                            , score
                             , activity.getEngine().getVertexBufferObjectManager());
         textScore.setPosition( positionHitPoint.x - textScore.getWidth()
                              , RELATIVE_SCREEN_BORDER * cameraSize.y);
         this.attachChild(textScore);
     }
 
-    public void reduceHealth(int health){
-        healths.get(health).switchHitPoint();
+    public void reduceHealth(int health) {
+        hitPoints.get(health).switchHitPoint();
     }
 
-    public void addHealth(int health){
-        healths.get(health).switchHitPoint();
+    public void addHealth(int health) {
+        hitPoints.get(health).switchHitPoint();
     }
 }

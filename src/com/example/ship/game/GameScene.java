@@ -82,12 +82,8 @@ public class GameScene extends Scene {
         activity.getCamera().setHUD(gameHUD);
     }
 
-    public GameHUD getGameHUD(){
+    public GameHUD getGameHUD() {
         return gameHUD;
-    }
-
-    public Player getPlayer(){
-        return player;
     }
 
     public void createTorpedo(PointF point, float angle) {
@@ -95,7 +91,8 @@ public class GameScene extends Scene {
             Torpedo torpedo = new Torpedo(activity, point, angle);
             this.getChildByIndex(LAYER_TORPEDO).attachChild(torpedo);
         }
-        player.addPoints(20);
+        // убрав комментарий ниже, можно посмотреть как изменяется Score с каждым выстрелом
+        // player.addPoints(60);
     }
 
     public ShipSpawner getShipSpawner() {
