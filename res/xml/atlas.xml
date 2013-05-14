@@ -20,4 +20,7 @@
                 <texture name="missileboat"/>
                 <texture name="battleship"/>
             </Atlas>
+            <Atlas type="BILINEAR" width="2048" height="2048" format="RGBA_8888">
+                <texture name="hitarea"/>
+            </Atlas>
 </resources>

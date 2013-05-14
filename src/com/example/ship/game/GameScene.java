@@ -140,6 +140,20 @@ public class GameScene extends Scene {
                 layer.getChildByIndex(i).detachSelf();
             }
         }
+
+        for (int i = 0; i < layer.getChildCount(); i++) {
+            Sprite torpedo = (Sprite) layer.getChildByIndex(i);
+            for (Ship ship: ships) {
+                if (torpedo.collidesWith(ship.getHitAreaSprite())) {
+                    torpedo.detachSelf();
+                    ship.missionDone();
+                    if (ship != null) {
+                        //ships.remove(ship);
+                    }
+                }
+            }
+        }
+
         super.onManagedUpdate(pSecondsElapsed);
     }
  

@@ -25,6 +25,7 @@ public class Ship {
     private static final float ROTATE_DURATION = 3.0f;
     private static final float RELATIVE_ROTATION_CENTER_Y_OFFSET = 1.75f;
     private static final int ROTATION_COUNT = 10;
+    private static final int RELATIVE_HITAREA_OFFSET = 20;
 
     private final SceletonActivity activity;
     private final float yPosition;
@@ -54,10 +55,15 @@ public class Ship {
         setDirection();
         shipSprite.setPosition(startPoint.x, startPoint.y);
         createModifier();
+        createHitArea();
     }
 
     public Sprite getSprite () {
         return shipSprite;
+    }
+
+    public Sprite getHitAreaSprite () {
+        return hitAreaSprite;
     }
 
     public float getVelocity() {
@@ -136,6 +142,7 @@ public class Ship {
     }
 
     public void missionDone() {
+        hitAreaSprite.detachSelf();
         shipSprite.detachSelf();
         activity.runOnUiThread(new Runnable() {
             @Override
@@ -143,6 +150,14 @@ public class Ship {
                 Toast.makeText(activity, "Корабль проплыл линию", Toast.LENGTH_LONG);
             }
         });
+    }
+
+    private void createHitArea() {
+        hitAreaSprite = new Sprite(   0
+                                    , shipSprite.getHeight() - RELATIVE_HITAREA_OFFSET
+                                    , activity.getResourceManager().getLoadedTextureRegion(R.drawable.hitarea)
+                                    , activity.getVertexBufferObjectManager() );
+        shipSprite.attachChild(hitAreaSprite);
     }
 }
 
