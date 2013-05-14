@@ -6,6 +6,7 @@ import com.example.ship.R;
 import com.example.ship.SceletonActivity;
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.hud.HUD;
+import org.andengine.entity.sprite.Sprite;
 
 import java.util.ArrayList;
 
@@ -26,11 +27,13 @@ public class GameHUD extends HUD {
     private final Engine engine;
     private       PointF cameraSize;
     private       ArrayList<GameButtonSprite> buttons;
+    private       ArrayList<HitPoint> healths;
 
     public GameHUD(SceletonActivity activity) {
         super();
         setOnAreaTouchTraversalFrontToBack();
         buttons = new ArrayList<GameButtonSprite>();
+        healths = new ArrayList<HitPoint>();
         this.activity = activity;
         engine = this.activity.getEngine();
         cameraSize = new PointF( this.activity.getCamera().getWidthRaw()
@@ -38,6 +41,7 @@ public class GameHUD extends HUD {
 
         createBorderButton();
         createButtons();
+        createHealth();
     }
 
     private void createButtons() {
@@ -114,5 +118,26 @@ public class GameHUD extends HUD {
         for (GameButtonSprite button: buttons) {
             button.setEvents(events);
         }
+    }
+
+    private void createHealth() {
+        float widthHealthTexture = activity.getResourceManager().getLoadedTextureRegion(R.drawable.onhealth).getWidth();
+        PointF positionHitPoint = new PointF( (1 - RELATIVE_SCREEN_BORDER) * cameraSize.x - widthHealthTexture
+                                         , RELATIVE_SCREEN_BORDER * cameraSize.y);
+        for (int i = 0; i < Player.FULL_HP; i++) {
+            HitPoint hitPoint = new HitPoint( activity
+                                            , this
+                                            , positionHitPoint);
+            healths.add(hitPoint);
+            positionHitPoint.x -= RELATIVE_SPACE_BETWEEN_CONTROLS * cameraSize.x + widthHealthTexture;
+        }
+    }
+
+    public void reduceHealth(int health){
+        healths.get(health).switchHitPoint();
+    }
+
+    public void addHealth(int health){
+        healths.get(health).switchHitPoint();
     }
 }

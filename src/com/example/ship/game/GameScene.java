@@ -43,6 +43,7 @@ public class GameScene extends Scene {
     private ShipSpawner shipSpawner;
     private ArrayList<Ship> ships;
     private HashMap<Integer, Float> shipLinesPosition;
+    private Player player;
 
     public GameScene(final SceletonActivity activity) {
         super();
@@ -60,6 +61,7 @@ public class GameScene extends Scene {
         shipLinesPosition = new HashMap<Integer, Float>();
         ships = new ArrayList<Ship>();
         waveSprites = new ArrayList<Sprite>();
+        player = new Player(activity, "Crusher");
 
         createBackground();
         createWaves();
@@ -78,6 +80,10 @@ public class GameScene extends Scene {
 
     public void switchToGameHUD() {
         activity.getCamera().setHUD(gameHUD);
+    }
+
+    public GameHUD getGameHUD(){
+        return gameHUD;
     }
 
     public void createTorpedo(PointF point, float angle) {

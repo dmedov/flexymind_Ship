@@ -19,5 +19,7 @@
                 <texture name="sailfish"/>
                 <texture name="missileboat"/>
                 <texture name="battleship"/>
-            </Atlas>
+                <texture name="onhealth"/>
+                <texture name="offhealth"/>
+           </Atlas>
 </resources>
