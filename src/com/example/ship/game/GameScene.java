@@ -80,9 +80,8 @@ public class GameScene extends Scene {
         activity.getCamera().setHUD(gameHUD);
     }
 
-    public void createTorpedo(PointF point, float angle) {
+    public void createTorpedo(Torpedo torpedo) {
         if (timer.checkTimeShoot()) {
-            Torpedo torpedo = new Torpedo(activity, point, angle);
             this.getChildByIndex(LAYER_TORPEDO).attachChild(torpedo);
         }
     }

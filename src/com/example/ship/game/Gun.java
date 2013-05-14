@@ -102,7 +102,9 @@ public class Gun {
     }
 
     public void fire() {
-        activity.getSceneSwitcher().getGameScene().createTorpedo( this.getShootStartPoint()
-                                                                , this.getGunAngle());
+        Torpedo torpedo = new Torpedo( activity
+                                     , getShootStartPoint()
+                                     , getGunAngle());
+        activity.getSceneSwitcher().getGameScene().createTorpedo(torpedo);
     }
 }
