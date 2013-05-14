@@ -38,7 +38,6 @@ public class GameScene extends Scene {
     private PauseHUD pauseHUD;
     private Sprite backgroundSprite;
     private ArrayList<Sprite> waveSprites;
-    private Timer timer;
     private Gun gun;
     private ShipSpawner shipSpawner;
     private ArrayList<Ship> ships;
@@ -49,9 +48,6 @@ public class GameScene extends Scene {
         this.activity = activity;
         this.mEngine = activity.getEngine();
         this.resourceManager = activity.getResourceManager();
-
-        timer = new Timer(activity);
-        timer.setTemporaryCheckpoint();
 
         for(int i = LAYER_BACKGROUND; i < layerCount; i++) {
             this.attachChild(new Entity());
@@ -81,9 +77,7 @@ public class GameScene extends Scene {
     }
 
     public void createTorpedo(Torpedo torpedo) {
-        if (timer.checkTimeShoot()) {
-            this.getChildByIndex(LAYER_TORPEDO).attachChild(torpedo);
-        }
+        this.getChildByIndex(LAYER_TORPEDO).attachChild(torpedo);
     }
 
     public ShipSpawner getShipSpawner() {

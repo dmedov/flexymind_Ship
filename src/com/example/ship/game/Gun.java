@@ -4,6 +4,8 @@ import android.graphics.PointF;
 import com.example.ship.R;
 import com.example.ship.SceletonActivity;
 import org.andengine.engine.camera.ZoomCamera;
+import org.andengine.engine.handler.timer.ITimerCallback;
+import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.ITextureRegion;
 
@@ -29,6 +31,9 @@ public class Gun {
     private boolean rotationEnabled;
     private Sprite gunSprite;
     private SceletonActivity activity;
+    private TimerHandler fireTimerHandler;
+    private boolean canFire = true;
+    private float delayFire = 2f;
 
     public Gun(SceletonActivity activity) {
         this.activity = activity;
@@ -39,6 +44,9 @@ public class Gun {
 
         PointF gunPosition = new PointF( camera.getCenterX() - gunTexture.getWidth()  * 0.5f
                                        , camera.getYMax() - gunTexture.getHeight() * GUN_PART_ON_SCENE);
+
+        createTimer();
+        activity.getEngine().registerUpdateHandler(fireTimerHandler);
 
         gunSprite = new Sprite( gunPosition.x
                               , gunPosition.y
@@ -102,9 +110,28 @@ public class Gun {
     }
 
     public void fire() {
-        Torpedo torpedo = new Torpedo( activity
-                                     , getShootStartPoint()
-                                     , getGunAngle());
-        activity.getSceneSwitcher().getGameScene().createTorpedo(torpedo);
+        if (canFire) {
+            Torpedo torpedo = new Torpedo( activity
+                                         , getShootStartPoint()
+                                         , getGunAngle());
+            activity.getSceneSwitcher().getGameScene().createTorpedo(torpedo);
+            canFire = false;
+            fireTimerHandler.reset();
+        }
     }
+
+    private void createTimer() {
+        fireTimerHandler = new TimerHandler(delayFire, new ITimerCallback() {
+            @Override
+            public void onTimePassed(final TimerHandler timerHandler) {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        canFire = true;
+                    }
+                });
+            }
+        });
+    }
+
 }
