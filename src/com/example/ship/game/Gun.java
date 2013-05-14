@@ -4,6 +4,8 @@ import android.graphics.PointF;
 import com.example.ship.R;
 import com.example.ship.SceletonActivity;
 import org.andengine.engine.camera.ZoomCamera;
+import org.andengine.engine.handler.timer.ITimerCallback;
+import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.ITextureRegion;
 
@@ -24,11 +26,14 @@ public class Gun {
     private static final float ROTATION_VELOCITY   = 0.4f;
     private static final float ROTATION_MAX_ANGLE  = 40.0f;
     private static final float GUN_PART_ON_SCENE   = 0.6f;
+    private static final float FIRE_DELAY = 2f;
 
     private boolean rotateLeft;
     private boolean rotationEnabled;
     private Sprite gunSprite;
     private SceletonActivity activity;
+    private TimerHandler fireTimerHandler;
+    private boolean fireAvaible = true;
 
     public Gun(SceletonActivity activity) {
         this.activity = activity;
@@ -39,6 +44,9 @@ public class Gun {
 
         PointF gunPosition = new PointF( camera.getCenterX() - gunTexture.getWidth()  * 0.5f
                                        , camera.getYMax() - gunTexture.getHeight() * GUN_PART_ON_SCENE);
+
+        createTimer();
+        activity.getEngine().registerUpdateHandler(fireTimerHandler);
 
         gunSprite = new Sprite( gunPosition.x
                               , gunPosition.y
@@ -102,7 +110,24 @@ public class Gun {
     }
 
     public void fire() {
-        activity.getSceneSwitcher().getGameScene().createTorpedo( this.getShootStartPoint()
-                                                                , this.getGunAngle());
+        if (fireAvaible) {
+            Torpedo torpedo = new Torpedo( activity
+                                         , getShootStartPoint()
+                                         , getGunAngle());
+            GameScene gameScene = activity.getSceneSwitcher().getGameScene();
+            gameScene.attachSpriteToLayer(torpedo, GameScene.LAYER_TORPEDO);
+            fireAvaible = false;
+            fireTimerHandler.reset();
+        }
     }
+
+    private void createTimer() {
+        fireTimerHandler = new TimerHandler(FIRE_DELAY, new ITimerCallback() {
+            @Override
+            public void onTimePassed(final TimerHandler timerHandler) {
+                fireAvaible = true;
+            }
+        });
+    }
+
 }
