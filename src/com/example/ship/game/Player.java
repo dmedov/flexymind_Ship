@@ -30,4 +30,8 @@ public class Player {
     public void reducePoints(int points) {
         score -= points;
     }
+
+    public int getScore(){
+        return score;
+    }
 }
