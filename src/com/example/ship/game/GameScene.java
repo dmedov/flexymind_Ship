@@ -26,8 +26,8 @@ public class GameScene extends Scene {
     public static final int LAYER_THIRD_WAVE  = layerCount++;
     public static final int LAYER_THIRD_SHIP_LINE  = layerCount++;
     public static final int LAYER_FOURTH_WAVE  = layerCount++;
-    private static final int LAYER_TORPEDO = layerCount++;
-    private static final int LAYER_GUN   = layerCount++;
+    public static final int LAYER_TORPEDO = layerCount++;
+    public static final int LAYER_GUN   = layerCount++;
     private static final float RELATIVE_SKY_HEIGHT = 0.15f;
     private static final float RELATIVE_WAVE_HEIGHT = 0.125f;
 
@@ -61,7 +61,6 @@ public class GameScene extends Scene {
         shipLinesPosition = new HashMap<Integer, Float>();
         ships = new ArrayList<Ship>();
         waveSprites = new ArrayList<Sprite>();
-        player = new Player(activity);
 
         createBackground();
         createWaves();
@@ -72,6 +71,9 @@ public class GameScene extends Scene {
 
         pauseHUD = new PauseHUD(activity);
         pauseHUD.setEventsToChildren(activity.getEvents());
+
+        player = new Player(activity);
+        player.setGameHUD(gameHUD);
     }
 
     public void switchToPauseHUD() {
@@ -82,17 +84,16 @@ public class GameScene extends Scene {
         activity.getCamera().setHUD(gameHUD);
     }
 
+    public void attachSpriteToLayer(Sprite sprite, int layerId){
+        this.getChildByIndex(layerId).attachChild(sprite);
+    }
+
     public GameHUD getGameHUD() {
         return gameHUD;
     }
 
-    public void createTorpedo(PointF point, float angle) {
-        if (timer.checkTimeShoot()) {
-            Torpedo torpedo = new Torpedo(activity, point, angle);
-            this.getChildByIndex(LAYER_TORPEDO).attachChild(torpedo);
-        }
-        // убрав комментарий ниже, можно посмотреть как изменяется Score с каждым выстрелом
-        // player.addPoints(60);
+    public Player getPlayer() {
+        return player;
     }
 
     public ShipSpawner getShipSpawner() {

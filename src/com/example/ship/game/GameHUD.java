@@ -30,7 +30,6 @@ public class GameHUD extends HUD {
     private static final float RELATIVE_HP_HEIGHT = 0.05f;
     private static final float BUTTON_ALPHA = 0.75f;
     private static final int FONT_ATLAS_SIDE = 256;
-    private static final int NUMBER_ZERO = 6;
     private final SceletonActivity activity;
     private final Engine engine;
     private PointF positionHitPoint;
@@ -172,31 +171,21 @@ public class GameHUD extends HUD {
         this.attachChild(scoreText);
     }
 
-    public void updateScore(int score) {
+    public void updateScore() {
         scoreText.detachSelf();
-        scoreText.setText(getStringScore(score));
+        scoreText.setText(activity.getSceneSwitcher().getGameScene().getPlayer().getStringScore());
         scoreText.setPosition( positionHitPoint.x - scoreText.getWidth()
                              , RELATIVE_SCREEN_BORDER * cameraSize.y);
         this.attachChild(scoreText);
     }
 
-    public void addHealth(int health) {
-        healthIndicators.get(health - 1).switchHitPoint();
-    }
-
-    public void reduceHealth(int health) {
-        healthIndicators.get(health).switchHitPoint();
-    }
-
-    private String getStringScore(int score) {
-        // длина числа текущих Score
-        int digitNumber = ("" + score).length();
-        String scoreString  = activity.getResources().getString(R.string.SCORE) + ": ";
-        // дополняем наше Score нулями в начале
-        for (int i = 0; i < NUMBER_ZERO - digitNumber; i++) {
-            scoreString  += "0";
+    public void updateHealthIndicators(int health) {
+        for (int i = 0; i < healthIndicators.size(); i++) {
+            if (i < health) {
+                healthIndicators.get(i).setToAliveState();
+            } else {
+                healthIndicators.get(i).setToDeadState();
+            }
         }
-        scoreString += score;
-        return scoreString;
     }
 }

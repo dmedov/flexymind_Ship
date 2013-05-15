@@ -31,8 +31,13 @@ public class HealthIndicator {
         gameHUD.attachChild(offHitPointSprite);
     }
 
-    public void switchHitPoint() {
-        offHitPointSprite.setVisible(!offHitPointSprite.isVisible());
-        onHitPointSprite.setVisible(!onHitPointSprite.isVisible());
+    public void setToAliveState() {
+        onHitPointSprite.setVisible(true);
+        offHitPointSprite.setVisible(false);
+    }
+
+    public void setToDeadState() {
+        onHitPointSprite.setVisible(false);
+        offHitPointSprite.setVisible(true);
     }
 }
