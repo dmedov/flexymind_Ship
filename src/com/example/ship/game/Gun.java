@@ -45,6 +45,7 @@ public class Gun {
         PointF gunPosition = new PointF( camera.getCenterX() - gunTexture.getWidth()  * 0.5f
                                        , camera.getYMax() - gunTexture.getHeight() * GUN_PART_ON_SCENE);
 
+        fireAvailable = true;
         createTimer();
         activity.getEngine().registerUpdateHandler(fireTimerHandler);
 
@@ -112,10 +113,10 @@ public class Gun {
     public void fire() {
         if (fireAvailable) {
             Torpedo torpedo = new Torpedo( activity
-                                         , getShootStartPoint()
-                                         , getGunAngle());
-            GameScene gameScene = activity.getSceneSwitcher().getGameScene();
-            gameScene.attachSpriteToLayer(torpedo, GameScene.LAYER_TORPEDO);
+                                         , this.getShootStartPoint()
+                                         , this.getGunAngle());
+            activity.getSceneSwitcher().getGameScene().attachSpriteToLayer( torpedo
+                                                                          , GameScene.LAYER_TORPEDO);
             fireAvailable = false;
             fireTimerHandler.reset();
         }
@@ -129,5 +130,4 @@ public class Gun {
             }
         });
     }
-
 }
