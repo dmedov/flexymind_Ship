@@ -15,6 +15,7 @@ import org.andengine.util.modifier.ease.EaseLinear;
 import org.andengine.util.modifier.ease.EaseQuadIn;
 import org.andengine.util.modifier.ease.EaseQuadInOut;
 import org.andengine.util.modifier.ease.EaseQuadOut;
+import java.util.Random;
 import static java.lang.Math.abs;
 
 public class Ship {
@@ -29,6 +30,11 @@ public class Ship {
     private static final float RELATIVE_ROTATION_CENTER_Y_OFFSET = 1.75f;
     private static final float RELATIVE_HITAREA_OFFSET = 20f;
     private static final float INERTION_MOVE_SHIP = 25f;
+    private static final float MAX_SINK_ROTATION_ANGLE = 90f;
+    private static final float MAX_SINK_ROTATION_VELOCITY = 20f;
+    private static final float MIN_SINK_ROTATION_VELOCITY = 2f;
+    private static final float MAX_SINK_VELOCITY = 20f;
+    private static final float MIN_SINK_VELOCITY = 2f;
     private static final int ROTATION_COUNT = 10;
 
     private final SceletonActivity activity;
@@ -42,6 +48,7 @@ public class Ship {
     private Sprite hitAreaSprite;
     private float velocity;
     private int health;
+    private Random rand;
 
     public Ship(SceletonActivity activity, float yPosition, int shipTypeId, boolean direction) {
         this.activity = activity;
@@ -171,10 +178,15 @@ public class Ship {
     }
 
     private void createSinkModifier() {
+        rand = new Random();
         float sinkPointX = direction ? (shipSprite.getX() - INERTION_MOVE_SHIP) : (shipSprite.getX() + INERTION_MOVE_SHIP);
-        float sinkRotationAngle = 180;
-        float sinkRotationVelocity = 5;
-        float sinkVelocity = 5;
+
+        float sinkRotationAngle =    MAX_SINK_ROTATION_ANGLE * (2*rand.nextFloat() - 1);
+        float sinkRotationVelocity = (MAX_SINK_ROTATION_VELOCITY - MIN_SINK_ROTATION_VELOCITY) * rand.nextFloat()
+                                        + MIN_SINK_ROTATION_VELOCITY;
+        float sinkVelocity =         (MAX_SINK_VELOCITY - MIN_SINK_VELOCITY) * rand.nextFloat()
+                                        + MIN_SINK_VELOCITY;
+
         MoveModifier moveModifierX = new MoveModifier( velocity*( 2*INERTION_MOVE_SHIP/abs(finishPoint.x - startPoint.x) )
                                                      , shipSprite.getX()
                                                      , sinkPointX
