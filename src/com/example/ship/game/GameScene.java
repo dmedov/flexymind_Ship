@@ -116,14 +116,10 @@ public class GameScene extends Scene {
                     || !ship.getDirection() && (shipSprite.getX() > maxX)) {
 
                 ship.missionDone();
-                Log.d("1log", "kill");
                 deadShip = ship;
             }
         }
 
-        if (deadShip != null) {
-            ships.remove(deadShip);
-        }
 
         // Ищем столкновение торпеды с небом
         Entity layer = (Entity) getChildByIndex(LAYER_TORPEDO);
@@ -154,6 +150,7 @@ public class GameScene extends Scene {
 
         if (deadShip != null) {
             ships.remove(deadShip);
+            Log.d("1log", "killed");
         }
 
         super.onManagedUpdate(pSecondsElapsed);
