@@ -12,7 +12,10 @@ import com.example.ship.SceletonActivity;
 import org.andengine.entity.modifier.*;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.util.modifier.ease.EaseLinear;
+import org.andengine.util.modifier.ease.EaseQuadIn;
 import org.andengine.util.modifier.ease.EaseQuadInOut;
+import org.andengine.util.modifier.ease.EaseQuadOut;
+import static java.lang.Math.abs;
 
 public class Ship {
 
@@ -24,8 +27,9 @@ public class Ship {
     private static final float MAX_ROTATE_ANGLE = 5.0f;
     private static final float ROTATE_DURATION = 3.0f;
     private static final float RELATIVE_ROTATION_CENTER_Y_OFFSET = 1.75f;
+    private static final float RELATIVE_HITAREA_OFFSET = 20f;
+    private static final float INERTION_MOVE_SHIP = 25f;
     private static final int ROTATION_COUNT = 10;
-    private static final int RELATIVE_HITAREA_OFFSET = 20;
 
     private final SceletonActivity activity;
     private final float yPosition;
@@ -87,7 +91,8 @@ public class Ship {
 
     public void killShip() {
         hitAreaSprite.detachSelf();
-        shipSprite.detachSelf();
+        shipSprite.clearEntityModifiers();
+        createSinkModifier();
     }
 
     private void initShipParametersById() {
@@ -163,6 +168,34 @@ public class Ship {
                                     , activity.getResourceManager().getLoadedTextureRegion(R.drawable.hitarea)
                                     , activity.getVertexBufferObjectManager() );
         shipSprite.attachChild(hitAreaSprite);
+    }
+
+    private void createSinkModifier() {
+        float sinkPointX = direction ? (shipSprite.getX() - INERTION_MOVE_SHIP) : (shipSprite.getX() + INERTION_MOVE_SHIP);
+        float sinkRotationAngle = 180;
+        float sinkRotationVelocity = 5;
+        float sinkVelocity = 5;
+        MoveModifier moveModifierX = new MoveModifier( velocity*( 2*INERTION_MOVE_SHIP/abs(finishPoint.x - startPoint.x) )
+                                                     , shipSprite.getX()
+                                                     , sinkPointX
+                                                     , shipSprite.getY()
+                                                     , shipSprite.getY()
+                                                     , EaseQuadOut.getInstance() );
+
+        MoveModifier moveModifierY = new MoveModifier( sinkVelocity
+                                                     , sinkPointX
+                                                     , sinkPointX
+                                                     , shipSprite.getY()
+                                                     , shipSprite.getY() + shipSprite.getHeight()
+                                                     , EaseQuadIn.getInstance() );
+
+        RotationModifier rotation = new RotationModifier( sinkRotationVelocity
+                                                        , shipSprite.getRotation()
+                                                        , sinkRotationAngle );
+
+        ParallelEntityModifier parallel = new ParallelEntityModifier(moveModifierY,rotation);
+        SequenceEntityModifier moveShip = new SequenceEntityModifier(moveModifierX,parallel);
+        shipSprite.registerEntityModifier(moveShip);
     }
 }
 
