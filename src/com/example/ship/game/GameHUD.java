@@ -182,9 +182,9 @@ public class GameHUD extends HUD {
     public void updateHealthIndicators(int health) {
         for (int i = 0; i < healthIndicators.size(); i++) {
             if (i < health) {
-                healthIndicators.get(i).setToAliveState();
+                healthIndicators.get(i).setState(HealthIndicator.ALIVE_STATE);
             } else {
-                healthIndicators.get(i).setToDeadState();
+                healthIndicators.get(i).setState(HealthIndicator.DEAD_STATE);
             }
         }
     }

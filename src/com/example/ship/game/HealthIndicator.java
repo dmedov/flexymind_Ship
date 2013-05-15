@@ -6,6 +6,8 @@ import com.example.ship.SceletonActivity;
 import org.andengine.entity.sprite.Sprite;
 
 public class HealthIndicator {
+    public static final boolean ALIVE_STATE = true;
+    public static final boolean DEAD_STATE = false;
     private SceletonActivity activity;
     private Sprite onHitPointSprite;
     private Sprite offHitPointSprite;
@@ -31,13 +33,8 @@ public class HealthIndicator {
         gameHUD.attachChild(offHitPointSprite);
     }
 
-    public void setToAliveState() {
-        onHitPointSprite.setVisible(true);
-        offHitPointSprite.setVisible(false);
-    }
-
-    public void setToDeadState() {
-        onHitPointSprite.setVisible(false);
-        offHitPointSprite.setVisible(true);
+    public void setState(boolean aliveState) {
+        onHitPointSprite.setVisible(aliveState);
+        offHitPointSprite.setVisible(!aliveState);
     }
 }
