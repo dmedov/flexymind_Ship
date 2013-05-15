@@ -1,6 +1,7 @@
 package com.example.ship.game;
 
 import android.graphics.PointF;
+import android.opengl.GLES20;
 import com.example.ship.Events;
 import com.example.ship.R;
 import com.example.ship.SceletonActivity;
@@ -24,6 +25,7 @@ public class GameHUD extends HUD {
     private static final float RELATIVE_SPACE_BETWEEN_CONTROLS = 0.01f;
     private static final float RELATIVE_SCREEN_BORDER = 0.02f;
     private static final float BUTTON_ALPHA = 0.75f;
+
     private final SceletonActivity activity;
     private final Engine engine;
     private       PointF cameraSize;
@@ -79,11 +81,13 @@ public class GameHUD extends HUD {
         ITextureRegion rotateGunDigitalControlKnobTextureRegion = activity.getResourceManager()
                                                             .getLoadedTextureRegion( R.drawable.onscreen_control_knob );
 
+        final float TIME_PERIOD_CHECK_CONTROL = 0.1f;
+        final float RELATIVE_CONTROL_HEIGHT = 0.2f;
+
+
+        final PointF BASE_TEXTURE_LEFT_BOTTOM = new PointF( 0f , rotateGunDigitalControlBaseTextureRegion.getHeight() );
         final float CONTROL_BASE_TEXTURE_HEIGHT = rotateGunDigitalControlBaseTextureRegion.getHeight();
-        final PointF BASE_TEXTURE_LEFT_BOTTOM = new PointF( 0f , 128f ); // Чтобы текстура не выходила за границы экрана
-        final float TIME_PERIOD_CHECK = 0.1f;                            // при масштабировании
-        final float RELATIVE_CONTROL_HEIGHT = 0.3f;
-        final PointF GUN_DIGITAL_CONTROL_COORDINATE = new PointF( cameraSize.x * 0.1f
+        final PointF GUN_DIGITAL_CONTROL_COORDINATE = new PointF( RELATIVE_SCREEN_BORDER * cameraSize.x
                                       , ( 1 - RELATIVE_SCREEN_BORDER )*( cameraSize.y - CONTROL_BASE_TEXTURE_HEIGHT ) );
 
         rotateGunDigitalControl = new HorizontalDigitalOnScreenControl( GUN_DIGITAL_CONTROL_COORDINATE.x
@@ -91,7 +95,7 @@ public class GameHUD extends HUD {
                                                             , activity.getCamera()
                                                             , rotateGunDigitalControlBaseTextureRegion
                                                             , rotateGunDigitalControlKnobTextureRegion
-                                                            , TIME_PERIOD_CHECK
+                                                            , TIME_PERIOD_CHECK_CONTROL
                                                             , activity.getVertexBufferObjectManager()
                                                             , new BaseOnScreenControl.IOnScreenControlListener() {
             @Override
@@ -105,12 +109,19 @@ public class GameHUD extends HUD {
                 }
             }
         });
+  // xxx: rotateGunDigitalControl.getControlBase().setBlendFunction(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
+        rotateGunDigitalControl.getControlBase().setAlpha(BUTTON_ALPHA);
+        // Чтобы текстура не выходила за границы экрана при масштабировании
         rotateGunDigitalControl.getControlBase().setScaleCenter( BASE_TEXTURE_LEFT_BOTTOM.x, BASE_TEXTURE_LEFT_BOTTOM.y );
         rotateGunDigitalControl.getControlBase().setScale( cameraSize.y * RELATIVE_CONTROL_HEIGHT
                                                         / rotateGunDigitalControlBaseTextureRegion.getHeight() );
         rotateGunDigitalControl.getControlKnob().setScale( cameraSize.y * RELATIVE_CONTROL_HEIGHT
                                                         / rotateGunDigitalControlBaseTextureRegion.getHeight() );
-      //  rotateGunDigitalControl.
+        final float KNOB_BORDER = 18f /  rotateGunDigitalControl.getControlBase().getWidthScaled() ;
+        final float EXTENT_SIDE = HorizontalDigitalOnScreenControl.STANDART_EXTENT_SIDE
+                                - rotateGunDigitalControl.KNOB_SIZE_IN_PERCENT - KNOB_BORDER/2;
+        rotateGunDigitalControl.setExtentSide( EXTENT_SIDE );
+
         rotateGunDigitalControl.refreshControlKnobPosition();
         this.setChildScene( rotateGunDigitalControl );
     }

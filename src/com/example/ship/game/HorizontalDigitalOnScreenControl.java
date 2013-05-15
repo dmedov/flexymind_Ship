@@ -14,13 +14,42 @@ import org.andengine.opengl.vbo.VertexBufferObjectManager;
  */
 public class HorizontalDigitalOnScreenControl extends BaseOnScreenControl {
 
-    private final float knobWidth = this.getControlKnob().getWidth();
-    private final float baseWidth = this.getControlBase().getWidth();
-    private final float knobSizeInPercent = knobWidth / baseWidth;
-    private final float EXTENT_SIDE = 0.5f - knobSizeInPercent / 2;
+    public final static float STANDART_EXTENT_SIDE = 0.5f;
+    private final float KNOB_WIDTH = this.getControlKnob().getWidth();
+    private final float BASE_WIDTH = this.getControlBase().getWidth();
 
-    public HorizontalDigitalOnScreenControl( float pX, float pY, Camera pCamera, ITextureRegion pControlBaseTextureRegion, ITextureRegion pControlKnobTextureRegion, float pTimeBetweenUpdates, VertexBufferObjectManager pVertexBufferObjectManager, IOnScreenControlListener pOnScreenControlListener) {
-        super(pX, pY, pCamera, pControlBaseTextureRegion, pControlKnobTextureRegion, pTimeBetweenUpdates, pVertexBufferObjectManager, pOnScreenControlListener );
+    public final float KNOB_SIZE_IN_PERCENT = KNOB_WIDTH / BASE_WIDTH;
+
+    private float extentSide;
+
+    public HorizontalDigitalOnScreenControl( float pX, float pY, float extentSide
+                                            , Camera pCamera
+                                            , ITextureRegion pControlBaseTextureRegion
+                                            , ITextureRegion pControlKnobTextureRegion
+                                            , float pTimeBetweenUpdates
+                                            , VertexBufferObjectManager pVertexBufferObjectManager
+                                            , IOnScreenControlListener pOnScreenControlListener ) {
+        super( pX, pY
+            , pCamera
+            , pControlBaseTextureRegion
+            , pControlKnobTextureRegion
+            , pTimeBetweenUpdates
+            , pVertexBufferObjectManager
+            , pOnScreenControlListener );
+        this.extentSide = extentSide;
+    }
+
+    public HorizontalDigitalOnScreenControl( float pX, float pY
+                                            , Camera pCamera
+                                            , ITextureRegion pControlBaseTextureRegion
+                                            , ITextureRegion pControlKnobTextureRegion
+                                            , float pTimeBetweenUpdates
+                                            , VertexBufferObjectManager pVertexBufferObjectManager
+                                            , IOnScreenControlListener pOnScreenControlListener ) {
+        this( pX, pY, STANDART_EXTENT_SIDE
+            , pCamera, pControlBaseTextureRegion
+            , pControlKnobTextureRegion, pTimeBetweenUpdates
+            , pVertexBufferObjectManager, pOnScreenControlListener );
     }
 
     @Override
@@ -31,11 +60,18 @@ public class HorizontalDigitalOnScreenControl extends BaseOnScreenControl {
         }
 
         if( pRelativeX > 0 ) {
-            super.onUpdateControlKnob( EXTENT_SIDE, 0 );
+            super.onUpdateControlKnob( extentSide, 0 );
         } else if( pRelativeX < 0 ) {
-            super.onUpdateControlKnob( -EXTENT_SIDE, 0 );
+            super.onUpdateControlKnob( -extentSide, 0 );
         } else if( pRelativeX == 0 ) {
             super.onUpdateControlKnob( 0, 0 );
         }
+    }
+
+    public void setExtentSide( float side ){
+        this.extentSide = side;
+    }
+    public float getExtentSide(){
+        return this.extentSide;
     }
 }
