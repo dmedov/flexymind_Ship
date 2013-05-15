@@ -36,15 +36,15 @@ public class GameHUD extends HUD {
     private PointF positionHitPoint;
     private Text scoreText;
     private Font scoreFont;
-    private       PointF cameraSize;
-    private       ArrayList<GameButtonSprite> buttons;
-    private       ArrayList<HitPoint> hitPoints;
+    private PointF cameraSize;
+    private ArrayList<GameButtonSprite> buttons;
+    private ArrayList<HealthIndicator> healthIndicators;
 
     public GameHUD(SceletonActivity activity) {
         super();
         setOnAreaTouchTraversalFrontToBack();
         buttons = new ArrayList<GameButtonSprite>();
-        hitPoints = new ArrayList<HitPoint>();
+        healthIndicators = new ArrayList<HealthIndicator>();
         this.activity = activity;
         engine = this.activity.getEngine();
         cameraSize = new PointF( this.activity.getCamera().getWidthRaw()
@@ -142,11 +142,11 @@ public class GameHUD extends HUD {
                                      , RELATIVE_SCREEN_BORDER * cameraSize.y * scale);
 
         for (int i = 0; i < Player.FULL_HP; i++) {
-            HitPoint hitPoint = new HitPoint( activity
-                                            , this
-                                            , positionHitPoint
-                                            , scale);
-            hitPoints.add(hitPoint);
+            HealthIndicator healthIndicator = new HealthIndicator( activity
+                                                                 , this
+                                                                 , positionHitPoint
+                                                                 , scale);
+            healthIndicators.add(healthIndicator);
             positionHitPoint.x -= RELATIVE_SPACE_BETWEEN_CONTROLS * cameraSize.x + healthTextureWidth;
         }
 
@@ -174,18 +174,18 @@ public class GameHUD extends HUD {
 
     public void updateScore(int score) {
         scoreText.detachSelf();
-        scoreText = new Text( positionHitPoint.x
-                            , positionHitPoint.y
-                            , scoreFont
-                            , getStringScore(score)
-                            , activity.getEngine().getVertexBufferObjectManager());
+        scoreText.setText(getStringScore(score));
         scoreText.setPosition( positionHitPoint.x - scoreText.getWidth()
                              , RELATIVE_SCREEN_BORDER * cameraSize.y);
         this.attachChild(scoreText);
     }
 
-    public void updateHealth(int health) {
-        hitPoints.get(health).switchHitPoint();
+    public void addHealth(int health) {
+        healthIndicators.get(health - 1).switchHitPoint();
+    }
+
+    public void reduceHealth(int health) {
+        healthIndicators.get(health).switchHitPoint();
     }
 
     private String getStringScore(int score) {
@@ -196,7 +196,7 @@ public class GameHUD extends HUD {
         for (int i = 0; i < NUMBER_ZERO - digitNumber; i++) {
             scoreString  += "0";
         }
-        scoreString  += score;
+        scoreString += score;
         return scoreString;
     }
 }

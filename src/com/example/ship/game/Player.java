@@ -20,12 +20,12 @@ public class Player {
 
     public void addHealth() {
         health++;
-        activity.getSceneSwitcher().getGameScene().getGameHUD().updateHealth(health);
+        activity.getSceneSwitcher().getGameScene().getGameHUD().addHealth(health);
     }
 
     public void reduceHealth() {
         health--;
-        activity.getSceneSwitcher().getGameScene().getGameHUD().updateHealth(health);
+        activity.getSceneSwitcher().getGameScene().getGameHUD().reduceHealth(health);
     }
 
     public void addPoints(int points) {
