@@ -1,14 +1,12 @@
 package com.example.ship.game;
 
 import android.graphics.PointF;
-import android.util.Log;
 import com.example.ship.Events;
 import com.example.ship.R;
 import com.example.ship.SceletonActivity;
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.camera.hud.controls.BaseOnScreenControl;
-import org.andengine.engine.camera.hud.controls.DigitalOnScreenControl;
 import org.andengine.opengl.texture.region.ITextureRegion;
 
 import java.util.ArrayList;
@@ -30,7 +28,7 @@ public class GameHUD extends HUD {
     private final Engine engine;
     private       PointF cameraSize;
     private       ArrayList<GameButtonSprite> buttons;
-    private       DigitalOnScreenControl rotateGunDigitalControl;
+    private       HorizontalDigitalOnScreenControl rotateGunDigitalControl;
 
     public GameHUD(SceletonActivity activity) {
         super();
@@ -85,10 +83,10 @@ public class GameHUD extends HUD {
         final PointF BASE_TEXTURE_LEFT_BOTTOM = new PointF( 0f , 128f ); // Чтобы текстура не выходила за границы экрана
         final float TIME_PERIOD_CHECK = 0.1f;                            // при масштабировании
         final float RELATIVE_CONTROL_HEIGHT = 0.3f;
-        final PointF GUN_DIGITAL_CONTROL_COORDINATE = new PointF( cameraSize.x * RELATIVE_SCREEN_BORDER
+        final PointF GUN_DIGITAL_CONTROL_COORDINATE = new PointF( cameraSize.x * 0.1f
                                       , ( 1 - RELATIVE_SCREEN_BORDER )*( cameraSize.y - CONTROL_BASE_TEXTURE_HEIGHT ) );
 
-        rotateGunDigitalControl = new DigitalOnScreenControl( GUN_DIGITAL_CONTROL_COORDINATE.x
+        rotateGunDigitalControl = new HorizontalDigitalOnScreenControl( GUN_DIGITAL_CONTROL_COORDINATE.x
                                                             , GUN_DIGITAL_CONTROL_COORDINATE.y
                                                             , activity.getCamera()
                                                             , rotateGunDigitalControlBaseTextureRegion
@@ -98,9 +96,9 @@ public class GameHUD extends HUD {
                                                             , new BaseOnScreenControl.IOnScreenControlListener() {
             @Override
             public void onControlChange( BaseOnScreenControl baseOnScreenControl, float xShift, float yShift ) {
-                if          ( xShift == -1 ) {
+                if          ( xShift < 0 ) {
                     activity.getSceneSwitcher().getGameScene().getGun().rotateLeft();
-                } else if   ( xShift == 1 ) {
+                } else if   ( xShift > 0 ) {
                     activity.getSceneSwitcher().getGameScene().getGun().rotateRight();
                 } else {
                     activity.getSceneSwitcher().getGameScene().getGun().stopRotate();
@@ -108,10 +106,11 @@ public class GameHUD extends HUD {
             }
         });
         rotateGunDigitalControl.getControlBase().setScaleCenter( BASE_TEXTURE_LEFT_BOTTOM.x, BASE_TEXTURE_LEFT_BOTTOM.y );
-        rotateGunDigitalControl.getControlBase().setScale( cameraSize.y * RELATIVE_BUTTON_HEIGHT
+        rotateGunDigitalControl.getControlBase().setScale( cameraSize.y * RELATIVE_CONTROL_HEIGHT
                                                         / rotateGunDigitalControlBaseTextureRegion.getHeight() );
-        rotateGunDigitalControl.getControlKnob().setScale( cameraSize.y * RELATIVE_BUTTON_HEIGHT
+        rotateGunDigitalControl.getControlKnob().setScale( cameraSize.y * RELATIVE_CONTROL_HEIGHT
                                                         / rotateGunDigitalControlBaseTextureRegion.getHeight() );
+      //  rotateGunDigitalControl.
         rotateGunDigitalControl.refreshControlKnobPosition();
         this.setChildScene( rotateGunDigitalControl );
     }
