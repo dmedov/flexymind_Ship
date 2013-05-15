@@ -19,5 +19,7 @@
                 <texture name="sailfish"/>
                 <texture name="missileboat"/>
                 <texture name="battleship"/>
+                <texture name="onscreen_control_base"/>
+                <texture name="onscreen_control_knob"/>
             </Atlas>
 </resources>

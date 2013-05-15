@@ -1,11 +1,14 @@
 package com.example.ship.game;
 
 import android.graphics.PointF;
+import android.opengl.GLES20;
 import com.example.ship.Events;
 import com.example.ship.R;
 import com.example.ship.SceletonActivity;
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.hud.HUD;
+import org.andengine.engine.camera.hud.controls.BaseOnScreenControl;
+import org.andengine.opengl.texture.region.ITextureRegion;
 
 import java.util.ArrayList;
 
@@ -22,10 +25,12 @@ public class GameHUD extends HUD {
     private static final float RELATIVE_SPACE_BETWEEN_CONTROLS = 0.01f;
     private static final float RELATIVE_SCREEN_BORDER = 0.02f;
     private static final float BUTTON_ALPHA = 0.75f;
+
     private final SceletonActivity activity;
     private final Engine engine;
     private       PointF cameraSize;
     private       ArrayList<GameButtonSprite> buttons;
+    private       HorizontalDigitalOnScreenControl rotateGunDigitalControl;
 
     public GameHUD(SceletonActivity activity) {
         super();
@@ -36,8 +41,8 @@ public class GameHUD extends HUD {
         cameraSize = new PointF( this.activity.getCamera().getWidthRaw()
                                , this.activity.getCamera().getHeightRaw());
 
-        createBorderButton();
         createButtons();
+        createRotateGunDigitalControl();
     }
 
     private void createButtons() {
@@ -54,21 +59,6 @@ public class GameHUD extends HUD {
                                          , engine.getVertexBufferObjectManager()
                                          , R.string.GAME_FIRE_BUTTON);
         buttons.add(fireButton);
-
-        GameButtonSprite moveLeftButton;
-        moveLeftButton = new GameButtonSprite( activity.getResourceManager()
-                                                    .getLoadedTextureRegion(R.drawable.leftbutton)
-                                          , engine.getVertexBufferObjectManager()
-                                          , R.string.GAME_LEFT_BUTTON);
-        buttons.add(moveLeftButton);
-
-        GameButtonSprite moveRightButton;
-        moveRightButton = new GameButtonSprite( activity.getResourceManager()
-                                                        .getLoadedTextureRegion(R.drawable.rightbutton)
-                                              , engine.getVertexBufferObjectManager()
-                                              , R.string.GAME_RIGHT_BUTTON);
-        buttons.add(moveRightButton);
-
         for (GameButtonSprite button: buttons) {
             if (button.getId() == R.string.GAME_BORDER_BUTTON) {
                 continue;
@@ -83,33 +73,58 @@ public class GameHUD extends HUD {
                                , RELATIVE_SCREEN_BORDER * cameraSize.y);
         fireButton.setPosition( (1 - RELATIVE_SCREEN_BORDER) * cameraSize.x - fireButton.getWidth()
                               , (1 - RELATIVE_SCREEN_BORDER) * cameraSize.y - fireButton.getHeight());
-        moveLeftButton.setPosition( RELATIVE_SCREEN_BORDER * cameraSize.x
-                                  , (1 - RELATIVE_SCREEN_BORDER) * cameraSize.y - moveLeftButton.getHeight());
-        moveRightButton.setPosition( (RELATIVE_SCREEN_BORDER + RELATIVE_SPACE_BETWEEN_CONTROLS) * cameraSize.x
-                                                + moveRightButton.getWidth()
-                                   , (1 - RELATIVE_SCREEN_BORDER) * cameraSize.y - moveRightButton.getHeight());
     }
 
-    // this method creates special invisible big button, under left and right controls button
-    // to detect situation, while touch move out from controls button, to stop gun rotation
-    private void createBorderButton() {
-        final float scale = 5.0f;
-        GameButtonSprite borderButton;
-        borderButton = new GameButtonSprite( activity.getResourceManager()
-                                                     .getLoadedTextureRegion(R.drawable.pausebutton)
-                                           , engine.getVertexBufferObjectManager()
-                                           , R.string.GAME_BORDER_BUTTON);
+    private void createRotateGunDigitalControl() {
+        ITextureRegion rotateGunDigitalControlBaseTextureRegion = activity.getResourceManager()
+                                                            .getLoadedTextureRegion( R.drawable.onscreen_control_base );
+        ITextureRegion rotateGunDigitalControlKnobTextureRegion = activity.getResourceManager()
+                                                            .getLoadedTextureRegion( R.drawable.onscreen_control_knob );
 
-        buttons.add(borderButton);
-        borderButton.setVisible(false);
-        borderButton.setScale(scale);
+        final float TIME_PERIOD_CHECK_CONTROL = 0.1f;
+        final float RELATIVE_CONTROL_HEIGHT = 0.2f;
 
-        this.registerTouchArea(borderButton);
-        this.attachChild(borderButton);
-        borderButton.setPosition( (RELATIVE_SCREEN_BORDER + RELATIVE_SPACE_BETWEEN_CONTROLS) * cameraSize.x
-                                , (1 - RELATIVE_SCREEN_BORDER) * cameraSize.y - borderButton.getHeight());
+
+        final PointF BASE_TEXTURE_LEFT_BOTTOM = new PointF( 0f , rotateGunDigitalControlBaseTextureRegion.getHeight() );
+        final float CONTROL_BASE_TEXTURE_HEIGHT = rotateGunDigitalControlBaseTextureRegion.getHeight();
+        final PointF GUN_DIGITAL_CONTROL_COORDINATE = new PointF( RELATIVE_SCREEN_BORDER * cameraSize.x
+                                      , ( 1 - RELATIVE_SCREEN_BORDER )*( cameraSize.y - CONTROL_BASE_TEXTURE_HEIGHT ) );
+
+        rotateGunDigitalControl = new HorizontalDigitalOnScreenControl( GUN_DIGITAL_CONTROL_COORDINATE.x
+                                                            , GUN_DIGITAL_CONTROL_COORDINATE.y
+                                                            , activity.getCamera()
+                                                            , rotateGunDigitalControlBaseTextureRegion
+                                                            , rotateGunDigitalControlKnobTextureRegion
+                                                            , TIME_PERIOD_CHECK_CONTROL
+                                                            , activity.getVertexBufferObjectManager()
+                                                            , new BaseOnScreenControl.IOnScreenControlListener() {
+            @Override
+            public void onControlChange( BaseOnScreenControl baseOnScreenControl, float xShift, float yShift ) {
+                if          ( xShift < 0 ) {
+                    activity.getSceneSwitcher().getGameScene().getGun().rotateLeft();
+                } else if   ( xShift > 0 ) {
+                    activity.getSceneSwitcher().getGameScene().getGun().rotateRight();
+                } else {
+                    activity.getSceneSwitcher().getGameScene().getGun().stopRotate();
+                }
+            }
+        });
+  // xxx: rotateGunDigitalControl.getControlBase().setBlendFunction(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
+        rotateGunDigitalControl.getControlBase().setAlpha(BUTTON_ALPHA);
+        // Чтобы текстура не выходила за границы экрана при масштабировании
+        rotateGunDigitalControl.getControlBase().setScaleCenter( BASE_TEXTURE_LEFT_BOTTOM.x, BASE_TEXTURE_LEFT_BOTTOM.y );
+        rotateGunDigitalControl.getControlBase().setScale( cameraSize.y * RELATIVE_CONTROL_HEIGHT
+                                                        / rotateGunDigitalControlBaseTextureRegion.getHeight() );
+        rotateGunDigitalControl.getControlKnob().setScale( cameraSize.y * RELATIVE_CONTROL_HEIGHT
+                                                        / rotateGunDigitalControlBaseTextureRegion.getHeight() );
+        final float KNOB_BORDER = 18f /  rotateGunDigitalControl.getControlBase().getWidthScaled() ;
+        final float EXTENT_SIDE = HorizontalDigitalOnScreenControl.STANDART_EXTENT_SIDE
+                                - rotateGunDigitalControl.KNOB_SIZE_IN_PERCENT - KNOB_BORDER/2;
+        rotateGunDigitalControl.setExtentSide( EXTENT_SIDE );
+
+        rotateGunDigitalControl.refreshControlKnobPosition();
+        this.setChildScene( rotateGunDigitalControl );
     }
-
     public void setEventsToChildren(Events events) {
         for (GameButtonSprite button: buttons) {
             button.setEvents(events);
