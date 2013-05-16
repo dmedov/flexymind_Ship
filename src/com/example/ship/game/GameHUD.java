@@ -191,14 +191,14 @@ public class GameHUD extends HUD {
 
     public void updateScore() {
         scoreText.setText(activity.getSceneSwitcher().getGameScene().getPlayer().getStringScore());
-        scoreText.setPosition(positionHitPoint.x - scoreText.getWidth()
-                , RELATIVE_SCREEN_BORDER * cameraSize.y);
+        scoreText.setPosition( positionHitPoint.x - scoreText.getWidth()
+                             , RELATIVE_SCREEN_BORDER * cameraSize.y);
     }
 
     public void updateLevelInfo(String text) {
         levelInfoText.setText(text);
-        levelInfoText.setPosition(scoreText.getX() - cameraSize.x * RELATIVE_SPACE_BETWEEN_CONTROLS - levelInfoText.getWidth()
-                , RELATIVE_SCREEN_BORDER * cameraSize.y);
+        levelInfoText.setPosition( scoreText.getX() - cameraSize.x * RELATIVE_SPACE_BETWEEN_CONTROLS - levelInfoText.getWidth()
+                                 , RELATIVE_SCREEN_BORDER * cameraSize.y);
     }
 
     public void updateHealthIndicators(int health) {
