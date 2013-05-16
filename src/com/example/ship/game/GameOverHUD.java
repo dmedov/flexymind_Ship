@@ -110,6 +110,8 @@ public class GameOverHUD extends HUD {
     }
 
     private void createGameOverButtons() {
+        float spaceGameOverButton = gameOverBackgound.getHeight() * RELATIVE_GAME_OVER_BUTTON;
+
         menuButtonSprite =
                 new MenuButtonSprite( resourceManager.getLoadedTextureRegion(R.drawable.menubutton)
                                     , activity.getEngine().getVertexBufferObjectManager()
@@ -117,7 +119,7 @@ public class GameOverHUD extends HUD {
                                     , getStringResource(R.string.GAME_OVER_RESTART_BUTTON_LABEL)
                                     , gameOverFont);
 
-        menuButtonSprite.setScale(gameOverBackgound.getHeight() * RELATIVE_GAME_OVER_BUTTON / menuButtonSprite.getHeight());
+        menuButtonSprite.setScale(spaceGameOverButton / menuButtonSprite.getHeight());
         menuButtonSprite.setPosition( gameOverBackgound.getWidth() / 2 - scoreText.getWidth() / 2
                                     , yPositionOfElement);
 
@@ -130,7 +132,7 @@ public class GameOverHUD extends HUD {
                                     , getStringResource(R.string.GAME_OVER_EXIT_BUTTON_LABEL)
                                     , gameOverFont);
 
-        exitButtonSprite.setScale(gameOverBackgound.getHeight() * RELATIVE_GAME_OVER_BUTTON / exitButtonSprite.getHeight());
+        exitButtonSprite.setScale(spaceGameOverButton / exitButtonSprite.getHeight());
         exitButtonSprite.setPosition( gameOverBackgound.getWidth() / 2 - scoreText.getWidth() / 2
                                     , yPositionOfElement);
 
