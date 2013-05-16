@@ -105,11 +105,14 @@ public class Ship {
         createSinkModifier();
     }
 
-    public void hitShip() {
-        health--;
+    public boolean hitShip( int hitPoints) {
+        health-=hitPoints;
         if ( health <= 0) {
             killShip();
+            return true;
         }
+
+        return false;
     }
 
     private void initShipParametersById() {
