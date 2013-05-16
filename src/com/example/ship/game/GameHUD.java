@@ -7,10 +7,18 @@ import com.example.ship.R;
 import com.example.ship.SceletonActivity;
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.hud.HUD;
+import org.andengine.engine.handler.timer.ITimerCallback;
+import org.andengine.engine.handler.timer.TimerHandler;
+import org.andengine.entity.IEntity;
+import org.andengine.entity.modifier.IEntityModifier;
+import org.andengine.entity.modifier.MoveModifier;
 import org.andengine.entity.text.Text;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
 import org.andengine.util.color.Color;
+import org.andengine.util.modifier.IModifier;
+import org.andengine.util.modifier.ease.EaseBounceIn;
+import org.andengine.util.modifier.ease.EaseBounceOut;
 
 import java.util.ArrayList;
 
@@ -29,6 +37,7 @@ public class GameHUD extends HUD {
     private static final float RELATIVE_HP_HEIGHT = 0.05f;
     private static final float BUTTON_ALPHA = 0.75f;
     private static final int FONT_ATLAS_SIDE = 256;
+    public static final int TEXT_LENGHT = 32;
     private final SceletonActivity activity;
     private final Engine engine;
     private PointF positionHitPoint;
@@ -164,7 +173,7 @@ public class GameHUD extends HUD {
                             , positionHitPoint.y
                             , statFont
                             , activity.getResources().getString(R.string.SCORE) + ": 000000"
-                            , 16
+                            , TEXT_LENGHT
                             , activity.getEngine().getVertexBufferObjectManager());
         scoreText.setPosition( cameraSize.x * 0.5f - scoreText.getWidth() * 0.5f
                              , RELATIVE_SCREEN_BORDER * cameraSize.y);
@@ -173,7 +182,7 @@ public class GameHUD extends HUD {
                                 , 0
                                 , statFont
                                 , ""
-                                , 32
+                                , TEXT_LENGHT
                                 , activity.getEngine().getVertexBufferObjectManager());
 
         this.attachChild(scoreText);
@@ -182,14 +191,14 @@ public class GameHUD extends HUD {
 
     public void updateScore() {
         scoreText.setText(activity.getSceneSwitcher().getGameScene().getPlayer().getStringScore());
-        scoreText.setPosition( positionHitPoint.x - scoreText.getWidth()
-                             , RELATIVE_SCREEN_BORDER * cameraSize.y);
+        scoreText.setPosition(positionHitPoint.x - scoreText.getWidth()
+                , RELATIVE_SCREEN_BORDER * cameraSize.y);
     }
 
     public void updateLevelInfo(String text) {
         levelInfoText.setText(text);
-        levelInfoText.setPosition( scoreText.getX() - cameraSize.x * RELATIVE_SPACE_BETWEEN_CONTROLS - levelInfoText.getWidth()
-                                 , RELATIVE_SCREEN_BORDER * cameraSize.y);
+        levelInfoText.setPosition(scoreText.getX() - cameraSize.x * RELATIVE_SPACE_BETWEEN_CONTROLS - levelInfoText.getWidth()
+                , RELATIVE_SCREEN_BORDER * cameraSize.y);
     }
 
     public void updateHealthIndicators(int health) {
@@ -200,5 +209,54 @@ public class GameHUD extends HUD {
                 healthIndicators.get(i).setState(HealthIndicator.DEAD_STATE);
             }
         }
+    }
+
+    public void showNewLevelMessage(int level) {
+        final float messageHoldTime = 1.0f;
+        final float moveDuration = 3.0f;
+
+        final Text newLevelText = new Text( 0
+                                          , 0
+                                          , statFont
+                                          , activity.getStringResource(R.string.NEW_LEVEL_MESSAGE) + " " + level
+                                          , TEXT_LENGHT
+                                          , activity.getEngine().getVertexBufferObjectManager());
+        newLevelText.setAlpha(0.75f);
+
+        this.attachChild(newLevelText);
+
+        final MoveModifier moveDownModifier =
+                new MoveModifier( moveDuration
+                                , cameraSize.x * 0.5f - newLevelText.getWidth() * 0.5f
+                                , cameraSize.x * 0.5f - newLevelText.getWidth() * 0.5f
+                                , - newLevelText.getHeight()
+                                , cameraSize.y * 0.5f - newLevelText.getHeight() * 0.5f
+                                , EaseBounceOut.getInstance());
+
+        final MoveModifier moveUpModifier =
+                new MoveModifier( moveDuration
+                                , cameraSize.x * 0.5f - newLevelText.getWidth() * 0.5f
+                                , cameraSize.x * 0.5f - newLevelText.getWidth() * 0.5f
+                                , cameraSize.y * 0.5f - newLevelText.getHeight() * 0.5f
+                                , - newLevelText.getHeight()
+                                , EaseBounceIn.getInstance());
+
+        moveDownModifier.addModifierListener(new IEntityModifier.IEntityModifierListener() {
+            @Override
+            public void onModifierStarted(IModifier<IEntity> iEntityIModifier, IEntity iEntity) {}
+
+            @Override
+            public void onModifierFinished(IModifier<IEntity> iEntityIModifier, IEntity iEntity) {
+
+                TimerHandler timerHandler = new TimerHandler(messageHoldTime, new ITimerCallback() {
+                    @Override
+                    public void onTimePassed(TimerHandler timerHandler) {
+                        newLevelText.registerEntityModifier(moveUpModifier);
+                    }
+                });
+                activity.getEngine().registerUpdateHandler(timerHandler);
+            }
+        });
+        newLevelText.registerEntityModifier(moveDownModifier);
     }
 }

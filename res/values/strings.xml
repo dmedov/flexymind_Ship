@@ -18,6 +18,7 @@
     <string name="SCORE">Score</string>
     <string name="LEVEL">Level</string>
     <string name="GOAL">Goal</string>
+    <string name="NEW_LEVEL_MESSAGE">New level </string>
     <!--Game Button ID-->
     <string name="GAME_PAUSE_BUTTON">pauseID</string>
     <string name="GAME_PAUSE_BACK_BUTTON">backID</string>

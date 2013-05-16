@@ -11,4 +11,5 @@
     <string name="SCORE">Очки</string>
     <string name="LEVEL">Уровень</string>
     <string name="GOAL">Цель</string>
+    <string name="NEW_LEVEL_MESSAGE">Новый уровень </string>
 </resources>
