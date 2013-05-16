@@ -23,29 +23,29 @@ public class HorizontalDigitalOnScreenControl extends BaseOnScreenControl {
     private float extentSide;
 
     public HorizontalDigitalOnScreenControl( float pX, float pY, float extentSide
-                                            , Camera pCamera
-                                            , ITextureRegion pControlBaseTextureRegion
-                                            , ITextureRegion pControlKnobTextureRegion
-                                            , float pTimeBetweenUpdates
-                                            , VertexBufferObjectManager pVertexBufferObjectManager
-                                            , IOnScreenControlListener pOnScreenControlListener ) {
+                                           , Camera pCamera
+                                           , ITextureRegion pControlBaseTextureRegion
+                                           , ITextureRegion pControlKnobTextureRegion
+                                           , float pTimeBetweenUpdates
+                                           , VertexBufferObjectManager pVertexBufferObjectManager
+                                           , IOnScreenControlListener pOnScreenControlListener ) {
         super( pX, pY
-            , pCamera
-            , pControlBaseTextureRegion
-            , pControlKnobTextureRegion
-            , pTimeBetweenUpdates
-            , pVertexBufferObjectManager
-            , pOnScreenControlListener );
+             , pCamera
+             , pControlBaseTextureRegion
+             , pControlKnobTextureRegion
+             , pTimeBetweenUpdates
+             , pVertexBufferObjectManager
+             , pOnScreenControlListener );
         this.extentSide = extentSide;
     }
 
     public HorizontalDigitalOnScreenControl( float pX, float pY
-                                            , Camera pCamera
-                                            , ITextureRegion pControlBaseTextureRegion
-                                            , ITextureRegion pControlKnobTextureRegion
-                                            , float pTimeBetweenUpdates
-                                            , VertexBufferObjectManager pVertexBufferObjectManager
-                                            , IOnScreenControlListener pOnScreenControlListener ) {
+                                           , Camera pCamera
+                                           , ITextureRegion pControlBaseTextureRegion
+                                           , ITextureRegion pControlKnobTextureRegion
+                                           , float pTimeBetweenUpdates
+                                           , VertexBufferObjectManager pVertexBufferObjectManager
+                                           , IOnScreenControlListener pOnScreenControlListener ) {
         this( pX, pY, STANDART_EXTENT_SIDE
             , pCamera, pControlBaseTextureRegion
             , pControlKnobTextureRegion, pTimeBetweenUpdates
