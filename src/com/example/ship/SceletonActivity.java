@@ -107,4 +107,8 @@ public class SceletonActivity extends BaseGameActivity {
     public int getIntResource(int id) {
         return this.getResources().getInteger(id);
     }
+
+    public String getStringResource(int id) {
+        return this.getResources().getString(id);
+    }
 }

@@ -6,6 +6,7 @@ Date: 07.05.13
 */
 
 import android.graphics.PointF;
+import android.util.Log;
 import android.widget.Toast;
 import com.example.ship.R;
 import com.example.ship.SceletonActivity;
@@ -19,14 +20,16 @@ public class Ship {
     public static final boolean TO_LEFT = true;
     public static final boolean TO_RIGHT = false;
 
-    private static final float RELATIVE_WATERLINE = 0.1f;
     private static final float FINISH_OFFSET = 300.0f;
     private static final float MAX_ROTATE_ANGLE = 5.0f;
     private static final float ROTATE_DURATION = 3.0f;
     private static final float RELATIVE_ROTATION_CENTER_Y_OFFSET = 1.75f;
     private static final int ROTATION_COUNT = 10;
-
     private final SceletonActivity activity;
+
+    private static float velocityDivider = 1;
+
+    private static final float RELATIVE_WATERLINE = 0.1f;
     private final float yPosition;
     private final int typeId;
     private final boolean direction;
@@ -56,6 +59,11 @@ public class Ship {
         createModifier();
     }
 
+    public static void setVelocityDivider(float velocityDivider) {
+        Ship.velocityDivider = velocityDivider;
+        Log.d("1log", "velocity divider..." + velocityDivider);
+    }
+
     public Sprite getSprite () {
         return shipSprite;
     }
@@ -71,19 +79,19 @@ public class Ship {
     private void initShipParametersById() {
         switch (typeId) {
             case R.drawable.sailfish:
-                this.velocity = activity.getIntResource(R.integer.SAILFISH_VELOCITY);
+                this.velocity = activity.getIntResource(R.integer.SAILFISH_VELOCITY) / velocityDivider;
                 this.health = activity.getIntResource(R.integer.SAILFISH_HEALTH);
                 break;
             case R.drawable.missileboat:
-                this.velocity = activity.getIntResource(R.integer.MISSILEBOAT_VELOCITY);
+                this.velocity = activity.getIntResource(R.integer.MISSILEBOAT_VELOCITY) / velocityDivider;
                 this.health = activity.getIntResource(R.integer.MISSILEBOAT_HEALTH);
                 break;
             case R.drawable.battleship:
-                this.velocity = activity.getIntResource(R.integer.BATTLESHIP_VELOCITY);
+                this.velocity = activity.getIntResource(R.integer.BATTLESHIP_VELOCITY) / velocityDivider;
                 this.health = activity.getIntResource(R.integer.BATTLESHIP_HEALTH);
                 break;
             default:
-                this.velocity = activity.getIntResource(R.integer.MISSILEBOAT_VELOCITY);
+                this.velocity = activity.getIntResource(R.integer.MISSILEBOAT_VELOCITY) / velocityDivider;
                 this.health = activity.getIntResource(R.integer.MISSILEBOAT_HEALTH);
                 break;
         }
