@@ -55,6 +55,7 @@ public class Player {
     }
 
     public void reducePoints(int points) {
+        points *= level.getScoreMultiplier();
         score -= points;
         gameHUD.updateScore();
     }
