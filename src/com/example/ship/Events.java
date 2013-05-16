@@ -95,7 +95,6 @@ public class Events implements TouchableMenuButtonSprite
         });
     }
 
-
     private void menuButtonJump (Sprite button, boolean up) {
         float jumpAmplitude = activity.getTextureSize().y * RELATIVE_BUTTON_JUMP_AMPLITUDE;
         if (up){
