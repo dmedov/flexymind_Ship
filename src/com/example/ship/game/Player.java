@@ -50,12 +50,13 @@ public class Player {
     }
 
     public void addPoints(int points) {
+        // в дальнейшем перенести умножение в метод, который вызывает этот
+        points *= level.getScoreMultiplier();
         score += points;
         gameHUD.updateScore();
     }
 
     public void reducePoints(int points) {
-        points *= level.getScoreMultiplier();
         score -= points;
         gameHUD.updateScore();
     }
