@@ -32,7 +32,7 @@ public class Ship {
     private static final float ROTATE_DURATION = 3.0f;
     private static final float RELATIVE_ROTATION_CENTER_Y_OFFSET = 1.75f;
     private static final float RELATIVE_HITAREA_OFFSET = 20f;
-    private static final float INERTION_MOVE_SHIP = 25f;
+    private static final float SINK_ACCELERATION = 40f;
     private static final float MAX_SINK_ROTATION_ANGLE = 90f;
     private static final float MAX_SINK_ROTATION_VELOCITY = 20f;
     private static final float MIN_SINK_ROTATION_VELOCITY = 2f;
@@ -59,17 +59,16 @@ public class Ship {
         this.typeId = shipTypeId;
         this.direction = direction;
 
-        initShipParametersById();
-
         shipSprite = new Sprite( 0
                                , 0
                                , activity.getResourceManager().getLoadedTextureRegion(shipTypeId)
                                , activity.getEngine().getVertexBufferObjectManager());
 
+        initShipParametersById();
+
         setDirection();
         shipSprite.setPosition(startPoint.x, startPoint.y);
         createModifier();
-        createHitArea();
     }
 
     public Sprite getSprite () {
@@ -110,18 +109,26 @@ public class Ship {
             case R.drawable.sailfish:
                 this.velocity = activity.getIntResource(R.integer.SAILFISH_VELOCITY);
                 this.health = activity.getIntResource(R.integer.SAILFISH_HEALTH);
+                createHitArea( activity.getIntResource(R.integer.SAILFISH_HITAREA_START_PIXEL)
+                        , activity.getIntResource(R.integer.SAILFISH_HITAREA_END_PIXEL  ) );
                 break;
             case R.drawable.missileboat:
                 this.velocity = activity.getIntResource(R.integer.MISSILEBOAT_VELOCITY);
                 this.health = activity.getIntResource(R.integer.MISSILEBOAT_HEALTH);
+                createHitArea( activity.getIntResource(R.integer.MISSILEBOAT_HITAREA_START_PIXEL)
+                        , activity.getIntResource(R.integer.MISSILEBOAT_HITAREA_END_PIXEL  ) );
                 break;
             case R.drawable.battleship:
                 this.velocity = activity.getIntResource(R.integer.BATTLESHIP_VELOCITY);
                 this.health = activity.getIntResource(R.integer.BATTLESHIP_HEALTH);
+                createHitArea( activity.getIntResource(R.integer.BATTLESHIP_HITAREA_START_PIXEL)
+                        , activity.getIntResource(R.integer.BATTLESHIP_HITAREA_END_PIXEL  ) );
                 break;
             default:
                 this.velocity = activity.getIntResource(R.integer.MISSILEBOAT_VELOCITY);
                 this.health = activity.getIntResource(R.integer.MISSILEBOAT_HEALTH);
+                createHitArea( activity.getIntResource(R.integer.MISSILEBOAT_HITAREA_START_PIXEL)
+                        , activity.getIntResource(R.integer.MISSILEBOAT_HITAREA_END_PIXEL  ) );
                 break;
         }
     }
@@ -172,17 +179,23 @@ public class Ship {
         shipSprite.registerEntityModifier(moveWithRotationModifier);
     }
 
-    private void createHitArea() {
+    private void createHitArea( float hitAreaFromPixel, float hitAreaToPixel ) {
         hitAreaSprite = new Sprite(   0
                                     , shipSprite.getHeight() - RELATIVE_HITAREA_OFFSET
                                     , activity.getResourceManager().getLoadedTextureRegion(R.drawable.hitarea)
                                     , activity.getVertexBufferObjectManager() );
+        hitAreaSprite.setScaleCenterX(0);
+        hitAreaSprite.setScaleX( (hitAreaToPixel - hitAreaFromPixel) / hitAreaSprite.getWidthScaled() );
+        hitAreaSprite.setX(hitAreaFromPixel);
         shipSprite.attachChild(hitAreaSprite);
     }
 
     private void createSinkModifier() {
+        final float START_SPEED = abs(finishPoint.x - startPoint.x) / velocity;
         rand = new Random();
-        float sinkPointX = direction ? (shipSprite.getX() - INERTION_MOVE_SHIP) : (shipSprite.getX() + INERTION_MOVE_SHIP);
+        float sinkPointX = (direction) ?
+                           (shipSprite.getX() - START_SPEED*START_SPEED/(2*SINK_ACCELERATION))
+                         : (shipSprite.getX() + START_SPEED*START_SPEED/(2*SINK_ACCELERATION));
 
         float sinkRotationAngle =    MAX_SINK_ROTATION_ANGLE * (2*rand.nextFloat() - 1);
         float sinkRotationVelocity = (MAX_SINK_ROTATION_VELOCITY - MIN_SINK_ROTATION_VELOCITY) * rand.nextFloat()
@@ -190,7 +203,7 @@ public class Ship {
         float sinkVelocity =         (MAX_SINK_VELOCITY - MIN_SINK_VELOCITY) * rand.nextFloat()
                                         + MIN_SINK_VELOCITY;
 
-        MoveModifier moveModifierX = new MoveModifier( velocity*( 2*INERTION_MOVE_SHIP/abs(finishPoint.x - startPoint.x) )
+        MoveModifier moveModifierX = new MoveModifier( START_SPEED/SINK_ACCELERATION
                                                      , shipSprite.getX()
                                                      , sinkPointX
                                                      , shipSprite.getY()
