@@ -96,6 +96,9 @@ public class SceletonActivity extends BaseGameActivity {
                 case SceneSwitcher.PAUSE_STATE:
                     sceneSwitcher.switchToGameHUD();
                     break;
+                case SceneSwitcher.GAME_OVER_STATE:
+                    sceneSwitcher.switchToMenuScene();
+                    break;
                 default:
                     return super.onKeyDown(keyCode, event);
             }

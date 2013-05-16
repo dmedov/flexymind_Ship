@@ -89,14 +89,16 @@ public class SceneSwitcher {
         currentState = PAUSE_STATE;
     }
 
-    public int getCurrentState() {
-        return currentState;
-    }
-
     public void switchToGameOverHUD() {
         gameScene.switchToGameOverHUD();
         gameScene.getShipSpawner().stopSpawn();
         gameScene.CleanGameScene();
+
+        currentState = GAME_OVER_STATE;
+    }
+
+    public int getCurrentState() {
+        return currentState;
     }
 
     public SceletonScene getRootScene() {
