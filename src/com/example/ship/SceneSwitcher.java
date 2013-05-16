@@ -52,11 +52,11 @@ public class SceneSwitcher {
             rootScene.clearChildScene();
         }
         rootScene.unregisterTouchArea();
+        gameScene.resetGame();
         rootScene.setChildScene(gameScene);
         ShipSpawner shipSpawner = new ShipSpawner(activity);
         gameScene.setShipSpawner(shipSpawner);
         switchToGameHUD();
-
     }
 
     public void switchToGameHUD() {
@@ -81,7 +81,6 @@ public class SceneSwitcher {
         gameScene.setIgnoreUpdate(true);
 
         gameScene.switchToGameOverHUD();
-        //gameScene.CleanGameScene();
     }
 
     public SceletonScene getRootScene() {
