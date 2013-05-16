@@ -8,11 +8,10 @@ import com.example.ship.SceletonActivity;
 import com.example.ship.atlas.ResourceManager;
 import com.example.ship.menu.MenuButtonSprite;
 import org.andengine.engine.camera.hud.HUD;
-import org.andengine.entity.sprite.Sprite;
+import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.text.Text;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
-import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.util.color.Color;
 
 /**
@@ -23,21 +22,24 @@ import org.andengine.util.color.Color;
  * To change this template use File | Settings | File Templates.
  */
 public class GameOverHUD extends HUD {
-    private static final int FONT_ATLAS_SIDE = 512;
-    private static final float RELATIVE_GAME_OVER_BACKGROUND_HEIGHT = 0.7f;
-    private static final float RELATIVE_GAME_OVER_FONT = 0.13f;
-    private static final float RELATIVE_GAME_OVER_BUTTON = 0.21f;
-    private static final float RELATIVE_TOP_BORDER = 0.05f;
+
+    private static final int FONT_ATLAS_SIDE = 256;
+    private static final float RELATIVE_FONT_SIZE = 0.05f;
+    private static final float RELATIVE_GAME_OVER_BUTTON = 0.15f;
+    private final static float RELATIVE_SPACE_BETWEEN_ELEMENTS_HEIGHT = 0.05f;
+    private static final float BACKGROUND_ALPHA = 0.75f;
+
     private final PointF cameraSize;
+
     private ResourceManager resourceManager;
     private SceletonActivity activity;
     private Font gameOverFont;
-    private Sprite gameOverBackgound;
     private Text gameOverText;
     private Text scoreText;
     private float yPositionOfElement;
-    private MenuButtonSprite menuButtonSprite;
+    private MenuButtonSprite restartButtonSprite;
     private MenuButtonSprite exitButtonSprite;
+    private Rectangle background;
 
     public GameOverHUD(SceletonActivity activity) {
         super();
@@ -59,27 +61,25 @@ public class GameOverHUD extends HUD {
                                          , FONT_ATLAS_SIDE
                                          , FONT_ATLAS_SIDE
                                          , Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)
-                                         , gameOverBackgound.getHeight() * RELATIVE_GAME_OVER_FONT
+                                         , cameraSize.y * RELATIVE_FONT_SIZE
                                          , true
                                          , Color.WHITE_ABGR_PACKED_INT);
         gameOverFont.load();
     }
 
     private void createGameOverBackground() {
-        ITextureRegion gameOverTexture =
-                activity.getResourceManager().getLoadedTextureRegion(R.drawable.gameoverbackground);
-        gameOverBackgound = new Sprite( 0
-                                      , 0
-                                      , gameOverTexture
-                                      , activity.getEngine().getVertexBufferObjectManager());
+        background = new Rectangle( 0
+                                  , 0
+                                  , cameraSize.x
+                                  , cameraSize.y
+                                  , activity.getEngine().getVertexBufferObjectManager());
 
-        gameOverBackgound.setPosition( cameraSize.x * 0.5f - gameOverBackgound.getWidth() * 0.5f
-                                     , cameraSize.y * 0.5f - gameOverBackgound.getHeight() * 0.5f);
-        gameOverBackgound.setScale(cameraSize.y * RELATIVE_GAME_OVER_BACKGROUND_HEIGHT / gameOverBackgound.getHeight());
+        Color backgroundColor = new Color(0.0f, 0.0f, 0.0f);
 
-        yPositionOfElement = gameOverBackgound.getHeight() * RELATIVE_TOP_BORDER;
+        background.setColor(backgroundColor);
+        background.setAlpha(BACKGROUND_ALPHA);
 
-        this.attachChild(gameOverBackgound);
+        this.attachChild(background);
     }
 
     private void createGameOverHUDLabels() {
@@ -88,40 +88,37 @@ public class GameOverHUD extends HUD {
                                , gameOverFont
                                , "Game Over"
                                , activity.getEngine().getVertexBufferObjectManager());
-        gameOverText.setPosition( gameOverBackgound.getWidth() * 0.5f - gameOverText.getWidth() * 0.5f
-                                , yPositionOfElement);
-
-        yPositionOfElement += gameOverText.getHeight();
+        gameOverText.setPosition( cameraSize.x * 0.5f - gameOverText.getWidth() * 0.5f
+                                , cameraSize.y * 0.25f);
 
         scoreText = new Text( 0
                             , 0
                             , gameOverFont
                             , activity.getResources().getString(R.string.SCORE) + ": 000000"
                             , activity.getEngine().getVertexBufferObjectManager());
-        scoreText.setPosition( gameOverBackgound.getWidth() * 0.5f - scoreText.getWidth() * 0.5f
-                             , yPositionOfElement);
+        scoreText.setPosition( cameraSize.x * 0.5f - scoreText.getWidth() * 0.5f
+                             , gameOverText.getY() + gameOverText.getHeight()
+                               + cameraSize.y * RELATIVE_SPACE_BETWEEN_ELEMENTS_HEIGHT);
 
-        yPositionOfElement += scoreText.getHeight();
-
-        gameOverBackgound.attachChild(gameOverText);
-        gameOverBackgound.attachChild(scoreText);
+        this.attachChild(gameOverText);
+        this.attachChild(scoreText);
     }
 
     private void createGameOverButtons() {
-        float spaceGameOverButton = gameOverBackgound.getHeight() * RELATIVE_GAME_OVER_BUTTON;
 
-        menuButtonSprite =
+        restartButtonSprite =
                 new MenuButtonSprite( resourceManager.getLoadedTextureRegion(R.drawable.menubutton)
                                     , activity.getEngine().getVertexBufferObjectManager()
                                     , R.string.GAME_OVER_RESTART_BUTTON
                                     , getStringResource(R.string.GAME_OVER_RESTART_BUTTON_LABEL)
                                     , gameOverFont);
 
-        menuButtonSprite.setScale(spaceGameOverButton / menuButtonSprite.getHeight());
-        menuButtonSprite.setPosition( gameOverBackgound.getWidth() * 0.5f - scoreText.getWidth() * 0.5f
-                                    , yPositionOfElement);
+        restartButtonSprite.setScale(cameraSize.y * RELATIVE_GAME_OVER_BUTTON / restartButtonSprite.getHeight());
+        restartButtonSprite.setPosition( cameraSize.x * 0.5f - restartButtonSprite.getWidth() * 0.5f
+                                       , scoreText.getY() + scoreText.getHeight()
+                                         + cameraSize.y * RELATIVE_SPACE_BETWEEN_ELEMENTS_HEIGHT);
 
-        yPositionOfElement += menuButtonSprite.getHeight();
+        yPositionOfElement += restartButtonSprite.getHeight();
 
         exitButtonSprite =
                 new MenuButtonSprite( resourceManager.getLoadedTextureRegion(R.drawable.menubutton)
@@ -130,14 +127,16 @@ public class GameOverHUD extends HUD {
                                     , getStringResource(R.string.GAME_OVER_EXIT_BUTTON_LABEL)
                                     , gameOverFont);
 
-        exitButtonSprite.setScale(spaceGameOverButton / exitButtonSprite.getHeight());
-        exitButtonSprite.setPosition( gameOverBackgound.getWidth() * 0.5f - scoreText.getWidth() * 0.5f
-                                    , yPositionOfElement);
+        exitButtonSprite.setScale(cameraSize.y * RELATIVE_GAME_OVER_BUTTON / exitButtonSprite.getHeight());
+        exitButtonSprite.setPosition( cameraSize.x * 0.5f - exitButtonSprite.getWidth() * 0.5f
+                                    , restartButtonSprite.getY() + restartButtonSprite.getHeight()
+                                      + cameraSize.y * RELATIVE_SPACE_BETWEEN_ELEMENTS_HEIGHT);
 
-        this.registerTouchArea(menuButtonSprite);
+        this.registerTouchArea(restartButtonSprite);
         this.registerTouchArea(exitButtonSprite);
-        gameOverBackgound.attachChild(menuButtonSprite);
-        gameOverBackgound.attachChild(exitButtonSprite);
+
+        this.attachChild(restartButtonSprite);
+        this.attachChild(exitButtonSprite);
     }
 
     public void setScoreToGameOverHUD(String scoreString) {
@@ -149,7 +148,7 @@ public class GameOverHUD extends HUD {
     }
 
     public void setEventsToChildren(Events events) {
-        menuButtonSprite.setEvents(events);
+        restartButtonSprite.setEvents(events);
         exitButtonSprite.setEvents(events);
     }
 }

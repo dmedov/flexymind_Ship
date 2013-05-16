@@ -33,7 +33,7 @@ public class Player {
     public void reduceHealth() {
         health--;
         gameHUD.updateHealthIndicators(health);
-        if (health <= 0) {
+        if (health <= 5) {
             activity.getSceneSwitcher().switchToGameOverHUD();
             cleanParameters();
             gameHUD.updateHealthIndicators(health);
