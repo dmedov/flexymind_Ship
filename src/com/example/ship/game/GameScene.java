@@ -42,6 +42,7 @@ public class GameScene extends Scene {
     private ArrayList<Ship> ships;
     private HashMap<Integer, Float> shipLinesPosition;
     private Player player;
+    private boolean cleanGameScene = false;
 
     public GameScene(final SceletonActivity activity) {
         super();
@@ -107,6 +108,10 @@ public class GameScene extends Scene {
         return ships;
     }
 
+    public void setCleanGameScene(boolean cleanGameScene) {
+        this.cleanGameScene = cleanGameScene;
+    }
+
     @Override
     protected void onManagedUpdate(float pSecondsElapsed) {
         Ship deadShip = null;
@@ -145,6 +150,12 @@ public class GameScene extends Scene {
                 layer.getChildByIndex(i).detachSelf();
             }
         }
+
+        if (cleanGameScene) {
+            cleanLayers();
+            cleanGameScene = false;
+        }
+
         super.onManagedUpdate(pSecondsElapsed);
     }
  
@@ -198,4 +209,21 @@ public class GameScene extends Scene {
         waveSprites.add(waveSprite);
         this.getChildByIndex(layerId).attachChild(waveSprite);
     }
+
+    private void cleanLayers() {
+        cleanLayer(LAYER_FIRST_SHIP_LINE);
+        cleanLayer(LAYER_SECOND_SHIP_LINE);
+        cleanLayer(LAYER_THIRD_SHIP_LINE);
+        cleanLayer(LAYER_TORPEDO);
+    }
+
+    private void cleanLayer(int layerID) {
+        Entity layer;
+        layer = (Entity) this.getChildByIndex(layerID);
+        for (int i = 0; i < layer.getChildCount(); i++) {
+            Sprite sprite = (Sprite) layer.getChildByIndex(i);
+            sprite.detachSelf();
+        }
+    }
+
 }
