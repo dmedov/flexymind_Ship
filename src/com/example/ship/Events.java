@@ -56,6 +56,12 @@ public class Events implements TouchableMenuButtonSprite
                     case R.string.MENU_EXIT_BUTTON:
                         exitApplication();
                         break;
+                    case R.string.GAME_OVER_RESTART_BUTTON:
+                        startGame();
+                        break;
+                    case R.string.GAME_OVER_EXIT_BUTTON:
+                        backToMenu();
+                        break;
                 }
             }
         });
@@ -69,32 +75,6 @@ public class Events implements TouchableMenuButtonSprite
                 switch (button.getId()) {
                     case R.string.GAME_FIRE_BUTTON:
                         fire();
-                        break;
-                    case R.string.GAME_LEFT_BUTTON:
-                        rotateGunLeft();
-                        break;
-                    case R.string.GAME_RIGHT_BUTTON:
-                        rotateGunRight();
-                        break;
-                }
-            }
-        });
-    }
-
-    @Override
-    public void onAreaGameButtonPressed(final GameButtonSprite button) {
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                switch (button.getId()) {
-                    case R.string.GAME_LEFT_BUTTON:
-                        rotateGunLeft();
-                        break;
-                    case R.string.GAME_RIGHT_BUTTON:
-                        rotateGunRight();
-                        break;
-                    case R.string.GAME_BORDER_BUTTON:
-                        stopGun();
                         break;
                 }
             }
@@ -116,14 +96,6 @@ public class Events implements TouchableMenuButtonSprite
                     case R.string.GAME_PAUSE_BACK_BUTTON:
                         backToGame();
                         break;
-                    case R.string.GAME_LEFT_BUTTON:
-                        stopGun();
-                        break;
-                    case R.string.GAME_RIGHT_BUTTON:
-                        stopGun();
-                        break;
-                    case R.string.GAME_BORDER_BUTTON:
-                        stopGun();
                 }
             }
         });
@@ -153,18 +125,6 @@ public class Events implements TouchableMenuButtonSprite
 
     private void fire() {
         getGun().fire();
-    }
-
-    private void rotateGunRight() {
-        getGun().rotateRight();
-    }
-
-    private void rotateGunLeft() {
-        getGun().rotateLeft();
-    }
-
-    private void stopGun() {
-        getGun().stopRotate();
     }
 
     private void startGame() {

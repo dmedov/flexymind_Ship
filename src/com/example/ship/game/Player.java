@@ -33,6 +33,12 @@ public class Player {
     public void reduceHealth() {
         health--;
         gameHUD.updateHealthIndicators(health);
+        if (health <= 0) {
+            activity.getSceneSwitcher().switchToGameOverHUD();
+            cleanParameters();
+            gameHUD.updateHealthIndicators(health);
+            gameHUD.updateScore();
+        }
     }
 
     public void addPoints(int points) {
@@ -58,5 +64,10 @@ public class Player {
         }
         scoreString += score;
         return scoreString;
+    }
+
+    private void cleanParameters() {
+        score = 0;
+        health = FULL_HP;
     }
 }
