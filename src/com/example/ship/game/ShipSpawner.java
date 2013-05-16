@@ -60,7 +60,7 @@ public class ShipSpawner {
                 public void run() {
 
                     if (spawning) {
-                        delay += rnd.nextFloat() * MAX_SPAWN_DELAY;
+                        delay += rnd.nextFloat() * spawnDelay;
                         timerHandler.setTimerSeconds(delay);
                         timerHandler.reset();
 
