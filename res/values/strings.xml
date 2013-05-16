@@ -24,4 +24,10 @@
     <string name="GAME_LEFT_BUTTON">leftID</string>
     <string name="GAME_RIGHT_BUTTON">rightID</string>
     <string name="GAME_BORDER_BUTTON">borderID</string>
+    <!--GameOver Button ID-->
+    <string name="GAME_OVER_MENU_BUTTON">gameovermenuID</string>
+    <string name="GAME_OVER_EXIT_BUTTON">gameoverexitID</string>
+    <!--GameOver Button Labels-->
+    <string name="GAME_OVER_MENU_BUTTON_LABEL">Menu</string>
+    <string name="GAME_OVER_EXIT_BUTTON_LABEL">Exit</string>
 </resources>
