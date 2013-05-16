@@ -60,6 +60,9 @@ public class SceneSwitcher {
     }
 
     public void switchToGameHUD() {
+        if (gameScene.isIgnoreUpdate()) {
+            gameScene.setIgnoreUpdate(false);
+        }
         gameScene.switchToGameHUD();
         gameScene.getShipSpawner().startSpawn();
         if (!activity.getEngine().isRunning()) {
@@ -68,6 +71,7 @@ public class SceneSwitcher {
     }
 
     public void switchToPauseHUD() {
+        gameScene.setIgnoreUpdate(true);
         gameScene.switchToPauseHUD();
         gameScene.getShipSpawner().stopSpawn();
     }
