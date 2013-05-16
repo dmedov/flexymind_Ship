@@ -70,6 +70,7 @@ public class GameScene extends Scene {
         pauseHUD.setEventsToChildren(activity.getEvents());
 
         gameOverHUD = new GameOverHUD(activity);
+        gameOverHUD.setEventsToChildren(activity.getEvents());
 
         player = new Player(activity);
         player.setGameHUD(gameHUD);
@@ -116,8 +117,8 @@ public class GameScene extends Scene {
         return ships;
     }
 
-    public void setCleanGameScene(boolean cleanGameScene) {
-        this.cleanGameScene = cleanGameScene;
+    public void CleanGameScene() {
+        cleanGameScene = true;
     }
 
     @Override
