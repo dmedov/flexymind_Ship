@@ -35,6 +35,7 @@ public class GameScene extends Scene {
     private final ResourceManager resourceManager;
     private GameHUD gameHUD;
     private PauseHUD pauseHUD;
+    private GameOverHUD gameOverHUD;
     private Sprite backgroundSprite;
     private ArrayList<Sprite> waveSprites;
     private Gun gun;
@@ -42,6 +43,7 @@ public class GameScene extends Scene {
     private ArrayList<Ship> ships;
     private HashMap<Integer, Float> shipLinesPosition;
     private Player player;
+    private boolean cleanGameScene = false;
 
     public GameScene(final SceletonActivity activity) {
         super();
@@ -67,6 +69,9 @@ public class GameScene extends Scene {
         pauseHUD = new PauseHUD(activity);
         pauseHUD.setEventsToChildren(activity.getEvents());
 
+        gameOverHUD = new GameOverHUD(activity);
+        gameOverHUD.setEventsToChildren(activity.getEvents());
+
         player = new Player(activity);
         player.setGameHUD(gameHUD);
     }
@@ -77,6 +82,11 @@ public class GameScene extends Scene {
 
     public void switchToGameHUD() {
         activity.getCamera().setHUD(gameHUD);
+    }
+
+    public void switchToGameOverHUD() {
+        gameOverHUD.setScoreToGameOverHUD(player.getStringScore());
+        activity.getCamera().setHUD(gameOverHUD);
     }
 
     public void attachSpriteToLayer(Sprite sprite, int layerId){
@@ -105,6 +115,10 @@ public class GameScene extends Scene {
 
     public ArrayList<Ship> getShips() {
         return ships;
+    }
+
+    public void CleanGameScene() {
+        cleanGameScene = true;
     }
 
     @Override
@@ -145,6 +159,12 @@ public class GameScene extends Scene {
                 layer.getChildByIndex(i).detachSelf();
             }
         }
+
+        if (cleanGameScene) {
+            cleanLayers();
+            cleanGameScene = false;
+        }
+
         super.onManagedUpdate(pSecondsElapsed);
     }
  
@@ -198,4 +218,21 @@ public class GameScene extends Scene {
         waveSprites.add(waveSprite);
         this.getChildByIndex(layerId).attachChild(waveSprite);
     }
+
+    private void cleanLayers() {
+        cleanLayer(LAYER_FIRST_SHIP_LINE);
+        cleanLayer(LAYER_SECOND_SHIP_LINE);
+        cleanLayer(LAYER_THIRD_SHIP_LINE);
+        cleanLayer(LAYER_TORPEDO);
+    }
+
+    private void cleanLayer(int layerID) {
+        Entity layer;
+        layer = (Entity) this.getChildByIndex(layerID);
+        for (int i = 0; i < layer.getChildCount(); i++) {
+            Sprite sprite = (Sprite) layer.getChildByIndex(i);
+            sprite.detachSelf();
+        }
+    }
+
 }
