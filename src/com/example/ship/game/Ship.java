@@ -6,11 +6,14 @@ Date: 07.05.13
 */
 
 import android.graphics.PointF;
+import android.util.Log;
 import android.widget.Toast;
 import com.example.ship.R;
 import com.example.ship.SceletonActivity;
+import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.*;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.util.modifier.IModifier;
 import org.andengine.util.modifier.ease.EaseLinear;
 import org.andengine.util.modifier.ease.EaseQuadIn;
 import org.andengine.util.modifier.ease.EaseQuadInOut;
@@ -97,7 +100,7 @@ public class Ship {
     }
 
     public void killShip() {
-        hitAreaSprite.detachSelf();
+        shipSprite.detachChild(hitAreaSprite);
         shipSprite.clearEntityModifiers();
         createSinkModifier();
     }
@@ -206,7 +209,19 @@ public class Ship {
                                                         , sinkRotationAngle );
 
         ParallelEntityModifier parallel = new ParallelEntityModifier(moveModifierY,rotation);
-        SequenceEntityModifier moveShip = new SequenceEntityModifier(moveModifierX,parallel);
+        SequenceEntityModifier moveShip = new SequenceEntityModifier(moveModifierX,parallel) {
+            @Override
+            public void onModifierFinished( IEntity pItem ) {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        shipSprite.detachSelf();
+                        Log.d("1Log","This is SPARTA!");
+                    }
+                });
+            }
+        };
+
         shipSprite.registerEntityModifier(moveShip);
     }
 }
