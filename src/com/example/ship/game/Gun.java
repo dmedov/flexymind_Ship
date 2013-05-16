@@ -120,7 +120,7 @@ public class Gun {
             fireAvailable = false;
             fireTimerHandler.reset();
         }
-        // временно для теста
+        // xxx: временно для теста
         activity.getSceneSwitcher().getGameScene().getPlayer().addPoints(20);
     }
 

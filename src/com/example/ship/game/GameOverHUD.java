@@ -8,8 +8,6 @@ import com.example.ship.SceletonActivity;
 import com.example.ship.atlas.ResourceManager;
 import com.example.ship.menu.MenuButtonSprite;
 import org.andengine.engine.camera.hud.HUD;
-import org.andengine.engine.handler.timer.ITimerCallback;
-import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.opengl.font.Font;
@@ -100,7 +98,7 @@ public class GameOverHUD extends HUD {
                             , gameOverFont
                             , activity.getResources().getString(R.string.SCORE) + ": 000000"
                             , activity.getEngine().getVertexBufferObjectManager());
-        scoreText.setPosition( gameOverBackgound.getWidth() / 2 - scoreText.getWidth() / 2
+        scoreText.setPosition( gameOverBackgound.getWidth() * 0.5f - scoreText.getWidth() * 0.5f
                              , yPositionOfElement);
 
         yPositionOfElement += scoreText.getHeight();
@@ -120,7 +118,7 @@ public class GameOverHUD extends HUD {
                                     , gameOverFont);
 
         menuButtonSprite.setScale(spaceGameOverButton / menuButtonSprite.getHeight());
-        menuButtonSprite.setPosition( gameOverBackgound.getWidth() / 2 - scoreText.getWidth() / 2
+        menuButtonSprite.setPosition( gameOverBackgound.getWidth() * 0.5f - scoreText.getWidth() * 0.5f
                                     , yPositionOfElement);
 
         yPositionOfElement += menuButtonSprite.getHeight();
@@ -133,7 +131,7 @@ public class GameOverHUD extends HUD {
                                     , gameOverFont);
 
         exitButtonSprite.setScale(spaceGameOverButton / exitButtonSprite.getHeight());
-        exitButtonSprite.setPosition( gameOverBackgound.getWidth() / 2 - scoreText.getWidth() / 2
+        exitButtonSprite.setPosition( gameOverBackgound.getWidth() * 0.5f - scoreText.getWidth() * 0.5f
                                     , yPositionOfElement);
 
         this.registerTouchArea(menuButtonSprite);
