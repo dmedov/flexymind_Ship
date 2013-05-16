@@ -120,6 +120,7 @@ public class Gun {
             fireAvailable = false;
             fireTimerHandler.reset();
         }
+        activity.getSceneSwitcher().getGameScene().getPlayer().addPoints(20);
     }
 
     private void createTimer() {

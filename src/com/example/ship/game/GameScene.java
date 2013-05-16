@@ -35,6 +35,7 @@ public class GameScene extends Scene {
     private final ResourceManager resourceManager;
     private GameHUD gameHUD;
     private PauseHUD pauseHUD;
+    private GameOverHUD gameOverHUD;
     private Sprite backgroundSprite;
     private ArrayList<Sprite> waveSprites;
     private Gun gun;
@@ -68,6 +69,8 @@ public class GameScene extends Scene {
         pauseHUD = new PauseHUD(activity);
         pauseHUD.setEventsToChildren(activity.getEvents());
 
+        gameOverHUD = new GameOverHUD(activity);
+
         player = new Player(activity);
         player.setGameHUD(gameHUD);
     }
@@ -78,6 +81,11 @@ public class GameScene extends Scene {
 
     public void switchToGameHUD() {
         activity.getCamera().setHUD(gameHUD);
+    }
+
+    public void switchToGameOverHUD() {
+        gameOverHUD.setScoreToGameOverHUD(player.getStringScore());
+        activity.getCamera().setHUD(gameOverHUD);
     }
 
     public void attachSpriteToLayer(Sprite sprite, int layerId){

@@ -23,22 +23,27 @@ import org.andengine.util.color.Color;
  */
 public class GameOverHUD extends HUD {
     private static final int FONT_ATLAS_SIDE = 512;
-    private static final float RELATIVE_GAME_OVER_BACKGROUND = 0.3f;
-    private static final float RELATIVE_GAME_OVER_FONT = 0.16f;
+    private static final float RELATIVE_GAME_OVER_BACKGROUND = 0.7f;
+    private static final float RELATIVE_GAME_OVER_FONT = 0.13f;
+    private static final float RELATIVE_TOP_BORDER = 0.05f;
+    private static final float RELATIVE_BETWEEN_ELEMENTS = 0.22f;
     private final PointF cameraSize;
     private SceletonActivity activity;
     private Font gameOverFont;
     private Sprite gameOverBackgound;
+    private Text gameOverText;
+    private Text scoreText;
 
     public GameOverHUD(SceletonActivity activity){
         super();
 
         this.activity = activity;
         cameraSize = new PointF( this.activity.getCamera().getWidthRaw()
-                , this.activity.getCamera().getHeightRaw());
+                               , this.activity.getCamera().getHeightRaw());
 
         createGameOverBackground();
         createGameOverFont();
+        createGameOverHUDLabels();
     }
 
     private void createGameOverFont() {
@@ -67,22 +72,27 @@ public class GameOverHUD extends HUD {
     }
 
     private void createGameOverHUDLabels() {
-        Text gameOverText = new Text( 0
-                               , 0
-                               , gameOverFont
-                               , "Game Over"
-                               , activity.getEngine().getVertexBufferObjectManager());
+        gameOverText = new Text( 0
+                                    , 0
+                                    , gameOverFont
+                                    , "Game Over"
+                                    , activity.getEngine().getVertexBufferObjectManager());
         gameOverText.setPosition( gameOverBackgound.getWidth() / 2 - gameOverText.getWidth() / 2
-                                , gameOverBackgound.getHeight() / 2 - gameOverText.getHeight() / 2);
-        gameOverBackgound.attachChild(gameOverText);
+                                , gameOverBackgound.getHeight() * RELATIVE_TOP_BORDER);
 
-        Text scoreText = new Text( 0
+        scoreText = new Text( 0
                                  , 0
                                  , gameOverFont
-                                 , activity.getSceneSwitcher().getGameScene().getPlayer().getStringScore()
+                                 , activity.getResources().getString(R.string.SCORE) + ": 000000"
                                  , activity.getEngine().getVertexBufferObjectManager());
         scoreText.setPosition( gameOverBackgound.getWidth() / 2 - scoreText.getWidth() / 2
-                             , gameOverBackgound.getHeight() / 2 - scoreText.getHeight() / 2);
+                             , gameOverBackgound.getHeight() * RELATIVE_BETWEEN_ELEMENTS + gameOverText.getY());
+
+        gameOverBackgound.attachChild(gameOverText);
         gameOverBackgound.attachChild(scoreText);
+    }
+
+    public void setScoreToGameOverHUD(String scoreString) {
+        scoreText.setText(scoreString);
     }
 }

@@ -72,6 +72,12 @@ public class SceneSwitcher {
         gameScene.getShipSpawner().stopSpawn();
     }
 
+    public void switchToGameOverHUD() {
+        gameScene.switchToGameOverHUD();
+        gameScene.setCleanGameScene(true);
+        gameScene.getShipSpawner().stopSpawn();
+    }
+
     public SceletonScene getRootScene() {
         return rootScene;
     }

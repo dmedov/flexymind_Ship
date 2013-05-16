@@ -21,5 +21,6 @@
                 <texture name="battleship"/>
                 <texture name="onhealth"/>
                 <texture name="offhealth"/>
+                <texture name="gameoverbackground"/>
            </Atlas>
 </resources>
