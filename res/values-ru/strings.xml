@@ -9,4 +9,6 @@
     <string name="MENU_EXIT_BUTTON_LABEL">Выход</string>
     <!--GameScene-->
     <string name="SCORE">Очки</string>
+    <string name="LEVEL">Уровень</string>
+    <string name="GOAL">Цель</string>
 </resources>

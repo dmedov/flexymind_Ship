@@ -7,7 +7,6 @@ import com.example.ship.R;
 import com.example.ship.SceletonActivity;
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.hud.HUD;
-import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
@@ -34,7 +33,8 @@ public class GameHUD extends HUD {
     private final Engine engine;
     private PointF positionHitPoint;
     private Text scoreText;
-    private Font scoreFont;
+    private Text levelInfoText;
+    private Font statFont;
     private PointF cameraSize;
     private ArrayList<GameButtonSprite> buttons;
     private ArrayList<HealthIndicator> healthIndicators;
@@ -149,7 +149,7 @@ public class GameHUD extends HUD {
             positionHitPoint.x -= RELATIVE_SPACE_BETWEEN_CONTROLS * cameraSize.x + healthTextureWidth;
         }
 
-        scoreFont = FontFactory.create( activity.getEngine().getFontManager()
+        statFont = FontFactory.create( activity.getEngine().getFontManager()
                                       , activity.getEngine().getTextureManager()
                                       , FONT_ATLAS_SIDE
                                       , FONT_ATLAS_SIDE
@@ -157,26 +157,39 @@ public class GameHUD extends HUD {
                                       , healthTextureHeight * scale
                                       , true
                                       , Color.WHITE_ABGR_PACKED_INT);
-        scoreFont.load();
+        statFont.load();
 
         // создаем изначальные очки
         scoreText = new Text( positionHitPoint.x
                             , positionHitPoint.y
-                            , scoreFont
+                            , statFont
                             , activity.getResources().getString(R.string.SCORE) + ": 000000"
+                            , 16
                             , activity.getEngine().getVertexBufferObjectManager());
-        scoreText.setPosition( positionHitPoint.x - scoreText.getWidth()
+        scoreText.setPosition( cameraSize.x * 0.5f - scoreText.getWidth() * 0.5f
                              , RELATIVE_SCREEN_BORDER * cameraSize.y);
 
+        levelInfoText = new Text( 0
+                                , 0
+                                , statFont
+                                , ""
+                                , 32
+                                , activity.getEngine().getVertexBufferObjectManager());
+
         this.attachChild(scoreText);
+        this.attachChild(levelInfoText);
     }
 
     public void updateScore() {
-        scoreText.detachSelf();
         scoreText.setText(activity.getSceneSwitcher().getGameScene().getPlayer().getStringScore());
         scoreText.setPosition( positionHitPoint.x - scoreText.getWidth()
                              , RELATIVE_SCREEN_BORDER * cameraSize.y);
-        this.attachChild(scoreText);
+    }
+
+    public void updateLevelInfo(String text) {
+        levelInfoText.setText(text);
+        levelInfoText.setPosition( scoreText.getX() - cameraSize.x * RELATIVE_SPACE_BETWEEN_CONTROLS - levelInfoText.getWidth()
+                                 , RELATIVE_SCREEN_BORDER * cameraSize.y);
     }
 
     public void updateHealthIndicators(int health) {

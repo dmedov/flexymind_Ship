@@ -1,6 +1,7 @@
 package com.example.ship.game;
 
 import android.util.Log;
+import com.example.ship.R;
 import com.example.ship.SceletonActivity;
 
 /**
@@ -38,6 +39,8 @@ public class Level {
         activity.getSceneSwitcher().getGameScene().getShipSpawner()
                 .setSpawnDelay(newSpawnDelay);
 
+        updateLevelInfoInHud();
+
         Log.d("1log", "delay..." + newSpawnDelay);
         Log.d("1log", "goal..." + levelGoal);
     }
@@ -47,6 +50,8 @@ public class Level {
         Log.d("1log", "level progress..." + levelProgress);
         if (levelProgress >= levelGoal) {
             nextLevel();
+        } else {
+            updateLevelInfoInHud();
         }
     }
 
@@ -59,7 +64,20 @@ public class Level {
         activity.getSceneSwitcher().getGameScene().getShipSpawner()
                 .setSpawnDelay(newSpawnDelay);
 
+        updateLevelInfoInHud();
+
         Log.d("1log", "delay..." + newSpawnDelay);
         Log.d("1log", "goal..." + levelGoal);
-     }
+    }
+
+    private void updateLevelInfoInHud() {
+        String info;
+        info = String.format( "%s: %d\n%s: %d (%d)"
+                            , activity.getStringResource(R.string.LEVEL)
+                            , currentLevel
+                            , activity.getStringResource(R.string.GOAL)
+                            , levelGoal
+                            , levelProgress);
+        activity.getSceneSwitcher().getGameScene().getGameHUD().updateLevelInfo(info);
+    }
 }
