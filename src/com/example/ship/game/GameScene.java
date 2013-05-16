@@ -1,6 +1,5 @@
 package com.example.ship.game;
 
-import android.graphics.PointF;
 import android.util.Log;
 import com.example.ship.R;
 import com.example.ship.SceletonActivity;
@@ -26,7 +25,7 @@ public class GameScene extends Scene {
     public static final int LAYER_THIRD_WAVE  = layerCount++;
     public static final int LAYER_THIRD_SHIP_LINE  = layerCount++;
     public static final int LAYER_FOURTH_WAVE  = layerCount++;
-    private static final int LAYER_TORPEDO = layerCount++;
+    public static final int LAYER_TORPEDO = layerCount++;
     private static final int LAYER_GUN   = layerCount++;
     private static final float RELATIVE_SKY_HEIGHT = 0.15f;
     private static final float RELATIVE_WAVE_HEIGHT = 0.125f;
@@ -38,20 +37,17 @@ public class GameScene extends Scene {
     private PauseHUD pauseHUD;
     private Sprite backgroundSprite;
     private ArrayList<Sprite> waveSprites;
-    private Timer timer;
     private Gun gun;
     private ShipSpawner shipSpawner;
     private ArrayList<Ship> ships;
     private HashMap<Integer, Float> shipLinesPosition;
+    private Player player;
 
     public GameScene(final SceletonActivity activity) {
         super();
         this.activity = activity;
         this.mEngine = activity.getEngine();
         this.resourceManager = activity.getResourceManager();
-
-        timer = new Timer(activity);
-        timer.setTemporaryCheckpoint();
 
         for(int i = LAYER_BACKGROUND; i < layerCount; i++) {
             this.attachChild(new Entity());
@@ -70,6 +66,9 @@ public class GameScene extends Scene {
 
         pauseHUD = new PauseHUD(activity);
         pauseHUD.setEventsToChildren(activity.getEvents());
+
+        player = new Player(activity);
+        player.setGameHUD(gameHUD);
     }
 
     public void switchToPauseHUD() {
@@ -80,11 +79,16 @@ public class GameScene extends Scene {
         activity.getCamera().setHUD(gameHUD);
     }
 
-    public void createTorpedo(PointF point, float angle) {
-        if (timer.checkTimeShoot()) {
-            Torpedo torpedo = new Torpedo(activity, point, angle);
-            this.getChildByIndex(LAYER_TORPEDO).attachChild(torpedo);
-        }
+    public void attachSpriteToLayer(Sprite sprite, int layerId){
+        this.getChildByIndex(layerId).attachChild(sprite);
+    }
+
+    public GameHUD getGameHUD() {
+        return gameHUD;
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 
     public ShipSpawner getShipSpawner() {
@@ -117,6 +121,7 @@ public class GameScene extends Scene {
 
                 ship.missionDone();
                 deadShip = ship;
+                player.reduceHealth();
             }
         }
 

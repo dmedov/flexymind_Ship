@@ -21,4 +21,7 @@
                 <texture name="battleship"/>
                 <texture name="hitarea"/>
             </Atlas>
+                <texture name="onhealth"/>
+                <texture name="offhealth"/>
+           </Atlas>
 </resources>
