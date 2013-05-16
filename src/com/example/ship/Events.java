@@ -56,6 +56,12 @@ public class Events implements TouchableMenuButtonSprite
                     case R.string.MENU_EXIT_BUTTON:
                         exitApplication();
                         break;
+                    case R.string.GAME_OVER_MENU_BUTTON:
+                        backToMenu();
+                        break;
+                    case R.string.GAME_OVER_EXIT_BUTTON:
+                        exitApplication();
+                        break;
                 }
             }
         });

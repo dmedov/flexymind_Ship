@@ -13,7 +13,7 @@ public class Player {
 
     public Player(SceletonActivity activity) {
         this.activity = activity;
-        this.health = 1;
+        this.health = FULL_HP;
         this.score = 0;
     }
 
@@ -33,8 +33,11 @@ public class Player {
     public void reduceHealth() {
         health--;
         gameHUD.updateHealthIndicators(health);
-        if (health == 0) {
+        if (health <= 0) {
             activity.getSceneSwitcher().switchToGameOverHUD();
+            cleanParameters();
+            gameHUD.updateHealthIndicators(health);
+            gameHUD.updateScore();
         }
     }
 
@@ -61,5 +64,10 @@ public class Player {
         }
         scoreString += score;
         return scoreString;
+    }
+
+    private void cleanParameters() {
+        score = 0;
+        health = FULL_HP;
     }
 }

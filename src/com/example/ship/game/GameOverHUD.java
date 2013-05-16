@@ -134,8 +134,12 @@ public class GameOverHUD extends HUD {
         exitButtonSprite.setPosition( gameOverBackgound.getWidth() / 2 - scoreText.getWidth() / 2
                                     , yPositionOfElement);
 
+        this.registerTouchArea(menuButtonSprite);
+        this.registerTouchArea(exitButtonSprite);
         gameOverBackgound.attachChild(menuButtonSprite);
         gameOverBackgound.attachChild(exitButtonSprite);
+        menuButtonSprite.setEvents(activity.getEvents());
+        exitButtonSprite.setEvents(activity.getEvents());
     }
 
     public void setScoreToGameOverHUD(String scoreString) {
