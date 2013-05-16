@@ -147,7 +147,8 @@ public class GameScene extends Scene {
             for (Ship ship: ships) {
                 if (torpedo.collidesWith(ship.getHitAreaSprite())) {
                     torpedo.detachSelf();
-                    ship.killShip();
+                    ship.hitShip();
+                    player.addPoints(ship.score);
                     deadShip = ship;
                 }
             }

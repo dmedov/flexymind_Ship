@@ -25,6 +25,8 @@ public class Ship {
 
     public static final boolean TO_LEFT = true;
     public static final boolean TO_RIGHT = false;
+    public int health;
+    public int score;
 
     private static final float RELATIVE_WATERLINE = 0.1f;
     private static final float FINISH_OFFSET = 300.0f;
@@ -50,7 +52,6 @@ public class Ship {
     private Sprite shipSprite;
     private Sprite hitAreaSprite;
     private float velocity;
-    private int health;
     private Random rand;
 
     public Ship(SceletonActivity activity, float yPosition, int shipTypeId, boolean direction) {
@@ -104,29 +105,40 @@ public class Ship {
         createSinkModifier();
     }
 
+    public void hitShip() {
+        health--;
+        if ( health <= 0) {
+            killShip();
+        }
+    }
+
     private void initShipParametersById() {
         switch (typeId) {
             case R.drawable.sailfish:
                 this.velocity = activity.getIntResource(R.integer.SAILFISH_VELOCITY);
                 this.health = activity.getIntResource(R.integer.SAILFISH_HEALTH);
+                this.score = activity.getIntResource(R.integer.SAILFISH_SCORE_POINTS);
                 createHitArea( activity.getIntResource(R.integer.SAILFISH_HITAREA_START_PIXEL)
                         , activity.getIntResource(R.integer.SAILFISH_HITAREA_END_PIXEL  ) );
                 break;
             case R.drawable.missileboat:
                 this.velocity = activity.getIntResource(R.integer.MISSILEBOAT_VELOCITY);
                 this.health = activity.getIntResource(R.integer.MISSILEBOAT_HEALTH);
+                this.score = activity.getIntResource(R.integer.MISSILEBOAT_SCORE_POINTS);
                 createHitArea( activity.getIntResource(R.integer.MISSILEBOAT_HITAREA_START_PIXEL)
                         , activity.getIntResource(R.integer.MISSILEBOAT_HITAREA_END_PIXEL  ) );
                 break;
             case R.drawable.battleship:
                 this.velocity = activity.getIntResource(R.integer.BATTLESHIP_VELOCITY);
                 this.health = activity.getIntResource(R.integer.BATTLESHIP_HEALTH);
+                this.score = activity.getIntResource(R.integer.BATTLESHIP_SCORE_POINTS);
                 createHitArea( activity.getIntResource(R.integer.BATTLESHIP_HITAREA_START_PIXEL)
                         , activity.getIntResource(R.integer.BATTLESHIP_HITAREA_END_PIXEL  ) );
                 break;
             default:
                 this.velocity = activity.getIntResource(R.integer.MISSILEBOAT_VELOCITY);
                 this.health = activity.getIntResource(R.integer.MISSILEBOAT_HEALTH);
+                this.score = activity.getIntResource(R.integer.MISSILEBOAT_SCORE_POINTS);
                 createHitArea( activity.getIntResource(R.integer.MISSILEBOAT_HITAREA_START_PIXEL)
                         , activity.getIntResource(R.integer.MISSILEBOAT_HITAREA_END_PIXEL  ) );
                 break;
