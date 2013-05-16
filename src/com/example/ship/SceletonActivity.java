@@ -3,6 +3,7 @@ package com.example.ship;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.util.DisplayMetrics;
+import android.view.KeyEvent;
 import com.example.ship.atlas.ResourceManager;
 import com.example.ship.menu.ShipMenuScene;
 import com.example.ship.sceletone.SceletonScene;
@@ -82,6 +83,27 @@ public class SceletonActivity extends BaseGameActivity {
                                , OnPopulateSceneCallback pOnPopulateSceneCallback) {
 
         pOnPopulateSceneCallback.onPopulateSceneFinished();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            switch (sceneSwitcher.getCurrentState()) {
+                case SceneSwitcher.GAME_STATE:
+                    sceneSwitcher.switchToPauseHUD();
+                    break;
+                case SceneSwitcher.PAUSE_STATE:
+                    sceneSwitcher.switchToGameHUD();
+                    break;
+                default:
+                    return super.onKeyDown(keyCode, event);
+            }
+            return true;
+
+        } else {
+            return super.onKeyDown(keyCode, event);
+        }
     }
 
     public Events getEvents() {

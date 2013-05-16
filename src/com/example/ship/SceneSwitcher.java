@@ -21,7 +21,6 @@ public class SceneSwitcher {
     public static final int PAUSE_STATE = 3;
     public static final int GAME_OVER_STATE = 4;
 
-
     private final SceletonActivity activity;
     private SceletonScene rootScene;
     private ShipMenuScene menuScene;
@@ -34,12 +33,15 @@ public class SceneSwitcher {
         gameScene = new GameScene(activity);
         rootScene = new SceletonScene(activity);
         rootScene.setEvents(activity.getEvents());
+
+        currentState = ROOT_STATE;
     }
 
     public void switchToRootScene() {
         activity.getCamera().setHUD(null);
         rootScene.clearChildScene();
         rootScene.registerTouchArea();
+
         currentState = ROOT_STATE;
     }
 
@@ -52,7 +54,6 @@ public class SceneSwitcher {
 
         MenuHUD menuHUD = new MenuHUD(activity);
         menuHUD.setEventsToChildren(activity.getEvents());
-
         activity.getCamera().setHUD(menuHUD);
 
         currentState = MENU_STATE;
