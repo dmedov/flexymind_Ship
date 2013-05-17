@@ -1,5 +1,6 @@
 package com.example.ship.game;
 
+import android.util.Log;
 import com.example.ship.R;
 import com.example.ship.SceletonActivity;
 import org.andengine.engine.handler.timer.ITimerCallback;
@@ -40,6 +41,7 @@ public class ShipSpawner {
 
     public void stopSpawn() {
         spawning = false;
+        activity.getEngine().unregisterUpdateHandler(timerHandler);
         timerHandler = null;
     }
 
@@ -60,6 +62,7 @@ public class ShipSpawner {
 
                     if (spawning) {
                         delay = MIN_SPAWN_DELAY + rnd.nextFloat() * spawnDelay;
+                        Log.d("1log", "new ship in..." + delay);
                         timerHandler.setTimerSeconds(delay);
                         timerHandler.reset();
 
