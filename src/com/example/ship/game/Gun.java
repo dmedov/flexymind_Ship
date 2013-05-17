@@ -27,6 +27,7 @@ public class Gun {
     private static final float ROTATION_MAX_ANGLE  = 40.0f;
     private static final float GUN_PART_ON_SCENE   = 0.6f;
     private static final float FIRE_DELAY = 2f;
+    private static final int DEFAULT_DAMAGE = 100;
 
     private boolean rotateLeft;
     private boolean rotationEnabled;
@@ -34,6 +35,7 @@ public class Gun {
     private SceletonActivity activity;
     private TimerHandler fireTimerHandler;
     private boolean fireAvailable = true;
+    private int damage = DEFAULT_DAMAGE;
 
     public Gun(SceletonActivity activity) {
         this.activity = activity;
@@ -120,6 +122,10 @@ public class Gun {
             fireAvailable = false;
             fireTimerHandler.reset();
         }
+    }
+
+    public int getDamage() {
+        return damage;
     }
 
     private void createTimer() {

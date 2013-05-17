@@ -31,7 +31,7 @@ public class Ship {
     private static final float MAX_ROTATE_ANGLE = 5.0f;
     private static final float ROTATE_DURATION = 3.0f;
     private static final float RELATIVE_ROTATION_CENTER_Y_OFFSET = 1.75f;
-    private static final float RELATIVE_HITAREA_OFFSET = 20f;
+    private static final float HIT_AREA_OFFSET = 20f;
     private static final float SINK_ACCELERATION = 40f;
     private static final float MAX_SINK_ROTATION_ANGLE = 90f;
     private static final float MAX_SINK_ROTATION_VELOCITY = 20f;
@@ -100,24 +100,18 @@ public class Ship {
     public void missionDone() {
         hitAreaSprite.detachSelf();
         shipSprite.detachSelf();
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(activity, "Корабль проплыл линию", Toast.LENGTH_LONG);
-            }
-        });
     }
 
-    public void killShip() {
+    public void killSelf() {
         shipSprite.detachChild(hitAreaSprite);
         shipSprite.clearEntityModifiers();
         createSinkModifier();
     }
 
-    public boolean hitShip( int hitPoints) {
-        health-=hitPoints;
+    public boolean hit(int hitPoints) {
+        health -= hitPoints;
         if ( health <= 0) {
-            killShip();
+            killSelf();
             return true;
         }
 
@@ -203,11 +197,11 @@ public class Ship {
         shipSprite.registerEntityModifier(moveWithRotationModifier);
     }
 
-    private void createHitArea( float hitAreaFromPixel, float hitAreaToPixel ) {
-        hitAreaSprite = new Sprite(   0
-                                    , shipSprite.getHeight() - RELATIVE_HITAREA_OFFSET
-                                    , activity.getResourceManager().getLoadedTextureRegion(R.drawable.hitarea)
-                                    , activity.getVertexBufferObjectManager() );
+    private void createHitArea(float hitAreaFromPixel, float hitAreaToPixel) {
+        hitAreaSprite = new Sprite( 0
+                                  , shipSprite.getHeight() - HIT_AREA_OFFSET
+                                  , activity.getResourceManager().getLoadedTextureRegion(R.drawable.hitarea)
+                                  , activity.getVertexBufferObjectManager() );
         hitAreaSprite.setScaleCenterX(0);
         hitAreaSprite.setScaleX( (hitAreaToPixel - hitAreaFromPixel) / hitAreaSprite.getWidthScaled() );
         hitAreaSprite.setX(hitAreaFromPixel);
@@ -218,14 +212,14 @@ public class Ship {
         final float START_SPEED = abs(finishPoint.x - startPoint.x) / velocity;
         rand = new Random();
         float sinkPointX = (direction) ?
-                           (shipSprite.getX() - START_SPEED*START_SPEED/(2*SINK_ACCELERATION))
-                         : (shipSprite.getX() + START_SPEED*START_SPEED/(2*SINK_ACCELERATION));
+                           (shipSprite.getX()-START_SPEED*START_SPEED/(2*SINK_ACCELERATION))
+                         : (shipSprite.getX()+START_SPEED*START_SPEED/(2*SINK_ACCELERATION));
 
-        float sinkRotationAngle =    MAX_SINK_ROTATION_ANGLE * (2*rand.nextFloat() - 1);
-        float sinkRotationVelocity = (MAX_SINK_ROTATION_VELOCITY - MIN_SINK_ROTATION_VELOCITY) * rand.nextFloat()
-                                        + MIN_SINK_ROTATION_VELOCITY;
-        float sinkVelocity =         (MAX_SINK_VELOCITY - MIN_SINK_VELOCITY) * rand.nextFloat()
-                                        + MIN_SINK_VELOCITY;
+        float sinkRotationAngle =     MAX_SINK_ROTATION_ANGLE*(2*rand.nextFloat()-1);
+        float sinkRotationVelocity = (MAX_SINK_ROTATION_VELOCITY-MIN_SINK_ROTATION_VELOCITY)*rand.nextFloat()
+                                        +MIN_SINK_ROTATION_VELOCITY;
+        float sinkVelocity =         (MAX_SINK_VELOCITY-MIN_SINK_VELOCITY)*rand.nextFloat()
+                                        +MIN_SINK_VELOCITY;
 
         MoveModifier moveModifierX = new MoveModifier( START_SPEED/SINK_ACCELERATION
                                                      , shipSprite.getX()
@@ -238,7 +232,7 @@ public class Ship {
                                                      , sinkPointX
                                                      , sinkPointX
                                                      , shipSprite.getY()
-                                                     , shipSprite.getY() + shipSprite.getHeight()
+                                                     , shipSprite.getY()+shipSprite.getHeight()
                                                      , EaseQuadIn.getInstance() );
 
         RotationModifier rotation = new RotationModifier( sinkRotationVelocity
@@ -250,7 +244,7 @@ public class Ship {
         ParallelEntityModifier parallel = new ParallelEntityModifier(moveModifierY,rotation);
         SequenceEntityModifier moveShip = new SequenceEntityModifier(moveModifierX,parallel,alphaModifier) {
             @Override
-            public void onModifierFinished( IEntity pItem ) {
+            public void onModifierFinished(IEntity pItem) {
                 activity.runOnUpdateThread(new Runnable() {
                     @Override
                     public void run() {
