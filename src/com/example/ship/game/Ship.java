@@ -6,7 +6,7 @@ Date: 07.05.13
 */
 
 import android.graphics.PointF;
-import android.widget.Toast;
+import android.util.Log;
 import com.example.ship.R;
 import com.example.ship.SceletonActivity;
 import org.andengine.entity.modifier.*;
@@ -19,15 +19,17 @@ public class Ship {
     public static final boolean TO_LEFT = true;
     public static final boolean TO_RIGHT = false;
 
-    private static final float RELATIVE_WATERLINE = 0.1f;
     private static final float FINISH_OFFSET = 300.0f;
     private static final float MAX_ROTATE_ANGLE = 5.0f;
     private static final float ROTATE_DURATION = 3.0f;
     private static final float RELATIVE_ROTATION_CENTER_Y_OFFSET = 1.75f;
     private static final int ROTATION_COUNT = 10;
+    private static final float RELATIVE_WATERLINE = 0.1f;
 
-    private final SceletonActivity activity;
+    private static float velocityDivider = 1;
+
     private final float yPosition;
+    private final SceletonActivity activity;
     private final int typeId;
     private final boolean direction;
 
@@ -54,6 +56,11 @@ public class Ship {
         setDirection();
         shipSprite.setPosition(startPoint.x, startPoint.y);
         createModifier();
+    }
+
+    public static void setVelocityDivider(float velocityDivider) {
+        Ship.velocityDivider = velocityDivider;
+        Log.d("1log", "velocity divider..." + velocityDivider);
     }
 
     public Sprite getSprite () {
@@ -87,6 +94,7 @@ public class Ship {
                 this.health = activity.getIntResource(R.integer.MISSILEBOAT_HEALTH);
                 break;
         }
+        this.velocity /= velocityDivider;
     }
 
     private void setDirection() {
@@ -137,12 +145,6 @@ public class Ship {
 
     public void missionDone() {
         shipSprite.detachSelf();
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(activity, "Корабль проплыл линию", Toast.LENGTH_LONG);
-            }
-        });
     }
 }
 

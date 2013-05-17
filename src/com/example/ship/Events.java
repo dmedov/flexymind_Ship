@@ -124,6 +124,9 @@ public class Events implements TouchableMenuButtonSprite
     }
 
     private void fire() {
+        //временно для проверки работы уровней
+        activity.getSceneSwitcher().getGameScene().getPlayer().getLevel().incrementLevelProgress();
+
         getGun().fire();
     }
 

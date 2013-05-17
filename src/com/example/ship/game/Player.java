@@ -6,6 +6,7 @@ import com.example.ship.SceletonActivity;
 public class Player {
     public static final int FULL_HP = 6;
     private static final int NUMBER_ZERO = 6;
+    private Level level;
     private int health;
     private int score;
     private SceletonActivity activity;
@@ -13,8 +14,13 @@ public class Player {
 
     public Player(SceletonActivity activity) {
         this.activity = activity;
+        this.level = new Level(activity);
         this.health = FULL_HP;
         this.score = 0;
+    }
+
+    public void onShipShotDown() {
+        level.incrementLevelProgress();
     }
 
     public void setGameHUD(GameHUD gameHUD) {
@@ -23,6 +29,14 @@ public class Player {
 
     public int getHealth() {
         return health;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public Level getLevel() {
+        return level;
     }
 
     public void addHealth() {
@@ -42,6 +56,8 @@ public class Player {
     }
 
     public void addPoints(int points) {
+        // в дальнейшем перенести умножение в метод, который вызывает этот
+        points *= level.getScoreMultiplier();
         score += points;
         gameHUD.updateScore();
     }
@@ -49,10 +65,6 @@ public class Player {
     public void reducePoints(int points) {
         score -= points;
         gameHUD.updateScore();
-    }
-
-    public int getScore(){
-        return score;
     }
 
     public String getStringScore() {
