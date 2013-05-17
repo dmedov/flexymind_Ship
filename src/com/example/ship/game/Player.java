@@ -40,7 +40,9 @@ public class Player {
     }
 
     public void addHealth() {
-        health++;
+        if (health < FULL_HP) {
+            health++;
+        }
         gameHUD.updateHealthIndicators(health);
     }
 

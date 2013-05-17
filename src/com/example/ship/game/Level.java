@@ -53,6 +53,7 @@ public class Level {
         levelProgress++;
         Log.d("1log", "level progress..." + levelProgress);
         if (levelProgress >= levelGoal) {
+            activity.getSceneSwitcher().getGameScene().getPlayer().addHealth();
             startLevel(++currentLevel);
         } else {
             updateLevelInfoInHud();
