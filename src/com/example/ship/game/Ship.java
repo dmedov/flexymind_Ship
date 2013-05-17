@@ -248,12 +248,11 @@ public class Ship {
         SequenceEntityModifier moveShip = new SequenceEntityModifier(moveModifierX,parallel) {
             @Override
             public void onModifierFinished( IEntity pItem ) {
-                activity.runOnUiThread(new Runnable() {
+                activity.runOnUpdateThread (new Runnable() {
                    @Override
                     public void run() {
-                        //shipSprite.detachSelf();
-                        activity.getSceneSwitcher().getGameScene().shipToDelete = shipSprite;
-                        Log.d("1Log","This is SPARTA!");
+                        shipSprite.detachSelf();
+                        Log.d("1Log","Ship is detached from bottom");
                     }
                 });
             }

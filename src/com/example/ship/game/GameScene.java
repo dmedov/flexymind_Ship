@@ -43,8 +43,6 @@ public class GameScene extends Scene {
     private HashMap<Integer, Float> shipLinesPosition;
     private Player player;
 
-    public Sprite shipToDelete;
-
     public GameScene(final SceletonActivity activity) {
         super();
         this.activity = activity;
@@ -155,10 +153,6 @@ public class GameScene extends Scene {
                     }
                 }
             }
-        }
-
-        if (shipToDelete != null) {
-            shipToDelete.detachSelf();
         }
 
         if (deadShip != null) {
