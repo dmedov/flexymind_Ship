@@ -11,7 +11,6 @@ import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.AlphaModifier;
-import org.andengine.entity.modifier.IEntityModifier;
 import org.andengine.entity.modifier.MoveModifier;
 import org.andengine.entity.modifier.ParallelEntityModifier;
 import org.andengine.entity.shape.RectangularShape;
@@ -241,11 +240,6 @@ public class GameHUD extends HUD {
                                 , cameraSize.y * 0.5f - shape.getHeight() * 0.5f
                                 , EaseExponentialOut.getInstance());
 
-        AlphaModifier alphaUpModifier =
-                new AlphaModifier(moveDuration, 0.0f, 0.75f, EaseExponentialOut.getInstance());
-        final ParallelEntityModifier parallelToCenterModifier =
-                new ParallelEntityModifier(moveToCenterModifier, alphaUpModifier);
-
         MoveModifier moveToBottomModifier =
                 new MoveModifier( moveDuration
                                 , cameraSize.x * 0.5f - shape.getWidth() * 0.5f
@@ -256,14 +250,14 @@ public class GameHUD extends HUD {
 
         AlphaModifier alphaDownModifier =
                 new AlphaModifier(moveDuration, 0.75f, 0.0f, EaseExponentialIn.getInstance());
+        AlphaModifier alphaUpModifier =
+                new AlphaModifier(moveDuration, 0.0f, 0.75f, EaseExponentialOut.getInstance());
+
         final ParallelEntityModifier parallelToBottomModifier =
                 new ParallelEntityModifier(moveToBottomModifier, alphaDownModifier);
 
-        parallelToCenterModifier.addModifierListener(new IEntityModifier.IEntityModifierListener() {
-            @Override
-            public void onModifierStarted(IModifier<IEntity> iEntityIModifier, IEntity iEntity) {
-            }
-
+        final ParallelEntityModifier parallelToCenterModifier =
+                new ParallelEntityModifier(moveToCenterModifier, alphaUpModifier) {
             @Override
             public void onModifierFinished(IModifier<IEntity> iEntityIModifier, IEntity iEntity) {
 
@@ -275,7 +269,8 @@ public class GameHUD extends HUD {
                 });
                 activity.getEngine().registerUpdateHandler(timerHandler);
             }
-        });
+        };
+
         shape.registerEntityModifier(parallelToCenterModifier);
     }
 }
