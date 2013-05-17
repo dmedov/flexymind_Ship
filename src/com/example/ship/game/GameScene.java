@@ -76,6 +76,10 @@ public class GameScene extends Scene {
         player.setGameHUD(gameHUD);
     }
 
+    public GameHUD getGameGUD() {
+        return gameHUD;
+    }
+
     public void switchToPauseHUD() {
         activity.getCamera().setHUD(pauseHUD);
     }

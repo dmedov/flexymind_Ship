@@ -26,6 +26,7 @@ import java.util.ArrayList;
  */
 public class GameHUD extends HUD {
 
+    public static final int COUNT_TORPEDO_INDICATOR = 5;
     private static final float RELATIVE_BUTTON_HEIGHT = 0.15f;
     private static final float RELATIVE_SPACE_BETWEEN_CONTROLS = 0.01f;
     private static final float RELATIVE_SCREEN_BORDER = 0.02f;
@@ -43,6 +44,7 @@ public class GameHUD extends HUD {
     private PointF cameraSize;
     private ArrayList<GameButtonSprite> buttons;
     private ArrayList<HealthIndicator> healthIndicators;
+    private ArrayList<TorpedoIndicator> torpedoIndicators;
     private HorizontalDigitalOnScreenControl rotateGunDigitalControl;
 
     public GameHUD(SceletonActivity activity) {
@@ -50,6 +52,7 @@ public class GameHUD extends HUD {
         setOnAreaTouchTraversalFrontToBack();
         buttons = new ArrayList<GameButtonSprite>();
         healthIndicators = new ArrayList<HealthIndicator>();
+        torpedoIndicators = new ArrayList<TorpedoIndicator>();
         this.activity = activity;
         engine = this.activity.getEngine();
         cameraSize = new PointF( this.activity.getCamera().getWidthRaw()
@@ -58,6 +61,7 @@ public class GameHUD extends HUD {
         createButtons();
         createStats();
         createRotateGunDigitalControl();
+        createProgressBar();
     }
 
     public void setEventsToChildren(Events events) {
@@ -148,7 +152,7 @@ public class GameHUD extends HUD {
         rotateGunDigitalControl.setExtentSide( EXTENT_SIDE );
 
         rotateGunDigitalControl.refreshControlKnobPosition();
-        this.setChildScene( rotateGunDigitalControl );
+        this.setChildScene(rotateGunDigitalControl);
     }
 
     private void createStats() {
@@ -159,44 +163,67 @@ public class GameHUD extends HUD {
                 activity.getResourceManager().getLoadedTextureRegion(R.drawable.onhealth).getWidth() * scale;
 
         positionHitPoint = new PointF( (1 - RELATIVE_SCREEN_BORDER) * cameraSize.x - healthTextureWidth
-                , RELATIVE_SCREEN_BORDER * cameraSize.y * scale);
+                                     , RELATIVE_SCREEN_BORDER * cameraSize.y * scale);
 
         for (int i = 0; i < Player.FULL_HP; i++) {
             HealthIndicator healthIndicator = new HealthIndicator( activity
-                    , this
-                    , positionHitPoint
-                    , scale);
+                                                                 , this
+                                                                 , positionHitPoint
+                                                                 , scale);
             healthIndicators.add(healthIndicator);
             positionHitPoint.x -= RELATIVE_SPACE_BETWEEN_CONTROLS * cameraSize.x + healthTextureWidth;
         }
 
         scoreFont = FontFactory.create( activity.getEngine().getFontManager()
-                , activity.getEngine().getTextureManager()
-                , FONT_ATLAS_SIDE
-                , FONT_ATLAS_SIDE
-                , Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)
-                , healthTextureHeight * scale
-                , true
-                , Color.WHITE_ABGR_PACKED_INT);
+                                      , activity.getEngine().getTextureManager()
+                                      , FONT_ATLAS_SIDE
+                                      , FONT_ATLAS_SIDE
+                                      , Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)
+                                      , healthTextureHeight * scale
+                                      , true
+                                      , Color.WHITE_ABGR_PACKED_INT);
         scoreFont.load();
 
         // создаем изначальные очки
         scoreText = new Text( positionHitPoint.x
-                , positionHitPoint.y
-                , scoreFont
-                , activity.getResources().getString(R.string.SCORE) + ": 000000"
-                , activity.getEngine().getVertexBufferObjectManager());
+                            , positionHitPoint.y
+                            , scoreFont
+                            , activity.getResources().getString(R.string.SCORE) + ": 000000"
+                            , activity.getEngine().getVertexBufferObjectManager());
         scoreText.setPosition( positionHitPoint.x - scoreText.getWidth()
-                , RELATIVE_SCREEN_BORDER * cameraSize.y);
+                             , RELATIVE_SCREEN_BORDER * cameraSize.y);
 
         this.attachChild(scoreText);
+    }
+
+    private void createProgressBar() {
+        float positionX =  0.8f * cameraSize.x;
+        float positionY;
+
+        for (int i = 0; i < COUNT_TORPEDO_INDICATOR; i++) {
+            TorpedoIndicator torpedoIndicator = new TorpedoIndicator(activity, this);
+            positionY = (1 - RELATIVE_SCREEN_BORDER) * cameraSize.y - torpedoIndicator.getHeightTorpedoIndicator();
+            torpedoIndicator.setPosition(new PointF(positionX, positionY));
+            torpedoIndicators.add(torpedoIndicator);
+            positionX -= torpedoIndicator.getWidthTorpedoIndicator() + RELATIVE_SPACE_BETWEEN_CONTROLS * cameraSize.x;
+        }
+    }
+
+    public void updateProgressBar(int countOnTorpedoIndicator) {
+        for (int i = 0; i < torpedoIndicators.size(); i++) {
+            if (torpedoIndicators.size() - i <= countOnTorpedoIndicator) {
+                torpedoIndicators.get(i).setState(TorpedoIndicator.ON_STATE);
+            } else {
+                torpedoIndicators.get(i).setState(TorpedoIndicator.OFF_STATE);
+            }
+        }
     }
 
     public void updateScore() {
         scoreText.detachSelf();
         scoreText.setText(activity.getSceneSwitcher().getGameScene().getPlayer().getStringScore());
         scoreText.setPosition( positionHitPoint.x - scoreText.getWidth()
-                , RELATIVE_SCREEN_BORDER * cameraSize.y);
+                             , RELATIVE_SCREEN_BORDER * cameraSize.y);
         this.attachChild(scoreText);
     }
 

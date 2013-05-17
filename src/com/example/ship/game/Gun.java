@@ -36,6 +36,7 @@ public class Gun {
     private SceletonActivity activity;
     private TimerHandler fireTimerHandler;
     private boolean fireAvailable = true;
+    private int countOnTorpedoIndicators = GameHUD.COUNT_TORPEDO_INDICATOR;
 
     public Gun(SceletonActivity activity) {
         this.activity = activity;
@@ -137,6 +138,8 @@ public class Gun {
             activity.getSceneSwitcher().getGameScene().attachSpriteToLayer( torpedo
                                                                           , GameScene.LAYER_TORPEDO);
             fireAvailable = false;
+            countOnTorpedoIndicators = 0;
+            activity.getSceneSwitcher().getGameScene().getGameGUD().updateProgressBar(countOnTorpedoIndicators);
             fireTimerHandler.reset();
         }
         // xxx: временно для теста
@@ -151,10 +154,19 @@ public class Gun {
         return perspectiveScale;
     }
     private void createTimer() {
-        fireTimerHandler = new TimerHandler(FIRE_DELAY, new ITimerCallback() {
+        fireTimerHandler = new TimerHandler(FIRE_DELAY / GameHUD.COUNT_TORPEDO_INDICATOR, new ITimerCallback() {
             @Override
             public void onTimePassed(final TimerHandler timerHandler) {
-                fireAvailable = true;
+
+                if (countOnTorpedoIndicators == GameHUD.COUNT_TORPEDO_INDICATOR - 1) {
+                    countOnTorpedoIndicators++;
+                    activity.getSceneSwitcher().getGameScene().getGameGUD().updateProgressBar(countOnTorpedoIndicators);
+                    fireAvailable = true;
+                } else {
+                    countOnTorpedoIndicators++;
+                    activity.getSceneSwitcher().getGameScene().getGameGUD().updateProgressBar(countOnTorpedoIndicators);
+                    fireTimerHandler.reset();
+                }
             }
         });
     }
