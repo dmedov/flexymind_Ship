@@ -33,7 +33,7 @@ public class GameHUD extends HUD {
     private static final float RELATIVE_HP_HEIGHT = 0.05f;
     private static final float BUTTON_ALPHA = 0.75f;
     private static final int FONT_ATLAS_SIDE = 256;
-    public static final int TEXT_LENGHT = 32;
+    public static final int TEXT_LENGTH = 32;
     private final SceletonActivity activity;
     private final Engine engine;
     private PointF positionHitPoint;
@@ -169,7 +169,7 @@ public class GameHUD extends HUD {
                             , positionHitPoint.y
                             , statFont
                             , activity.getResources().getString(R.string.SCORE) + ": 000000"
-                            , TEXT_LENGHT
+                            , TEXT_LENGTH
                             , activity.getEngine().getVertexBufferObjectManager());
         scoreText.setPosition(cameraSize.x * 0.5f - scoreText.getWidth() * 0.5f
                 , RELATIVE_SCREEN_BORDER * cameraSize.y);
@@ -178,7 +178,7 @@ public class GameHUD extends HUD {
                                 , 0
                                 , statFont
                                 , ""
-                                , TEXT_LENGHT
+                                , TEXT_LENGTH
                                 , activity.getEngine().getVertexBufferObjectManager());
 
         this.attachChild(scoreText);
@@ -215,7 +215,7 @@ public class GameHUD extends HUD {
                                     , 0
                                     , statFont
                                     , activity.getStringResource(R.string.NEW_LEVEL_MESSAGE) + " " + level
-                                    , TEXT_LENGHT
+                                    , TEXT_LENGTH
                                     , activity.getEngine().getVertexBufferObjectManager());
         this.attachChild(newLevelText);
 
