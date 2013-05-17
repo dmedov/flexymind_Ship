@@ -166,7 +166,7 @@ public class GameScene extends Scene {
                 if (torpedo.collidesWith(ship.getHitAreaSprite())) {
                     torpedo.detachSelf();
                     if ( ship.hit(getGun().getDamage()) ) {
-                        player.addPoints(ship.getScore());
+                        player.addPoints((int) (ship.getScore() * player.getLevel().getScoreMultiplier()));
                         deadShip = ship;
                     }
                 }
