@@ -7,13 +7,22 @@ import com.example.ship.R;
 import com.example.ship.SceletonActivity;
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.hud.HUD;
-import org.andengine.entity.sprite.Sprite;
+import org.andengine.engine.handler.timer.ITimerCallback;
+import org.andengine.engine.handler.timer.TimerHandler;
+import org.andengine.entity.IEntity;
+import org.andengine.entity.modifier.AlphaModifier;
+import org.andengine.entity.modifier.MoveModifier;
+import org.andengine.entity.modifier.ParallelEntityModifier;
+import org.andengine.entity.shape.RectangularShape;
 import org.andengine.entity.text.Text;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
 import org.andengine.util.color.Color;
 import org.andengine.engine.camera.hud.controls.BaseOnScreenControl;
 import org.andengine.opengl.texture.region.ITextureRegion;
+import org.andengine.util.modifier.IModifier;
+import org.andengine.util.modifier.ease.EaseExponentialIn;
+import org.andengine.util.modifier.ease.EaseExponentialOut;
 
 import java.util.ArrayList;
 
@@ -35,11 +44,13 @@ public class GameHUD extends HUD {
     private static final float TIME_PERIOD_CHECK_CONTROL = 0.1f;
     private static final float RELATIVE_CONTROL_HEIGHT = 0.2f;
 
+    public static final int TEXT_LENGHT = 32;
     private final SceletonActivity activity;
     private final Engine engine;
     private PointF positionHitPoint;
     private Text scoreText;
-    private Font scoreFont;
+    private Text levelInfoText;
+    private Font statFont;
     private PointF cameraSize;
     private ArrayList<GameButtonSprite> buttons;
     private ArrayList<HealthIndicator> healthIndicators;
@@ -159,45 +170,58 @@ public class GameHUD extends HUD {
                 activity.getResourceManager().getLoadedTextureRegion(R.drawable.onhealth).getWidth() * scale;
 
         positionHitPoint = new PointF( (1 - RELATIVE_SCREEN_BORDER) * cameraSize.x - healthTextureWidth
-                , RELATIVE_SCREEN_BORDER * cameraSize.y * scale);
+                                     , RELATIVE_SCREEN_BORDER * cameraSize.y * scale);
 
         for (int i = 0; i < Player.FULL_HP; i++) {
             HealthIndicator healthIndicator = new HealthIndicator( activity
-                    , this
-                    , positionHitPoint
-                    , scale);
+                                                                 , this
+                                                                 , positionHitPoint
+                                                                 , scale);
             healthIndicators.add(healthIndicator);
             positionHitPoint.x -= RELATIVE_SPACE_BETWEEN_CONTROLS * cameraSize.x + healthTextureWidth;
         }
 
-        scoreFont = FontFactory.create( activity.getEngine().getFontManager()
-                , activity.getEngine().getTextureManager()
-                , FONT_ATLAS_SIDE
-                , FONT_ATLAS_SIDE
-                , Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)
-                , healthTextureHeight * scale
-                , true
-                , Color.WHITE_ABGR_PACKED_INT);
-        scoreFont.load();
+        statFont = FontFactory.create( activity.getEngine().getFontManager()
+                                      , activity.getEngine().getTextureManager()
+                                      , FONT_ATLAS_SIDE
+                                      , FONT_ATLAS_SIDE
+                                      , Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)
+                                      , healthTextureHeight * scale
+                                      , true
+                                      , Color.WHITE_ABGR_PACKED_INT);
+        statFont.load();
 
         // создаем изначальные очки
         scoreText = new Text( positionHitPoint.x
-                , positionHitPoint.y
-                , scoreFont
-                , activity.getResources().getString(R.string.SCORE) + ": 000000"
-                , activity.getEngine().getVertexBufferObjectManager());
-        scoreText.setPosition( positionHitPoint.x - scoreText.getWidth()
+                            , positionHitPoint.y
+                            , statFont
+                            , activity.getResources().getString(R.string.SCORE) + ": 000000"
+                            , TEXT_LENGHT
+                            , activity.getEngine().getVertexBufferObjectManager());
+        scoreText.setPosition(cameraSize.x * 0.5f - scoreText.getWidth() * 0.5f
                 , RELATIVE_SCREEN_BORDER * cameraSize.y);
 
+        levelInfoText = new Text( 0
+                                , 0
+                                , statFont
+                                , ""
+                                , TEXT_LENGHT
+                                , activity.getEngine().getVertexBufferObjectManager());
+
         this.attachChild(scoreText);
+        this.attachChild(levelInfoText);
     }
 
     public void updateScore() {
-        scoreText.detachSelf();
         scoreText.setText(activity.getSceneSwitcher().getGameScene().getPlayer().getStringScore());
         scoreText.setPosition( positionHitPoint.x - scoreText.getWidth()
-                , RELATIVE_SCREEN_BORDER * cameraSize.y);
-        this.attachChild(scoreText);
+                             , RELATIVE_SCREEN_BORDER * cameraSize.y);
+    }
+
+    public void updateLevelInfo(String text) {
+        levelInfoText.setText(text);
+        levelInfoText.setPosition( cameraSize.x * 0.25f - levelInfoText.getWidth() * 0.5f
+                                 , RELATIVE_SCREEN_BORDER * cameraSize.y);
     }
 
     public void updateHealthIndicators(int health) {
@@ -208,6 +232,67 @@ public class GameHUD extends HUD {
                 healthIndicators.get(i).setState(HealthIndicator.DEAD_STATE);
             }
         }
+    }
+
+    public void showNewLevelMessage(int level) {
+        final float messageHoldTime = 1.0f;
+        final float moveDuration = 3.0f;
+
+        Text newLevelText = new Text( 0
+                                    , 0
+                                    , statFont
+                                    , activity.getStringResource(R.string.NEW_LEVEL_MESSAGE) + " " + level
+                                    , TEXT_LENGHT
+                                    , activity.getEngine().getVertexBufferObjectManager());
+        this.attachChild(newLevelText);
+
+        createMessageEntityModifiers(messageHoldTime, moveDuration, newLevelText);
+    }
+
+    private void createMessageEntityModifiers( final float messageHoldTime
+                                             , float moveDuration
+                                             , final RectangularShape shape) {
+
+        MoveModifier moveToCenterModifier =
+                new MoveModifier( moveDuration
+                                , cameraSize.x * 0.5f - shape.getWidth() * 0.5f
+                                , cameraSize.x * 0.5f - shape.getWidth() * 0.5f
+                                , - shape.getHeight()
+                                , cameraSize.y * 0.5f - shape.getHeight() * 0.5f
+                                , EaseExponentialOut.getInstance());
+
+        MoveModifier moveToBottomModifier =
+                new MoveModifier( moveDuration
+                                , cameraSize.x * 0.5f - shape.getWidth() * 0.5f
+                                , cameraSize.x * 0.5f - shape.getWidth() * 0.5f
+                                , cameraSize.y * 0.5f - shape.getHeight() * 0.5f
+                                , cameraSize.y
+                                , EaseExponentialIn.getInstance());
+
+        AlphaModifier alphaDownModifier =
+                new AlphaModifier(moveDuration, 0.75f, 0.0f, EaseExponentialIn.getInstance());
+        AlphaModifier alphaUpModifier =
+                new AlphaModifier(moveDuration, 0.0f, 0.75f, EaseExponentialOut.getInstance());
+
+        final ParallelEntityModifier parallelToBottomModifier =
+                new ParallelEntityModifier(moveToBottomModifier, alphaDownModifier);
+
+        final ParallelEntityModifier parallelToCenterModifier =
+                new ParallelEntityModifier(moveToCenterModifier, alphaUpModifier) {
+            @Override
+            public void onModifierFinished(IModifier<IEntity> iEntityIModifier, IEntity iEntity) {
+
+                TimerHandler timerHandler = new TimerHandler(messageHoldTime, new ITimerCallback() {
+                    @Override
+                    public void onTimePassed(TimerHandler timerHandler) {
+                        shape.registerEntityModifier(parallelToBottomModifier);
+                    }
+                });
+                activity.getEngine().registerUpdateHandler(timerHandler);
+            }
+        };
+
+        shape.registerEntityModifier(parallelToCenterModifier);
     }
 
     private Gun getGun(){

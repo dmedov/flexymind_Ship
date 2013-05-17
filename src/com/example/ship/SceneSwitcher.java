@@ -67,6 +67,7 @@ public class SceneSwitcher {
         rootScene.setChildScene(gameScene);
         ShipSpawner shipSpawner = new ShipSpawner(activity);
         gameScene.setShipSpawner(shipSpawner);
+        gameScene.getPlayer().getLevel().startLevel(1);
         switchToGameHUD();
 
         currentState = GAME_STATE;

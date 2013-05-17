@@ -15,19 +15,21 @@ import java.util.Random;
  * To change this template use File | Settings | File Templates.
  */
 public class ShipSpawner {
-    private static final float MIN_SPAWN_DELAY = 1.0f;
-    private static final float MAX_SPAWN_DELAY = 4.0f;
-    private static final float FIRST_SPAWN_DELAY = 3.0f;
+    public static final float MIN_SPAWN_DELAY = 3.0f;
+    public static final float MAX_SPAWN_DELAY = 10.0f;
+
     private final SceletonActivity activity;
     private TimerHandler timerHandler;
     private float delay;
     private boolean spawning;
     private Random rnd;
+    private float spawnDelay;
 
     public ShipSpawner(SceletonActivity activity) {
         this.activity = activity;
-        delay = FIRST_SPAWN_DELAY;
+        delay = MIN_SPAWN_DELAY;
         spawning = false;
+        this.spawnDelay = MAX_SPAWN_DELAY;
     }
 
     public void startSpawn() {
@@ -39,6 +41,10 @@ public class ShipSpawner {
     public void stopSpawn() {
         spawning = false;
         timerHandler = null;
+    }
+
+    public void setSpawnDelay(float spawnDelay) {
+        this.spawnDelay = spawnDelay;
     }
 
     private class TimerTask implements ITimerCallback {
@@ -53,7 +59,7 @@ public class ShipSpawner {
                 public void run() {
 
                     if (spawning) {
-                        delay += rnd.nextFloat() * MAX_SPAWN_DELAY;
+                        delay = MIN_SPAWN_DELAY + rnd.nextFloat() * spawnDelay;
                         timerHandler.setTimerSeconds(delay);
                         timerHandler.reset();
 
@@ -66,8 +72,6 @@ public class ShipSpawner {
                                             , rnd.nextBoolean());
                         gameScene.getShips().add(ship);
                         gameScene.getChildByIndex(layerId).attachChild(ship.getSprite());
-
-                        delay = ship.getSprite().getWidth() / ship.getVelocity() * MIN_SPAWN_DELAY;
                     }
                 }
             });
