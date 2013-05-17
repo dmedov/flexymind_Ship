@@ -16,6 +16,7 @@
                 <texture name="firebutton"/>
                 <texture name="torpedo"/>
                 <texture name="gun" />
+                <texture name="gunmask"/>
                 <texture name="sailfish"/>
                 <texture name="missileboat"/>
                 <texture name="battleship"/>
