@@ -143,11 +143,11 @@ public class Gun {
         activity.getSceneSwitcher().getGameScene().getPlayer().addPoints(20);
     }
 
-    public void setPerspectiveScale( float scale ){
+    public void setPerspectiveScale( float scale ) {
         perspectiveScale = scale;
     }
 
-    public float getPerspectiveScale(){
+    public float getPerspectiveScale() {
         return perspectiveScale;
     }
     private void createTimer() {
