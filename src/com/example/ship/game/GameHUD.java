@@ -7,13 +7,12 @@ import com.example.ship.R;
 import com.example.ship.SceletonActivity;
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.hud.HUD;
-import org.andengine.entity.sprite.Sprite;
+import org.andengine.engine.camera.hud.controls.BaseOnScreenControl;
 import org.andengine.entity.text.Text;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
-import org.andengine.util.color.Color;
-import org.andengine.engine.camera.hud.controls.BaseOnScreenControl;
 import org.andengine.opengl.texture.region.ITextureRegion;
+import org.andengine.util.color.Color;
 
 import java.util.ArrayList;
 
@@ -137,14 +136,14 @@ public class GameHUD extends HUD {
                 .setScaleCenter( BASE_TEXTURE_LEFT_BOTTOM.x, BASE_TEXTURE_LEFT_BOTTOM.y );
         rotateGunDigitalControl.getControlBase()
                 .setScale( cameraSize.y * RELATIVE_CONTROL_HEIGHT
-                         / rotateGunDigitalControlBaseTextureRegion.getHeight() );
+                           / rotateGunDigitalControlBaseTextureRegion.getHeight() );
         rotateGunDigitalControl.getControlKnob()
                 .setScale( cameraSize.y * RELATIVE_CONTROL_HEIGHT
-                         / rotateGunDigitalControlBaseTextureRegion.getHeight() );
+                           / rotateGunDigitalControlBaseTextureRegion.getHeight() );
         // 36f измерено по текстуре, обеспечивает правильный отступ
-        final float KNOB_BORDER = 36f /  rotateGunDigitalControl.getControlBase().getWidth();
+        final float KNOB_BORDER = 36f / rotateGunDigitalControl.getControlBase().getWidth();
         final float EXTENT_SIDE = HorizontalDigitalOnScreenControl.STANDART_EXTENT_SIDE
-                                - 0.5f * rotateGunDigitalControl.KNOB_SIZE_IN_PERCENT - KNOB_BORDER;
+                                  - 0.5f * rotateGunDigitalControl.KNOB_SIZE_IN_PERCENT - KNOB_BORDER;
         rotateGunDigitalControl.setExtentSide( EXTENT_SIDE );
 
         rotateGunDigitalControl.refreshControlKnobPosition();
@@ -159,35 +158,35 @@ public class GameHUD extends HUD {
                 activity.getResourceManager().getLoadedTextureRegion(R.drawable.onhealth).getWidth() * scale;
 
         positionHitPoint = new PointF( (1 - RELATIVE_SCREEN_BORDER) * cameraSize.x - healthTextureWidth
-                , RELATIVE_SCREEN_BORDER * cameraSize.y * scale);
+                                     , RELATIVE_SCREEN_BORDER * cameraSize.y * scale);
 
         for (int i = 0; i < Player.FULL_HP; i++) {
             HealthIndicator healthIndicator = new HealthIndicator( activity
-                    , this
-                    , positionHitPoint
-                    , scale);
+                                                                 , this
+                                                                 , positionHitPoint
+                                                                 , scale);
             healthIndicators.add(healthIndicator);
             positionHitPoint.x -= RELATIVE_SPACE_BETWEEN_CONTROLS * cameraSize.x + healthTextureWidth;
         }
 
         scoreFont = FontFactory.create( activity.getEngine().getFontManager()
-                , activity.getEngine().getTextureManager()
-                , FONT_ATLAS_SIDE
-                , FONT_ATLAS_SIDE
-                , Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)
-                , healthTextureHeight * scale
-                , true
-                , Color.WHITE_ABGR_PACKED_INT);
+                                      , activity.getEngine().getTextureManager()
+                                      , FONT_ATLAS_SIDE
+                                      , FONT_ATLAS_SIDE
+                                      , Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)
+                                      , healthTextureHeight * scale
+                                      , true
+                                      , Color.WHITE_ABGR_PACKED_INT);
         scoreFont.load();
 
         // создаем изначальные очки
         scoreText = new Text( positionHitPoint.x
-                , positionHitPoint.y
-                , scoreFont
-                , activity.getResources().getString(R.string.SCORE) + ": 000000"
-                , activity.getEngine().getVertexBufferObjectManager());
+                            , positionHitPoint.y
+                            , scoreFont
+                            , activity.getResources().getString(R.string.SCORE) + ": 000000"
+                            , activity.getEngine().getVertexBufferObjectManager());
         scoreText.setPosition( positionHitPoint.x - scoreText.getWidth()
-                , RELATIVE_SCREEN_BORDER * cameraSize.y);
+                             , RELATIVE_SCREEN_BORDER * cameraSize.y);
 
         this.attachChild(scoreText);
     }
@@ -196,7 +195,7 @@ public class GameHUD extends HUD {
         scoreText.detachSelf();
         scoreText.setText(activity.getSceneSwitcher().getGameScene().getPlayer().getStringScore());
         scoreText.setPosition( positionHitPoint.x - scoreText.getWidth()
-                , RELATIVE_SCREEN_BORDER * cameraSize.y);
+                             , RELATIVE_SCREEN_BORDER * cameraSize.y);
         this.attachChild(scoreText);
     }
 
