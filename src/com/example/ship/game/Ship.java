@@ -6,14 +6,17 @@ Date: 07.05.13
 */
 
 import android.graphics.PointF;
+import android.opengl.GLES20;
 import android.util.Log;
 import android.widget.Toast;
 import com.example.ship.R;
 import com.example.ship.SceletonActivity;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.*;
+import org.andengine.entity.particle.SpriteParticleSystem;
+import org.andengine.entity.particle.emitter.PointParticleEmitter;
+import org.andengine.entity.particle.initializer.*;
 import org.andengine.entity.sprite.Sprite;
-import org.andengine.util.modifier.IModifier;
 import org.andengine.util.modifier.ease.EaseLinear;
 import org.andengine.util.modifier.ease.EaseQuadIn;
 import org.andengine.util.modifier.ease.EaseQuadInOut;
@@ -32,6 +35,8 @@ public class Ship {
     private static final float ROTATE_DURATION = 3.0f;
     private static final float RELATIVE_ROTATION_CENTER_Y_OFFSET = 1.75f;
     private static final float RELATIVE_HITAREA_OFFSET = 20f;
+    private static final int ROTATION_COUNT = 10;
+    //======= SINK PARAMETRS =======//
     private static final float SINK_ACCELERATION = 40f;
     private static final float MAX_SINK_ROTATION_ANGLE = 90f;
     private static final float MAX_SINK_ROTATION_VELOCITY = 20f;
@@ -39,7 +44,13 @@ public class Ship {
     private static final float MAX_SINK_VELOCITY = 20f;
     private static final float MIN_SINK_VELOCITY = 2f;
     private static final float ALPHA_SINK_TIME = 20f;
-    private static final int ROTATION_COUNT = 10;
+    //===== EXPLOTION PARAMETRS ====//
+    private static final float SPAWN_RATE = 1000f;
+    private static final int NUMBER_OF_PARTICLES = 20;
+    private static final float SPAWN_X_SPEED = 60;
+    private static final float SPAWN_Y_MIN_SPEED = -150f;
+    private static final float SPAWN_Y_MAX_SPEED = -200f;
+    private static final float SPAWN_Y_ACCELERATION = 150f;
 
     private final SceletonActivity activity;
     private final float yPosition;
@@ -54,6 +65,7 @@ public class Ship {
     private int health;
     private int score;
     private Random rand;
+    private SpriteParticleSystem particleSystem = null;
 
     public Ship(SceletonActivity activity, float yPosition, int shipTypeId, boolean direction) {
         this.activity = activity;
@@ -114,8 +126,10 @@ public class Ship {
         createSinkModifier();
     }
 
-    public boolean hitShip( int hitPoints) {
+    public boolean hitShip( int hitPoints, float hitX ) {
         health-=hitPoints;
+        createExplosion( (direction) ? (hitX - shipSprite.getX())
+                                     : (shipSprite.getX() - hitX - shipSprite.getWidthScaled()) );
         if ( health <= 0) {
             killShip();
             return true;
@@ -262,6 +276,29 @@ public class Ship {
         };
 
         shipSprite.registerEntityModifier(moveShip);
+    }
+
+    private void createExplosion( float emitterX ) {
+        if (particleSystem != null) {
+            particleSystem.clearEntityModifiers();
+            particleSystem.detachSelf();
+        }
+        particleSystem
+                = new SpriteParticleSystem( new PointParticleEmitter( emitterX
+                                                                    , shipSprite.getHeight() - RELATIVE_HITAREA_OFFSET)
+                                          , SPAWN_RATE
+                                          , SPAWN_RATE
+                                          , NUMBER_OF_PARTICLES
+                                          , activity.getResourceManager().getLoadedTextureRegion(R.drawable.fragment)
+                                          , activity.getVertexBufferObjectManager());
+        particleSystem.addParticleInitializer(new BlendFunctionParticleInitializer<Sprite>( GLES20.GL_SRC_ALPHA
+                                                                                          , GLES20.GL_ONE));
+        particleSystem.addParticleInitializer(new VelocityParticleInitializer<Sprite>( -SPAWN_X_SPEED
+                                                                                      , SPAWN_X_SPEED
+                                                                                      , SPAWN_Y_MIN_SPEED
+                                                                                      , SPAWN_Y_MAX_SPEED) );
+        particleSystem.addParticleInitializer(new AccelerationParticleInitializer<Sprite>(0, SPAWN_Y_ACCELERATION));
+        shipSprite.attachChild(particleSystem);
     }
 }
 

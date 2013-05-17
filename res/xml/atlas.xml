@@ -22,5 +22,6 @@
                 <texture name="hitarea"/>
                 <texture name="onhealth"/>
                 <texture name="offhealth"/>
+                <texture name="fragment"/>
             </Atlas>
 </resources>
