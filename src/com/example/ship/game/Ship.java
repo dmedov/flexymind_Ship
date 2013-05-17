@@ -251,7 +251,7 @@ public class Ship {
                 activity.runOnUiThread(new Runnable() {
                    @Override
                     public void run() {
-                        shipSprite.detachSelf();
+                        //shipSprite.detachSelf();
                         activity.getSceneSwitcher().getGameScene().shipToDelete = shipSprite;
                         Log.d("1Log","This is SPARTA!");
                     }
