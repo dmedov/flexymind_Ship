@@ -199,29 +199,29 @@ public class Ship {
 
     private void createHitArea(float hitAreaFromPixel, float hitAreaToPixel) {
         hitAreaSprite = new Sprite( 0
-                                  , shipSprite.getHeight()-HIT_AREA_OFFSET
+                                  , shipSprite.getHeight() - HIT_AREA_OFFSET
                                   , activity.getResourceManager().getLoadedTextureRegion(R.drawable.hitarea)
                                   , activity.getVertexBufferObjectManager() );
         hitAreaSprite.setScaleCenterX(0);
-        hitAreaSprite.setScaleX((hitAreaToPixel-hitAreaFromPixel)/hitAreaSprite.getWidthScaled());
+        hitAreaSprite.setScaleX((hitAreaToPixel - hitAreaFromPixel) / hitAreaSprite.getWidthScaled());
         hitAreaSprite.setX(hitAreaFromPixel);
         shipSprite.attachChild(hitAreaSprite);
     }
 
     private void createSinkModifier() {
-        final float START_SPEED = abs(finishPoint.x-startPoint.x)/velocity;
+        final float START_SPEED = abs(finishPoint.x - startPoint.x) / velocity;
         rand = new Random();
         float sinkPointX = (direction) ?
-                           (shipSprite.getX()-START_SPEED*START_SPEED/(2*SINK_ACCELERATION))
-                         : (shipSprite.getX()+START_SPEED*START_SPEED/(2*SINK_ACCELERATION));
+                           (shipSprite.getX() - START_SPEED * START_SPEED / (2 * SINK_ACCELERATION))
+                         : (shipSprite.getX() + START_SPEED * START_SPEED / (2 * SINK_ACCELERATION));
 
-        float sinkRotationAngle = MAX_SINK_ROTATION_ANGLE*(2*rand.nextFloat()-1);
-        float sinkRotationVelocity = (MAX_SINK_ROTATION_VELOCITY-MIN_SINK_ROTATION_VELOCITY)*rand.nextFloat()
-                                        +MIN_SINK_ROTATION_VELOCITY;
-        float sinkVelocity = (MAX_SINK_VELOCITY-MIN_SINK_VELOCITY)*rand.nextFloat()
-                                        +MIN_SINK_VELOCITY;
+        float sinkRotationAngle = MAX_SINK_ROTATION_ANGLE * (2 * rand.nextFloat() - 1);
+        float sinkRotationVelocity = (MAX_SINK_ROTATION_VELOCITY - MIN_SINK_ROTATION_VELOCITY) * rand.nextFloat()
+                                        + MIN_SINK_ROTATION_VELOCITY;
+        float sinkVelocity = (MAX_SINK_VELOCITY - MIN_SINK_VELOCITY) * rand.nextFloat()
+                                        + MIN_SINK_VELOCITY;
 
-        MoveModifier moveModifierX = new MoveModifier( START_SPEED/SINK_ACCELERATION
+        MoveModifier moveModifierX = new MoveModifier( START_SPEED / SINK_ACCELERATION
                                                      , shipSprite.getX()
                                                      , sinkPointX
                                                      , shipSprite.getY()
@@ -232,7 +232,7 @@ public class Ship {
                                                      , sinkPointX
                                                      , sinkPointX
                                                      , shipSprite.getY()
-                                                     , shipSprite.getY()+shipSprite.getHeight()
+                                                     , shipSprite.getY() + shipSprite.getHeight()
                                                      , EaseQuadIn.getInstance() );
 
         RotationModifier rotation = new RotationModifier( sinkRotationVelocity
