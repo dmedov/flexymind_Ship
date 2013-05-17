@@ -65,9 +65,6 @@ public class SceneSwitcher {
         }
         gameScene.switchToGameHUD();
         gameScene.getShipSpawner().startSpawn();
-        if (!activity.getEngine().isRunning()) {
-            activity.getEngine().start();
-        }
     }
 
     public void switchToPauseHUD() {

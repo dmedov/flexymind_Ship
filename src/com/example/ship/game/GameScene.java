@@ -225,16 +225,10 @@ public class GameScene extends Scene {
     }
 
     private void clearLayers() {
-        activity.runOnUpdateThread(new Runnable() {
-            @Override
-            public void run() {
-                getChildByIndex(LAYER_FIRST_SHIP_LINE).detachChildren();
-                getChildByIndex(LAYER_SECOND_SHIP_LINE).detachChildren();
-                getChildByIndex(LAYER_THIRD_SHIP_LINE).detachChildren();
-                getChildByIndex(LAYER_TORPEDO).detachChildren();
-                getChildByIndex(LAYER_GUN).detachChildren();
-            }
-        });
-
+        this.getChildByIndex(LAYER_FIRST_SHIP_LINE).detachChildren();
+        this.getChildByIndex(LAYER_SECOND_SHIP_LINE).detachChildren();
+        this.getChildByIndex(LAYER_THIRD_SHIP_LINE).detachChildren();
+        this.getChildByIndex(LAYER_TORPEDO).detachChildren();
+        this.getChildByIndex(LAYER_GUN).detachChildren();
     }
 }

@@ -148,7 +148,7 @@ public class Events implements TouchableMenuButtonSprite
     }
 
     private void backToGame() {
-        activity.getSceneSwitcher().switchToGameScene();
+        activity.getSceneSwitcher().switchToGameHUD();
     }
 
     private void backToMenu() {
