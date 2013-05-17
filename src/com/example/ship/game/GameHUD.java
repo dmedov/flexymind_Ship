@@ -193,8 +193,8 @@ public class GameHUD extends HUD {
                             , activity.getResources().getString(R.string.SCORE) + ": 000000"
                             , TEXT_LENGTH
                             , activity.getEngine().getVertexBufferObjectManager());
-        scoreText.setPosition(cameraSize.x * 0.5f - scoreText.getWidth() * 0.5f
-                , RELATIVE_SCREEN_BORDER * cameraSize.y);
+        scoreText.setPosition( cameraSize.x * 0.5f - scoreText.getWidth() * 0.5f
+                             , RELATIVE_SCREEN_BORDER * cameraSize.y);
 
         levelInfoText = new Text( 0
                                 , 0
@@ -209,7 +209,7 @@ public class GameHUD extends HUD {
 
     public void updateScore() {
         scoreText.setText(activity.getSceneSwitcher().getGameScene().getPlayer().getStringScore());
-        scoreText.setPosition( positionHitPoint.x - scoreText.getWidth()
+        scoreText.setPosition( cameraSize.x * 0.5f - scoreText.getWidth() * 0.5f
                              , RELATIVE_SCREEN_BORDER * cameraSize.y);
     }
 
