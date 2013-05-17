@@ -17,7 +17,7 @@ import java.util.Random;
  */
 public class ShipSpawner {
     public static final float MIN_SPAWN_DELAY = 3.0f;
-    public static final float MAX_SPAWN_DELAY = 10.0f;
+    public static final float MAX_SPAWN_DELAY = 15.0f;
 
     private final SceletonActivity activity;
     private TimerHandler timerHandler;

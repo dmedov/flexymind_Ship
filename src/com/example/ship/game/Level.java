@@ -14,8 +14,8 @@ import com.example.ship.SceletonActivity;
 public class Level {
 
     public static final int   FIRST_LEVEL_GOAL = 10;
-    public static final float LEVEL_GOAL_MULTIPLIER = 1.3f;
-    public static final float LEVEL_SCORE_MULTIPLIER = 1.2f;
+    public static final float LEVEL_GOAL_MULTIPLIER = 1.2f;
+    public static final float LEVEL_SCORE_MULTIPLIER = 1.1f;
     public static final float LEVEL_SPAWN_DELAY_MULTIPLIER = 0.95f;
     public static final float LEVEL_SHIP_SPEED_MULTIPLIER = 1.1f;
 

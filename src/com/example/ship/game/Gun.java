@@ -26,7 +26,7 @@ public class Gun {
     private static final float ROTATION_MAX_ANGLE  = 40.0f;
     private static final float GUN_PART_ON_SCENE   = 0.9f;
     private static final float BULLET_RELATIVE_START_POINT = 1.0f;
-    private static final float FIRE_DELAY = 2f;
+    private static final float FIRE_DELAY = 1.5f;
     private static final int DEFAULT_DAMAGE = 100;
     private static final float DEFAULT_PERSPECTIVE_SCALE = 0.5f;
     
