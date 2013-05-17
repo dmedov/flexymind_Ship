@@ -10,15 +10,18 @@ import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.IEntity;
+import org.andengine.entity.modifier.AlphaModifier;
 import org.andengine.entity.modifier.IEntityModifier;
 import org.andengine.entity.modifier.MoveModifier;
+import org.andengine.entity.modifier.ParallelEntityModifier;
+import org.andengine.entity.shape.RectangularShape;
 import org.andengine.entity.text.Text;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
 import org.andengine.util.color.Color;
 import org.andengine.util.modifier.IModifier;
-import org.andengine.util.modifier.ease.EaseBounceIn;
-import org.andengine.util.modifier.ease.EaseBounceOut;
+import org.andengine.util.modifier.ease.EaseExponentialIn;
+import org.andengine.util.modifier.ease.EaseExponentialOut;
 
 import java.util.ArrayList;
 
@@ -104,13 +107,13 @@ public class GameHUD extends HUD {
 
         pauseButton.setPosition( RELATIVE_SCREEN_BORDER * cameraSize.x
                                , RELATIVE_SCREEN_BORDER * cameraSize.y);
-        fireButton.setPosition( (1 - RELATIVE_SCREEN_BORDER) * cameraSize.x - fireButton.getWidth()
-                              , (1 - RELATIVE_SCREEN_BORDER) * cameraSize.y - fireButton.getHeight());
-        moveLeftButton.setPosition( RELATIVE_SCREEN_BORDER * cameraSize.x
-                                  , (1 - RELATIVE_SCREEN_BORDER) * cameraSize.y - moveLeftButton.getHeight());
-        moveRightButton.setPosition( (RELATIVE_SCREEN_BORDER + RELATIVE_SPACE_BETWEEN_CONTROLS) * cameraSize.x
-                                                + moveRightButton.getWidth()
-                                   , (1 - RELATIVE_SCREEN_BORDER) * cameraSize.y - moveRightButton.getHeight());
+        fireButton.setPosition((1 - RELATIVE_SCREEN_BORDER) * cameraSize.x - fireButton.getWidth()
+                , (1 - RELATIVE_SCREEN_BORDER) * cameraSize.y - fireButton.getHeight());
+        moveLeftButton.setPosition(RELATIVE_SCREEN_BORDER * cameraSize.x
+                , (1 - RELATIVE_SCREEN_BORDER) * cameraSize.y - moveLeftButton.getHeight());
+        moveRightButton.setPosition((RELATIVE_SCREEN_BORDER + RELATIVE_SPACE_BETWEEN_CONTROLS) * cameraSize.x
+                + moveRightButton.getWidth()
+                , (1 - RELATIVE_SCREEN_BORDER) * cameraSize.y - moveRightButton.getHeight());
     }
 
     // this method creates special invisible big button, under left and right controls button
@@ -175,8 +178,8 @@ public class GameHUD extends HUD {
                             , activity.getResources().getString(R.string.SCORE) + ": 000000"
                             , TEXT_LENGHT
                             , activity.getEngine().getVertexBufferObjectManager());
-        scoreText.setPosition( cameraSize.x * 0.5f - scoreText.getWidth() * 0.5f
-                             , RELATIVE_SCREEN_BORDER * cameraSize.y);
+        scoreText.setPosition(cameraSize.x * 0.5f - scoreText.getWidth() * 0.5f
+                , RELATIVE_SCREEN_BORDER * cameraSize.y);
 
         levelInfoText = new Text( 0
                                 , 0
@@ -197,7 +200,7 @@ public class GameHUD extends HUD {
 
     public void updateLevelInfo(String text) {
         levelInfoText.setText(text);
-        levelInfoText.setPosition( scoreText.getX() - cameraSize.x * RELATIVE_SPACE_BETWEEN_CONTROLS - levelInfoText.getWidth()
+        levelInfoText.setPosition( cameraSize.x * 0.25f - levelInfoText.getWidth() * 0.5f
                                  , RELATIVE_SCREEN_BORDER * cameraSize.y);
     }
 
@@ -215,35 +218,51 @@ public class GameHUD extends HUD {
         final float messageHoldTime = 1.0f;
         final float moveDuration = 3.0f;
 
-        final Text newLevelText = new Text( 0
-                                          , 0
-                                          , statFont
-                                          , activity.getStringResource(R.string.NEW_LEVEL_MESSAGE) + " " + level
-                                          , TEXT_LENGHT
-                                          , activity.getEngine().getVertexBufferObjectManager());
-        newLevelText.setAlpha(0.75f);
-
+        Text newLevelText = new Text( 0
+                                    , 0
+                                    , statFont
+                                    , activity.getStringResource(R.string.NEW_LEVEL_MESSAGE) + " " + level
+                                    , TEXT_LENGHT
+                                    , activity.getEngine().getVertexBufferObjectManager());
         this.attachChild(newLevelText);
 
-        final MoveModifier moveDownModifier =
-                new MoveModifier( moveDuration
-                                , cameraSize.x * 0.5f - newLevelText.getWidth() * 0.5f
-                                , cameraSize.x * 0.5f - newLevelText.getWidth() * 0.5f
-                                , - newLevelText.getHeight()
-                                , cameraSize.y * 0.5f - newLevelText.getHeight() * 0.5f
-                                , EaseBounceOut.getInstance());
+        createMessageEntityModifiers(messageHoldTime, moveDuration, newLevelText);
+    }
 
-        final MoveModifier moveUpModifier =
-                new MoveModifier( moveDuration
-                                , cameraSize.x * 0.5f - newLevelText.getWidth() * 0.5f
-                                , cameraSize.x * 0.5f - newLevelText.getWidth() * 0.5f
-                                , cameraSize.y * 0.5f - newLevelText.getHeight() * 0.5f
-                                , - newLevelText.getHeight()
-                                , EaseBounceIn.getInstance());
+    private void createMessageEntityModifiers( final float messageHoldTime
+                                             , float moveDuration
+                                             , final RectangularShape shape) {
 
-        moveDownModifier.addModifierListener(new IEntityModifier.IEntityModifierListener() {
+        MoveModifier moveToCenterModifier =
+                new MoveModifier( moveDuration
+                                , cameraSize.x * 0.5f - shape.getWidth() * 0.5f
+                                , cameraSize.x * 0.5f - shape.getWidth() * 0.5f
+                                , - shape.getHeight()
+                                , cameraSize.y * 0.5f - shape.getHeight() * 0.5f
+                                , EaseExponentialOut.getInstance());
+
+        AlphaModifier alphaUpModifier =
+                new AlphaModifier(moveDuration, 0.0f, 0.75f, EaseExponentialOut.getInstance());
+        final ParallelEntityModifier parallelToCenterModifier =
+                new ParallelEntityModifier(moveToCenterModifier, alphaUpModifier);
+
+        MoveModifier moveToBottomModifier =
+                new MoveModifier( moveDuration
+                                , cameraSize.x * 0.5f - shape.getWidth() * 0.5f
+                                , cameraSize.x * 0.5f - shape.getWidth() * 0.5f
+                                , cameraSize.y * 0.5f - shape.getHeight() * 0.5f
+                                , cameraSize.y
+                                , EaseExponentialIn.getInstance());
+
+        AlphaModifier alphaDownModifier =
+                new AlphaModifier(moveDuration, 0.75f, 0.0f, EaseExponentialIn.getInstance());
+        final ParallelEntityModifier parallelToBottomModifier =
+                new ParallelEntityModifier(moveToBottomModifier, alphaDownModifier);
+
+        parallelToCenterModifier.addModifierListener(new IEntityModifier.IEntityModifierListener() {
             @Override
-            public void onModifierStarted(IModifier<IEntity> iEntityIModifier, IEntity iEntity) {}
+            public void onModifierStarted(IModifier<IEntity> iEntityIModifier, IEntity iEntity) {
+            }
 
             @Override
             public void onModifierFinished(IModifier<IEntity> iEntityIModifier, IEntity iEntity) {
@@ -251,12 +270,12 @@ public class GameHUD extends HUD {
                 TimerHandler timerHandler = new TimerHandler(messageHoldTime, new ITimerCallback() {
                     @Override
                     public void onTimePassed(TimerHandler timerHandler) {
-                        newLevelText.registerEntityModifier(moveUpModifier);
+                        shape.registerEntityModifier(parallelToBottomModifier);
                     }
                 });
                 activity.getEngine().registerUpdateHandler(timerHandler);
             }
         });
-        newLevelText.registerEntityModifier(moveDownModifier);
+        shape.registerEntityModifier(parallelToCenterModifier);
     }
 }
