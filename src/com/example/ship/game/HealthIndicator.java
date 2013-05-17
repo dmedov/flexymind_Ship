@@ -8,24 +8,21 @@ import org.andengine.entity.sprite.Sprite;
 public class HealthIndicator {
     public static final boolean ALIVE_STATE = true;
     public static final boolean DEAD_STATE = false;
-    private SceletonActivity activity;
     private Sprite onHitPointSprite;
     private Sprite offHitPointSprite;
 
     public HealthIndicator(SceletonActivity activity, GameHUD gameHUD, PointF point, float scale) {
-        this.activity = activity;
-
         onHitPointSprite = new Sprite( point.x
-                               , point.y
-                               , activity.getResourceManager().getLoadedTextureRegion(R.drawable.onhealth)
-                               , activity.getEngine().getVertexBufferObjectManager());
+                                     , point.y
+                                     , activity.getResourceManager().getLoadedTextureRegion(R.drawable.onhealth)
+                                     , activity.getEngine().getVertexBufferObjectManager());
         onHitPointSprite.setScale(scale);
         onHitPointSprite.setVisible(true);
 
         offHitPointSprite = new Sprite( point.x
-                                , point.y
-                                , activity.getResourceManager().getLoadedTextureRegion(R.drawable.offhealth)
-                                , activity.getEngine().getVertexBufferObjectManager());
+                                      , point.y
+                                      , activity.getResourceManager().getLoadedTextureRegion(R.drawable.offhealth)
+                                      , activity.getEngine().getVertexBufferObjectManager());
         offHitPointSprite.setScale(scale);
         offHitPointSprite.setVisible(false);
 

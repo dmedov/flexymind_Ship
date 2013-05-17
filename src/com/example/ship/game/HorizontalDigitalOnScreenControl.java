@@ -63,8 +63,6 @@ public class HorizontalDigitalOnScreenControl extends BaseOnScreenControl {
             super.onUpdateControlKnob( extentSide, 0 );
         } else if( pRelativeX < 0 ) {
             super.onUpdateControlKnob( -extentSide, 0 );
-        } else if( pRelativeX == 0 ) {
-            super.onUpdateControlKnob( 0, 0 );
         }
     }
 

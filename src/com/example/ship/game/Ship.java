@@ -161,7 +161,7 @@ public class Ship {
     }
 
     private void setDirection() {
-        if (direction) {
+        if (direction == TO_LEFT) {
             startPoint = new PointF( activity.getCamera().getXMax()
                                    , yPosition - shipSprite.getHeight() * (1 - RELATIVE_WATERLINE));
             finishPoint = new PointF( activity.getCamera().getXMin() - shipSprite.getWidth()
@@ -220,7 +220,7 @@ public class Ship {
     private void createSinkModifier() {
         final float START_SPEED = abs(finishPoint.x - startPoint.x) / velocity;
         rand = new Random();
-        float sinkPointX = (direction) ?
+        float sinkPointX = (direction == TO_LEFT) ?
                 (shipSprite.getX() - START_SPEED * START_SPEED / (2 * SINK_ACCELERATION))
                 : (shipSprite.getX() + START_SPEED * START_SPEED / (2 * SINK_ACCELERATION));
 

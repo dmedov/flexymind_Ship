@@ -103,10 +103,10 @@ public class GameHUD extends HUD {
     }
 
     private void createRotateGunDigitalControl() {
-        ITextureRegion rotateGunDigitalControlBaseTextureRegion = activity.getResourceManager()
-                                                       .getLoadedTextureRegion( R.drawable.onscreen_control_base );
-        ITextureRegion rotateGunDigitalControlKnobTextureRegion = activity.getResourceManager()
-                                                       .getLoadedTextureRegion( R.drawable.onscreen_control_knob );
+        ITextureRegion rotateGunDigitalControlBaseTextureRegion =
+                activity.getResourceManager().getLoadedTextureRegion( R.drawable.onscreen_control_base );
+        ITextureRegion rotateGunDigitalControlKnobTextureRegion =
+                activity.getResourceManager().getLoadedTextureRegion( R.drawable.onscreen_control_knob );
 
 
 
@@ -115,7 +115,7 @@ public class GameHUD extends HUD {
         final float CONTROL_BASE_TEXTURE_HEIGHT = rotateGunDigitalControlBaseTextureRegion.getHeight();
         final PointF GUN_DIGITAL_CONTROL_COORDINATE =
                 new PointF( RELATIVE_SCREEN_BORDER * cameraSize.x
-                          , ( 1 - RELATIVE_SCREEN_BORDER ) * ( cameraSize.y - CONTROL_BASE_TEXTURE_HEIGHT ) );
+                          , (1 - RELATIVE_SCREEN_BORDER) * (cameraSize.y - CONTROL_BASE_TEXTURE_HEIGHT));
 
         rotateGunDigitalControl =
                 new HorizontalDigitalOnScreenControl( GUN_DIGITAL_CONTROL_COORDINATE.x

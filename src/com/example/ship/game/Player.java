@@ -5,7 +5,6 @@ import com.example.ship.SceletonActivity;
 
 public class Player {
     public static final int FULL_HP = 6;
-    private static final int NUMBER_ZERO = 6;
     private Level level;
     private int health;
     private int score;
@@ -71,7 +70,7 @@ public class Player {
         int digitNumber = ("" + score).length();
         String scoreString  = activity.getResources().getString(R.string.SCORE) + ": ";
         // дополняем наше Score нулями в начале
-        for (int i = 0; i < NUMBER_ZERO - digitNumber; i++) {
+        for (int i = 0; i < FULL_HP - digitNumber; i++) {
             scoreString  += "0";
         }
         scoreString += score;

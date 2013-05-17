@@ -26,7 +26,7 @@ public class GameOverHUD extends HUD {
     private static final int FONT_ATLAS_SIDE = 256;
     private static final float RELATIVE_FONT_SIZE = 0.05f;
     private static final float RELATIVE_GAME_OVER_BUTTON = 0.15f;
-    private final static float RELATIVE_SPACE_BETWEEN_ELEMENTS_HEIGHT = 0.05f;
+    private static final float RELATIVE_SPACE_BETWEEN_ELEMENTS_HEIGHT = 0.05f;
     private static final float BACKGROUND_ALPHA = 0.75f;
 
     private final PointF cameraSize;

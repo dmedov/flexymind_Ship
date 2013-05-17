@@ -17,6 +17,7 @@ import java.util.HashMap;
 
 public class GameScene extends Scene {
     private static int layerCount = 0;
+
     public static final int LAYER_BACKGROUND  = layerCount++;
     public static final int LAYER_FIRST_WAVE  = layerCount++;
     public static final int LAYER_FIRST_SHIP_LINE  = layerCount++;
@@ -26,13 +27,15 @@ public class GameScene extends Scene {
     public static final int LAYER_THIRD_SHIP_LINE  = layerCount++;
     public static final int LAYER_FOURTH_WAVE  = layerCount++;
     public static final int LAYER_TORPEDO = layerCount++;
-    private static final int LAYER_GUN   = layerCount++;
+    public static final int LAYER_GUN   = layerCount++;
+
     private static final float RELATIVE_SKY_HEIGHT = 0.15f;
     private static final float RELATIVE_WAVE_HEIGHT = 0.125f;
 
     private final SceletonActivity activity;
     private final Engine mEngine;
     private final ResourceManager resourceManager;
+
     private GameHUD gameHUD;
     private PauseHUD pauseHUD;
     private GameOverHUD gameOverHUD;
@@ -61,7 +64,6 @@ public class GameScene extends Scene {
         createBackground();
         createWaves();
         createGun();
-
         createHuds();
 
         player = new Player(activity);
@@ -69,7 +71,6 @@ public class GameScene extends Scene {
     }
 
     public void resetGame() {
-
         ships.clear();
 
         clearLayers();
@@ -134,8 +135,8 @@ public class GameScene extends Scene {
             float maxX = activity.getCamera().getXMax();
             float minX = activity.getCamera().getXMin() - shipSprite.getWidth();
 
-            if (   ship.getDirection() && (shipSprite.getX() < minX)
-                    || !ship.getDirection() && (shipSprite.getX() > maxX)) {
+            if (   ship.getDirection() == Ship.TO_LEFT && (shipSprite.getX() < minX)
+                || ship.getDirection() == Ship.TO_RIGHT && (shipSprite.getX() > maxX)) {
 
                 ship.missionDone();
                 deadShip = ship;
@@ -143,8 +144,6 @@ public class GameScene extends Scene {
             }
         }
 
-
-        // Ищем столкновение торпеды с небом
         Entity layer = (Entity) getChildByIndex(LAYER_TORPEDO);
         for (int i = 0; i < layer.getChildCount(); i++) {
             Sprite sprite = (Sprite) layer.getChildByIndex(i);
