@@ -11,8 +11,6 @@
                 <texture name="pausebutton"/>
                 <texture name="playbutton"/>
                 <texture name="backbutton"/>
-                <texture name="leftbutton"/>
-                <texture name="rightbutton"/>
                 <texture name="firebutton"/>
                 <texture name="torpedo"/>
                 <texture name="gun" />
@@ -25,6 +23,5 @@
                 <texture name="hitarea"/>
                 <texture name="onhealth"/>
                 <texture name="offhealth"/>
-                <texture name="gameoverbackground"/>
            </Atlas>
 </resources>
