@@ -25,8 +25,6 @@ public class Ship {
 
     public static final boolean TO_LEFT = true;
     public static final boolean TO_RIGHT = false;
-    public int health;
-    public int score;
 
     private static final float RELATIVE_WATERLINE = 0.1f;
     private static final float FINISH_OFFSET = 300.0f;
@@ -52,6 +50,8 @@ public class Ship {
     private Sprite shipSprite;
     private Sprite hitAreaSprite;
     private float velocity;
+    private int health;
+    private int score;
     private Random rand;
 
     public Ship(SceletonActivity activity, float yPosition, int shipTypeId, boolean direction) {
@@ -86,6 +86,14 @@ public class Ship {
 
     public boolean getDirection() {
         return direction;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public int getScore() {
+        return score;
     }
 
     public void missionDone() {
@@ -241,9 +249,10 @@ public class Ship {
             @Override
             public void onModifierFinished( IEntity pItem ) {
                 activity.runOnUiThread(new Runnable() {
-                    @Override
+                   @Override
                     public void run() {
                         shipSprite.detachSelf();
+                        activity.getSceneSwitcher().getGameScene().shipToDelete = shipSprite;
                         Log.d("1Log","This is SPARTA!");
                     }
                 });

@@ -43,6 +43,8 @@ public class GameScene extends Scene {
     private HashMap<Integer, Float> shipLinesPosition;
     private Player player;
 
+    public Sprite shipToDelete;
+
     public GameScene(final SceletonActivity activity) {
         super();
         this.activity = activity;
@@ -148,11 +150,15 @@ public class GameScene extends Scene {
                 if (torpedo.collidesWith(ship.getHitAreaSprite())) {
                     torpedo.detachSelf();
                     if ( ship.hitShip(100) ) {
-                        player.addPoints(ship.score);
+                        player.addPoints(ship.getScore());
                         deadShip = ship;
                     }
                 }
             }
+        }
+
+        if (shipToDelete != null) {
+            shipToDelete.detachSelf();
         }
 
         if (deadShip != null) {
