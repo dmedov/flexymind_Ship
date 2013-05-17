@@ -111,7 +111,7 @@ public class Gun {
         PointF shootStartPoint =
                 new PointF( beginGunPoint.x + bulletStartPointDistance * sin( gunAngle * GRAD_TO_RADIAN_KOEF )
                           , beginGunPoint.y
-                          - perspectiveScale * bulletStartPointDistance * cos( gunAngle * GRAD_TO_RADIAN_KOEF ) );
+                            - perspectiveScale * bulletStartPointDistance * cos( gunAngle * GRAD_TO_RADIAN_KOEF ) );
         return shootStartPoint;
     }
 
