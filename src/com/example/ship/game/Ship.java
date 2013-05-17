@@ -38,6 +38,7 @@ public class Ship {
     private static final float MIN_SINK_ROTATION_VELOCITY = 2f;
     private static final float MAX_SINK_VELOCITY = 20f;
     private static final float MIN_SINK_VELOCITY = 2f;
+    private static final float ALPHA_SINK_TIME = 20f;
     private static final int ROTATION_COUNT = 10;
 
     private final SceletonActivity activity;
@@ -244,15 +245,17 @@ public class Ship {
                                                         , shipSprite.getRotation()
                                                         , sinkRotationAngle );
 
+        AlphaModifier alphaModifier = new AlphaModifier(ALPHA_SINK_TIME,1,0);
+
         ParallelEntityModifier parallel = new ParallelEntityModifier(moveModifierY,rotation);
-        SequenceEntityModifier moveShip = new SequenceEntityModifier(moveModifierX,parallel) {
+        SequenceEntityModifier moveShip = new SequenceEntityModifier(moveModifierX,parallel,alphaModifier) {
             @Override
             public void onModifierFinished( IEntity pItem ) {
-                activity.runOnUpdateThread (new Runnable() {
-                   @Override
+                activity.runOnUpdateThread(new Runnable() {
+                    @Override
                     public void run() {
                         shipSprite.detachSelf();
-                        Log.d("1Log","Ship is detached from bottom");
+                        Log.d("1Log", "Ship is detached from bottom");
                     }
                 });
             }
