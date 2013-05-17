@@ -77,7 +77,7 @@ public class Ship {
         return shipSprite;
     }
 
-    public Sprite getHitAreaSprite () {
+    public Sprite getHitAreaSprite() {
         return hitAreaSprite;
     }
 
@@ -122,31 +122,31 @@ public class Ship {
         switch (typeId) {
             case R.drawable.sailfish:
                 this.velocity = activity.getIntResource(R.integer.SAILFISH_VELOCITY);
-                this.health = activity.getIntResource(R.integer.SAILFISH_HEALTH);
-                this.score = activity.getIntResource(R.integer.SAILFISH_SCORE_POINTS);
-                createHitArea( activity.getIntResource(R.integer.SAILFISH_HITAREA_START_PIXEL)
-                        , activity.getIntResource(R.integer.SAILFISH_HITAREA_END_PIXEL  ) );
+                this.health =   activity.getIntResource(R.integer.SAILFISH_HEALTH);
+                this.score =    activity.getIntResource(R.integer.SAILFISH_SCORE_POINTS);
+                createHitArea ( activity.getIntResource(R.integer.SAILFISH_HITAREA_START_PIXEL)
+                              , activity.getIntResource(R.integer.SAILFISH_HITAREA_END_PIXEL));
                 break;
             case R.drawable.missileboat:
                 this.velocity = activity.getIntResource(R.integer.MISSILEBOAT_VELOCITY);
-                this.health = activity.getIntResource(R.integer.MISSILEBOAT_HEALTH);
-                this.score = activity.getIntResource(R.integer.MISSILEBOAT_SCORE_POINTS);
-                createHitArea( activity.getIntResource(R.integer.MISSILEBOAT_HITAREA_START_PIXEL)
-                        , activity.getIntResource(R.integer.MISSILEBOAT_HITAREA_END_PIXEL  ) );
+                this.health =   activity.getIntResource(R.integer.MISSILEBOAT_HEALTH);
+                this.score =    activity.getIntResource(R.integer.MISSILEBOAT_SCORE_POINTS);
+                createHitArea ( activity.getIntResource(R.integer.MISSILEBOAT_HITAREA_START_PIXEL)
+                              , activity.getIntResource(R.integer.MISSILEBOAT_HITAREA_END_PIXEL));
                 break;
             case R.drawable.battleship:
                 this.velocity = activity.getIntResource(R.integer.BATTLESHIP_VELOCITY);
-                this.health = activity.getIntResource(R.integer.BATTLESHIP_HEALTH);
-                this.score = activity.getIntResource(R.integer.BATTLESHIP_SCORE_POINTS);
-                createHitArea( activity.getIntResource(R.integer.BATTLESHIP_HITAREA_START_PIXEL)
-                        , activity.getIntResource(R.integer.BATTLESHIP_HITAREA_END_PIXEL  ) );
+                this.health =   activity.getIntResource(R.integer.BATTLESHIP_HEALTH);
+                this.score =    activity.getIntResource(R.integer.BATTLESHIP_SCORE_POINTS);
+                createHitArea ( activity.getIntResource(R.integer.BATTLESHIP_HITAREA_START_PIXEL)
+                              , activity.getIntResource(R.integer.BATTLESHIP_HITAREA_END_PIXEL));
                 break;
             default:
                 this.velocity = activity.getIntResource(R.integer.MISSILEBOAT_VELOCITY);
-                this.health = activity.getIntResource(R.integer.MISSILEBOAT_HEALTH);
-                this.score = activity.getIntResource(R.integer.MISSILEBOAT_SCORE_POINTS);
-                createHitArea( activity.getIntResource(R.integer.MISSILEBOAT_HITAREA_START_PIXEL)
-                        , activity.getIntResource(R.integer.MISSILEBOAT_HITAREA_END_PIXEL  ) );
+                this.health =   activity.getIntResource(R.integer.MISSILEBOAT_HEALTH);
+                this.score =    activity.getIntResource(R.integer.MISSILEBOAT_SCORE_POINTS);
+                createHitArea ( activity.getIntResource(R.integer.MISSILEBOAT_HITAREA_START_PIXEL)
+                              , activity.getIntResource(R.integer.MISSILEBOAT_HITAREA_END_PIXEL));
                 break;
         }
     }
@@ -199,26 +199,26 @@ public class Ship {
 
     private void createHitArea(float hitAreaFromPixel, float hitAreaToPixel) {
         hitAreaSprite = new Sprite( 0
-                                  , shipSprite.getHeight() - HIT_AREA_OFFSET
+                                  , shipSprite.getHeight()-HIT_AREA_OFFSET
                                   , activity.getResourceManager().getLoadedTextureRegion(R.drawable.hitarea)
                                   , activity.getVertexBufferObjectManager() );
         hitAreaSprite.setScaleCenterX(0);
-        hitAreaSprite.setScaleX( (hitAreaToPixel - hitAreaFromPixel) / hitAreaSprite.getWidthScaled() );
+        hitAreaSprite.setScaleX((hitAreaToPixel-hitAreaFromPixel)/hitAreaSprite.getWidthScaled());
         hitAreaSprite.setX(hitAreaFromPixel);
         shipSprite.attachChild(hitAreaSprite);
     }
 
     private void createSinkModifier() {
-        final float START_SPEED = abs(finishPoint.x - startPoint.x) / velocity;
+        final float START_SPEED = abs(finishPoint.x-startPoint.x)/velocity;
         rand = new Random();
         float sinkPointX = (direction) ?
                            (shipSprite.getX()-START_SPEED*START_SPEED/(2*SINK_ACCELERATION))
                          : (shipSprite.getX()+START_SPEED*START_SPEED/(2*SINK_ACCELERATION));
 
-        float sinkRotationAngle =     MAX_SINK_ROTATION_ANGLE*(2*rand.nextFloat()-1);
+        float sinkRotationAngle = MAX_SINK_ROTATION_ANGLE*(2*rand.nextFloat()-1);
         float sinkRotationVelocity = (MAX_SINK_ROTATION_VELOCITY-MIN_SINK_ROTATION_VELOCITY)*rand.nextFloat()
                                         +MIN_SINK_ROTATION_VELOCITY;
-        float sinkVelocity =         (MAX_SINK_VELOCITY-MIN_SINK_VELOCITY)*rand.nextFloat()
+        float sinkVelocity = (MAX_SINK_VELOCITY-MIN_SINK_VELOCITY)*rand.nextFloat()
                                         +MIN_SINK_VELOCITY;
 
         MoveModifier moveModifierX = new MoveModifier( START_SPEED/SINK_ACCELERATION
@@ -239,7 +239,7 @@ public class Ship {
                                                         , shipSprite.getRotation()
                                                         , sinkRotationAngle );
 
-        AlphaModifier alphaModifier = new AlphaModifier(ALPHA_SINK_TIME,1,0);
+        AlphaModifier alphaModifier = new AlphaModifier(ALPHA_SINK_TIME, 1, 0);
 
         ParallelEntityModifier parallel = new ParallelEntityModifier(moveModifierY,rotation);
         SequenceEntityModifier moveShip = new SequenceEntityModifier(moveModifierX,parallel,alphaModifier) {
