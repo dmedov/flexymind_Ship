@@ -7,14 +7,14 @@ import com.example.ship.R;
 import com.example.ship.SceletonActivity;
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.hud.HUD;
+import org.andengine.engine.camera.hud.controls.BaseOnScreenControl;
 import org.andengine.entity.modifier.*;
 import org.andengine.entity.shape.RectangularShape;
 import org.andengine.entity.text.Text;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
-import org.andengine.util.color.Color;
-import org.andengine.engine.camera.hud.controls.BaseOnScreenControl;
 import org.andengine.opengl.texture.region.ITextureRegion;
+import org.andengine.util.color.Color;
 import org.andengine.util.modifier.IModifier;
 import org.andengine.util.modifier.ease.EaseExponentialIn;
 import org.andengine.util.modifier.ease.EaseExponentialOut;
@@ -144,14 +144,14 @@ public class GameHUD extends HUD {
                 .setScaleCenter( BASE_TEXTURE_LEFT_BOTTOM.x, BASE_TEXTURE_LEFT_BOTTOM.y );
         rotateGunDigitalControl.getControlBase()
                 .setScale( cameraSize.y * RELATIVE_CONTROL_HEIGHT
-                         / rotateGunDigitalControlBaseTextureRegion.getHeight() );
+                           / rotateGunDigitalControlBaseTextureRegion.getHeight() );
         rotateGunDigitalControl.getControlKnob()
                 .setScale( cameraSize.y * RELATIVE_CONTROL_HEIGHT
-                         / rotateGunDigitalControlBaseTextureRegion.getHeight() );
+                           / rotateGunDigitalControlBaseTextureRegion.getHeight() );
         // 36f измерено по текстуре, обеспечивает правильный отступ
-        final float KNOB_BORDER = 36f /  rotateGunDigitalControl.getControlBase().getWidth();
+        final float KNOB_BORDER = 36f / rotateGunDigitalControl.getControlBase().getWidth();
         final float EXTENT_SIDE = HorizontalDigitalOnScreenControl.STANDART_EXTENT_SIDE
-                                - 0.5f * rotateGunDigitalControl.KNOB_SIZE_IN_PERCENT - KNOB_BORDER;
+                                  - 0.5f * rotateGunDigitalControl.KNOB_SIZE_IN_PERCENT - KNOB_BORDER;
         rotateGunDigitalControl.setExtentSide( EXTENT_SIDE );
 
         rotateGunDigitalControl.refreshControlKnobPosition();

@@ -43,7 +43,6 @@ public class GameScene extends Scene {
     private ArrayList<Ship> ships;
     private HashMap<Integer, Float> shipLinesPosition;
     private Player player;
-    private boolean cleanGameScene = false;
 
     public GameScene(final SceletonActivity activity) {
         super();
@@ -51,7 +50,7 @@ public class GameScene extends Scene {
         this.mEngine = activity.getEngine();
         this.resourceManager = activity.getResourceManager();
 
-        for(int i = LAYER_BACKGROUND; i < layerCount; i++) {
+        for (int i = LAYER_BACKGROUND; i < layerCount; i++) {
             this.attachChild(new Entity());
         }
 
@@ -63,14 +62,19 @@ public class GameScene extends Scene {
         createWaves();
         createGun();
 
-        gameHUD = new GameHUD(activity);
-        gameHUD.setEventsToChildren(activity.getEvents());
+        createHuds();
 
-        pauseHUD = new PauseHUD(activity);
-        pauseHUD.setEventsToChildren(activity.getEvents());
+        player = new Player(activity);
+        player.setGameHUD(gameHUD);
+    }
 
-        gameOverHUD = new GameOverHUD(activity);
-        gameOverHUD.setEventsToChildren(activity.getEvents());
+    public void resetGame() {
+
+        ships.clear();
+
+        clearLayers();
+        createGun();
+        createHuds();
 
         player = new Player(activity);
         player.setGameHUD(gameHUD);
@@ -101,6 +105,10 @@ public class GameScene extends Scene {
         return player;
     }
 
+    public Gun getGun() {
+        return gun;
+    }
+
     public ShipSpawner getShipSpawner() {
         return shipSpawner;
     }
@@ -115,10 +123,6 @@ public class GameScene extends Scene {
 
     public ArrayList<Ship> getShips() {
         return ships;
-    }
-
-    public void CleanGameScene() {
-        cleanGameScene = true;
     }
 
     @Override
@@ -159,12 +163,6 @@ public class GameScene extends Scene {
                 layer.getChildByIndex(i).detachSelf();
             }
         }
-
-        if (cleanGameScene) {
-            cleanLayers();
-            cleanGameScene = false;
-        }
-
         super.onManagedUpdate(pSecondsElapsed);
     }
  
@@ -186,10 +184,6 @@ public class GameScene extends Scene {
         this.getChildByIndex(LAYER_GUN).attachChild(gun.getSprite());
     }
 
-    public Gun getGun() {
-        return gun;
-    }
-
     private void createWaves() {
         ITextureRegion waveTexture = resourceManager.getLoadedTextureRegion(R.drawable.wave);
         float offset = activity.getCamera().getHeightRaw() * RELATIVE_SKY_HEIGHT;
@@ -209,6 +203,17 @@ public class GameScene extends Scene {
         attachTextureToLayer(waveTexture, LAYER_FOURTH_WAVE, offset);
     }
 
+    private void createHuds() {
+        gameHUD = new GameHUD(activity);
+        gameHUD.setEventsToChildren(activity.getEvents());
+
+        pauseHUD = new PauseHUD(activity);
+        pauseHUD.setEventsToChildren(activity.getEvents());
+
+        gameOverHUD = new GameOverHUD(activity);
+        gameOverHUD.setEventsToChildren(activity.getEvents());
+    }
+
     private void attachTextureToLayer(ITextureRegion texture, int layerId, float yPosition) {
         Sprite waveSprite = new Sprite( 0
                                       , yPosition
@@ -219,20 +224,11 @@ public class GameScene extends Scene {
         this.getChildByIndex(layerId).attachChild(waveSprite);
     }
 
-    private void cleanLayers() {
-        cleanLayer(LAYER_FIRST_SHIP_LINE);
-        cleanLayer(LAYER_SECOND_SHIP_LINE);
-        cleanLayer(LAYER_THIRD_SHIP_LINE);
-        cleanLayer(LAYER_TORPEDO);
+    private void clearLayers() {
+        this.getChildByIndex(LAYER_FIRST_SHIP_LINE).detachChildren();
+        this.getChildByIndex(LAYER_SECOND_SHIP_LINE).detachChildren();
+        this.getChildByIndex(LAYER_THIRD_SHIP_LINE).detachChildren();
+        this.getChildByIndex(LAYER_TORPEDO).detachChildren();
+        this.getChildByIndex(LAYER_GUN).detachChildren();
     }
-
-    private void cleanLayer(int layerID) {
-        Entity layer;
-        layer = (Entity) this.getChildByIndex(layerID);
-        for (int i = 0; i < layer.getChildCount(); i++) {
-            Sprite sprite = (Sprite) layer.getChildByIndex(i);
-            sprite.detachSelf();
-        }
-    }
-
 }
