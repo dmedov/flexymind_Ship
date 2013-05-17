@@ -64,16 +64,19 @@ public class SceneSwitcher {
             rootScene.clearChildScene();
         }
         rootScene.unregisterTouchArea();
+        gameScene.resetGame();
         rootScene.setChildScene(gameScene);
         ShipSpawner shipSpawner = new ShipSpawner(activity);
         gameScene.setShipSpawner(shipSpawner);
         gameScene.getPlayer().getLevel().startLevel(1);
         switchToGameHUD();
-
         currentState = GAME_STATE;
     }
 
     public void switchToGameHUD() {
+        if (gameScene.isIgnoreUpdate()) {
+            gameScene.setIgnoreUpdate(false);
+        }
         gameScene.switchToGameHUD();
         gameScene.getShipSpawner().startSpawn();
         if (!activity.getEngine().isRunning()) {
@@ -84,17 +87,16 @@ public class SceneSwitcher {
     }
 
     public void switchToPauseHUD() {
+        gameScene.setIgnoreUpdate(true);
         gameScene.switchToPauseHUD();
         gameScene.getShipSpawner().stopSpawn();
-
         currentState = PAUSE_STATE;
     }
 
     public void switchToGameOverHUD() {
-        gameScene.switchToGameOverHUD();
         gameScene.getShipSpawner().stopSpawn();
-        gameScene.CleanGameScene();
-
+        gameScene.setIgnoreUpdate(true);
+        gameScene.switchToGameOverHUD();
         currentState = GAME_OVER_STATE;
     }
 
