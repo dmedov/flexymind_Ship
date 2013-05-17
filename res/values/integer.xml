@@ -3,13 +3,22 @@
     <!--Missile boat-->
     <integer name="MISSILEBOAT_SPAWN_PROBABILITY">50</integer>
     <integer name="MISSILEBOAT_VELOCITY">20</integer>
-    <integer name="MISSILEBOAT_HEALTH">150</integer>
+    <integer name="MISSILEBOAT_HEALTH">100</integer>
+    <integer name="MISSILEBOAT_HITAREA_START_PIXEL">17</integer>
+    <integer name="MISSILEBOAT_HITAREA_END_PIXEL">189</integer>
+    <integer name="MISSILEBOAT_SCORE_POINTS">40</integer>
     <!--Sailfish-->
     <integer name="SAILFISH_SPAWN_PROBABILITY">30</integer>
     <integer name="SAILFISH_VELOCITY">40</integer>
-    <integer name="SAILFISH_HEALTH">70</integer>
+    <integer name="SAILFISH_HEALTH">100</integer>
+    <integer name="SAILFISH_HITAREA_START_PIXEL">44</integer>
+    <integer name="SAILFISH_HITAREA_END_PIXEL">177</integer>
+    <integer name="SAILFISH_SCORE_POINTS">10</integer>
     <!--Battleship-->
     <integer name="BATTLESHIP_SPAWN_PROBABILITY">20</integer>
     <integer name="BATTLESHIP_VELOCITY">50</integer>
     <integer name="BATTLESHIP_HEALTH">500</integer>
+    <integer name="BATTLESHIP_HITAREA_START_PIXEL">12</integer>
+    <integer name="BATTLESHIP_HITAREA_END_PIXEL">193</integer>
+    <integer name="BATTLESHIP_SCORE_POINTS">20</integer>
 </resources>

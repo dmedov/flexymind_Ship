@@ -138,15 +138,11 @@ public class GameScene extends Scene {
                     || !ship.getDirection() && (shipSprite.getX() > maxX)) {
 
                 ship.missionDone();
-                Log.d("1log", "kill");
                 deadShip = ship;
                 player.reduceHealth();
             }
         }
 
-        if (deadShip != null) {
-            ships.remove(deadShip);
-        }
 
         // Ищем столкновение торпеды с небом
         Entity layer = (Entity) getChildByIndex(LAYER_TORPEDO);
@@ -163,6 +159,25 @@ public class GameScene extends Scene {
                 layer.getChildByIndex(i).detachSelf();
             }
         }
+
+        for (int i = 0; i < layer.getChildCount(); i++) {
+            Sprite torpedo = (Sprite) layer.getChildByIndex(i);
+            for (Ship ship: ships) {
+                if (torpedo.collidesWith(ship.getHitAreaSprite())) {
+                    torpedo.detachSelf();
+                    if ( ship.hit(getGun().getDamage()) ) {
+                        player.addPoints(ship.getScore());
+                        deadShip = ship;
+                    }
+                }
+            }
+        }
+
+        if (deadShip != null) {
+            ships.remove(deadShip);
+            Log.d("1log", "killed");
+        }
+
         super.onManagedUpdate(pSecondsElapsed);
     }
  

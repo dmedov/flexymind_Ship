@@ -27,7 +27,9 @@ public class Gun {
     private static final float GUN_PART_ON_SCENE   = 0.9f;
     private static final float BULLET_RELATIVE_START_POINT = 1.0f;
     private static final float FIRE_DELAY = 2f;
+    private static final int DEFAULT_DAMAGE = 100;
     private static final float DEFAULT_PERSPECTIVE_SCALE = 0.5f;
+    
     private float perspectiveScale;
     private boolean rotateLeft;
     private boolean rotationEnabled;
@@ -36,6 +38,7 @@ public class Gun {
     private SceletonActivity activity;
     private TimerHandler fireTimerHandler;
     private boolean fireAvailable = true;
+    private int damage = DEFAULT_DAMAGE;
 
     public Gun(SceletonActivity activity) {
         this.activity = activity;
@@ -139,12 +142,14 @@ public class Gun {
             fireAvailable = false;
             fireTimerHandler.reset();
         }
-        // xxx: временно для теста
-        activity.getSceneSwitcher().getGameScene().getPlayer().addPoints(20);
     }
 
     public void setPerspectiveScale( float scale ) {
         perspectiveScale = scale;
+    }
+
+    public int getDamage() {
+        return damage;
     }
 
     public float getPerspectiveScale() {
