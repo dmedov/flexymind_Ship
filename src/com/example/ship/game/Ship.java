@@ -12,12 +12,13 @@ import com.example.ship.SceletonActivity;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.*;
 import org.andengine.entity.sprite.Sprite;
-import org.andengine.util.modifier.IModifier;
 import org.andengine.util.modifier.ease.EaseLinear;
 import org.andengine.util.modifier.ease.EaseQuadIn;
 import org.andengine.util.modifier.ease.EaseQuadInOut;
 import org.andengine.util.modifier.ease.EaseQuadOut;
+
 import java.util.Random;
+
 import static java.lang.Math.abs;
 
 public class Ship {
@@ -117,6 +118,7 @@ public class Ship {
     public boolean hit(int hitPoints) {
         health -= hitPoints;
         if ( health <= 0) {
+            activity.getSceneSwitcher().getGameScene().getPlayer().getLevel().incrementLevelProgress();
             killSelf();
             return true;
         }
