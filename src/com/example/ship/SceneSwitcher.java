@@ -15,10 +15,17 @@ import com.example.ship.sceletone.SceletonScene;
  */
 public class SceneSwitcher {
 
+    public static final int ROOT_STATE = 0;
+    public static final int MENU_STATE = 1;
+    public static final int GAME_STATE = 2;
+    public static final int PAUSE_STATE = 3;
+    public static final int GAME_OVER_STATE = 4;
+
     private final SceletonActivity activity;
     private SceletonScene rootScene;
     private ShipMenuScene menuScene;
     private GameScene gameScene;
+    private int currentState;
 
     public SceneSwitcher(SceletonActivity activity) {
         this.activity = activity;
@@ -26,12 +33,16 @@ public class SceneSwitcher {
         gameScene = new GameScene(activity);
         rootScene = new SceletonScene(activity);
         rootScene.setEvents(activity.getEvents());
+
+        currentState = ROOT_STATE;
     }
 
     public void switchToRootScene() {
         activity.getCamera().setHUD(null);
         rootScene.clearChildScene();
         rootScene.registerTouchArea();
+
+        currentState = ROOT_STATE;
     }
 
     public void switchToMenuScene() {
@@ -43,8 +54,9 @@ public class SceneSwitcher {
 
         MenuHUD menuHUD = new MenuHUD(activity);
         menuHUD.setEventsToChildren(activity.getEvents());
-
         activity.getCamera().setHUD(menuHUD);
+
+        currentState = MENU_STATE;
     }
 
     public void switchToGameScene() {
@@ -57,6 +69,7 @@ public class SceneSwitcher {
         gameScene.setShipSpawner(shipSpawner);
         switchToGameHUD();
 
+        currentState = GAME_STATE;
     }
 
     public void switchToGameHUD() {
@@ -65,17 +78,27 @@ public class SceneSwitcher {
         if (!activity.getEngine().isRunning()) {
             activity.getEngine().start();
         }
+
+        currentState = GAME_STATE;
     }
 
     public void switchToPauseHUD() {
         gameScene.switchToPauseHUD();
         gameScene.getShipSpawner().stopSpawn();
+
+        currentState = PAUSE_STATE;
     }
 
     public void switchToGameOverHUD() {
         gameScene.switchToGameOverHUD();
         gameScene.getShipSpawner().stopSpawn();
         gameScene.CleanGameScene();
+
+        currentState = GAME_OVER_STATE;
+    }
+
+    public int getCurrentState() {
+        return currentState;
     }
 
     public SceletonScene getRootScene() {
@@ -85,5 +108,4 @@ public class SceneSwitcher {
     public GameScene getGameScene() {
         return gameScene;
     }
-
 }
