@@ -7,18 +7,12 @@ import com.example.ship.R;
 import com.example.ship.SceletonActivity;
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.hud.HUD;
-import org.andengine.engine.handler.timer.ITimerCallback;
-import org.andengine.engine.handler.timer.TimerHandler;
-import org.andengine.entity.IEntity;
-import org.andengine.entity.modifier.AlphaModifier;
-import org.andengine.entity.modifier.MoveModifier;
-import org.andengine.entity.modifier.ParallelEntityModifier;
+import org.andengine.entity.modifier.*;
 import org.andengine.entity.shape.RectangularShape;
 import org.andengine.entity.text.Text;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
 import org.andengine.util.color.Color;
-import org.andengine.util.modifier.IModifier;
 import org.andengine.util.modifier.ease.EaseExponentialIn;
 import org.andengine.util.modifier.ease.EaseExponentialOut;
 
@@ -253,24 +247,18 @@ public class GameHUD extends HUD {
         AlphaModifier alphaUpModifier =
                 new AlphaModifier(moveDuration, 0.0f, 0.75f, EaseExponentialOut.getInstance());
 
-        final ParallelEntityModifier parallelToBottomModifier =
+        ParallelEntityModifier parallelToBottomModifier =
                 new ParallelEntityModifier(moveToBottomModifier, alphaDownModifier);
+        ParallelEntityModifier parallelToCenterModifier =
+                new ParallelEntityModifier(moveToCenterModifier, alphaUpModifier);
 
-        final ParallelEntityModifier parallelToCenterModifier =
-                new ParallelEntityModifier(moveToCenterModifier, alphaUpModifier) {
-            @Override
-            public void onModifierFinished(IModifier<IEntity> iEntityIModifier, IEntity iEntity) {
+        DelayModifier delayModifier = new DelayModifier(messageHoldTime);
 
-                TimerHandler timerHandler = new TimerHandler(messageHoldTime, new ITimerCallback() {
-                    @Override
-                    public void onTimePassed(TimerHandler timerHandler) {
-                        shape.registerEntityModifier(parallelToBottomModifier);
-                    }
-                });
-                activity.getEngine().registerUpdateHandler(timerHandler);
-            }
-        };
+        SequenceEntityModifier sequenceEntityModifier =
+                new SequenceEntityModifier( parallelToCenterModifier
+                                          , delayModifier
+                                          , parallelToBottomModifier);
 
-        shape.registerEntityModifier(parallelToCenterModifier);
+        shape.registerEntityModifier(sequenceEntityModifier);
     }
 }
