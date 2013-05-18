@@ -11,13 +11,17 @@
                 <texture name="pausebutton"/>
                 <texture name="playbutton"/>
                 <texture name="backbutton"/>
-                <texture name="leftbutton"/>
-                <texture name="rightbutton"/>
                 <texture name="firebutton"/>
                 <texture name="torpedo"/>
                 <texture name="gun" />
+                <texture name="gunmask"/>
                 <texture name="sailfish"/>
                 <texture name="missileboat"/>
                 <texture name="battleship"/>
-            </Atlas>
+                <texture name="onscreen_control_base"/>
+                <texture name="onscreen_control_knob"/>
+                <texture name="hitarea"/>
+                <texture name="onhealth"/>
+                <texture name="offhealth"/>
+           </Atlas>
 </resources>

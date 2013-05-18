@@ -4,12 +4,13 @@ import android.graphics.PointF;
 import com.example.ship.R;
 import com.example.ship.SceletonActivity;
 import org.andengine.engine.camera.ZoomCamera;
+import org.andengine.engine.handler.timer.ITimerCallback;
+import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.ITextureRegion;
 
 import static android.util.FloatMath.cos;
 import static android.util.FloatMath.sin;
-import static java.lang.Math.abs;
 
 /**
  * Created with IntelliJ IDEA.
@@ -23,25 +24,44 @@ public class Gun {
     public  static final float GRAD_TO_RADIAN_KOEF = 3.1415f / 180f;
     private static final float ROTATION_VELOCITY   = 0.4f;
     private static final float ROTATION_MAX_ANGLE  = 40.0f;
-    private static final float GUN_PART_ON_SCENE   = 0.6f;
-
+    private static final float GUN_PART_ON_SCENE   = 0.9f;
+    private static final float BULLET_RELATIVE_START_POINT = 1.0f;
+    private static final float FIRE_DELAY = 1.5f;
+    private static final int DEFAULT_DAMAGE = 100;
+    private static final float DEFAULT_PERSPECTIVE_SCALE = 0.5f;
+    
+    private float perspectiveScale;
     private boolean rotateLeft;
     private boolean rotationEnabled;
     private Sprite gunSprite;
+    private Sprite gunMask;
     private SceletonActivity activity;
+    private TimerHandler fireTimerHandler;
+    private boolean fireAvailable = true;
+    private int damage = DEFAULT_DAMAGE;
 
     public Gun(SceletonActivity activity) {
         this.activity = activity;
         rotationEnabled = false;
         ITextureRegion gunTexture = activity.getResourceManager().getLoadedTextureRegion(R.drawable.gun);
+        ITextureRegion gunMaskTexture = activity.getResourceManager().getLoadedTextureRegion(R.drawable.gunmask);
 
         ZoomCamera camera = activity.getCamera();
 
         PointF gunPosition = new PointF( camera.getCenterX() - gunTexture.getWidth()  * 0.5f
-                                       , camera.getYMax() - gunTexture.getHeight() * GUN_PART_ON_SCENE);
+                                       , camera.getYMax() - gunTexture.getHeight() * GUN_PART_ON_SCENE );
 
-        gunSprite = new Sprite( gunPosition.x
-                              , gunPosition.y
+        perspectiveScale = DEFAULT_PERSPECTIVE_SCALE;
+        fireAvailable = true;
+        createTimer();
+        activity.getEngine().registerUpdateHandler(fireTimerHandler);
+
+        gunMask = new Sprite( gunPosition.x
+                            , gunPosition.y
+                            , gunMaskTexture
+                            , activity.getEngine().getVertexBufferObjectManager());
+        gunSprite = new Sprite( 0f
+                              , 0f
                               , gunTexture
                               , activity.getEngine().getVertexBufferObjectManager()) {
             @Override
@@ -65,7 +85,10 @@ public class Gun {
 
         };
 
-        gunSprite.setRotationCenter(gunSprite.getWidth() * 0.5f, gunSprite.getHeight());
+        gunMask.attachChild( gunSprite );
+        gunMask.setScaleCenterY( gunMask.getHeight() );
+        gunMask.setScaleY( perspectiveScale );
+        gunSprite.setRotationCenter( gunSprite.getWidth() * 0.5f, gunSprite.getHeight() );
     }
 
     public void rotateLeft() {
@@ -84,25 +107,60 @@ public class Gun {
 
     public PointF getShootStartPoint() {
         float gunAngle = gunSprite.getRotation();
-        PointF beginGunPoint = new PointF( gunSprite.getX() + gunSprite.getWidth() * 0.5f
-                                         , gunSprite.getY() + gunSprite.getHeight());
+        PointF beginGunPoint = new PointF( gunMask.getX() + gunSprite.getWidth() * 0.5f
+                                         , gunMask.getY() + gunSprite.getHeight());
 
-        float gunWidth = gunSprite.getHeight();
-        PointF shootStartPoint = new PointF( beginGunPoint.x + gunWidth * sin(gunAngle * GRAD_TO_RADIAN_KOEF)
-                                           , beginGunPoint.y - gunWidth * abs(cos(gunAngle * GRAD_TO_RADIAN_KOEF)));
+        float bulletStartPointDistance = BULLET_RELATIVE_START_POINT * gunSprite.getHeight();
+        PointF shootStartPoint =
+                new PointF( beginGunPoint.x + bulletStartPointDistance * sin( gunAngle * GRAD_TO_RADIAN_KOEF )
+                          , beginGunPoint.y
+                            - perspectiveScale * bulletStartPointDistance * cos( gunAngle * GRAD_TO_RADIAN_KOEF ) );
         return shootStartPoint;
     }
 
     public float getGunAngle() {
-        return gunSprite.getRotation();
+        float gunClearAngle = gunSprite.getRotation();
+        float gunRearSightDistance = gunSprite.getHeight();
+        PointF distortedRotationShift =
+                new PointF( gunRearSightDistance * sin( ( float ) Math.toRadians( gunClearAngle ) )
+                          , perspectiveScale * gunRearSightDistance * cos( ( float ) Math.toRadians( gunClearAngle ) ) );
+        double gunDistortedAngle = Math.atan2( distortedRotationShift.x , distortedRotationShift.y );
+        return (float) Math.toDegrees( gunDistortedAngle );
     }
 
     public Sprite getSprite() {
-        return gunSprite;
+        return gunMask;
     }
 
     public void fire() {
-        activity.getSceneSwitcher().getGameScene().createTorpedo( this.getShootStartPoint()
-                                                                , this.getGunAngle());
+        if (fireAvailable) {
+            Torpedo torpedo = new Torpedo( activity
+                                         , this.getShootStartPoint()
+                                         , this.getGunAngle());
+            activity.getSceneSwitcher().getGameScene().attachSpriteToLayer( torpedo
+                                                                          , GameScene.LAYER_TORPEDO);
+            fireAvailable = false;
+            fireTimerHandler.reset();
+        }
+    }
+
+    public void setPerspectiveScale( float scale ) {
+        perspectiveScale = scale;
+    }
+
+    public int getDamage() {
+        return damage;
+    }
+
+    public float getPerspectiveScale() {
+        return perspectiveScale;
+    }
+    private void createTimer() {
+        fireTimerHandler = new TimerHandler(FIRE_DELAY, new ITimerCallback() {
+            @Override
+            public void onTimePassed(final TimerHandler timerHandler) {
+                fireAvailable = true;
+            }
+        });
     }
 }
