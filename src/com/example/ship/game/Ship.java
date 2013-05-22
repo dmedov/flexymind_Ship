@@ -31,7 +31,7 @@ public class Ship {
     private static final float MAX_ROTATE_ANGLE = 5.0f;
     private static final float ROTATE_DURATION = 3.0f;
     private static final float RELATIVE_ROTATION_CENTER_Y_OFFSET = 1.75f;
-    private static final float HIT_AREA_OFFSET = 20f;
+    private static final float RELATIVE_HIT_AREA_OFFSET = 0.1f;
     private static final float SINK_ACCELERATION = 40f;
     private static final float MAX_SINK_ROTATION_ANGLE = 90f;
     private static final float MAX_SINK_ROTATION_VELOCITY = 20f;
@@ -226,7 +226,7 @@ public class Ship {
 
     private void createHitArea(float hitAreaFromPixel, float hitAreaToPixel) {
         hitAreaSprite = new Sprite( 0
-                , shipSprite.getHeight() - HIT_AREA_OFFSET
+                , shipSprite.getHeight() * ( 1 - RELATIVE_HIT_AREA_OFFSET )
                 , activity.getResourceManager().getLoadedTextureRegion(R.drawable.hitarea)
                 , activity.getVertexBufferObjectManager() );
         hitAreaSprite.setScaleCenterX(0);
