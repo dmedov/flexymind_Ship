@@ -40,7 +40,8 @@ public class Ship {
     private static final float MIN_SINK_VELOCITY = 2f;
     private static final float ALPHA_SINK_TIME = 20f;
     private static final int ROTATION_COUNT = 10;
-
+    private static final float RELATIVE_SIZE_AROUND = 1f;
+    private static final float RELATIVE_SIZE_BEYOND = 0.5f;
     private static float velocityDivider = 1;
 
     private final float yPosition;
@@ -62,22 +63,12 @@ public class Ship {
         this.yPosition = yPosition;
         this.typeId = shipTypeId;
         this.direction = direction;
-        GameScene gameScene = activity.getSceneSwitcher().getGameScene();
-        float lastShipLinePositionFromBottomY =
-                activity.getCamera().getHeightRaw() - gameScene.getShipLinePosition( GameScene.LAYER_THIRD_SHIP_LINE );
-        // увеличение обратно от расстояния, равно единице на самой ближайшей линии спауна кораблей
-        float perspectiveScale =
-                lastShipLinePositionFromBottomY / ( activity.getCamera().getHeightRaw() - yPosition );
         shipSprite = new Sprite( 0
-                               , 0
-                               , activity.getResourceManager().getLoadedTextureRegion(shipTypeId)
-                               , activity.getEngine().getVertexBufferObjectManager());
-
+                , 0
+                , activity.getResourceManager().getLoadedTextureRegion(shipTypeId)
+                , activity.getEngine().getVertexBufferObjectManager());
         initShipParametersById();
-        final PointF LEFT_TOP= new PointF( 0f, 0f );
-        shipSprite.setScaleCenter( LEFT_TOP.x, LEFT_TOP.y ); //по умолчанию не всегда в левом верхнем углу
-        shipSprite.setScale( perspectiveScale );
-        setDirection();
+        setDirectionAndScale();
         shipSprite.setPosition(startPoint.x, startPoint.y);
         createModifier();
     }
@@ -167,8 +158,26 @@ public class Ship {
         this.velocity /= velocityDivider;
     }
 
-    private void setDirection() {
+    private void setDirectionAndScale() {
+        GameScene gameScene = activity.getSceneSwitcher().getGameScene();
+        float lastShipLinePositionFromBottomY =
+                activity.getCamera().getHeightRaw() - gameScene.getShipLinePosition( GameScene.LAYER_THIRD_SHIP_LINE );
+        float skyLinePositionFromBottomY =
+                activity.getCamera().getHeightRaw() - gameScene.getChildByIndex( GameScene.LAYER_FIRST_WAVE )
+                        .getFirstChild().getY();
+        // увеличение f(x)=a/x + b, равно RELATIVE_SIZE_AROUND на самой ближайшей линии спауна кораблей,
+        // RELATIVE_SIZE_BEYOND на горизонте
+        float a = ( RELATIVE_SIZE_AROUND - RELATIVE_SIZE_BEYOND )
+                  * ( lastShipLinePositionFromBottomY * skyLinePositionFromBottomY )
+                  / ( skyLinePositionFromBottomY - lastShipLinePositionFromBottomY);
+        float b = RELATIVE_SIZE_BEYOND - a/skyLinePositionFromBottomY;
+        float perspectiveScale = a / ( activity.getCamera().getHeightRaw() - yPosition ) + b;
+        Log.d( "shipScale", "Scale: " + ( (Float) perspectiveScale ).toString() );
+        final PointF LEFT_TOP= new PointF( 0f, 0f );  //по умолчанию scaleCenter не всегда в левом верхнем углу
+        shipSprite.setScaleCenter( LEFT_TOP.x, LEFT_TOP.y );
         if (direction == TO_LEFT) {
+            shipSprite.setScale( perspectiveScale, perspectiveScale );
+
             startPoint = new PointF( activity.getCamera().getXMax()
                                    , yPosition - shipSprite.getHeightScaled() * (1 - RELATIVE_WATERLINE));
 
@@ -176,11 +185,11 @@ public class Ship {
                                                                      - FINISH_OFFSET
                                     , startPoint.y);
         } else {
-            startPoint = new PointF( activity.getCamera().getXMin() - shipSprite.getWidthScaled()
+            shipSprite.setScale( -perspectiveScale, perspectiveScale );
+            startPoint = new PointF( activity.getCamera().getXMin() - shipSprite.getWidth()
                                    , yPosition - shipSprite.getHeightScaled() * (1 - RELATIVE_WATERLINE));
             finishPoint = new PointF( activity.getCamera().getXMax() + FINISH_OFFSET
                                     , startPoint.y);
-            shipSprite.setFlippedHorizontal( true );
         }
     }
 
@@ -192,7 +201,8 @@ public class Ship {
                                                     , finishPoint.y
                                                     , EaseLinear.getInstance());
 
-        shipSprite.setRotationCenterY(shipSprite.getRotationCenterX() * RELATIVE_ROTATION_CENTER_Y_OFFSET);
+        shipSprite.setRotationCenterX( 0.5f * shipSprite.getWidthScaled() );
+        shipSprite.setRotationCenterY(abs( shipSprite.getRotationCenterX() ) * RELATIVE_ROTATION_CENTER_Y_OFFSET);
 
         RotationModifier rotateUpModifier = new RotationModifier( ROTATE_DURATION
                                                                 , MAX_ROTATE_ANGLE
@@ -249,7 +259,7 @@ public class Ship {
                 , sinkPointX
                 , sinkPointX
                 , shipSprite.getY()
-                , shipSprite.getY() + shipSprite.getHeight()
+                , shipSprite.getY() + shipSprite.getHeightScaled()
                 , EaseQuadIn.getInstance() );
 
         RotationModifier rotation = new RotationModifier( sinkRotationVelocity
