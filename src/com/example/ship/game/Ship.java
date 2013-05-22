@@ -62,14 +62,21 @@ public class Ship {
         this.yPosition = yPosition;
         this.typeId = shipTypeId;
         this.direction = direction;
-
+        GameScene gameScene = activity.getSceneSwitcher().getGameScene();
+        float lastShipLinePositionFromBottomY =
+                activity.getCamera().getHeightRaw() - gameScene.getShipLinePosition( GameScene.LAYER_THIRD_SHIP_LINE );
+        // увеличение обратно от расстояния, равно единице на самой ближайшей линии спауна кораблей
+        float perspectiveScale =
+                lastShipLinePositionFromBottomY / ( activity.getCamera().getHeightRaw() - yPosition );
         shipSprite = new Sprite( 0
                                , 0
                                , activity.getResourceManager().getLoadedTextureRegion(shipTypeId)
                                , activity.getEngine().getVertexBufferObjectManager());
 
         initShipParametersById();
-
+        final PointF LEFT_TOP= new PointF( 0f, 0f );
+        shipSprite.setScaleCenter( LEFT_TOP.x, LEFT_TOP.y ); //по умолчанию не всегда в левом верхнем углу
+        shipSprite.setScale( perspectiveScale );
         setDirection();
         shipSprite.setPosition(startPoint.x, startPoint.y);
         createModifier();
@@ -163,16 +170,17 @@ public class Ship {
     private void setDirection() {
         if (direction == TO_LEFT) {
             startPoint = new PointF( activity.getCamera().getXMax()
-                                   , yPosition - shipSprite.getHeight() * (1 - RELATIVE_WATERLINE));
-            finishPoint = new PointF( activity.getCamera().getXMin() - shipSprite.getWidth()
+                                   , yPosition - shipSprite.getHeightScaled() * (1 - RELATIVE_WATERLINE));
+
+            finishPoint = new PointF( activity.getCamera().getXMin() - shipSprite.getWidthScaled()
                                                                      - FINISH_OFFSET
                                     , startPoint.y);
         } else {
-            startPoint = new PointF( activity.getCamera().getXMin() - shipSprite.getWidth()
-                                   , yPosition - shipSprite.getHeight() * (1 - RELATIVE_WATERLINE));
+            startPoint = new PointF( activity.getCamera().getXMin() - shipSprite.getWidthScaled()
+                                   , yPosition - shipSprite.getHeightScaled() * (1 - RELATIVE_WATERLINE));
             finishPoint = new PointF( activity.getCamera().getXMax() + FINISH_OFFSET
                                     , startPoint.y);
-            shipSprite.setScaleX(-1);
+            shipSprite.setFlippedHorizontal( true );
         }
     }
 
