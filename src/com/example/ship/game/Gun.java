@@ -36,7 +36,7 @@ public class Gun {
     private SceletonActivity activity;
     private TimerHandler fireTimerHandler;
     private boolean fireAvailable = true;
-    private int countOnTorpedoIndicators = GameHUD.COUNT_TORPEDO_INDICATOR;
+    private int progressOfProgressBar = ProgressBar.FULL_PROGRESS;
 
     public Gun(SceletonActivity activity) {
         this.activity = activity;
@@ -138,8 +138,8 @@ public class Gun {
             activity.getSceneSwitcher().getGameScene().attachSpriteToLayer( torpedo
                                                                           , GameScene.LAYER_TORPEDO);
             fireAvailable = false;
-            countOnTorpedoIndicators = 0;
-            activity.getSceneSwitcher().getGameScene().getGameGUD().updateProgressBar(countOnTorpedoIndicators);
+            progressOfProgressBar = 0;
+            activity.getSceneSwitcher().getGameScene().getGameGUD().updateProgressBar(progressOfProgressBar);
             fireTimerHandler.reset();
         }
         // xxx: временно для теста
@@ -154,17 +154,17 @@ public class Gun {
         return perspectiveScale;
     }
     private void createTimer() {
-        fireTimerHandler = new TimerHandler(FIRE_DELAY / GameHUD.COUNT_TORPEDO_INDICATOR, new ITimerCallback() {
+        fireTimerHandler = new TimerHandler(FIRE_DELAY / ProgressBar.FULL_PROGRESS, new ITimerCallback() {
             @Override
             public void onTimePassed(final TimerHandler timerHandler) {
-
-                if (countOnTorpedoIndicators == GameHUD.COUNT_TORPEDO_INDICATOR - 1) {
-                    countOnTorpedoIndicators++;
-                    activity.getSceneSwitcher().getGameScene().getGameGUD().updateProgressBar(countOnTorpedoIndicators);
+                if (progressOfProgressBar == ProgressBar.FULL_PROGRESS - 1) {
+                    progressOfProgressBar++;
+                    activity.getSceneSwitcher().getGameScene().getGameGUD().updateProgressBar(progressOfProgressBar);
                     fireAvailable = true;
-                } else {
-                    countOnTorpedoIndicators++;
-                    activity.getSceneSwitcher().getGameScene().getGameGUD().updateProgressBar(countOnTorpedoIndicators);
+                }
+                if (progressOfProgressBar < ProgressBar.FULL_PROGRESS - 1) {
+                    progressOfProgressBar++;
+                    activity.getSceneSwitcher().getGameScene().getGameGUD().updateProgressBar(progressOfProgressBar);
                     fireTimerHandler.reset();
                 }
             }

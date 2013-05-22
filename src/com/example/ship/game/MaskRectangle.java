@@ -22,21 +22,9 @@ public class MaskRectangle extends Rectangle{
         super(pX, pY, pWidth, pHeight, pVertexBufferObjectManager);
     }
 
-
-    public MaskRectangle(float pX, float pY, float pWidth, float pHeight, VertexBufferObjectManager pVertexBufferObjectManager, DrawType pDrawType) {
-        super(pX, pY, pWidth, pHeight, pVertexBufferObjectManager, pDrawType);
-    }
-
-
-    public MaskRectangle(float pX, float pY, float pWidth, float pHeight, IRectangleVertexBufferObject pRectangleVertexBufferObject) {
-        super(pX, pY, pWidth, pHeight, pRectangleVertexBufferObject);
-    }
-
-
     public boolean isEnabled() {
         return mMaskingEnabled;
     }
-
 
     public void setMaskingEnabled(final boolean pMaskingEnabled) {
         mMaskingEnabled = pMaskingEnabled;

@@ -26,7 +26,6 @@ import java.util.ArrayList;
  */
 public class GameHUD extends HUD {
 
-    public static final int COUNT_TORPEDO_INDICATOR = 5;
     private static final float RELATIVE_BUTTON_HEIGHT = 0.15f;
     private static final float RELATIVE_SPACE_BETWEEN_CONTROLS = 0.01f;
     private static final float RELATIVE_SCREEN_BORDER = 0.02f;
@@ -44,15 +43,14 @@ public class GameHUD extends HUD {
     private PointF cameraSize;
     private ArrayList<GameButtonSprite> buttons;
     private ArrayList<HealthIndicator> healthIndicators;
-    private ArrayList<TorpedoIndicator> torpedoIndicators;
     private HorizontalDigitalOnScreenControl rotateGunDigitalControl;
+    private ProgressBar progressBar;
 
     public GameHUD(SceletonActivity activity) {
         super();
         setOnAreaTouchTraversalFrontToBack();
         buttons = new ArrayList<GameButtonSprite>();
         healthIndicators = new ArrayList<HealthIndicator>();
-        torpedoIndicators = new ArrayList<TorpedoIndicator>();
         this.activity = activity;
         engine = this.activity.getEngine();
         cameraSize = new PointF( this.activity.getCamera().getWidthRaw()
@@ -94,15 +92,15 @@ public class GameHUD extends HUD {
             this.attachChild(button);
         }
 
-        pauseButton.setPosition( RELATIVE_SCREEN_BORDER * cameraSize.x
-                               , RELATIVE_SCREEN_BORDER * cameraSize.y);
-        fireButton.setPosition( (1 - RELATIVE_SCREEN_BORDER) * cameraSize.x - fireButton.getWidth()
-                              , (1 - RELATIVE_SCREEN_BORDER) * cameraSize.y - fireButton.getHeight());
+        pauseButton.setPosition(RELATIVE_SCREEN_BORDER * cameraSize.x
+                , RELATIVE_SCREEN_BORDER * cameraSize.y);
+        fireButton.setPosition((1 - RELATIVE_SCREEN_BORDER) * cameraSize.x - fireButton.getWidth()
+                , (1 - RELATIVE_SCREEN_BORDER) * cameraSize.y - fireButton.getHeight());
     }
 
     private void createRotateGunDigitalControl() {
         ITextureRegion rotateGunDigitalControlBaseTextureRegion = activity.getResourceManager()
-                                                       .getLoadedTextureRegion( R.drawable.onscreen_control_base );
+                                                       .getLoadedTextureRegion(R.drawable.onscreen_control_base);
         ITextureRegion rotateGunDigitalControlKnobTextureRegion = activity.getResourceManager()
                                                        .getLoadedTextureRegion( R.drawable.onscreen_control_knob );
 
@@ -140,8 +138,8 @@ public class GameHUD extends HUD {
         rotateGunDigitalControl.getControlBase()
                 .setScaleCenter( BASE_TEXTURE_LEFT_BOTTOM.x, BASE_TEXTURE_LEFT_BOTTOM.y );
         rotateGunDigitalControl.getControlBase()
-                .setScale( cameraSize.y * RELATIVE_CONTROL_HEIGHT
-                         / rotateGunDigitalControlBaseTextureRegion.getHeight() );
+                .setScale(cameraSize.y * RELATIVE_CONTROL_HEIGHT
+                        / rotateGunDigitalControlBaseTextureRegion.getHeight());
         rotateGunDigitalControl.getControlKnob()
                 .setScale( cameraSize.y * RELATIVE_CONTROL_HEIGHT
                          / rotateGunDigitalControlBaseTextureRegion.getHeight() );
@@ -197,26 +195,18 @@ public class GameHUD extends HUD {
     }
 
     private void createProgressBar() {
-        float positionX =  0.8f * cameraSize.x;
-        float positionY;
+        progressBar = new ProgressBar(activity, this);
 
-        for (int i = 0; i < COUNT_TORPEDO_INDICATOR; i++) {
-            TorpedoIndicator torpedoIndicator = new TorpedoIndicator(activity, this);
-            positionY = (1 - RELATIVE_SCREEN_BORDER) * cameraSize.y - torpedoIndicator.getHeightTorpedoIndicator();
-            torpedoIndicator.setPosition(new PointF(positionX, positionY));
-            torpedoIndicators.add(torpedoIndicator);
-            positionX -= torpedoIndicator.getWidthTorpedoIndicator() + RELATIVE_SPACE_BETWEEN_CONTROLS * cameraSize.x;
-        }
+        float positionX = (1 - RELATIVE_SCREEN_BORDER - RELATIVE_SPACE_BETWEEN_CONTROLS) * cameraSize.x
+                          - buttons.get(0).getWidth() - progressBar.getHeightProgressBar();
+        float positionY = (1 - RELATIVE_SCREEN_BORDER) * cameraSize.y - progressBar.getHeightProgressBar();
+
+        progressBar.setPosition(new PointF(positionX, positionY));
+
     }
 
-    public void updateProgressBar(int countOnTorpedoIndicator) {
-        for (int i = 0; i < torpedoIndicators.size(); i++) {
-            if (torpedoIndicators.size() - i <= countOnTorpedoIndicator) {
-                torpedoIndicators.get(i).setState(TorpedoIndicator.ON_STATE);
-            } else {
-                torpedoIndicators.get(i).setState(TorpedoIndicator.OFF_STATE);
-            }
-        }
+    public void updateProgressBar(int progress) {
+        progressBar.setProgress(progress);
     }
 
     public void updateScore() {
