@@ -65,12 +65,13 @@ public class Level {
     }
 
     private void updateLevelInfoInHud() {
-        String info;
-        info = String.format( "%s: %d\n%s: %d"
+        String levelString;
+        levelString = String.format( "%s: %d"
                             , activity.getStringResource(R.string.LEVEL)
-                            , currentLevel
-                            , activity.getStringResource(R.string.LEFT)
-                            , levelGoal - levelProgress);
-        activity.getSceneSwitcher().getGameScene().getGameHUD().updateLevelInfo(info);
+                            , currentLevel );
+        String shipsToDestroyString = String.format( "%d"
+                                             , levelGoal - levelProgress);
+
+        activity.getSceneSwitcher().getGameScene().getGameHUD().updateLevelInfo(levelString, shipsToDestroyString);
     }
 }

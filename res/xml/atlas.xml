@@ -23,5 +23,6 @@
                 <texture name="hitarea"/>
                 <texture name="onhealth"/>
                 <texture name="offhealth"/>
+                <texture name="ships_left"/>
            </Atlas>
 </resources>
