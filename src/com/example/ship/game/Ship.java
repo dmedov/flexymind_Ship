@@ -64,11 +64,12 @@ public class Ship {
         this.typeId = shipTypeId;
         this.direction = direction;
         shipSprite = new Sprite( 0
-                , 0
-                , activity.getResourceManager().getLoadedTextureRegion(shipTypeId)
-                , activity.getEngine().getVertexBufferObjectManager());
+                               , 0
+                               , activity.getResourceManager().getLoadedTextureRegion(shipTypeId)
+                               , activity.getEngine().getVertexBufferObjectManager());
         initShipParametersById();
-        setDirectionAndScale();
+        setScale();        // нельзя менять местами с setDirection()
+        setDirection();
         shipSprite.setPosition(startPoint.x, startPoint.y);
         createModifier();
     }
@@ -158,18 +159,19 @@ public class Ship {
         this.velocity /= velocityDivider;
     }
 
-    private void setDirectionAndScale() {
+    private void setScale() {
         GameScene gameScene = activity.getSceneSwitcher().getGameScene();
         float lastShipLinePositionFromBottomY =
                 activity.getCamera().getHeightRaw() - gameScene.getShipLinePosition( GameScene.LAYER_THIRD_SHIP_LINE );
         float skyLinePositionFromBottomY =
                 activity.getCamera().getHeightRaw() - gameScene.getChildByIndex( GameScene.LAYER_FIRST_WAVE )
                         .getFirstChild().getY();
+
         // увеличение f(x)=a/x + b, равно RELATIVE_SIZE_AROUND на самой ближайшей линии спауна кораблей,
         // RELATIVE_SIZE_BEYOND на горизонте
         float a = ( RELATIVE_SIZE_AROUND - RELATIVE_SIZE_BEYOND )
-                  * ( lastShipLinePositionFromBottomY * skyLinePositionFromBottomY )
-                  / ( skyLinePositionFromBottomY - lastShipLinePositionFromBottomY);
+                * ( lastShipLinePositionFromBottomY * skyLinePositionFromBottomY )
+                / ( skyLinePositionFromBottomY - lastShipLinePositionFromBottomY);
         float b = RELATIVE_SIZE_BEYOND - a/skyLinePositionFromBottomY;
         float perspectiveScale = a / ( activity.getCamera().getHeightRaw() - yPosition ) + b;
         Log.d( "shipScale", "Scale: " + ( (Float) perspectiveScale ).toString() );
@@ -177,7 +179,12 @@ public class Ship {
         shipSprite.setScaleCenter( LEFT_TOP.x, LEFT_TOP.y );
         if (direction == TO_LEFT) {
             shipSprite.setScale( perspectiveScale, perspectiveScale );
-
+        } else {
+            shipSprite.setScale( -perspectiveScale, perspectiveScale );
+        }
+    }
+    private void setDirection() {
+        if (direction == TO_LEFT) {
             startPoint = new PointF( activity.getCamera().getXMax()
                                    , yPosition - shipSprite.getHeightScaled() * (1 - RELATIVE_WATERLINE));
 
@@ -185,7 +192,6 @@ public class Ship {
                                                                      - FINISH_OFFSET
                                     , startPoint.y);
         } else {
-            shipSprite.setScale( -perspectiveScale, perspectiveScale );
             startPoint = new PointF( activity.getCamera().getXMin() - shipSprite.getWidth()
                                    , yPosition - shipSprite.getHeightScaled() * (1 - RELATIVE_WATERLINE));
             finishPoint = new PointF( activity.getCamera().getXMax() + FINISH_OFFSET
