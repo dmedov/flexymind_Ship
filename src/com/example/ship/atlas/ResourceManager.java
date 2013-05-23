@@ -3,6 +3,9 @@ package com.example.ship.atlas;
 import android.content.Context;
 import android.util.Log;
 import com.example.ship.R;
+import org.andengine.audio.music.Music;
+import org.andengine.audio.music.MusicFactory;
+import org.andengine.audio.music.MusicManager;
 import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
@@ -16,6 +19,7 @@ import org.andengine.opengl.texture.region.ITextureRegion;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,6 +60,7 @@ public class ResourceManager {
 
     private XmlPullParser parser = null;
     private TextureManager textureManager = null;
+    private MusicManager musicManager = null;
     private Context context;
     private int currentAtlasId;
 
@@ -67,6 +72,24 @@ public class ResourceManager {
 
     public ITextureRegion getLoadedTextureRegion(int resourceID) {
         return loadedTextures.get(resourceID);
+    }
+
+    public void loadAllMusic(MusicManager musicManager) {
+        this.musicManager = musicManager;
+        String listFileNames[];
+        Music music;
+        MusicFactory.setAssetBasePath("music/");
+        try {
+            listFileNames = context.getAssets().list("music");
+            for (String file : listFileNames) {
+                music = MusicFactory.createMusicFromAsset(musicManager,context,file);
+                music.play();
+            }
+        } catch (IOException e) {
+
+        }
+
+
     }
 
     public void loadAllTextures(TextureManager textureManager) {

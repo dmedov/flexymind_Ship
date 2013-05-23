@@ -52,6 +52,7 @@ public class SceletonActivity extends BaseGameActivity {
                                                        , new FillResolutionPolicy()
                                                        , zoomCamera);
         engineOptions.getTouchOptions().setNeedsMultiTouch(true);
+        engineOptions.getAudioOptions().setNeedsMusic(true);
         return engineOptions;
     }
 
@@ -59,6 +60,7 @@ public class SceletonActivity extends BaseGameActivity {
     public void onCreateResources(OnCreateResourcesCallback pOnCreateResourcesCallback) {
         resourceManager = new ResourceManager(this);
         resourceManager.loadAllTextures(mEngine.getTextureManager());
+        resourceManager.loadAllMusic(mEngine.getMusicManager());
 
         FontFactory.setAssetBasePath(getResources().getString(R.string.FONT_BASE_ASSET_PATH));
 
