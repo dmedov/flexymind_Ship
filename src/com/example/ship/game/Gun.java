@@ -36,7 +36,7 @@ public class Gun {
     private SceletonActivity activity;
     private TimerHandler fireTimerHandler;
     private boolean fireAvailable = true;
-    private int progressBarValue  = ProgressBar.FULL_PROGRESS;
+    private int reloadProgress   = ProgressBar.FULL_PROGRESS;
 
     public Gun(SceletonActivity activity) {
         this.activity = activity;
@@ -138,8 +138,8 @@ public class Gun {
             activity.getSceneSwitcher().getGameScene().attachSpriteToLayer( torpedo
                                                                           , GameScene.LAYER_TORPEDO);
             fireAvailable = false;
-            progressBarValue = 0;
-            activity.getSceneSwitcher().getGameScene().getGameGUD().updateProgressBar(progressBarValue);
+            reloadProgress  = 0;
+            activity.getSceneSwitcher().getGameScene().getGameGUD().updateProgressBar(reloadProgress );
             fireTimerHandler.reset();
         }
         // xxx: временно для теста
@@ -157,14 +157,14 @@ public class Gun {
         fireTimerHandler = new TimerHandler(FIRE_DELAY / ProgressBar.FULL_PROGRESS, new ITimerCallback() {
             @Override
             public void onTimePassed(final TimerHandler timerHandler) {
-                if (progressBarValue == ProgressBar.FULL_PROGRESS - 1) {
-                    progressBarValue++;
-                    activity.getSceneSwitcher().getGameScene().getGameGUD().updateProgressBar(progressBarValue);
+                if (reloadProgress  == ProgressBar.FULL_PROGRESS - 1) {
+                    reloadProgress ++;
+                    activity.getSceneSwitcher().getGameScene().getGameGUD().updateProgressBar(reloadProgress );
                     fireAvailable = true;
                 }
-                if (progressBarValue < ProgressBar.FULL_PROGRESS - 1) {
-                    progressBarValue++;
-                    activity.getSceneSwitcher().getGameScene().getGameGUD().updateProgressBar(progressBarValue);
+                if (reloadProgress  < ProgressBar.FULL_PROGRESS - 1) {
+                    reloadProgress ++;
+                    activity.getSceneSwitcher().getGameScene().getGameGUD().updateProgressBar(reloadProgress );
                     fireTimerHandler.reset();
                 }
             }
