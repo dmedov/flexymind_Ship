@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <level id="1" type="regular">
+        <enemie number="5" constSpawnDelay="5.0" firstSpawnIn="1.0" health="100" points="200" lines="1 2 3" direction="to left"></enemie>
+    </level>
+</resources>
