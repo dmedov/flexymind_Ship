@@ -38,6 +38,9 @@ public class GameHUD extends HUD {
     
     private static final float TIME_PERIOD_CHECK_CONTROL = 0.1f;
     private static final float RELATIVE_CONTROL_HEIGHT = 0.5f;
+    private static final float RELATIVE_CONTROL_MIDDLE_Y = 0.25f;
+    private static final float CONTROL_ALPHA = 0.5f;
+
     public static final int TEXT_LENGTH = 32;
 
     private final SceletonActivity activity;
@@ -114,7 +117,7 @@ public class GameHUD extends HUD {
                 new PointF( 0f , rotateGunDigitalControlBaseTextureRegion.getHeight() );
         final float CONTROL_BASE_TEXTURE_HEIGHT = rotateGunDigitalControlBaseTextureRegion.getHeight();
         final PointF GUN_DIGITAL_CONTROL_COORDINATE =
-                new PointF( 0f * cameraSize.y
+                new PointF( 0f
                           , (1 - RELATIVE_SCREEN_BORDER) * (cameraSize.y - CONTROL_BASE_TEXTURE_HEIGHT));
 
         rotateGunDigitalControl =
@@ -137,7 +140,7 @@ public class GameHUD extends HUD {
                 }
             }
         });
-        rotateGunDigitalControl.getControlBase().setAlpha(0.5f);
+        rotateGunDigitalControl.getControlBase().setAlpha( CONTROL_ALPHA );
         // Чтобы текстура не выходила за границы экрана при масштабировании
         rotateGunDigitalControl.getControlBase()
                 .setScaleCenter( BASE_TEXTURE_LEFT_BOTTOM.x, BASE_TEXTURE_LEFT_BOTTOM.y );
@@ -152,7 +155,7 @@ public class GameHUD extends HUD {
         final float EXTENT_SIDE = HorizontalDigitalOnScreenControl.STANDART_RELATIVE_EXTENT_SIDE
                                   - 0.5f * rotateGunDigitalControl.KNOB_SIZE_IN_PERCENT - KNOB_BORDER;
         rotateGunDigitalControl.setExtentSide( EXTENT_SIDE );
-        rotateGunDigitalControl.setHeightLevel( 0.25f );
+        rotateGunDigitalControl.setHeightLevel( RELATIVE_CONTROL_MIDDLE_Y );
 
         rotateGunDigitalControl.refreshControlKnobPosition();
         this.setChildScene( rotateGunDigitalControl );
