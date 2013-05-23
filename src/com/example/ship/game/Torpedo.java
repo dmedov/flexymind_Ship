@@ -2,7 +2,7 @@ package com.example.ship.game;
 
 import android.graphics.PointF;
 import com.example.ship.R;
-import com.example.ship.SceletonActivity;
+import com.example.ship.RootActivity;
 import org.andengine.entity.modifier.*;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.util.modifier.ease.EaseExponentialOut;
@@ -15,7 +15,7 @@ public class Torpedo extends Sprite {
     private PointF finishPoint;
     private double radians;
 
-    public Torpedo(SceletonActivity activity, PointF point, float angle) {
+    public Torpedo(RootActivity activity, PointF point, float angle) {
         super( point.x
              , point.y
              , activity.getResourceManager().getLoadedTextureRegion(R.drawable.torpedo)

@@ -4,7 +4,7 @@ import android.graphics.PointF;
 import android.graphics.Typeface;
 import com.example.ship.Events;
 import com.example.ship.R;
-import com.example.ship.SceletonActivity;
+import com.example.ship.RootActivity;
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.camera.hud.controls.BaseOnScreenControl;
@@ -43,7 +43,7 @@ public class GameHUD extends HUD {
 
     public static final int TEXT_LENGTH = 32;
 
-    private final SceletonActivity activity;
+    private final RootActivity activity;
     private final Engine engine;
     private PointF positionHitPoint;
     private Text scoreText;
@@ -54,7 +54,7 @@ public class GameHUD extends HUD {
     private ArrayList<HealthIndicator> healthIndicators;
     private HorizontalDigitalOnScreenControl rotateGunDigitalControl;
 
-    public GameHUD(SceletonActivity activity) {
+    public GameHUD(RootActivity activity) {
         super();
         setOnAreaTouchTraversalFrontToBack();
         buttons = new ArrayList<GameButtonSprite>();
@@ -107,14 +107,14 @@ public class GameHUD extends HUD {
 
     private void createRotateGunDigitalControl() {
         ITextureRegion rotateGunDigitalControlBaseTextureRegion =
-                activity.getResourceManager().getLoadedTextureRegion( R.drawable.onscreen_control_base );
+                activity.getResourceManager().getLoadedTextureRegion(R.drawable.onscreen_control_base);
         ITextureRegion rotateGunDigitalControlKnobTextureRegion =
-                activity.getResourceManager().getLoadedTextureRegion( R.drawable.onscreen_control_knob );
+                activity.getResourceManager().getLoadedTextureRegion(R.drawable.onscreen_control_knob);
 
 
 
         final PointF BASE_TEXTURE_LEFT_BOTTOM =
-                new PointF( 0f , rotateGunDigitalControlBaseTextureRegion.getHeight() );
+                new PointF(0f , rotateGunDigitalControlBaseTextureRegion.getHeight());
         final float CONTROL_BASE_TEXTURE_HEIGHT = rotateGunDigitalControlBaseTextureRegion.getHeight();
         final PointF GUN_DIGITAL_CONTROL_COORDINATE =
                 new PointF( 0f
@@ -130,35 +130,35 @@ public class GameHUD extends HUD {
                                                     , activity.getVertexBufferObjectManager()
                                                     , new BaseOnScreenControl.IOnScreenControlListener() {
             @Override
-            public void onControlChange( BaseOnScreenControl baseOnScreenControl, float xShift, float yShift ) {
-                if          ( xShift < 0 ) {
+            public void onControlChange(BaseOnScreenControl baseOnScreenControl, float xShift, float yShift) {
+                if          (xShift < 0) {
                     getGun().rotateLeft();
-                } else if   ( xShift > 0 ) {
+                } else if   (xShift > 0) {
                     getGun().rotateRight();
                 } else {
                     getGun().stopRotate();
                 }
             }
         });
-        rotateGunDigitalControl.getControlBase().setAlpha( CONTROL_ALPHA );
+        rotateGunDigitalControl.getControlBase().setAlpha(CONTROL_ALPHA);
         // Чтобы текстура не выходила за границы экрана при масштабировании
         rotateGunDigitalControl.getControlBase()
-                .setScaleCenter( BASE_TEXTURE_LEFT_BOTTOM.x, BASE_TEXTURE_LEFT_BOTTOM.y );
+                .setScaleCenter(BASE_TEXTURE_LEFT_BOTTOM.x, BASE_TEXTURE_LEFT_BOTTOM.y);
         rotateGunDigitalControl.getControlBase()
-                .setScale( cameraSize.y * RELATIVE_CONTROL_HEIGHT
-                           / rotateGunDigitalControlBaseTextureRegion.getHeight() );
+                .setScale(cameraSize.y * RELATIVE_CONTROL_HEIGHT
+                          / rotateGunDigitalControlBaseTextureRegion.getHeight());
         rotateGunDigitalControl.getControlKnob()
-                .setScale( cameraSize.y * RELATIVE_CONTROL_HEIGHT
-                           / rotateGunDigitalControlBaseTextureRegion.getHeight() );
-        // 36f измерено по текстуре, обеспечивает правильный отступ
+                .setScale(cameraSize.y * RELATIVE_CONTROL_HEIGHT
+                          / rotateGunDigitalControlBaseTextureRegion.getHeight());
+        // 13f измерено по текстуре, обеспечивает правильный отступ
         final float KNOB_BORDER = 13f / rotateGunDigitalControl.getControlBase().getWidth();
         final float EXTENT_SIDE = HorizontalDigitalOnScreenControl.STANDART_RELATIVE_EXTENT_SIDE
                                   - 0.5f * rotateGunDigitalControl.KNOB_SIZE_IN_PERCENT - KNOB_BORDER;
-        rotateGunDigitalControl.setExtentSide( EXTENT_SIDE );
-        rotateGunDigitalControl.setHeightLevel( RELATIVE_CONTROL_MIDDLE_Y );
+        rotateGunDigitalControl.setExtentSide(EXTENT_SIDE);
+        rotateGunDigitalControl.setHeightLevel(RELATIVE_CONTROL_MIDDLE_Y);
 
         rotateGunDigitalControl.refreshControlKnobPosition();
-        this.setChildScene( rotateGunDigitalControl );
+        this.setChildScene(rotateGunDigitalControl);
     }
 
     private void createStats() {
