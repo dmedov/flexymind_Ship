@@ -2,10 +2,11 @@ package com.example.ship.sceletone;
 
 import android.graphics.Point;
 import android.graphics.PointF;
-import com.example.ship.atlas.ResourceManager;
 import com.example.ship.Events;
 import com.example.ship.R;
 import com.example.ship.SceletonActivity;
+import com.example.ship.atlas.ResourceManager;
+import com.example.ship.commons.CSprite;
 import org.andengine.engine.Engine;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
@@ -64,10 +65,7 @@ public class SceletonScene extends Scene {
         final PointF shipPosition = new PointF( textureSize.x * 0.5f - shipTextureRegion.getWidth() * 0.5f
                                               , textureSize.y * 0.5f - shipTextureRegion.getHeight() * 0.5f);
 
-        shipSprite = new Sprite( shipPosition.x
-                                      , shipPosition.y
-                                      , shipTextureRegion
-                                      , engine.getVertexBufferObjectManager()) {
+        shipSprite = new CSprite(shipPosition, R.drawable.ship) {
             @Override
             public boolean onAreaTouched( TouchEvent pSceneTouchEvent
                                         , float pTouchAreaLocalX
@@ -79,6 +77,8 @@ public class SceletonScene extends Scene {
                 return super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
             }
         };
+
+
 
         registerTouchArea();
         this.attachChild(shipSprite);
