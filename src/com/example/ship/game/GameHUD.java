@@ -39,15 +39,17 @@ public class GameHUD extends HUD {
     
     private static final float TIME_PERIOD_CHECK_CONTROL = 0.1f;
     private static final float RELATIVE_CONTROL_HEIGHT = 0.2f;
-    public static final int TEXT_LENGTH = 32;
+    private static final int TEXT_LENGTH = 32;
+    private static final float RELATIVE_MEASURED_TEXT_MIDDLE = 0.7f;
+
 
     private final SceletonActivity activity;
     private final Engine engine;
     private PointF positionHitPoint;
     private Text scoreText;
-    private Sprite shipsLeftToDestroy;
+    private Sprite remainingShipsSprite;
     private Text currentLevelText;
-    private Text shipsLeftToDestroyText;
+    private Text remainingShipsText;
     private Font statFont;
     private PointF cameraSize;
     private ArrayList<GameButtonSprite> buttons;
@@ -180,13 +182,13 @@ public class GameHUD extends HUD {
         }
 
         statFont = FontFactory.create( activity.getEngine().getFontManager()
-                                      , activity.getEngine().getTextureManager()
-                                      , FONT_ATLAS_SIDE
-                                      , FONT_ATLAS_SIDE
-                                      , Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)
-                                      , healthTextureHeight * scale
-                                      , true
-                                      , Color.WHITE_ABGR_PACKED_INT);
+                                     , activity.getEngine().getTextureManager()
+                                     , FONT_ATLAS_SIDE
+                                     , FONT_ATLAS_SIDE
+                                     , Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)
+                                     , healthTextureHeight * scale
+                                     , true
+                                     , Color.WHITE_ABGR_PACKED_INT);
         statFont.load();
 
         // создаем изначальные очки
@@ -197,31 +199,31 @@ public class GameHUD extends HUD {
                             , TEXT_LENGTH
                             , activity.getEngine().getVertexBufferObjectManager());
         scoreText.setPosition(cameraSize.x * 0.5f - scoreText.getWidth() * 0.5f
-                , RELATIVE_SCREEN_BORDER * cameraSize.y);
+                             , RELATIVE_SCREEN_BORDER * cameraSize.y);
 
         currentLevelText = new Text( 0
-                                , 0
-                                , statFont
-                                , ""
-                                , TEXT_LENGTH
-                                , activity.getEngine().getVertexBufferObjectManager() );
+                                   , 0
+                                   , statFont
+                                   , ""
+                                   , TEXT_LENGTH
+                                   , activity.getEngine().getVertexBufferObjectManager());
         ITextureRegion shipsLeftToDestroyTexture =
-                activity.getResourceManager().getLoadedTextureRegion( R.drawable.ships_left );
-        shipsLeftToDestroy = new Sprite( 0
-                , 0
-                , shipsLeftToDestroyTexture
-                , activity.getEngine().getVertexBufferObjectManager() );
-        shipsLeftToDestroyText = new Text( 0
-                , 0
-                , statFont
-                , ""
-                , TEXT_LENGTH
-                , activity.getEngine().getVertexBufferObjectManager() );
+                activity.getResourceManager().getLoadedTextureRegion(R.drawable.ships_left);
+        remainingShipsSprite = new Sprite( 0
+                                         , 0
+                                         , shipsLeftToDestroyTexture
+                                         , activity.getEngine().getVertexBufferObjectManager());
+        remainingShipsText = new Text( 0
+                                     , 0
+                                     , statFont
+                                     , ""
+                                     , TEXT_LENGTH
+                                     , activity.getEngine().getVertexBufferObjectManager());
 
         this.attachChild(scoreText);
         this.attachChild(currentLevelText);
-        this.attachChild(shipsLeftToDestroy);
-        this.attachChild(shipsLeftToDestroyText);
+        this.attachChild(remainingShipsSprite);
+        this.attachChild(remainingShipsText);
     }
 
     public void updateScore() {
@@ -230,20 +232,19 @@ public class GameHUD extends HUD {
                 , RELATIVE_SCREEN_BORDER * cameraSize.y);
     }
 
-    public void updateLevelInfo( String currentLevel, String shipsToDestroy ) {
-        final float RELATIVE_TEXT_LINE_MIDDLE = 0.7f;
-        currentLevelText.setText( currentLevel );
+    public void updateLevelInfo(String currentLevel, String shipsToDestroy) {
+        currentLevelText.setText(currentLevel);
         currentLevelText.setPosition( cameraSize.x * 0.25f - currentLevelText.getWidth() * 0.5f
-                                    , RELATIVE_SCREEN_BORDER * cameraSize.y );
-        shipsLeftToDestroy.setScale( shipsLeftToDestroyText.getHeight() / shipsLeftToDestroy.getHeight() );
-        shipsLeftToDestroy.setPosition( currentLevelText.getX()
-                                      , currentLevelText.getY() + currentLevelText.getHeight()
-                                        + 0.5f *shipsLeftToDestroy.getHeight() );
-        shipsLeftToDestroyText.setText( shipsToDestroy );
-        shipsLeftToDestroyText.setPosition( shipsLeftToDestroy.getX() + shipsLeftToDestroy.getWidth()
-                                        + 0.5f * shipsLeftToDestroy.getWidthScaled()
-                                      , shipsLeftToDestroy.getY()  + 0.5f * shipsLeftToDestroy.getHeightScaled()
-                                        - RELATIVE_TEXT_LINE_MIDDLE * shipsLeftToDestroyText.getHeight() );
+                                    , RELATIVE_SCREEN_BORDER * cameraSize.y);
+        remainingShipsSprite.setScale(remainingShipsText.getHeight() / remainingShipsSprite.getHeight());
+        remainingShipsSprite.setPosition( currentLevelText.getX()
+                                        , currentLevelText.getY() + currentLevelText.getHeight()
+                                          + 0.5f * remainingShipsSprite.getHeight());
+        remainingShipsText.setText(shipsToDestroy);
+        remainingShipsText.setPosition( remainingShipsSprite.getX() + remainingShipsSprite.getWidth()
+                                        + 0.5f * remainingShipsSprite.getWidthScaled()
+                                      , remainingShipsSprite.getY()  + 0.5f * remainingShipsSprite.getHeightScaled()
+                                        - RELATIVE_MEASURED_TEXT_MIDDLE * remainingShipsText.getHeight());
     }
 
     public void updateHealthIndicators(int health) {
