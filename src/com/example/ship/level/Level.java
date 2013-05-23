@@ -4,6 +4,10 @@ import android.util.Log;
 import com.example.ship.R;
 import com.example.ship.RootActivity;
 import com.example.ship.game.Ship;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.IOException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -33,12 +37,13 @@ public class Level {
 
     public void startLevel(int level) {
         currentLevel = level;
+        levelInXml(currentLevel);
         levelGoal = (int) (FIRST_LEVEL_GOAL * (1 + LEVEL_GOAL_MULTIPLIER * (currentLevel - 1)));
         levelProgress = 0;
 
-        float newSpawnDelay = (float) ( (ShipSpawner.MAX_SPAWN_DELAY - ShipSpawner.MIN_SPAWN_DELAY)
+        float newSpawnDelay = (float) ( (RandomShipSpawner.MAX_SPAWN_DELAY - RandomShipSpawner.MIN_SPAWN_DELAY)
                                         * Math.pow(LEVEL_SPAWN_DELAY_MULTIPLIER, currentLevel - 1));
-        activity.getSceneSwitcher().getGameScene().getShipSpawner()
+        activity.getSceneSwitcher().getGameScene().getRandomShipSpawner()
                 .setSpawnDelay(newSpawnDelay);
 
         Ship.setVelocityDivider((float) Math.pow(LEVEL_SHIP_SPEED_MULTIPLIER, currentLevel - 1));
@@ -75,4 +80,94 @@ public class Level {
                             , levelProgress);
         activity.getSceneSwitcher().getGameScene().getGameHUD().updateLevelInfo(info);
     }
+
+    private void levelInXml(int level) {
+
+        XmlPullParser parser = null;
+        int eventType = 0;
+
+        try {
+            parser = activity.getResources().getXml(R.xml.levels);
+            eventType = parser.getEventType();
+        } catch (XmlPullParserException e) {
+            Log.d("1log",e + "xml parser initialization error");
+        }
+
+        while (eventType != XmlPullParser.END_DOCUMENT) {
+            try {
+
+                if (parser.getEventType() == XmlPullParser.START_TAG
+                        && parser.getName().equals("level")
+                        && parser.getDepth() == 2) {
+
+                    Log.d("1log", "level");
+
+                    parseLevelTag(level, parser);
+
+                }
+
+                parser.next();
+                eventType = parser.getEventType();
+
+            } catch (XmlPullParserException e) {
+                Log.d("1log", e + "xml parser error");
+            } catch (IOException e) {
+                Log.d("1log", e + "xml parser error");
+            }
+        }
+    }
+
+    private void parseLevelTag(float level, XmlPullParser parser) throws XmlPullParserException, IOException {
+        for (int i = 0; i < parser.getAttributeCount(); i++) {
+            String attribute = parser.getAttributeName(i);
+            String value = parser.getAttributeValue(i);
+            if (attribute.equals("id") && level == Integer.parseInt(value)) {
+
+                while (!(parser.getEventType() == XmlPullParser.END_TAG
+                        && parser.getName().equals("level")
+                        && parser.getDepth() == 2)) {
+
+                    if (parser.getEventType() == XmlPullParser.START_TAG
+                            && parser.getName().equals("enemy")
+                            && parser.getDepth() == 3) {
+
+                        parseEnemyTag(parser);
+
+                    }
+                    parser.next();
+                }
+            }
+        }
+    }
+
+    private void parseEnemyTag(XmlPullParser parser) {
+
+        int number = 0;
+        float velocity = 0;
+        float spawnDelay = 0;
+        float firstSpawnIn = 0;
+        String direction = null;
+
+        for (int i = 0; i < parser.getAttributeCount(); i++) {
+            String attribute = parser.getAttributeName(i);
+            String value = parser.getAttributeValue(i);
+
+            if (attribute.equals("number")) {
+                number = Integer.parseInt(value);
+            } else if (attribute.equals("velocity")) {
+                velocity = Float.parseFloat(value);
+            } else if (attribute.equals("constSpawnDelay")) {
+                spawnDelay = Float.parseFloat(value);
+            } else if (attribute.equals("firstSpawnIn")) {
+                firstSpawnIn = Float.parseFloat(value);
+            } else if (attribute.equals("direction")) {
+                direction = value;
+            }
+
+        }
+
+        Log.d("1log", String.format( "num=%d...vel=%s...spaD=%s...fspa=%s...dir=%s"
+                                   , number, velocity, spawnDelay, firstSpawnIn, direction));
+    }
+
 }
