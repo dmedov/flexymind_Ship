@@ -36,7 +36,7 @@ public class Gun {
     private SceletonActivity activity;
     private TimerHandler fireTimerHandler;
     private boolean fireAvailable = true;
-    private int progressOfProgressBar = ProgressBar.FULL_PROGRESS;
+    private int progressBarValue  = ProgressBar.FULL_PROGRESS;
 
     public Gun(SceletonActivity activity) {
         this.activity = activity;
@@ -138,8 +138,8 @@ public class Gun {
             activity.getSceneSwitcher().getGameScene().attachSpriteToLayer( torpedo
                                                                           , GameScene.LAYER_TORPEDO);
             fireAvailable = false;
-            progressOfProgressBar = 0;
-            activity.getSceneSwitcher().getGameScene().getGameGUD().updateProgressBar(progressOfProgressBar);
+            progressBarValue = 0;
+            activity.getSceneSwitcher().getGameScene().getGameGUD().updateProgressBar(progressBarValue);
             fireTimerHandler.reset();
         }
         // xxx: временно для теста
@@ -157,14 +157,14 @@ public class Gun {
         fireTimerHandler = new TimerHandler(FIRE_DELAY / ProgressBar.FULL_PROGRESS, new ITimerCallback() {
             @Override
             public void onTimePassed(final TimerHandler timerHandler) {
-                if (progressOfProgressBar == ProgressBar.FULL_PROGRESS - 1) {
-                    progressOfProgressBar++;
-                    activity.getSceneSwitcher().getGameScene().getGameGUD().updateProgressBar(progressOfProgressBar);
+                if (progressBarValue == ProgressBar.FULL_PROGRESS - 1) {
+                    progressBarValue++;
+                    activity.getSceneSwitcher().getGameScene().getGameGUD().updateProgressBar(progressBarValue);
                     fireAvailable = true;
                 }
-                if (progressOfProgressBar < ProgressBar.FULL_PROGRESS - 1) {
-                    progressOfProgressBar++;
-                    activity.getSceneSwitcher().getGameScene().getGameGUD().updateProgressBar(progressOfProgressBar);
+                if (progressBarValue < ProgressBar.FULL_PROGRESS - 1) {
+                    progressBarValue++;
+                    activity.getSceneSwitcher().getGameScene().getGameGUD().updateProgressBar(progressBarValue);
                     fireTimerHandler.reset();
                 }
             }

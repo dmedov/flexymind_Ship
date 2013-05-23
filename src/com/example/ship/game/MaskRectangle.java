@@ -18,7 +18,11 @@ public class MaskRectangle extends Rectangle{
     private boolean mMaskingEnabled = true;
 
 
-    public MaskRectangle(float pX, float pY, float pWidth, float pHeight, VertexBufferObjectManager pVertexBufferObjectManager) {
+    public MaskRectangle( float pX
+                        , float pY
+                        , float pWidth
+                        , float pHeight
+                        , VertexBufferObjectManager pVertexBufferObjectManager) {
         super(pX, pY, pWidth, pHeight, pVertexBufferObjectManager);
     }
 
@@ -57,7 +61,6 @@ public class MaskRectangle extends Rectangle{
         GLES20.glStencilFunc(GLES20.GL_NEVER, 1, 1);
         GLES20.glStencilOp(GLES20.GL_REPLACE, GLES20.GL_KEEP, GLES20.GL_KEEP);
     }
-
 
     @Override
     protected void postDraw(final GLState pGLState, final Camera pCamera) {

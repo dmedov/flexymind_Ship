@@ -92,10 +92,10 @@ public class GameHUD extends HUD {
             this.attachChild(button);
         }
 
-        pauseButton.setPosition(RELATIVE_SCREEN_BORDER * cameraSize.x
-                , RELATIVE_SCREEN_BORDER * cameraSize.y);
-        fireButton.setPosition((1 - RELATIVE_SCREEN_BORDER) * cameraSize.x - fireButton.getWidth()
-                , (1 - RELATIVE_SCREEN_BORDER) * cameraSize.y - fireButton.getHeight());
+        pauseButton.setPosition( RELATIVE_SCREEN_BORDER * cameraSize.x
+                               , RELATIVE_SCREEN_BORDER * cameraSize.y);
+        fireButton.setPosition( (1 - RELATIVE_SCREEN_BORDER) * cameraSize.x - fireButton.getWidth()
+                              , (1 - RELATIVE_SCREEN_BORDER) * cameraSize.y - fireButton.getHeight());
     }
 
     private void createRotateGunDigitalControl() {
@@ -138,11 +138,11 @@ public class GameHUD extends HUD {
         rotateGunDigitalControl.getControlBase()
                 .setScaleCenter( BASE_TEXTURE_LEFT_BOTTOM.x, BASE_TEXTURE_LEFT_BOTTOM.y );
         rotateGunDigitalControl.getControlBase()
-                .setScale(cameraSize.y * RELATIVE_CONTROL_HEIGHT
-                        / rotateGunDigitalControlBaseTextureRegion.getHeight());
+                .setScale( cameraSize.y * RELATIVE_CONTROL_HEIGHT
+                           / rotateGunDigitalControlBaseTextureRegion.getHeight());
         rotateGunDigitalControl.getControlKnob()
                 .setScale( cameraSize.y * RELATIVE_CONTROL_HEIGHT
-                         / rotateGunDigitalControlBaseTextureRegion.getHeight() );
+                           / rotateGunDigitalControlBaseTextureRegion.getHeight() );
         // 36f измерено по текстуре, обеспечивает правильный отступ
         final float KNOB_BORDER = 36f /  rotateGunDigitalControl.getControlBase().getWidth();
         final float EXTENT_SIDE = HorizontalDigitalOnScreenControl.STANDART_EXTENT_SIDE
