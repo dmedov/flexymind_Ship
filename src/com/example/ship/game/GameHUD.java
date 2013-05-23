@@ -37,7 +37,7 @@ public class GameHUD extends HUD {
     private static final int FONT_ATLAS_SIDE = 256;
     
     private static final float TIME_PERIOD_CHECK_CONTROL = 0.1f;
-    private static final float RELATIVE_CONTROL_HEIGHT = 0.2f;
+    private static final float RELATIVE_CONTROL_HEIGHT = 0.5f;
     public static final int TEXT_LENGTH = 32;
 
     private final SceletonActivity activity;
@@ -114,7 +114,7 @@ public class GameHUD extends HUD {
                 new PointF( 0f , rotateGunDigitalControlBaseTextureRegion.getHeight() );
         final float CONTROL_BASE_TEXTURE_HEIGHT = rotateGunDigitalControlBaseTextureRegion.getHeight();
         final PointF GUN_DIGITAL_CONTROL_COORDINATE =
-                new PointF( RELATIVE_SCREEN_BORDER * cameraSize.x
+                new PointF( 0f * cameraSize.y
                           , (1 - RELATIVE_SCREEN_BORDER) * (cameraSize.y - CONTROL_BASE_TEXTURE_HEIGHT));
 
         rotateGunDigitalControl =
@@ -137,7 +137,7 @@ public class GameHUD extends HUD {
                 }
             }
         });
-        rotateGunDigitalControl.getControlBase().setAlpha(BUTTON_ALPHA);
+        rotateGunDigitalControl.getControlBase().setAlpha(0.5f);
         // Чтобы текстура не выходила за границы экрана при масштабировании
         rotateGunDigitalControl.getControlBase()
                 .setScaleCenter( BASE_TEXTURE_LEFT_BOTTOM.x, BASE_TEXTURE_LEFT_BOTTOM.y );
@@ -148,10 +148,11 @@ public class GameHUD extends HUD {
                 .setScale( cameraSize.y * RELATIVE_CONTROL_HEIGHT
                            / rotateGunDigitalControlBaseTextureRegion.getHeight() );
         // 36f измерено по текстуре, обеспечивает правильный отступ
-        final float KNOB_BORDER = 36f / rotateGunDigitalControl.getControlBase().getWidth();
-        final float EXTENT_SIDE = HorizontalDigitalOnScreenControl.STANDART_EXTENT_SIDE
+        final float KNOB_BORDER = 13f / rotateGunDigitalControl.getControlBase().getWidth();
+        final float EXTENT_SIDE = HorizontalDigitalOnScreenControl.STANDART_RELATIVE_EXTENT_SIDE
                                   - 0.5f * rotateGunDigitalControl.KNOB_SIZE_IN_PERCENT - KNOB_BORDER;
         rotateGunDigitalControl.setExtentSide( EXTENT_SIDE );
+        rotateGunDigitalControl.setHeightLevel( 0.25f );
 
         rotateGunDigitalControl.refreshControlKnobPosition();
         this.setChildScene( rotateGunDigitalControl );

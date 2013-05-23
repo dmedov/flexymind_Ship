@@ -14,13 +14,15 @@ import org.andengine.opengl.vbo.VertexBufferObjectManager;
  */
 public class HorizontalDigitalOnScreenControl extends BaseOnScreenControl {
 
-    public final static float STANDART_EXTENT_SIDE = 0.5f;
+    public final static float STANDART_RELATIVE_EXTENT_SIDE = 0.5f;
+    public final static float STANDART_RELATIVE_HEIGHT_LEVEL = 0f;
     private final float KNOB_WIDTH = this.getControlKnob().getWidth();
     private final float BASE_WIDTH = this.getControlBase().getWidth();
 
     public final float KNOB_SIZE_IN_PERCENT = KNOB_WIDTH / BASE_WIDTH;
 
     private float extentSide;
+    private float heightLevel;
 
     public HorizontalDigitalOnScreenControl( float pX, float pY, float extentSide
                                            , Camera pCamera
@@ -37,6 +39,7 @@ public class HorizontalDigitalOnScreenControl extends BaseOnScreenControl {
              , pVertexBufferObjectManager
              , pOnScreenControlListener );
         this.extentSide = extentSide;
+        this.heightLevel = STANDART_RELATIVE_HEIGHT_LEVEL;
     }
 
     public HorizontalDigitalOnScreenControl( float pX, float pY
@@ -46,7 +49,7 @@ public class HorizontalDigitalOnScreenControl extends BaseOnScreenControl {
                                            , float pTimeBetweenUpdates
                                            , VertexBufferObjectManager pVertexBufferObjectManager
                                            , IOnScreenControlListener pOnScreenControlListener ) {
-        this( pX, pY, STANDART_EXTENT_SIDE
+        this( pX, pY, STANDART_RELATIVE_EXTENT_SIDE
             , pCamera, pControlBaseTextureRegion
             , pControlKnobTextureRegion, pTimeBetweenUpdates
             , pVertexBufferObjectManager, pOnScreenControlListener );
@@ -55,19 +58,25 @@ public class HorizontalDigitalOnScreenControl extends BaseOnScreenControl {
     @Override
     protected void onUpdateControlKnob( float pRelativeX, float pRelativeY ) {
         if( pRelativeX == 0 ) {
-            super.onUpdateControlKnob( 0, 0 );
+            super.onUpdateControlKnob( 0, heightLevel );
             return;
         }
 
         if( pRelativeX > 0 ) {
-            super.onUpdateControlKnob( extentSide, 0 );
+            super.onUpdateControlKnob( extentSide, heightLevel );
         } else if( pRelativeX < 0 ) {
-            super.onUpdateControlKnob( -extentSide, 0 );
+            super.onUpdateControlKnob( -extentSide, heightLevel );
         }
     }
 
-    public void setExtentSide( float side ){
+    public void setExtentSide( float side ) {
         this.extentSide = side;
+    }
+    public void setHeightLevel( float level) {
+        this.heightLevel = level;
+    }
+    public float getHeightLevel() {
+        return heightLevel;
     }
     public float getExtentSide(){
         return this.extentSide;
