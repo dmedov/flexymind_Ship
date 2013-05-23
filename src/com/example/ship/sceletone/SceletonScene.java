@@ -10,9 +10,7 @@ import com.example.ship.commons.CSprite;
 import org.andengine.engine.Engine;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
-import org.andengine.entity.sprite.Sprite;
 import org.andengine.input.touch.TouchEvent;
-import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.util.color.Color;
 
 /**
@@ -28,7 +26,7 @@ public class SceletonScene extends Scene {
     private final ResourceManager resourceManager;
     private       Point textureSize;
     private       TouchableSceletonSprite touchableSceletonSprite;
-    private       Sprite shipSprite;
+    private       CSprite shipSprite;
 
     public SceletonScene(final SceletonActivity activity) {
         super();
@@ -60,12 +58,7 @@ public class SceletonScene extends Scene {
     }
 
     private void createShipLogo() {
-        ITextureRegion shipTextureRegion = resourceManager.getLoadedTextureRegion(R.drawable.ship);
-
-        final PointF shipPosition = new PointF( textureSize.x * 0.5f - shipTextureRegion.getWidth() * 0.5f
-                                              , textureSize.y * 0.5f - shipTextureRegion.getHeight() * 0.5f);
-
-        shipSprite = new CSprite(shipPosition, R.drawable.ship) {
+        shipSprite = new CSprite(R.drawable.ship) {
             @Override
             public boolean onAreaTouched( TouchEvent pSceneTouchEvent
                                         , float pTouchAreaLocalX
@@ -78,7 +71,7 @@ public class SceletonScene extends Scene {
             }
         };
 
-
+        shipSprite.setCenterInPosition(new PointF(textureSize.x * 0.5f, textureSize.y * 0.5f));
 
         registerTouchArea();
         this.attachChild(shipSprite);

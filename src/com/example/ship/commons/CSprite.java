@@ -12,17 +12,17 @@ import org.andengine.entity.sprite.Sprite;
  */
 public class CSprite extends Sprite {
     public CSprite(PointF position, int rID) {
-        super( position.x
-             , position.y
-             , A.rm.getLoadedTextureRegion(rID)
-             , A.e.getVertexBufferObjectManager());
+        super(position.x
+                , position.y
+                , A.rm.getLoadedTextureRegion(rID)
+                , A.e.getVertexBufferObjectManager());
     }
 
     public CSprite(int rID) {
-        super( 0
-             , 0
-             , A.rm.getLoadedTextureRegion(rID)
-             , A.e.getVertexBufferObjectManager());
+        super(0
+                , 0
+                , A.rm.getLoadedTextureRegion(rID)
+                , A.e.getVertexBufferObjectManager());
     }
 
     public void setPosition(PointF point) {
