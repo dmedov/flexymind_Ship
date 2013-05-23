@@ -10,6 +10,7 @@ import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.camera.hud.controls.BaseOnScreenControl;
 import org.andengine.entity.modifier.*;
 import org.andengine.entity.shape.RectangularShape;
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
@@ -30,12 +31,12 @@ import java.util.ArrayList;
 public class GameHUD extends HUD {
 
     private static final float RELATIVE_BUTTON_HEIGHT = 0.15f;
-    private static final float RELATIVE_SPACE_BETWEEN_CONTROLS = 0.01f;
     private static final float RELATIVE_SCREEN_BORDER = 0.02f;
-    private static final float RELATIVE_HP_HEIGHT = 0.05f;
+    private static final float RELATIVE_CLOUD_HEIGHT = 0.12f;
+    private static final float RELATIVE_FONT_HEIGHT = 0.05f;
     private static final float BUTTON_ALPHA = 0.75f;
     private static final int FONT_ATLAS_SIDE = 256;
-    
+    private static final float SIZE_FONT = 34f;
     private static final float TIME_PERIOD_CHECK_CONTROL = 0.1f;
     private static final float RELATIVE_CONTROL_HEIGHT = 0.2f;
     public static final int TEXT_LENGTH = 32;
@@ -47,15 +48,14 @@ public class GameHUD extends HUD {
     private Text levelInfoText;
     private Font statFont;
     private PointF cameraSize;
+    private HealthIndicator healthIndicator;
     private ArrayList<GameButtonSprite> buttons;
-    private ArrayList<HealthIndicator> healthIndicators;
     private HorizontalDigitalOnScreenControl rotateGunDigitalControl;
 
     public GameHUD(SceletonActivity activity) {
         super();
         setOnAreaTouchTraversalFrontToBack();
         buttons = new ArrayList<GameButtonSprite>();
-        healthIndicators = new ArrayList<HealthIndicator>();
         this.activity = activity;
         engine = this.activity.getEngine();
         cameraSize = new PointF( this.activity.getCamera().getWidthRaw()
@@ -158,32 +158,24 @@ public class GameHUD extends HUD {
     }
 
     private void createStats() {
-        float healthTextureHeight =
-                activity.getResourceManager().getLoadedTextureRegion(R.drawable.onhealth).getHeight();
-        float scale = cameraSize.y * RELATIVE_HP_HEIGHT / healthTextureHeight;
-        float healthTextureWidth =
-                activity.getResourceManager().getLoadedTextureRegion(R.drawable.onhealth).getWidth() * scale;
+        float fontScale = cameraSize.y * RELATIVE_FONT_HEIGHT / SIZE_FONT;
+        float cloudTextureHeight =
+                activity.getResourceManager().getLoadedTextureRegion(R.drawable.cloud).getHeight();
+        float scaleCloud = cameraSize.y * RELATIVE_CLOUD_HEIGHT / cloudTextureHeight;
 
-        positionHitPoint = new PointF( (1 - RELATIVE_SCREEN_BORDER) * cameraSize.x - healthTextureWidth
-                                     , RELATIVE_SCREEN_BORDER * cameraSize.y * scale);
+        positionHitPoint = new PointF( (1 - RELATIVE_SCREEN_BORDER) * cameraSize.x
+                                     , RELATIVE_SCREEN_BORDER * cameraSize.y);
 
-        for (int i = 0; i < Player.FULL_HP; i++) {
-            HealthIndicator healthIndicator = new HealthIndicator( activity
-                                                                 , this
-                                                                 , positionHitPoint
-                                                                 , scale);
-            healthIndicators.add(healthIndicator);
-            positionHitPoint.x -= RELATIVE_SPACE_BETWEEN_CONTROLS * cameraSize.x + healthTextureWidth;
-        }
+        healthIndicator = new HealthIndicator(activity, this, positionHitPoint, scaleCloud);
 
         statFont = FontFactory.create( activity.getEngine().getFontManager()
-                                      , activity.getEngine().getTextureManager()
-                                      , FONT_ATLAS_SIDE
-                                      , FONT_ATLAS_SIDE
-                                      , Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)
-                                      , healthTextureHeight * scale
-                                      , true
-                                      , Color.WHITE_ABGR_PACKED_INT);
+                                     , activity.getEngine().getTextureManager()
+                                     , FONT_ATLAS_SIDE
+                                     , FONT_ATLAS_SIDE
+                                     , Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)
+                                     , SIZE_FONT * fontScale
+                                     , true
+                                     , Color.WHITE_ABGR_PACKED_INT);
         statFont.load();
 
         // создаем изначальные очки
@@ -220,13 +212,7 @@ public class GameHUD extends HUD {
     }
 
     public void updateHealthIndicators(int health) {
-        for (int i = 0; i < healthIndicators.size(); i++) {
-            if (i < health) {
-                healthIndicators.get(i).setState(HealthIndicator.ALIVE_STATE);
-            } else {
-                healthIndicators.get(i).setState(HealthIndicator.DEAD_STATE);
-            }
-        }
+        healthIndicator.updateHealth(health);
     }
 
     public void showNewLevelMessage(int level) {
