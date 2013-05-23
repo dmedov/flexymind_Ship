@@ -59,7 +59,8 @@ public class ResourceManager {
     private Context context;
     private int currentAtlasId;
 
-    public ResourceManager() {
+    public ResourceManager(Context context) {
+        this.context = context;
         loadedTextures = new HashMap<Integer, ITextureRegion>();
         atlasList = new ArrayList<BuildableBitmapTextureAtlas>();
     }
@@ -68,10 +69,9 @@ public class ResourceManager {
         return loadedTextures.get(resourceID);
     }
 
-    public void loadAllTextures(Context context, TextureManager textureManager) {
+    public void loadAllTextures(TextureManager textureManager) {
         this.textureManager = textureManager;
         this.currentAtlasId = 0;
-        this.context = context;
         int eventType = 0;
 
         try {

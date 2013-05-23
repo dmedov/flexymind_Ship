@@ -57,8 +57,8 @@ public class SceletonActivity extends BaseGameActivity {
 
     @Override
     public void onCreateResources(OnCreateResourcesCallback pOnCreateResourcesCallback) {
-        resourceManager = new ResourceManager();
-        resourceManager.loadAllTextures(this, mEngine.getTextureManager());
+        resourceManager = new ResourceManager(this);
+        resourceManager.loadAllTextures(mEngine.getTextureManager());
 
         FontFactory.setAssetBasePath(getResources().getString(R.string.FONT_BASE_ASSET_PATH));
 
