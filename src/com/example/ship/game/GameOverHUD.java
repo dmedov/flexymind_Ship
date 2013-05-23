@@ -140,7 +140,7 @@ public class GameOverHUD extends HUD {
     }
 
     public void setScoreToGameOverHUD(String scoreString) {
-        scoreText.setText(scoreString);
+        scoreText.setText(activity.getResources().getString(R.string.SCORE) + scoreString);
     }
 
     private String getStringResource(int id) {

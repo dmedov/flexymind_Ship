@@ -33,10 +33,9 @@ public class GameHUD extends HUD {
     private static final float RELATIVE_BUTTON_HEIGHT = 0.15f;
     private static final float RELATIVE_SCREEN_BORDER = 0.02f;
     private static final float RELATIVE_CLOUD_HEIGHT = 0.12f;
-    private static final float RELATIVE_FONT_HEIGHT = 0.05f;
+    private static final float RELATIVE_SCORE_HEIGHT = 0.05f;
     private static final float BUTTON_ALPHA = 0.75f;
     private static final int FONT_ATLAS_SIDE = 256;
-    private static final float SIZE_FONT = 34f;
     private static final float TIME_PERIOD_CHECK_CONTROL = 0.1f;
     private static final float RELATIVE_CONTROL_HEIGHT = 0.2f;
     public static final int TEXT_LENGTH = 32;
@@ -46,6 +45,7 @@ public class GameHUD extends HUD {
     private PointF positionHitPoint;
     private Text scoreText;
     private Text levelInfoText;
+    private Sprite scoreSprite;
     private Font statFont;
     private PointF cameraSize;
     private HealthIndicator healthIndicator;
@@ -158,7 +158,10 @@ public class GameHUD extends HUD {
     }
 
     private void createStats() {
-        float fontScale = cameraSize.y * RELATIVE_FONT_HEIGHT / SIZE_FONT;
+        float sizeFont = cameraSize.y * RELATIVE_SCORE_HEIGHT;
+        float scoreTextureHeight =
+                activity.getResourceManager().getLoadedTextureRegion(R.drawable.score).getHeight();
+        float scoreScale = cameraSize.y * RELATIVE_SCORE_HEIGHT / scoreTextureHeight;
         float cloudTextureHeight =
                 activity.getResourceManager().getLoadedTextureRegion(R.drawable.cloud).getHeight();
         float scaleCloud = cameraSize.y * RELATIVE_CLOUD_HEIGHT / cloudTextureHeight;
@@ -173,7 +176,7 @@ public class GameHUD extends HUD {
                                      , FONT_ATLAS_SIDE
                                      , FONT_ATLAS_SIDE
                                      , Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)
-                                     , SIZE_FONT * fontScale
+                                     , sizeFont
                                      , true
                                      , Color.WHITE_ABGR_PACKED_INT);
         statFont.load();
@@ -182,7 +185,7 @@ public class GameHUD extends HUD {
         scoreText = new Text( positionHitPoint.x
                             , positionHitPoint.y
                             , statFont
-                            , activity.getResources().getString(R.string.SCORE) + ": 000000"
+                            , ": 000000"
                             , TEXT_LENGTH
                             , activity.getEngine().getVertexBufferObjectManager());
         scoreText.setPosition( cameraSize.x * 0.5f - scoreText.getWidth() * 0.5f
@@ -195,6 +198,16 @@ public class GameHUD extends HUD {
                                 , TEXT_LENGTH
                                 , activity.getEngine().getVertexBufferObjectManager());
 
+        scoreSprite = new Sprite( 0
+                                , 0
+                                , activity.getResourceManager().getLoadedTextureRegion(R.drawable.score)
+                                , activity.getVertexBufferObjectManager());
+        scoreSprite.setScaleCenter(0, 0);
+        scoreSprite.setScale(scoreScale);
+        scoreSprite.setPosition( scoreText.getX() - scoreSprite.getWidthScaled()
+                               , scoreText.getY());
+
+        this.attachChild(scoreSprite);
         this.attachChild(scoreText);
         this.attachChild(levelInfoText);
     }

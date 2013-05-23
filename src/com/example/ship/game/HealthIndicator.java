@@ -8,8 +8,6 @@ import org.andengine.entity.sprite.Sprite;
 import java.util.ArrayList;
 
 public class HealthIndicator {
-    public static final boolean ALIVE_STATE = true;
-    public static final boolean DEAD_STATE = false;
     private static final float RELATIVE_HP_HEIGHT = 0.4f;
     private Sprite hitPointSprite;
     private Sprite cloudSprite;
