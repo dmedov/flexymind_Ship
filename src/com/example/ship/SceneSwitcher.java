@@ -21,13 +21,13 @@ public class SceneSwitcher {
     public static final int PAUSE_STATE = 3;
     public static final int GAME_OVER_STATE = 4;
 
-    private final SceletonActivity activity;
+    private final RootActivity activity;
     private SceletonScene rootScene;
     private ShipMenuScene menuScene;
     private GameScene gameScene;
     private int currentState;
 
-    public SceneSwitcher(SceletonActivity activity) {
+    public SceneSwitcher(RootActivity activity) {
         this.activity = activity;
         menuScene = new ShipMenuScene(activity);
         gameScene = new GameScene(activity);

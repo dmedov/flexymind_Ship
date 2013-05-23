@@ -8,7 +8,7 @@ Date: 07.05.13
 import android.graphics.PointF;
 import android.util.Log;
 import com.example.ship.R;
-import com.example.ship.SceletonActivity;
+import com.example.ship.RootActivity;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.*;
 import org.andengine.entity.sprite.Sprite;
@@ -44,7 +44,7 @@ public class Ship {
     private static float velocityDivider = 1;
 
     private final float yPosition;
-    private final SceletonActivity activity;
+    private final RootActivity activity;
     private final int typeId;
     private final boolean direction;
 
@@ -57,7 +57,7 @@ public class Ship {
     private int score;
     private Random rand;
 
-    public Ship(SceletonActivity activity, float yPosition, int shipTypeId, boolean direction) {
+    public Ship(RootActivity activity, float yPosition, int shipTypeId, boolean direction) {
         this.activity = activity;
         this.yPosition = yPosition;
         this.typeId = shipTypeId;
