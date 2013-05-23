@@ -3,7 +3,7 @@ package com.example.ship.game;
 import android.graphics.PointF;
 import com.example.ship.Events;
 import com.example.ship.R;
-import com.example.ship.SceletonActivity;
+import com.example.ship.RootActivity;
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.entity.primitive.Rectangle;
@@ -23,12 +23,12 @@ public class PauseHUD extends HUD {
     private static final float RELATIVE_BUTTON_HEIGHT = 0.15f;
     private static final float RELATIVE_BORDER = 0.02f;
     private static final float BACKGROUND_ALPHA = 0.7f;
-    private final SceletonActivity activity;
+    private final RootActivity activity;
     private final Engine engine;
     private final PointF cameraSize;
     private ArrayList<GameButtonSprite> buttons;
 
-    public PauseHUD(SceletonActivity activity) {
+    public PauseHUD(RootActivity activity) {
         super();
 
         this.activity = activity;
