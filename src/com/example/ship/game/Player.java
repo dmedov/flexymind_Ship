@@ -2,6 +2,7 @@ package com.example.ship.game;
 
 import com.example.ship.R;
 import com.example.ship.SceletonActivity;
+import com.example.ship.level.Level;
 
 public class Player {
     public static final int FULL_HP = 6;

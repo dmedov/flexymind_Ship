@@ -1,7 +1,7 @@
 package com.example.ship;
 
 import com.example.ship.game.GameScene;
-import com.example.ship.game.ShipSpawner;
+import com.example.ship.level.ShipSpawner;
 import com.example.ship.menu.MenuHUD;
 import com.example.ship.menu.ShipMenuScene;
 import com.example.ship.sceletone.SceletonScene;

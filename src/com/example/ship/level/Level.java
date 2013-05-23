@@ -1,8 +1,9 @@
-package com.example.ship.game;
+package com.example.ship.level;
 
 import android.util.Log;
 import com.example.ship.R;
 import com.example.ship.SceletonActivity;
+import com.example.ship.game.Ship;
 
 /**
  * Created with IntelliJ IDEA.

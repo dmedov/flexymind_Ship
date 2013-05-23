@@ -2,6 +2,15 @@
 
 <resources>
     <level id="1" type="regular">
-        <enemie number="5" constSpawnDelay="5.0" firstSpawnIn="1.0" health="100" points="200" lines="1 2 3" direction="to left"></enemie>
+        <enemie number="15" velocity="20" constSpawnDelay="5.0" firstSpawnIn="1.0" health="100" points="200" lines="1 2 3" direction="to left">missileboat.png</enemie>
+    </level>
+    <level id="2" type="regular">
+        <enemie number="10" velocity="30" constSpawnDelay="10.0" firstSpawnIn="3.0" health="200" points="200" lines="1 2 3" direction="to left">sailfish.png</enemie>
+        <enemie number="15" velocity="20" constSpawnDelay="5.0" firstSpawnIn="1.0" health="100" points="200" lines="1 2 3" direction="to right">missileboat.png</enemie>
+    </level>
+    <level id="3" type="regular">
+        <enemie number="5"  velocity="40" constSpawnDelay="15.0" firstSpawnIn="5.0" health="300" points="200" lines=" 3" direction="to left">battleship.png</enemie>
+        <enemie number="10" velocity="30" constSpawnDelay="10.0" firstSpawnIn="3.0" health="200" points="200" lines="1 2 3" direction="to left">sailfish.png</enemie>
+        <enemie number="15" velocity="20" constSpawnDelay="5.0" firstSpawnIn="1.0" health="100" points="200" lines="1 2 3" direction="to left">missileboat.png</enemie>
     </level>
 </resources>
