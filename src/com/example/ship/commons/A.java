@@ -1,6 +1,6 @@
 package com.example.ship.commons;
 
-import com.example.ship.SceletonActivity;
+import com.example.ship.RootActivity;
 import com.example.ship.atlas.ResourceManager;
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.ZoomCamera;
@@ -13,11 +13,11 @@ import org.andengine.engine.camera.ZoomCamera;
  * To change this template use File | Settings | File Templates.
  */
 public class A {
-    static public SceletonActivity a;
+    static public RootActivity a;
     static public Engine           e;
     static public ResourceManager  rm;
     static public ZoomCamera       c;
-    static public void init(SceletonActivity activity) {
+    static public void init(RootActivity activity) {
         a  = activity;
         e  = activity.getEngine();
         rm = activity.getResourceManager();

@@ -5,7 +5,7 @@ import com.example.ship.game.Gun;
 import com.example.ship.game.TouchableGameButtonSprite;
 import com.example.ship.menu.MenuButtonSprite;
 import com.example.ship.menu.TouchableMenuButtonSprite;
-import com.example.ship.sceletone.TouchableSceletonSprite;
+import com.example.ship.root.TouchableSceletonSprite;
 import org.andengine.entity.sprite.Sprite;
 
 /**
@@ -21,9 +21,9 @@ public class Events implements TouchableMenuButtonSprite
 
     private final static float RELATIVE_BUTTON_JUMP_AMPLITUDE = 0.005f;
     private final static float RELATIVE_BUTTON_PULSE_AMPLITUDE = 0.1f;
-    private final SceletonActivity activity;
+    private final RootActivity activity;
 
-    public Events(SceletonActivity activity) {
+    public Events(RootActivity activity) {
         this.activity = activity;
     }
 

@@ -4,7 +4,7 @@ import android.graphics.PointF;
 import android.graphics.Typeface;
 import com.example.ship.Events;
 import com.example.ship.R;
-import com.example.ship.SceletonActivity;
+import com.example.ship.RootActivity;
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.camera.hud.controls.BaseOnScreenControl;
@@ -40,7 +40,7 @@ public class GameHUD extends HUD {
     private static final float RELATIVE_CONTROL_HEIGHT = 0.2f;
     public static final int TEXT_LENGTH = 32;
 
-    private final SceletonActivity activity;
+    private final RootActivity activity;
     private final Engine engine;
     private PointF positionHitPoint;
     private Text scoreText;
@@ -51,7 +51,7 @@ public class GameHUD extends HUD {
     private ArrayList<HealthIndicator> healthIndicators;
     private HorizontalDigitalOnScreenControl rotateGunDigitalControl;
 
-    public GameHUD(SceletonActivity activity) {
+    public GameHUD(RootActivity activity) {
         super();
         setOnAreaTouchTraversalFrontToBack();
         buttons = new ArrayList<GameButtonSprite>();

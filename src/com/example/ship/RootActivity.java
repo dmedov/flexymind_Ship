@@ -7,7 +7,7 @@ import android.view.KeyEvent;
 import com.example.ship.atlas.ResourceManager;
 import com.example.ship.commons.A;
 import com.example.ship.menu.ShipMenuScene;
-import com.example.ship.sceletone.SceletonScene;
+import com.example.ship.root.RootScene;
 import org.andengine.engine.camera.ZoomCamera;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
@@ -16,11 +16,11 @@ import org.andengine.entity.scene.Scene;
 import org.andengine.opengl.font.FontFactory;
 import org.andengine.ui.activity.BaseGameActivity;
 
-public class SceletonActivity extends BaseGameActivity {
+public class RootActivity extends BaseGameActivity {
     private static final int TEXTURE_WIDTH = 1739;
     private static final int TEXTURE_HEIGHT = 900;
     private static final boolean DEBUG_GAME_SCENE = false;
-    private SceletonScene sceletonScene;
+    private RootScene rootScene;
     private ShipMenuScene menuScene;
     private ResourceManager resourceManager;
     private Events events;

@@ -2,7 +2,7 @@ package com.example.ship.game;
 
 import android.graphics.PointF;
 import com.example.ship.R;
-import com.example.ship.SceletonActivity;
+import com.example.ship.RootActivity;
 import org.andengine.engine.camera.ZoomCamera;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
@@ -35,12 +35,12 @@ public class Gun {
     private boolean rotationEnabled;
     private Sprite gunSprite;
     private Sprite gunMask;
-    private SceletonActivity activity;
+    private RootActivity activity;
     private TimerHandler fireTimerHandler;
     private boolean fireAvailable = true;
     private int damage = DEFAULT_DAMAGE;
 
-    public Gun(SceletonActivity activity) {
+    public Gun(RootActivity activity) {
         this.activity = activity;
         rotationEnabled = false;
         ITextureRegion gunTexture = activity.getResourceManager().getLoadedTextureRegion(R.drawable.gun);
