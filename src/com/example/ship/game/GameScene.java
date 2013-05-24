@@ -29,8 +29,8 @@ public class GameScene extends Scene {
     public static final int LAYER_TORPEDO = layerCount++;
     public static final int LAYER_GUN   = layerCount++;
 
-    private static final float RELATIVE_SKY_HEIGHT = 0.15f;
-    private static final float RELATIVE_WAVE_HEIGHT = 0.125f;
+    private static final float RELATIVE_SKY_HEIGHT = 0.3f;
+    private static final float RELATIVE_WAVE_HEIGHT = 0.07f;
 
     private final RootActivity activity;
     private final Engine mEngine;
