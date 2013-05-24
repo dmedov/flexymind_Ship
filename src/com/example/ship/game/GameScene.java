@@ -42,7 +42,6 @@ public class GameScene extends Scene {
     private Sprite backgroundSprite;
     private ArrayList<Sprite> waveSprites;
     private Gun gun;
-    private ShipSpawner shipSpawner;
     private ArrayList<Ship> ships;
     private HashMap<Integer, Float> shipLinesPosition;
     private Player player;
@@ -106,20 +105,16 @@ public class GameScene extends Scene {
         return gameHUD;
     }
 
+    public GameOverHUD getGameOverHUD() {
+        return gameOverHUD;
+    }
+
     public Player getPlayer() {
         return player;
     }
 
     public Gun getGun() {
         return gun;
-    }
-
-    public ShipSpawner getShipSpawner() {
-        return shipSpawner;
-    }
-
-    public void setShipSpawner(ShipSpawner shipSpawner) {
-        this.shipSpawner = shipSpawner;
     }
 
     public float getShipLinePosition(int lineId) {
@@ -145,6 +140,7 @@ public class GameScene extends Scene {
                 ship.missionDone();
                 deadShip = ship;
                 player.reduceHealth();
+                activity.getSceneSwitcher().getGameScene().getPlayer().getLevel().incrementLevelProgress();
             }
         }
 

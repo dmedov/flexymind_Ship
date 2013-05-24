@@ -1,12 +1,7 @@
 package com.example.ship.game;
 
-import android.util.Log;
-import com.example.ship.R;
 import com.example.ship.RootActivity;
-import org.andengine.engine.handler.timer.ITimerCallback;
-import org.andengine.engine.handler.timer.TimerHandler;
-
-import java.util.Random;
+import com.example.ship.level.PausableTimerHandler;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,106 +10,40 @@ import java.util.Random;
  * Time: 21:59
  * To change this template use File | Settings | File Templates.
  */
-public class ShipSpawner {
-    public static final float MIN_SPAWN_DELAY = 3.0f;
-    public static final float MAX_SPAWN_DELAY = 15.0f;
+public abstract class ShipSpawner {
 
-    private final RootActivity activity;
-    private TimerHandler timerHandler;
-    private float delay;
-    private boolean spawning;
-    private Random rnd;
-    private float spawnDelay;
+    protected final RootActivity activity;
+    protected PausableTimerHandler timerHandler;
+    protected float delay;
+    protected float spawnDelay;
 
-    public ShipSpawner(RootActivity activity) {
+    public ShipSpawner(RootActivity activity, float firstSpawnIn, float spawnDelay) {
         this.activity = activity;
-        delay = MIN_SPAWN_DELAY;
-        spawning = false;
-        this.spawnDelay = MAX_SPAWN_DELAY;
+        this.delay = firstSpawnIn;
+        this.spawnDelay = spawnDelay;
     }
 
     public void startSpawn() {
-        spawning = true;
-        timerHandler = new TimerHandler(delay, new TimerTask());
-        activity.getEngine().registerUpdateHandler(timerHandler);
+        if (timerHandler != null) {
+            activity.getEngine().registerUpdateHandler(timerHandler);
+        }
+    }
+
+    public void pauseSpawn() {
+        if (timerHandler != null) {
+            timerHandler.pause();
+        }
+    }
+
+    public void resumeSpawn() {
+        if (timerHandler != null) {
+            timerHandler.resume();
+        }
     }
 
     public void stopSpawn() {
-        spawning = false;
         activity.getEngine().unregisterUpdateHandler(timerHandler);
         timerHandler = null;
     }
 
-    public void setSpawnDelay(float spawnDelay) {
-        this.spawnDelay = spawnDelay;
-    }
-
-    private class TimerTask implements ITimerCallback {
-        private TimerTask() {
-            rnd = new Random();
-        }
-
-        @Override
-        public void onTimePassed(final TimerHandler timerHandler) {
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-
-                    if (spawning) {
-                        delay = MIN_SPAWN_DELAY + rnd.nextFloat() * spawnDelay;
-                        Log.d("1log", "new ship in..." + delay);
-                        timerHandler.setTimerSeconds(delay);
-                        timerHandler.reset();
-
-                        int layerId = selectLayer();
-
-                        GameScene gameScene = activity.getSceneSwitcher().getGameScene();
-                        Ship ship = new Ship( activity
-                                            , gameScene.getShipLinePosition(layerId)
-                                            , selectShipType()
-                                            , rnd.nextBoolean());
-                        gameScene.getShips().add(ship);
-                        gameScene.getChildByIndex(layerId).attachChild(ship.getSprite());
-                    }
-                }
-            });
-        }
-
-        private int selectShipType() {
-            int rndValue = rnd.nextInt(100) + 1;
-
-            if (rndValue < activity.getIntResource(R.integer.SAILFISH_SPAWN_PROBABILITY)) {
-                return R.drawable.sailfish;
-            } else {
-                rndValue -= activity.getIntResource(R.integer.SAILFISH_SPAWN_PROBABILITY);
-            }
-
-            if (rndValue < activity.getIntResource(R.integer.BATTLESHIP_SPAWN_PROBABILITY)) {
-                return R.drawable.battleship;
-            } else {
-                rndValue -= activity.getIntResource(R.integer.BATTLESHIP_SPAWN_PROBABILITY);
-            }
-
-            return R.drawable.missileboat;
-        }
-
-        private int selectLayer() {
-            int layerId = rnd.nextInt(3);
-            switch (layerId) {
-                case 0:
-                    layerId = GameScene.LAYER_FIRST_SHIP_LINE;
-                    break;
-                case 1:
-                    layerId = GameScene.LAYER_SECOND_SHIP_LINE;
-                    break;
-                case 2:
-                    layerId = GameScene.LAYER_THIRD_SHIP_LINE;
-                    break;
-                default:
-                    layerId = GameScene.LAYER_FIRST_SHIP_LINE;
-                    break;
-            }
-            return layerId;
-        }
-    }
 }
