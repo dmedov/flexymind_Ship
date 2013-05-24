@@ -9,9 +9,11 @@ import org.andengine.engine.Engine;
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.camera.hud.controls.BaseOnScreenControl;
 import org.andengine.entity.modifier.*;
+import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.shape.RectangularShape;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
+import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
 import org.andengine.opengl.texture.region.ITextureRegion;
@@ -30,9 +32,11 @@ import java.util.ArrayList;
  */
 public class GameHUD extends HUD {
 
-    private static final float RELATIVE_BUTTON_HEIGHT = 0.15f;
+    private static final float RELATIVE_PAUSE_BUTTON_HEIGHT = 0.15f;
+    private static final float RELATIVE_FIRE_BUTTON_HEIGHT = 0.25f;
     private static final float RELATIVE_SPACE_BETWEEN_CONTROLS = 0.01f;
     private static final float RELATIVE_SCREEN_BORDER = 0.02f;
+    private static final float RELATIVE_FIRE_SCREEN_BORDER = 0.12f;
     private static final float RELATIVE_HP_HEIGHT = 0.05f;
     private static final float BUTTON_ALPHA = 0.75f;
     private static final int FONT_ATLAS_SIDE = 256;
@@ -57,6 +61,7 @@ public class GameHUD extends HUD {
     private ArrayList<GameButtonSprite> buttons;
     private ArrayList<HealthIndicator> healthIndicators;
     private HorizontalDigitalOnScreenControl rotateGunDigitalControl;
+    private TouchableGameButtonSprite touchableGameButtonSprite;
 
     public GameHUD(RootActivity activity) {
         super();
@@ -77,36 +82,49 @@ public class GameHUD extends HUD {
         for (GameButtonSprite button: buttons) {
             button.setEvents(events);
         }
+        this.touchableGameButtonSprite = events;
     }
 
     private void createButtons() {
+        GameButtonSprite fireScreenButton;
+        fireScreenButton = new GameButtonSprite( activity.getResourceManager()
+                                                         .getLoadedTextureRegion(R.drawable.firebutton)
+                                               , engine.getVertexBufferObjectManager()
+                                               , R.string.GAME_FIRE_BUTTON);
+        buttons.add(fireScreenButton);
+        fireScreenButton.setVisible(false);
+        fireScreenButton.setScaleCenter(0, 0);
+        fireScreenButton.setScale( cameraSize.x
+                                   / Math.min(fireScreenButton.getWidth(), fireScreenButton.getHeight()));
+
         GameButtonSprite pauseButton;
         pauseButton = new GameButtonSprite( activity.getResourceManager()
                                                     .getLoadedTextureRegion(R.drawable.pausebutton)
                                           , engine.getVertexBufferObjectManager()
                                           , R.string.GAME_PAUSE_BUTTON);
         buttons.add(pauseButton);
+        pauseButton.setScale(cameraSize.y * RELATIVE_PAUSE_BUTTON_HEIGHT / pauseButton.getHeight());
 
         GameButtonSprite fireButton;
         fireButton = new GameButtonSprite( activity.getResourceManager()
-                                                    .getLoadedTextureRegion(R.drawable.firebutton)
+                                                   .getLoadedTextureRegion(R.drawable.firebutton)
                                          , engine.getVertexBufferObjectManager()
                                          , R.string.GAME_FIRE_BUTTON);
         buttons.add(fireButton);
+        fireButton.setScaleCenter(fireButton.getWidth(), fireButton.getHeight());
+        fireButton.setScale(cameraSize.y * RELATIVE_FIRE_BUTTON_HEIGHT / fireButton.getHeight());
+
         for (GameButtonSprite button: buttons) {
-            if (button.getId() == R.string.GAME_BORDER_BUTTON) {
-                continue;
-            }
             button.setAlpha(BUTTON_ALPHA);
-            button.setScale(cameraSize.y * RELATIVE_BUTTON_HEIGHT / fireButton.getHeight());
             this.registerTouchArea(button);
             this.attachChild(button);
         }
 
         pauseButton.setPosition( RELATIVE_SCREEN_BORDER * cameraSize.x
                                , RELATIVE_SCREEN_BORDER * cameraSize.y);
-        fireButton.setPosition( (1 - RELATIVE_SCREEN_BORDER) * cameraSize.x - fireButton.getWidth()
+        fireButton.setPosition( (1 - RELATIVE_FIRE_SCREEN_BORDER) * cameraSize.x - fireButton.getWidth()
                               , (1 - RELATIVE_SCREEN_BORDER) * cameraSize.y - fireButton.getHeight());
+        fireScreenButton.setPosition(0, 0);
     }
 
     private void createRotateGunDigitalControl() {
