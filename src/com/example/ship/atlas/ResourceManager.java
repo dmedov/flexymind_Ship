@@ -96,6 +96,19 @@ public class ResourceManager {
         }
     }
 
+    public void pauseAllMusic(boolean stop) {
+        Music music;
+        for (HashMap.Entry<Integer, Music> e : loadedMusic.entrySet()) {
+            music = e.getValue();
+            if (music.isPlaying()) {
+                music.pause();
+                if (stop) {
+                    music.seekTo(0);
+                }
+            }
+        }
+    }
+
     public void loadAllMusic(MusicManager musicManager) {
         this.musicManager = musicManager;
         int musicId;

@@ -24,7 +24,7 @@ public class SceletonActivity extends BaseGameActivity {
     private ResourceManager resourceManager;
     private Events events;
     private ZoomCamera zoomCamera;
-    private SceneSwitcher sceneSwitcher;
+    private SceneSwitcher sceneSwitcher = null;
 
     private ZoomCamera createZoomCamera() {
         DisplayMetrics metrics = new DisplayMetrics();
@@ -114,13 +114,15 @@ public class SceletonActivity extends BaseGameActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        resourceManager.stopAllMusic();
+        resourceManager.pauseAllMusic(false);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        sceneSwitcher.manageSound(sceneSwitcher.getCurrentState());
+        if (sceneSwitcher != null) {
+            sceneSwitcher.manageSound(sceneSwitcher.getCurrentState(), false);
+        }
     }
 
     public Events getEvents() {
