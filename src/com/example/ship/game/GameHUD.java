@@ -37,12 +37,13 @@ public class GameHUD extends HUD {
     private static final float RELATIVE_SCORE_HEIGHT = 0.05f;
     private static final float BUTTON_ALPHA = 0.75f;
     private static final int FONT_ATLAS_SIDE = 256;
+    private static final int TEXT_LENGTH = 32;
+
     private static final float TIME_PERIOD_CHECK_CONTROL = 0.1f;
-    private static final float RELATIVE_CONTROL_HEIGHT = 0.2f;
+    private static final float RELATIVE_CONTROL_HEIGHT = 0.5f;
     private static final float RELATIVE_CONTROL_MIDDLE_Y = 0.25f;
     private static final float RELATIVE_MEASURED_TEXT_MIDDLE = 0.7f;
     private static final float CONTROL_ALPHA = 0.5f;
-    public static final int TEXT_LENGTH = 32;
 
     private final RootActivity activity;
     private final Engine engine;
@@ -114,8 +115,6 @@ public class GameHUD extends HUD {
                 activity.getResourceManager().getLoadedTextureRegion(R.drawable.onscreen_control_base);
         ITextureRegion rotateGunDigitalControlKnobTextureRegion =
                 activity.getResourceManager().getLoadedTextureRegion(R.drawable.onscreen_control_knob);
-
-
 
         final PointF BASE_TEXTURE_LEFT_BOTTOM =
                 new PointF(0f , rotateGunDigitalControlBaseTextureRegion.getHeight());
@@ -207,6 +206,7 @@ public class GameHUD extends HUD {
                                    , activity.getEngine().getVertexBufferObjectManager());
         ITextureRegion shipsLeftToDestroyTexture =
                 activity.getResourceManager().getLoadedTextureRegion(R.drawable.ships_left);
+
         remainingShipsSprite = new Sprite( 0
                                          , 0
                                          , shipsLeftToDestroyTexture
