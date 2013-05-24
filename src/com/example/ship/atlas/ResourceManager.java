@@ -19,8 +19,8 @@ import org.andengine.opengl.texture.region.ITextureRegion;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
-import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -76,20 +76,19 @@ public class ResourceManager {
 
     public void loadAllMusic(MusicManager musicManager) {
         this.musicManager = musicManager;
-        String listFileNames[];
-        Music music;
-        MusicFactory.setAssetBasePath("music/");
-        try {
-            listFileNames = context.getAssets().list("music");
-            for (String file : listFileNames) {
-                music = MusicFactory.createMusicFromAsset(musicManager,context,file);
-                music.play();
+        for ( Field field : R.raw.class.getDeclaredFields() ) {
+            try {
+                Music music
+                     = MusicFactory.createMusicFromResource( musicManager
+                                                           , context
+                                                           , context.getResources()
+                                                                    .getIdentifier( field.getName()
+                                                                                  , "raw"
+                                                                                  , context.getPackageName() ) );
+            } catch ( IOException e ) {
+                Log.d("ship_music","failed to load music");
             }
-        } catch (IOException e) {
-
         }
-
-
     }
 
     public void loadAllTextures(TextureManager textureManager) {
