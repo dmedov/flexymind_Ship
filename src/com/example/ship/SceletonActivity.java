@@ -111,6 +111,18 @@ public class SceletonActivity extends BaseGameActivity {
         }
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        resourceManager.stopAllMusic();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        sceneSwitcher.manageSound(sceneSwitcher.getCurrentState());
+    }
+
     public Events getEvents() {
         return events;
     }

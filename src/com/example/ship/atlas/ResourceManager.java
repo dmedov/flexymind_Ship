@@ -56,6 +56,7 @@ getLoadedTextureRegion ( " [Сюда пишем ID ресурса (наприм�
 
 public class ResourceManager {
     private final Map<Integer, ITextureRegion> loadedTextures;
+    private final Map<Integer, Music> loadedMusic;
     protected final ArrayList<BuildableBitmapTextureAtlas> atlasList;
 
     private XmlPullParser parser = null;
@@ -67,6 +68,7 @@ public class ResourceManager {
     public ResourceManager(Context context) {
         this.context = context;
         loadedTextures = new HashMap<Integer, ITextureRegion>();
+        loadedMusic = new HashMap<Integer, Music>();
         atlasList = new ArrayList<BuildableBitmapTextureAtlas>();
     }
 
@@ -74,18 +76,40 @@ public class ResourceManager {
         return loadedTextures.get(resourceID);
     }
 
+    public Music getLoadedMusic(int resourceID) {
+        return loadedMusic.get(resourceID);
+    }
+
+    public void playLoopMusic(int resourceID) {
+        Music music = loadedMusic.get(resourceID);
+        music.setLooping(true);
+        music.play();
+    }
+
+    public void stopAllMusic() {
+        Music music;
+        for (HashMap.Entry<Integer, Music> e : loadedMusic.entrySet()) {
+            music = e.getValue();
+            if (music.isPlaying()) {
+                music.stop();
+            }
+        }
+    }
+
     public void loadAllMusic(MusicManager musicManager) {
         this.musicManager = musicManager;
+        int musicId;
         for ( Field field : R.raw.class.getDeclaredFields() ) {
             try {
-                Music music
-                     = MusicFactory.createMusicFromResource( musicManager
-                                                           , context
-                                                           , context.getResources()
-                                                                    .getIdentifier( field.getName()
-                                                                                  , "raw"
-                                                                                  , context.getPackageName() ) );
-            } catch ( IOException e ) {
+                musicId = context.getResources().getIdentifier( field.getName()
+                                                              , "raw"
+                                                              , context.getPackageName() );
+
+                Music music = MusicFactory.createMusicFromResource( musicManager
+                                                                  , context
+                                                                  , musicId );
+                loadedMusic.put(musicId, music);
+            } catch (IOException e) {
                 Log.d("ship_music","failed to load music");
             }
         }
