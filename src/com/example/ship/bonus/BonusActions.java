@@ -37,10 +37,10 @@ public class BonusActions {
                 setMachineGun();
                 break;
             case 1:
-                setMachineGun();
+                stopAllShips();
                 break;
             case 2:
-                setMachineGun();
+                killAllShips();
                 break;
         }
     }
