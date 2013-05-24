@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
-    <level id="1" type="regular">
+    <level id="1" type="regular" scoreMultiplier="1.0">
         <enemy type="sailfish"
                number="3"
                periodicSpawnDelay="5.0"
@@ -21,7 +21,7 @@
                direction="to right"/>
     </level>
 
-    <level id="2" type="regular">
+    <level id="2" type="regular" scoreMultiplier="1.5">
         <enemy type="sailfish"
                number="3"
                periodicSpawnDelay="10.0"
@@ -36,7 +36,7 @@
                direction="to left"/>
     </level>
 
-    <level id="3" type="regular">
+    <level id="3" type="regular" scoreMultiplier="2.0">
         <enemy type="battleship"
                number="3"
                periodicSpawnDelay="15.0"

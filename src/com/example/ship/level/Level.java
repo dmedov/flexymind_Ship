@@ -20,7 +20,6 @@ public class Level {
 
     public static final int   FIRST_LEVEL_GOAL = 10;
     public static final float LEVEL_GOAL_MULTIPLIER = 1.2f;
-    public static final float LEVEL_SCORE_MULTIPLIER = 1.1f;
     public static final float LEVEL_SPAWN_DELAY_MULTIPLIER = 0.95f;
     public static final float LEVEL_SHIP_SPEED_MULTIPLIER = 1.1f;
 
@@ -29,6 +28,7 @@ public class Level {
     private int currentLevel;
     private int levelGoal;
     private int levelProgress;
+    private float scoreMultiplier;
     private XmlPullParser parser = null;
     private ArrayList<ShipSpawner> shipSpawners;
 
@@ -76,7 +76,7 @@ public class Level {
     }
 
     public float getScoreMultiplier() {
-        return (float) Math.pow(LEVEL_SCORE_MULTIPLIER, currentLevel - 1);
+        return scoreMultiplier;
     }
 
     public void pauseSpawn() {
@@ -142,6 +142,18 @@ public class Level {
             String value = parser.getAttributeValue(i);
 
             if (attribute.equals("id") && level == Integer.parseInt(value)) {
+                scoreMultiplier = 0.0f;
+
+                for (int j = 0; j < parser.getAttributeCount(); j++) {
+                    if (parser.getAttributeName(j).equals("scoreMultiplier")) {
+                        scoreMultiplier = Float.parseFloat(parser.getAttributeValue(j));
+                    }
+                }
+
+                if (scoreMultiplier == 0.0f) {
+                    scoreMultiplier = 1.0f;
+                }
+
                 while (!(  parser.getEventType() == XmlPullParser.END_TAG
                         && parser.getName().equals("level")
                         && parser.getDepth() == 2)) {
@@ -200,7 +212,6 @@ public class Level {
                 //shipSpawners.add(spawner);
             }
         }
-
 
         levelGoal += number;
     }
