@@ -40,4 +40,7 @@ public class CSprite extends Sprite {
         setY(point.y - halfDimensions.y);
     }
 
+    public PointF getCenter() {
+        return new PointF(getX() + getWidthScaled() * 0.5f, getY() + getHeightScaled());
+    }
 }
