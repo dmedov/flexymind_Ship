@@ -6,6 +6,7 @@ import com.example.ship.RootActivity;
 import com.example.ship.atlas.ResourceManager;
 import com.example.ship.bonus.Bonus;
 import com.example.ship.bonus.BonusActions;
+import com.example.ship.commons.CRandom;
 import org.andengine.engine.Engine;
 import org.andengine.entity.Entity;
 import org.andengine.entity.scene.Scene;
@@ -180,13 +181,22 @@ public class GameScene extends Scene {
                     }
                 }
             }
+
+            // check for torpedo collides with bonuses
+            for (Bonus bonus: bonuses) {
+                if (torpedo.collidesWith(bonus.getSprite())) {
+                    torpedo.detachSelf();
+                    BonusActions.runGoodBonus();
+                }
+            }
+
         }
 
         if (deadShip != null) {
             createShipBonus(deadShip);
-            BonusActions.runGoodBonus();
             ships.remove(deadShip);
             Log.d("1log", "killed");
+            deadShip = null;
         }
 
         super.onManagedUpdate(pSecondsElapsed);
@@ -259,12 +269,11 @@ public class GameScene extends Scene {
     }
 
     private void createShipBonus(Ship ship) {
-        if (!Bonus.canCreate()) {
+        if (!CRandom.play(Bonus.bonusShipKillProbability)) {
             return;
         }
 
         Bonus bonus = new Bonus(ship);
         bonuses.add(bonus);
-
     }
 }

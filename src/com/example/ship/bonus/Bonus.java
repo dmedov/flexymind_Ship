@@ -1,12 +1,14 @@
 package com.example.ship.bonus;
 
 import android.graphics.PointF;
+import android.util.Log;
 import com.example.ship.R;
 import com.example.ship.commons.A;
 import com.example.ship.commons.CSprite;
 import com.example.ship.game.Ship;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
+import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.*;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.util.modifier.ease.EaseQuadIn;
@@ -21,9 +23,9 @@ import org.andengine.util.modifier.ease.EaseQuadInOut;
  */
 
 public class Bonus {
-    static public float bonusShipKillProbability = 0.1f;
+    static public float bonusShipKillProbability = 1f;  // 1f for DEBUG
     static public float bonusGoodPropability     = 0.8f;
-    static public float bonusLifeTime            = 5f;
+    static public float bonusLifeTime            = 10f;
 
     private static final float BONUS_WATER_LINE = 0.6f;
     private static final float MAX_ROTATE_ANGLE = 1.0f;
@@ -35,7 +37,7 @@ public class Bonus {
     private TimerHandler bonusTimerHandler;
 
     private CSprite bonusSprite;
-    private boolean canDestroy = false;
+
 
     public Bonus(Ship killedShip) {
         Sprite killedShipSprite = killedShip.getSprite();
@@ -50,10 +52,6 @@ public class Bonus {
     private void init() {
         runSwim();
         createTimer();
-    }
-
-    public static boolean canCreate() {
-        return true;
     }
 
     private void runSwim() {
@@ -90,6 +88,7 @@ public class Bonus {
 
 
     private void runSink() {
+        bonusSprite.clearEntityModifiers();
         PointF bonusPosition = bonusSprite.getPosition();
         MoveModifier moveModifierY = new MoveModifier( SINK_VELOCITY
                                                      , bonusPosition.x
@@ -98,12 +97,29 @@ public class Bonus {
                                                      , bonusPosition.y + 2 * bonusSprite.getHeightScaled()
                                                      , EaseQuadIn.getInstance() );
 
-
-
         AlphaModifier alphaModifier = new AlphaModifier(ALPHA_SINK_TIME, 1, 0);
 
-        ParallelEntityModifier parallel = new ParallelEntityModifier(alphaModifier, moveModifierY);
+        ParallelEntityModifier parallel = new ParallelEntityModifier(alphaModifier, moveModifierY) {
+                @Override
+                public void onModifierFinished(IEntity pItem) {
+                A.a.runOnUpdateThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        remove();
+                        Log.d("1Log", "bottom is detached");
+                    }
+                });
+            }
+        };
         bonusSprite.registerEntityModifier(parallel);
+    }
+
+    public CSprite getSprite() {
+        return bonusSprite;
+    }
+
+    public void remove() {
+        bonusSprite.detachSelf();
     }
 }
 

@@ -36,7 +36,7 @@ public class BonusActions {
         }
     }
 
-    public static void runBadBonus() {
+    public static void runBadBonus() { // TODO bad bonus
 
     }
 
