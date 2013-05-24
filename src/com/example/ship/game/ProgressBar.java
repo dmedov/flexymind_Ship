@@ -42,6 +42,7 @@ public class ProgressBar {
                                          , activity.getVertexBufferObjectManager());
         maskRectangle.setMaskingEnabled(false);
         maskRectangle.setColor(Color.RED);
+        maskRectangle.setAlpha(0.75f);
 
         gameHUD.attachChild(maskRectangle);
         // maskRectangle.attachChild(progressBarSprite);
