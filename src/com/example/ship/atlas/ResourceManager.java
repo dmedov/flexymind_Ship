@@ -80,9 +80,10 @@ public class ResourceManager {
         return loadedMusic.get(resourceID);
     }
 
-    public void playLoopMusic(int resourceID) {
+    public void playLoopMusic(int resourceID, float volume) {
         Music music = loadedMusic.get(resourceID);
         music.setLooping(true);
+        music.setVolume(volume);
         music.play();
     }
 
