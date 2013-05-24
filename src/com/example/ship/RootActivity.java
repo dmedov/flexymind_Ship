@@ -114,14 +114,14 @@ public class RootActivity extends BaseGameActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        resourceManager.pauseAllMusic(false);
+        resourceManager.pauseAllMusic();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         if (sceneSwitcher != null) {
-            sceneSwitcher.manageSound(sceneSwitcher.getCurrentState(), false);
+            sceneSwitcher.manageSound(sceneSwitcher.getCurrentState());
         }
     }
 

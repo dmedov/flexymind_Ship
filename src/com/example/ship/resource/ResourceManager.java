@@ -69,6 +69,8 @@ public class ResourceManager {
     private Context context;
     private int currentAtlasId;
 
+    public final boolean FROM_THE_BEGINING = true;
+
     public ResourceManager(Context context) {
         this.context = context;
         loadedTextures = new HashMap<Integer, ITextureRegion>();
@@ -77,49 +79,45 @@ public class ResourceManager {
         atlasList = new ArrayList<BuildableBitmapTextureAtlas>();
     }
 
-    public ITextureRegion getLoadedTextureRegion(int resourceID) {
-        return loadedTextures.get(resourceID);
+    // ================= SOUND ==================== //
+
+    public Sound getLoadedSound(int resourceID) {
+        return loadedSound.get(resourceID);
     }
 
-    public Music getLoadedMusic(int resourceID) {
-        return loadedMusic.get(resourceID);
-    }
-
-    public void playLoopMusic(int resourceID, float volume) {
-        Music music = loadedMusic.get(resourceID);
-        music.setLooping(true);
-        music.setVolume(volume);
-        music.play();
-    }
-
-    public void stopAllMusic() {
-        Music music;
-        for (HashMap.Entry<Integer, Music> e : loadedMusic.entrySet()) {
-            music = e.getValue();
-            if (music.isPlaying()) {
-                music.stop();
-            }
-        }
-    }
-
-    public void pauseAllMusic(boolean stop) {
-        Music music;
-        for (HashMap.Entry<Integer, Music> e : loadedMusic.entrySet()) {
-            music = e.getValue();
-            if (music.isPlaying()) {
-                music.pause();
-                if (stop) {
-                    music.seekTo(0);
-                }
-            }
-        }
-    }
-
-    public void playSound(int resourceID, float volume) {
+    private void playSound(int resourceID, float volume, boolean looping) {
         Sound sound = loadedSound.get(resourceID);
-        sound.setLooping(false);
+        sound.setLooping(looping);
         sound.setVolume(volume);
         sound.play();
+    }
+
+    public void playOnceSound(int resourceID, float volume) {
+        playSound(resourceID, volume, false);
+    }
+
+    public void playOnceSound(int resourceID) {
+        playSound(resourceID, 1.0f, false);
+    }
+
+    public void playLoopSound(int resourceID, float volume) {
+        playSound(resourceID, volume, true);
+    }
+
+    public void playLoopSound(int resourceID) {
+        playSound(resourceID, 1.0f, true);
+    }
+
+    public void stopAllSounds() {
+        for (HashMap.Entry<Integer, Sound> e : loadedSound.entrySet()) {
+            e.getValue().stop();
+        }
+    }
+
+    public void pauseAllSound() {
+        for (HashMap.Entry<Integer, Sound> e : loadedSound.entrySet()) {
+            e.getValue().pause();
+        }
     }
 
     public void loadAllSound(SoundManager soundManager) {
@@ -143,6 +141,74 @@ public class ResourceManager {
         }
     }
 
+    // ================= MUSIC ==================== //
+
+    public Music getLoadedMusic(int resourceID) {
+        return loadedMusic.get(resourceID);
+    }
+
+    private void playMusic(int resourceID, float volume, boolean looping, boolean fromBegining) {
+        Music music = loadedMusic.get(resourceID);
+        if (fromBegining) {
+            music.seekTo(0);
+        }
+        music.setLooping(looping);
+        music.setVolume(volume);
+        music.play();
+    }
+
+    public void playOnceMusic(int resourceID, float volume, boolean fromBegining) {
+        playMusic(resourceID, volume, false, fromBegining);
+    }
+
+    public void playOnceMusic(int resourceID, float volume) {
+        playMusic(resourceID, volume, false, false);
+    }
+
+    public void playOnceMusic(int resourceID, boolean fromBegining) {
+        playMusic(resourceID, 1.0f, false, fromBegining);
+    }
+
+    public void playOnceMusic(int resourceID) {
+        playMusic(resourceID, 1.0f, false, false);
+    }
+
+    public void playLoopMusic(int resourceID, float volume, boolean fromBegining) {
+        playMusic(resourceID, volume, true, fromBegining);
+    }
+
+    public void playLoopMusic(int resourceID, float volume) {
+        playMusic(resourceID, volume, true, false );
+    }
+
+    public void playLoopMusic(int resourceID, boolean fromBegining) {
+        playMusic(resourceID, 1.0f, true, fromBegining );
+    }
+
+    public void playLoopMusic(int resourceID) {
+        playMusic(resourceID, 1.0f, true, false );
+    }
+
+    public void stopAllMusic() {
+        Music music;
+        for (HashMap.Entry<Integer, Music> e : loadedMusic.entrySet()) {
+            music = e.getValue();
+            if (music.isPlaying()) {
+                music.stop();
+            }
+        }
+    }
+
+    public void pauseAllMusic() {
+        Music music;
+        for (HashMap.Entry<Integer, Music> e : loadedMusic.entrySet()) {
+            music = e.getValue();
+            if (music.isPlaying()) {
+                music.pause();
+            }
+        }
+    }
+
     public void loadAllMusic(MusicManager musicManager) {
         this.musicManager = musicManager;
         int musicId;
@@ -162,6 +228,12 @@ public class ResourceManager {
                 }
             }
         }
+    }
+
+    // ============== TEXTURE ================ //
+
+    public ITextureRegion getLoadedTextureRegion(int resourceID) {
+        return loadedTextures.get(resourceID);
     }
 
     public void loadAllTextures(TextureManager textureManager) {
