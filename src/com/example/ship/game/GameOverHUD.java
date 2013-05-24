@@ -30,11 +30,13 @@ public class GameOverHUD extends HUD {
     private static final float BACKGROUND_ALPHA = 0.75f;
 
     private final PointF cameraSize;
+    private static final int TEXT_LENGTH = 16;
 
     private ResourceManager resourceManager;
     private RootActivity activity;
-    private Font gameOverFont;
+    private Font font;
     private Text gameOverText;
+    private Text winOrLooseText;
     private Text scoreText;
     private float yPositionOfElement;
     private MenuButtonSprite restartButtonSprite;
@@ -56,7 +58,7 @@ public class GameOverHUD extends HUD {
     }
 
     private void createGameOverFont() {
-        gameOverFont = FontFactory.create( activity.getEngine().getFontManager()
+        font = FontFactory.create( activity.getEngine().getFontManager()
                                          , activity.getEngine().getTextureManager()
                                          , FONT_ATLAS_SIDE
                                          , FONT_ATLAS_SIDE
@@ -64,7 +66,7 @@ public class GameOverHUD extends HUD {
                                          , cameraSize.y * RELATIVE_FONT_SIZE
                                          , true
                                          , Color.WHITE_ABGR_PACKED_INT);
-        gameOverFont.load();
+        font.load();
     }
 
     private void createGameOverBackground() {
@@ -85,23 +87,40 @@ public class GameOverHUD extends HUD {
     private void createGameOverHUDLabels() {
         gameOverText = new Text( 0
                                , 0
-                               , gameOverFont
+                               , font
                                , "Game Over"
                                , activity.getEngine().getVertexBufferObjectManager());
         gameOverText.setPosition( cameraSize.x * 0.5f - gameOverText.getWidth() * 0.5f
                                 , cameraSize.y * 0.25f);
 
+        winOrLooseText = new Text( 0
+                                 , 0
+                                 , font
+                                 , ""
+                                 , TEXT_LENGTH
+                                 , activity.getEngine().getVertexBufferObjectManager());
+        winOrLooseText.setPosition( cameraSize.x * 0.5f - winOrLooseText.getWidth() * 0.5f
+                                  , gameOverText.getY() + gameOverText.getHeight()
+                                    + cameraSize.y * RELATIVE_SPACE_BETWEEN_ELEMENTS_HEIGHT);
+
+
         scoreText = new Text( 0
                             , 0
-                            , gameOverFont
+                            , font
                             , activity.getResources().getString(R.string.SCORE) + ": 000000"
                             , activity.getEngine().getVertexBufferObjectManager());
         scoreText.setPosition( cameraSize.x * 0.5f - scoreText.getWidth() * 0.5f
-                             , gameOverText.getY() + gameOverText.getHeight()
+                             , winOrLooseText.getY() + winOrLooseText.getHeight()
                                + cameraSize.y * RELATIVE_SPACE_BETWEEN_ELEMENTS_HEIGHT);
 
         this.attachChild(gameOverText);
+        this.attachChild(winOrLooseText);
         this.attachChild(scoreText);
+    }
+
+    public void setWinOrLooseText(String text) {
+        this.winOrLooseText.setText(text);
+        winOrLooseText.setX(cameraSize.x * 0.5f - winOrLooseText.getWidth() * 0.5f);
     }
 
     private void createGameOverButtons() {
@@ -111,7 +130,7 @@ public class GameOverHUD extends HUD {
                                     , activity.getEngine().getVertexBufferObjectManager()
                                     , R.string.GAME_OVER_RESTART_BUTTON
                                     , getStringResource(R.string.GAME_OVER_RESTART_BUTTON_LABEL)
-                                    , gameOverFont);
+                                    , font);
 
         restartButtonSprite.setScale(cameraSize.y * RELATIVE_GAME_OVER_BUTTON / restartButtonSprite.getHeight());
         restartButtonSprite.setPosition( cameraSize.x * 0.5f - restartButtonSprite.getWidth() * 0.5f
@@ -125,7 +144,7 @@ public class GameOverHUD extends HUD {
                                     , activity.getEngine().getVertexBufferObjectManager()
                                     , R.string.GAME_OVER_EXIT_BUTTON
                                     , getStringResource(R.string.GAME_OVER_EXIT_BUTTON_LABEL)
-                                    , gameOverFont);
+                                    , font);
 
         exitButtonSprite.setScale(cameraSize.y * RELATIVE_GAME_OVER_BUTTON / exitButtonSprite.getHeight());
         exitButtonSprite.setPosition( cameraSize.x * 0.5f - exitButtonSprite.getWidth() * 0.5f

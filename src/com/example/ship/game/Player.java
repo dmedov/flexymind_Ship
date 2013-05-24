@@ -39,7 +39,7 @@ public class Player {
     }
 
     public void addHealth() {
-        if (health < FULL_HP) {
+        if (health < FULL_HP && health > 0) {
             health++;
         }
         gameHUD.updateHealthIndicators(health);
@@ -48,9 +48,8 @@ public class Player {
     public void reduceHealth() {
         health--;
         gameHUD.updateHealthIndicators(health);
-        if (health <= 0) {
+        if (health < 1) {
             activity.getSceneSwitcher().switchToGameOverHUD();
-            cleanParameters();
             gameHUD.updateHealthIndicators(health);
             gameHUD.updateScore();
         }
