@@ -3,6 +3,7 @@ package com.example.ship.game;
 import android.graphics.PointF;
 import com.example.ship.R;
 import com.example.ship.RootActivity;
+import com.example.ship.level.PausableTimerHandler;
 import org.andengine.engine.camera.ZoomCamera;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
@@ -36,7 +37,7 @@ public class Gun {
     private Sprite gunSprite;
     private Sprite gunMask;
     private RootActivity activity;
-    private TimerHandler fireTimerHandler;
+    private PausableTimerHandler fireTimerHandler;
     private boolean fireAvailable = true;
     private int damage = DEFAULT_DAMAGE;
     private int reloadProgress   = ProgressBar.FULL_PROGRESS;
@@ -158,8 +159,17 @@ public class Gun {
     public float getPerspectiveScale() {
         return perspectiveScale;
     }
+
+    public void pauseFireTimer() {
+        fireTimerHandler.pause();
+    }
+
+    public void resumeFireTimer() {
+        fireTimerHandler.resume();
+    }
+
     private void createTimer() {
-        fireTimerHandler = new TimerHandler(FIRE_DELAY / ProgressBar.FULL_PROGRESS, new ITimerCallback() {
+        fireTimerHandler = new PausableTimerHandler(FIRE_DELAY / ProgressBar.FULL_PROGRESS, new ITimerCallback() {
             @Override
             public void onTimePassed(final TimerHandler timerHandler) {
                 if (reloadProgress  == ProgressBar.FULL_PROGRESS - 1) {
