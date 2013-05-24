@@ -4,7 +4,11 @@ import android.graphics.PointF;
 import com.example.ship.R;
 import com.example.ship.commons.CSprite;
 import com.example.ship.game.Ship;
+import org.andengine.entity.modifier.LoopEntityModifier;
+import org.andengine.entity.modifier.RotationModifier;
+import org.andengine.entity.modifier.SequenceEntityModifier;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.util.modifier.ease.EaseQuadInOut;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,21 +19,30 @@ import org.andengine.entity.sprite.Sprite;
  */
 
 public class Bonus {
-    static private float bonusShipKillProbability = 0.1f;
-    static private float bonusGoodPropability = 0.7f;
+    static public float bonusShipKillProbability = 0.1f;
+    static public float bonusGoodPropability = 0.8f;
+    static public float bonusWaterLine = 0.6f;
 
-    private CSprite bonusSrite;
+
+    private static final float MAX_ROTATE_ANGLE = 2.0f;
+    private static final float ROTATE_DURATION = 2.0f;
+    private static final int ROTATION_COUNT = 20;
+
+    private CSprite bonusSprite;
 
     public Bonus(PointF bonusLocation, int type) {
-        bonusSrite = new CSprite(bonusLocation, R.drawable.bonus);
-
+        bonusSprite = new CSprite(bonusLocation, R.drawable.bonus);
+        createModifier();
     }
 
     public Bonus(Ship killedShip) {
         Sprite killedShipSprite = killedShip.getSprite();
-        PointF killedShipCenter = ((CSprite)killedShipSprite).getCenter();
-        bonusSrite = new CSprite(killedShipCenter, R.drawable.bonus);
-        killedShip.getSprite().getParent().attachChild(bonusSrite);
+        PointF killedShipCenter = CSprite.getCenter(killedShipSprite);
+        bonusSprite = new CSprite(R.drawable.bonus);
+        bonusSprite.setCenterInPosition(killedShipCenter);
+        bonusSprite.setY(bonusSprite.getY() + bonusSprite.getHeightScaled() * bonusWaterLine);
+        killedShip.getSprite().getParent().attachChild(bonusSprite);
+        createModifier();
     }
 
     static void setBonusShipKillProbability(float probability) {
@@ -38,6 +51,30 @@ public class Bonus {
 
     public static boolean canCreate() {
         return true;
+    }
+
+    private void createModifier() {
+        PointF bonusCenter = bonusSprite.getCenter();
+        bonusSprite.setRotationCenter(bonusCenter.x, bonusCenter.y);
+
+        RotationModifier rotateUpModifier = new RotationModifier( ROTATE_DURATION
+                                                                , MAX_ROTATE_ANGLE
+                                                                , - MAX_ROTATE_ANGLE
+                                                                , EaseQuadInOut.getInstance());
+        RotationModifier rotateDownModifier = new RotationModifier( ROTATE_DURATION
+                                                                  , - MAX_ROTATE_ANGLE
+                                                                  , MAX_ROTATE_ANGLE
+                                                                  , EaseQuadInOut.getInstance());
+
+        SequenceEntityModifier rotateSequence = new SequenceEntityModifier( rotateUpModifier
+                                                                          , rotateDownModifier);
+        LoopEntityModifier loopRotate = new LoopEntityModifier( rotateSequence
+                                                              , ROTATION_COUNT);
+
+        //ParallelEntityModifier moveWithRotationModifier = new ParallelEntityModifier( loopRotate
+        //                                                                            , moveModifier);
+
+        bonusSprite.registerEntityModifier(loopRotate);
     }
 }
 

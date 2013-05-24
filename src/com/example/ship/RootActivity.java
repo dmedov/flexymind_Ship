@@ -19,7 +19,7 @@ import org.andengine.ui.activity.BaseGameActivity;
 public class RootActivity extends BaseGameActivity {
     private static final int TEXTURE_WIDTH = 1739;
     private static final int TEXTURE_HEIGHT = 900;
-    private static final boolean DEBUG_GAME_SCENE = false;
+    private static final boolean DEBUG_GAME_SCENE = true;
     private RootScene rootScene;
     private ShipMenuScene menuScene;
     private ResourceManager resourceManager;

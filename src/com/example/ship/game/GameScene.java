@@ -61,6 +61,7 @@ public class GameScene extends Scene {
 
         shipLinesPosition = new HashMap<Integer, Float>();
         ships = new ArrayList<Ship>();
+        bonuses = new ArrayList<Bonus>();
         waveSprites = new ArrayList<Sprite>();
 
         createBackground();
@@ -169,13 +170,14 @@ public class GameScene extends Scene {
                     if ( ship.hit(getGun().getDamage()) ) {
                         player.addPoints((int) (ship.getScore() * player.getLevel().getScoreMultiplier()));
                         deadShip = ship;
+                        createShipBonus(deadShip);
                     }
                 }
             }
         }
 
         if (deadShip != null) {
-            createShipBonus(deadShip);
+
             ships.remove(deadShip);
             Log.d("1log", "killed");
         }
