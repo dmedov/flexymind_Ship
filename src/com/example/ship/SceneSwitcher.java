@@ -4,7 +4,7 @@ import com.example.ship.game.GameScene;
 import com.example.ship.game.ShipSpawner;
 import com.example.ship.menu.MenuHUD;
 import com.example.ship.menu.ShipMenuScene;
-import com.example.ship.sceletone.RootScene;
+import com.example.ship.root.RootScene;
 
 /**
  * Created with IntelliJ IDEA.

@@ -1,4 +1,4 @@
-package com.example.ship.sceletone;
+package com.example.ship.root;
 
 /**
  * Created with IntelliJ IDEA.
