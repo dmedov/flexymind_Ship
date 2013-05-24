@@ -38,7 +38,6 @@ public class Bonus {
 
     private CSprite bonusSprite;
 
-
     public Bonus(Ship killedShip) {
         Sprite killedShipSprite = killedShip.getSprite();
         PointF killedShipCenter = CSprite.getCenter(killedShipSprite);

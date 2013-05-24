@@ -26,10 +26,9 @@ public class Gun {
     private static final float ROTATION_MAX_ANGLE  = 40.0f;
     private static final float GUN_PART_ON_SCENE   = 0.9f;
     private static final float BULLET_RELATIVE_START_POINT = 1.0f;
-    private static final float FIRE_DELAY = 1.5f;
     private static final int DEFAULT_DAMAGE = 100;
     private static final float DEFAULT_PERSPECTIVE_SCALE = 0.5f;
-    
+    private static float FIRE_DELAY = 1.5f;
     private float perspectiveScale;
     private boolean rotateLeft;
     private boolean rotationEnabled;
@@ -155,6 +154,15 @@ public class Gun {
     public float getPerspectiveScale() {
         return perspectiveScale;
     }
+
+    public void setFireDelay(float fireDelay) {
+        FIRE_DELAY = fireDelay;
+    }
+
+    public float getFireDelay() {
+        return FIRE_DELAY;
+    }
+
     private void createTimer() {
         fireTimerHandler = new TimerHandler(FIRE_DELAY, new ITimerCallback() {
             @Override
@@ -163,4 +171,6 @@ public class Gun {
             }
         });
     }
+
+
 }
