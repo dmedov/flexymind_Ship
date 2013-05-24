@@ -4,6 +4,7 @@ import android.util.Log;
 import com.example.ship.R;
 import com.example.ship.RootActivity;
 import com.example.ship.atlas.ResourceManager;
+import com.example.ship.bonus.Bonus;
 import org.andengine.engine.Engine;
 import org.andengine.entity.Entity;
 import org.andengine.entity.scene.Scene;
@@ -44,6 +45,7 @@ public class GameScene extends Scene {
     private Gun gun;
     private ShipSpawner shipSpawner;
     private ArrayList<Ship> ships;
+    private ArrayList<Bonus> bonuses;
     private HashMap<Integer, Float> shipLinesPosition;
     private Player player;
 
@@ -72,7 +74,7 @@ public class GameScene extends Scene {
 
     public void resetGame() {
         ships.clear();
-
+        bonuses.clear();
         clearLayers();
         createGun();
         createHuds();
@@ -173,6 +175,7 @@ public class GameScene extends Scene {
         }
 
         if (deadShip != null) {
+            createShipBonus(deadShip);
             ships.remove(deadShip);
             Log.d("1log", "killed");
         }
@@ -244,5 +247,15 @@ public class GameScene extends Scene {
         this.getChildByIndex(LAYER_THIRD_SHIP_LINE).detachChildren();
         this.getChildByIndex(LAYER_TORPEDO).detachChildren();
         this.getChildByIndex(LAYER_GUN).detachChildren();
+    }
+
+    private void createShipBonus(Ship ship) {
+        if (!Bonus.canCreate()) {
+            return;
+        }
+
+        Bonus bonus = new Bonus(ship);
+        bonuses.add(bonus);
+
     }
 }

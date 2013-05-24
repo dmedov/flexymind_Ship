@@ -4,6 +4,7 @@ import android.graphics.PointF;
 import com.example.ship.R;
 import com.example.ship.commons.CSprite;
 import com.example.ship.game.Ship;
+import org.andengine.entity.sprite.Sprite;
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,35 +19,25 @@ public class Bonus {
     static private float bonusGoodPropability = 0.7f;
 
     private CSprite bonusSrite;
-    Bonus(PointF bonusLocation, int type) {
 
+    public Bonus(PointF bonusLocation, int type) {
         bonusSrite = new CSprite(bonusLocation, R.drawable.bonus);
-    }
-
-    Bonus(Ship killedShip) {
-        PointF killedShipCenter =
-        bonusSrite = new CSprite(killedShip.getSprite().getX, R.drawable.bonus);
-    }
-
-    boolean isGood() {
 
     }
 
-
-    private void createSprite() {
-
+    public Bonus(Ship killedShip) {
+        Sprite killedShipSprite = killedShip.getSprite();
+        PointF killedShipCenter = ((CSprite)killedShipSprite).getCenter();
+        bonusSrite = new CSprite(killedShipCenter, R.drawable.bonus);
+        killedShip.getSprite().getParent().attachChild(bonusSrite);
     }
 
     static void setBonusShipKillProbability(float probability) {
         bonusShipKillProbability = probability;
     }
 
-    static boolean canCreate() {
-
+    public static boolean canCreate() {
+        return true;
     }
-
-
-
-
 }
 
