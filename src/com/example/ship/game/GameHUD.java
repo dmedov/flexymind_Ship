@@ -92,9 +92,9 @@ public class GameHUD extends HUD {
 
         GameButtonSprite fireButton;
         fireButton = new GameButtonSprite( activity.getResourceManager()
-                .getLoadedTextureRegion(R.drawable.firebutton)
-                , engine.getVertexBufferObjectManager()
-                , R.string.GAME_FIRE_BUTTON);
+                                                   .getLoadedTextureRegion(R.drawable.firebutton)
+                                         , engine.getVertexBufferObjectManager()
+                                         , R.string.GAME_FIRE_BUTTON);
         buttons.add(fireButton);
         fireButton.setScaleCenter(fireButton.getWidth(), fireButton.getHeight());
         fireButton.setScale(cameraSize.y * RELATIVE_FIRE_BUTTON_HEIGHT / fireButton.getHeight());
@@ -106,8 +106,8 @@ public class GameHUD extends HUD {
                                                , activity.getVertexBufferObjectManager()) {
             @Override
             public boolean onAreaTouched( TouchEvent pSceneTouchEvent
-                    , float pTouchAreaLocalX
-                    , float pTouchAreaLocalY) {
+                                        , float pTouchAreaLocalX
+                                        , float pTouchAreaLocalY) {
                 if (pSceneTouchEvent.isActionDown()) {
                     touchableGameButtonSprite.onAreaGameButtonTouched();
                 }
