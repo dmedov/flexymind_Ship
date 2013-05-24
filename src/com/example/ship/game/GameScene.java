@@ -111,14 +111,6 @@ public class GameScene extends Scene {
         return gun;
     }
 
-    public FullRandomShipSpawner getFullRandomShipSpawner() {
-        return fullRandomShipSpawner;
-    }
-
-    public void setFullRandomShipSpawner(FullRandomShipSpawner fullRandomShipSpawner) {
-        this.fullRandomShipSpawner = fullRandomShipSpawner;
-    }
-
     public float getShipLinePosition(int lineId) {
         return shipLinesPosition.get(lineId);
     }
@@ -142,6 +134,7 @@ public class GameScene extends Scene {
                 ship.missionDone();
                 deadShip = ship;
                 player.reduceHealth();
+                activity.getSceneSwitcher().getGameScene().getPlayer().getLevel().incrementLevelProgress();
             }
         }
 

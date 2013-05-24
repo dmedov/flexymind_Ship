@@ -27,11 +27,15 @@ public abstract class ShipSpawner {
     }
 
     public void pauseSpawn() {
-        timerHandler.pause();
+        if (timerHandler != null) {
+            timerHandler.pause();
+        }
     }
 
     public void resumeSpawn() {
-        timerHandler.resume();
+        if (timerHandler != null) {
+            timerHandler.resume();
+        }
     }
 
     public void stopSpawn() {

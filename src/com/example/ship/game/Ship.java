@@ -6,7 +6,6 @@ Date: 07.05.13
 */
 
 import android.graphics.PointF;
-import android.util.Log;
 import com.example.ship.R;
 import com.example.ship.RootActivity;
 import org.andengine.entity.IEntity;
@@ -77,7 +76,6 @@ public class Ship {
 
     public static void setVelocityDivider(float velocityDivider) {
         Ship.velocityDivider = velocityDivider;
-        Log.d("1log", "velocity divider..." + velocityDivider);
     }
 
     public Sprite getSprite () {
@@ -258,7 +256,6 @@ public class Ship {
                     @Override
                     public void run() {
                         shipSprite.detachSelf();
-                        Log.d("1Log", "Ship is detached from bottom");
                     }
                 });
             }

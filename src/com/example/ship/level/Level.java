@@ -30,17 +30,21 @@ public class Level {
     private int levelGoal;
     private int levelProgress;
     private XmlPullParser parser = null;
-    private ArrayList<FullRandomShipSpawner> fullRandomShipSpawners;
+    private ArrayList<ShipSpawner> shipSpawners;
 
     public Level(RootActivity activity) {
         this.activity = activity;
         this.currentLevel = 0;
-        fullRandomShipSpawners = new ArrayList<FullRandomShipSpawner>();
+        shipSpawners = new ArrayList<ShipSpawner>();
     }
 
     public void startLevel(int level) {
         currentLevel = level;
+        shipSpawners.clear();
         initLevelFromXml(currentLevel);
+        for (ShipSpawner spawner: shipSpawners) {
+            spawner.startSpawn();
+        }
 //
 //     DeathMatch
 //        levelGoal = (int) (FIRST_LEVEL_GOAL * (1 + LEVEL_GOAL_MULTIPLIER * (currentLevel - 1)));
@@ -73,6 +77,18 @@ public class Level {
 
     public float getScoreMultiplier() {
         return (float) Math.pow(LEVEL_SCORE_MULTIPLIER, currentLevel - 1);
+    }
+
+    public void pauseSpawn() {
+        for (ShipSpawner spawner: shipSpawners) {
+            spawner.pauseSpawn();
+        }
+    }
+
+    public void resumeSpawn() {
+        for (ShipSpawner spawner: shipSpawners) {
+            spawner.resumeSpawn();
+        }
     }
 
     private void updateLevelInfoInHud() {
@@ -167,9 +183,10 @@ public class Level {
                 direction = value;
             }
 
-            fullRandomShipSpawners.add(new FullRandomShipSpawner(activity));
-
         }
+
+        PeriodicalShipSpawner spawner = new PeriodicalShipSpawner(activity, firstSpawnIn, spawnDelay, number);
+        shipSpawners.add(spawner);
 
         levelGoal += number;
 
