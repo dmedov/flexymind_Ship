@@ -5,7 +5,7 @@ import com.example.ship.game.Gun;
 import com.example.ship.game.TouchableGameButtonSprite;
 import com.example.ship.menu.MenuButtonSprite;
 import com.example.ship.menu.TouchableMenuButtonSprite;
-import com.example.ship.sceletone.TouchableSceletonSprite;
+import com.example.ship.root.TouchableSceletonSprite;
 import org.andengine.entity.sprite.Sprite;
 
 /**

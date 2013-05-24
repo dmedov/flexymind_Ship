@@ -1,4 +1,4 @@
-package com.example.ship.sceletone;
+package com.example.ship.root;
 
 import android.graphics.Point;
 import android.graphics.PointF;
@@ -21,7 +21,7 @@ import org.andengine.util.color.Color;
  * Time: 21:27
  * To change this template use File | Settings | File Templates.
  */
-public class SceletonScene extends Scene {
+public class RootScene extends Scene {
     private final RootActivity activity;
     private final Engine engine;
     private final ResourceManager resourceManager;
@@ -29,7 +29,7 @@ public class SceletonScene extends Scene {
     private       TouchableSceletonSprite touchableSceletonSprite;
     private       Sprite shipSprite;
 
-    public SceletonScene(final RootActivity activity) {
+    public RootScene(final RootActivity activity) {
         super();
 
         this.activity = activity;

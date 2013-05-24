@@ -4,7 +4,7 @@ import android.util.Log;
 import com.example.ship.game.GameScene;
 import com.example.ship.menu.MenuHUD;
 import com.example.ship.menu.ShipMenuScene;
-import com.example.ship.sceletone.SceletonScene;
+import com.example.ship.root.RootScene;
 
 /**
  * Created with IntelliJ IDEA.
@@ -22,7 +22,7 @@ public class SceneSwitcher {
     public static final int GAME_OVER_STATE = 4;
 
     private final RootActivity activity;
-    private SceletonScene rootScene;
+    private RootScene rootScene;
     private ShipMenuScene menuScene;
     private GameScene gameScene;
     private int currentState;
@@ -31,7 +31,7 @@ public class SceneSwitcher {
         this.activity = activity;
         menuScene = new ShipMenuScene(activity);
         gameScene = new GameScene(activity);
-        rootScene = new SceletonScene(activity);
+        rootScene = new RootScene(activity);
         rootScene.setEvents(activity.getEvents());
 
         currentState = ROOT_STATE;
@@ -109,7 +109,7 @@ public class SceneSwitcher {
         return currentState;
     }
 
-    public SceletonScene getRootScene() {
+    public RootScene getRootScene() {
         return rootScene;
     }
 

@@ -5,8 +5,6 @@ import android.graphics.PointF;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import com.example.ship.atlas.ResourceManager;
-import com.example.ship.menu.ShipMenuScene;
-import com.example.ship.sceletone.SceletonScene;
 import org.andengine.engine.camera.ZoomCamera;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
@@ -19,8 +17,6 @@ public class RootActivity extends BaseGameActivity {
     private static final int TEXTURE_WIDTH = 1739;
     private static final int TEXTURE_HEIGHT = 900;
     private static final boolean DEBUG_GAME_SCENE = false;
-    private SceletonScene sceletonScene;
-    private ShipMenuScene menuScene;
     private ResourceManager resourceManager;
     private Events events;
     private ZoomCamera zoomCamera;
