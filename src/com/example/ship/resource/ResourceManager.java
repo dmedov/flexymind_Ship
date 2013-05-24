@@ -6,6 +6,8 @@ import com.example.ship.R;
 import org.andengine.audio.music.Music;
 import org.andengine.audio.music.MusicFactory;
 import org.andengine.audio.music.MusicManager;
+import org.andengine.audio.sound.Sound;
+import org.andengine.audio.sound.SoundManager;
 import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
@@ -57,11 +59,13 @@ getLoadedTextureRegion ( " [Сюда пишем ID ресурса (наприм�
 public class ResourceManager {
     private final Map<Integer, ITextureRegion> loadedTextures;
     private final Map<Integer, Music> loadedMusic;
+    private final Map<Integer, Sound> loadedSound;
     protected final ArrayList<BuildableBitmapTextureAtlas> atlasList;
 
     private XmlPullParser parser = null;
     private TextureManager textureManager = null;
     private MusicManager musicManager = null;
+    private SoundManager soundManager = null;
     private Context context;
     private int currentAtlasId;
 
@@ -69,6 +73,7 @@ public class ResourceManager {
         this.context = context;
         loadedTextures = new HashMap<Integer, ITextureRegion>();
         loadedMusic = new HashMap<Integer, Music>();
+        loadedSound = new HashMap<Integer, Sound>();
         atlasList = new ArrayList<BuildableBitmapTextureAtlas>();
     }
 
@@ -110,6 +115,34 @@ public class ResourceManager {
         }
     }
 
+    public void playSound(int resourceID, float volume) {
+        Sound sound = loadedSound.get(resourceID);
+        sound.setLooping(false);
+        sound.setVolume(volume);
+        sound.play();
+    }
+
+    public void loadAllSound(SoundManager soundManager) {
+        this.soundManager = soundManager;
+        int soundId;
+        for ( Field field : R.raw.class.getDeclaredFields() ) {
+            if (field.getName().substring(0,1).equals("s")) {
+                try {
+                    soundId = context.getResources().getIdentifier( field.getName()
+                            , "raw"
+                            , context.getPackageName() );
+
+                    Music music = MusicFactory.createMusicFromResource( musicManager
+                            , context
+                            , soundId );
+                    loadedMusic.put(soundId, music);
+                } catch (IOException e) {
+                    Log.d("ship_music","failed to load sound " + field.getName());
+                }
+            }
+        }
+    }
+
     public void loadAllMusic(MusicManager musicManager) {
         this.musicManager = musicManager;
         int musicId;
@@ -125,7 +158,7 @@ public class ResourceManager {
                                                                       , musicId );
                     loadedMusic.put(musicId, music);
                 } catch (IOException e) {
-                    Log.d("ship_music","failed to load music");
+                    Log.d("ship_music","failed to load music " + field.getName());
                 }
             }
         }
