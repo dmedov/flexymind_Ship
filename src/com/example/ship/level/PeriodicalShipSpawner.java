@@ -22,6 +22,7 @@ public class PeriodicalShipSpawner extends ShipSpawner {
     private int numberOfShips;
     private String shipType;
     private boolean direction;
+    private boolean bidirectional;
     private ArrayList<Integer> lines;
 
     public PeriodicalShipSpawner(RootActivity activity, float firstSpawnIn, float spawnDelay, int number) {
@@ -40,13 +41,20 @@ public class PeriodicalShipSpawner extends ShipSpawner {
 
         this.shipType = shipType;
 
+        Log.d("1log", "" + direction);
+
+        bidirectional = false;
         if (direction == null) {
-            this.direction = new Random().nextBoolean();
+            bidirectional = true;
         } else if (direction.contains("left")) {
             this.direction = Ship.TO_LEFT;
-        } else {
+        } else if (direction.contains("right")){
             this.direction = Ship.TO_RIGHT;
+        } else {
+            bidirectional = true;
         }
+
+        Log.d("1log", "" + this.direction + " " + bidirectional);
 
         this.lines = new ArrayList<Integer>();
         if (lines == null || !(lines.contains("1") || lines.contains("2") || lines.contains("3"))) {
@@ -84,7 +92,7 @@ public class PeriodicalShipSpawner extends ShipSpawner {
                     Ship ship = new Ship( activity
                                         , gameScene.getShipLinePosition(layerId)
                                         , shipType
-                                        , direction);
+                                        , (bidirectional) ? (new Random().nextBoolean()) : (direction));
                     gameScene.getShips().add(ship);
                     gameScene.getChildByIndex(layerId).attachChild(ship.getSprite());
 

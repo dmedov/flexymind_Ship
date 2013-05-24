@@ -220,7 +220,7 @@ public class Level {
             }
         }
 
-        if (!(number == 0 || spawnDelay == 0 || shipType == null || firstSpawnIn == 0)) {
+        if (!(number == 0 || (number > 1 && spawnDelay == 0) || shipType == null || firstSpawnIn == 0)) {
 
             if (periodicSpawn) {
                 PeriodicalShipSpawner spawner =
@@ -233,9 +233,9 @@ public class Level {
                 spawner.setShipParameters(shipType, direction, lines);
                 shipSpawners.add(spawner);
             }
-        }
 
-        levelGoal += number;
+            levelGoal += number;
+        }
     }
 
 }
