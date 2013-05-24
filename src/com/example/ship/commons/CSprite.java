@@ -62,14 +62,11 @@ public class CSprite extends Sprite {
         } else {
             centerY += halfDimensions.y;
         }
-        //float centerX = getX()_+ (getScaleX() > 0 ? getWidthScaled() * 0.5f : -getWidthScaled() * 0.5f);
+
         return new PointF(centerX, centerY);
-        //return new PointF(getX() + getWidthScaled() * 0.5f, getY() + getHeightScaled());
     }
 
     public static PointF getCenter(Sprite sprite) {
-       // return new PointF( sprite.getX() + sprite.getWidthScaled() * 0.5f
-       //                  , sprite.getY() + sprite.getHeightScaled() * 0.5f);
         float centerX = sprite.getX();
         float centerY = sprite.getY();
         PointF halfDimensions = CSprite.getHalfDimensions(sprite);
@@ -83,7 +80,7 @@ public class CSprite extends Sprite {
         } else {
             centerY += halfDimensions.y;
         }
-        //float centerX = getX()_+ (getScaleX() > 0 ? getWidthScaled() * 0.5f : -getWidthScaled() * 0.5f);
+
         return new PointF(centerX, centerY);
     }
 }
