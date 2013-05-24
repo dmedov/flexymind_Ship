@@ -45,6 +45,9 @@ public class Level {
         activity.getSceneSwitcher().getGameScene().getGameHUD().showNewLevelMessage(currentLevel);
         updateLevelInfoInHud();
 
+        activity.getResourceManager().playOnceSound( R.raw.s_gong
+                                                   , activity.getIntResource(R.integer.NEW_LEVEL_GONG_VOLUME) );
+
         Log.d("1log", "delay..." + newSpawnDelay);
         Log.d("1log", "goal..." + levelGoal);
     }
