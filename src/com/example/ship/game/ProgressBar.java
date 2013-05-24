@@ -20,16 +20,14 @@ public class ProgressBar {
     private Sprite progressBarSprite;
     private RootActivity activity;
     MaskRectangle maskRectangle;
-    private float progress;
 
     public ProgressBar(RootActivity activity, GameHUD gameHUD) {
 
         this.activity = activity;
-        this.progress = FULL_PROGRESS;
 
         progressBarSprite = new Sprite( 0
                                       , 0
-                                      , this.getLoadedTextureRegion(R.drawable.ontorpedoindicator)
+                                      , this.getLoadedTextureRegion(R.drawable.progressbar)
                                       , activity.getEngine().getVertexBufferObjectManager());
 
         progressBarSprite.setAlpha(0.75f);

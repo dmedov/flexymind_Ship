@@ -25,7 +25,6 @@
                 <texture name="onhealth"/>
                 <texture name="offhealth"/>
                 <texture name="gameoverbackground"/>
-                <texture name="ontorpedoindicator"/>
-                <texture name="offtorpedoindicator"/>
+                <texture name="progressbar"/>
            </Atlas>
 </resources>
