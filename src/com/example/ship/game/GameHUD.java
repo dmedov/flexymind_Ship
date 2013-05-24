@@ -29,9 +29,11 @@ import java.util.ArrayList;
  */
 public class GameHUD extends HUD {
 
-    private static final float RELATIVE_BUTTON_HEIGHT = 0.15f;
+    private static final float RELATIVE_PAUSE_BUTTON_HEIGHT = 0.15f;
+    private static final float RELATIVE_FIRE_BUTTON_HEIGHT = 0.25f;
     private static final float RELATIVE_SPACE_BETWEEN_CONTROLS = 0.01f;
     private static final float RELATIVE_SCREEN_BORDER = 0.02f;
+    private static final float RELATIVE_FIRE_SCREEN_BORDER = 0.12f;
     private static final float RELATIVE_HP_HEIGHT = 0.05f;
     private static final float BUTTON_ALPHA = 0.75f;
     private static final int FONT_ATLAS_SIDE = 256;
@@ -82,6 +84,8 @@ public class GameHUD extends HUD {
                                           , engine.getVertexBufferObjectManager()
                                           , R.string.GAME_PAUSE_BUTTON);
         buttons.add(pauseButton);
+        pauseButton.setScale(cameraSize.y * RELATIVE_PAUSE_BUTTON_HEIGHT / pauseButton.getHeight());
+
 
         GameButtonSprite fireButton;
         fireButton = new GameButtonSprite( activity.getResourceManager()
@@ -89,19 +93,18 @@ public class GameHUD extends HUD {
                                          , engine.getVertexBufferObjectManager()
                                          , R.string.GAME_FIRE_BUTTON);
         buttons.add(fireButton);
+        fireButton.setScaleCenter(fireButton.getWidth(), fireButton.getHeight());
+        fireButton.setScale(cameraSize.y * RELATIVE_FIRE_BUTTON_HEIGHT / fireButton.getHeight());
+
         for (GameButtonSprite button: buttons) {
-            if (button.getId() == R.string.GAME_BORDER_BUTTON) {
-                continue;
-            }
             button.setAlpha(BUTTON_ALPHA);
-            button.setScale(cameraSize.y * RELATIVE_BUTTON_HEIGHT / fireButton.getHeight());
             this.registerTouchArea(button);
             this.attachChild(button);
         }
 
         pauseButton.setPosition( RELATIVE_SCREEN_BORDER * cameraSize.x
                                , RELATIVE_SCREEN_BORDER * cameraSize.y);
-        fireButton.setPosition( (1 - RELATIVE_SCREEN_BORDER) * cameraSize.x - fireButton.getWidth()
+        fireButton.setPosition( (1 - RELATIVE_FIRE_SCREEN_BORDER) * cameraSize.x - fireButton.getWidth()
                               , (1 - RELATIVE_SCREEN_BORDER) * cameraSize.y - fireButton.getHeight());
     }
 
