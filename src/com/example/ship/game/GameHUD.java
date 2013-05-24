@@ -59,6 +59,7 @@ public class GameHUD extends HUD {
     private HealthIndicator healthIndicator;
     private ArrayList<GameButtonSprite> buttons;
     private HorizontalDigitalOnScreenControl rotateGunDigitalControl;
+    private ProgressBar progressBar;
 
     public GameHUD(RootActivity activity) {
         super();
@@ -72,6 +73,7 @@ public class GameHUD extends HUD {
         createButtons();
         createStats();
         createRotateGunDigitalControl();
+        createProgressBar();
     }
 
     public void setEventsToChildren(Events events) {
@@ -121,7 +123,7 @@ public class GameHUD extends HUD {
         final float CONTROL_BASE_TEXTURE_HEIGHT = rotateGunDigitalControlBaseTextureRegion.getHeight();
         final PointF GUN_DIGITAL_CONTROL_COORDINATE =
                 new PointF( 0f
-                        , (1 - RELATIVE_SCREEN_BORDER) * (cameraSize.y - CONTROL_BASE_TEXTURE_HEIGHT));
+                          , (1 - RELATIVE_SCREEN_BORDER) * (cameraSize.y - CONTROL_BASE_TEXTURE_HEIGHT));
 
         rotateGunDigitalControl =
                 new HorizontalDigitalOnScreenControl( GUN_DIGITAL_CONTROL_COORDINATE.x
@@ -232,6 +234,21 @@ public class GameHUD extends HUD {
         this.attachChild(currentLevelText);
         this.attachChild(remainingShipsSprite);
         this.attachChild(remainingShipsText);
+    }
+
+    private void createProgressBar() {
+        progressBar = new ProgressBar(activity, this);
+
+        float positionX = (1 - RELATIVE_SCREEN_BORDER) * cameraSize.x - progressBar.getWidthProgressBar();
+        // временно, потом будет ограничивается по облаку
+        float positionY = cameraSize.y / 4.0f;
+
+        progressBar.setPosition(new PointF(positionX, positionY));
+
+    }
+
+    public void updateProgressBar(int progress) {
+        progressBar.setProgress(progress);
     }
 
     public void updateScore() {

@@ -25,5 +25,6 @@
                 <texture name="cloud"/>
                 <texture name="score"/>
                 <texture name="ships_left"/>
+                <texture name="progressbar"/>
            </Atlas>
 </resources>
