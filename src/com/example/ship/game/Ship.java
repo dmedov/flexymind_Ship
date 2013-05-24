@@ -117,7 +117,8 @@ public class Ship {
 
     public boolean hit(int hitPoints) {
         health -= hitPoints;
-        activity.getResourceManager().playOnceSound(R.raw.s_explosion1);
+        activity.getResourceManager().playOnceSound( R.raw.s_explosion1
+                                                   , activity.getIntResource(R.integer.SHIP_EXPLOSION));
         if ( health <= 0) {
             activity.getSceneSwitcher().getGameScene().getPlayer().getLevel().incrementLevelProgress();
             killSelf();

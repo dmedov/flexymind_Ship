@@ -55,6 +55,28 @@ loadAllTextures ( this, mEngine.getTextureManager() );
 
 Для получения ITextureRegion нужного ресурса вызываем метод класса
 getLoadedTextureRegion ( " [Сюда пишем ID ресурса (например: R.drawable.ship)] " );
+
+Звук:
+
+Засовываем звук в любом формате в папку /res/raw/
+Названия файлов должны начинаться с "s" или "m" для звуков и музыки соответственно. После этого в OnCreateResources
+добавляем методы resourceManager.loadAllMusic(mEngine.getMusicManager());
+                 resourceManager.loadAllSound(mEngine.getSoundManager());
+
+и не забываем подключить звуки в engineOptions:
+                engineOptions.getAudioOptions().setNeedsMusic(true);
+                engineOptions.getAudioOptions().setNeedsSound(true);
+
+После сих действий запускаем звуки:
+                resourceManager.playLoopSound( [Сюда пишем ID ресурса (например: R.raw.s_explosion)]  );
+                resourceManager.playOnceSound( [Сюда пишем ID ресурса (например: R.raw.s_explosion)]  );
+                resourceManager.playLoopMusic( [Сюда пишем ID ресурса (например: R.raw.m_menu_music)] );
+                resourceManager.playOnceMusic( [Сюда пишем ID ресурса (например: R.raw.m_menu_music)] );
+
+Можно задать дополнительно громкость: Integer в процентах.
+Для музыки можно задать булевую переменную resourceManager.FROM_THE_BEGINING, которая запустит музыку сначала,
+а не с того места, где музыку настигла пауза.
+
 */
 
 public class ResourceManager {
