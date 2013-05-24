@@ -4,6 +4,9 @@ import android.util.Log;
 import com.example.ship.R;
 import com.example.ship.RootActivity;
 import com.example.ship.atlas.ResourceManager;
+import com.example.ship.bonus.Bonus;
+import com.example.ship.bonus.BonusActions;
+import com.example.ship.commons.CRandom;
 import org.andengine.engine.Engine;
 import org.andengine.entity.Entity;
 import org.andengine.entity.scene.Scene;
@@ -43,6 +46,7 @@ public class GameScene extends Scene {
     private ArrayList<Sprite> waveSprites;
     private Gun gun;
     private ArrayList<Ship> ships;
+    private ArrayList<Bonus> bonuses;
     private HashMap<Integer, Float> shipLinesPosition;
     private Player player;
 
@@ -58,6 +62,7 @@ public class GameScene extends Scene {
 
         shipLinesPosition = new HashMap<Integer, Float>();
         ships = new ArrayList<Ship>();
+        bonuses = new ArrayList<Bonus>();
         waveSprites = new ArrayList<Sprite>();
 
         createBackground();
@@ -71,7 +76,7 @@ public class GameScene extends Scene {
 
     public void resetGame() {
         ships.clear();
-
+        bonuses.clear();
         clearLayers();
         createGun();
         createHuds();
@@ -128,6 +133,8 @@ public class GameScene extends Scene {
     @Override
     protected void onManagedUpdate(float pSecondsElapsed) {
         Ship deadShip = null;
+        boolean stopCheck = false;
+        boolean blockBonus = false;
 
         for (Ship ship: ships) {
             Sprite shipSprite = ship.getSprite();
@@ -142,6 +149,12 @@ public class GameScene extends Scene {
                 player.reduceHealth();
                 activity.getSceneSwitcher().getGameScene().getPlayer().getLevel().incrementLevelProgress();
             }
+        }
+
+        if (deadShip != null) {
+            ships.remove(deadShip);
+            Log.d("1log", "ship out of border");
+            deadShip = null;
         }
 
         Entity layer = (Entity) getChildByIndex(LAYER_TORPEDO);
@@ -161,20 +174,57 @@ public class GameScene extends Scene {
 
         for (int i = 0; i < layer.getChildCount(); i++) {
             Sprite torpedo = (Sprite) layer.getChildByIndex(i);
+            stopCheck = false;
+            blockBonus = false;
             for (Ship ship: ships) {
                 if (torpedo.collidesWith(ship.getHitAreaSprite())) {
                     torpedo.detachSelf();
-                    if ( ship.hit(getGun().getDamage()) ) {
+
+                    // check if bonus stopped the ship
+                    if (ship.getSprite().isIgnoreUpdate()) {
+                        ship.getSprite().setIgnoreUpdate(false);
+                        blockBonus = true;
+                    }
+
+                    if (ship.hit(getGun().getDamage())) {
                         player.addPoints((int) (ship.getScore() * player.getLevel().getScoreMultiplier()));
                         deadShip = ship;
                     }
+
+                    stopCheck = true;
                 }
             }
+
+            if (stopCheck) {
+                continue;
+            }
+
+            Bonus deadBonus = null;
+            // check for torpedo collides with bonuses
+            for (Bonus bonus: bonuses) {
+                if (torpedo.collidesWith(bonus.getSprite())) {
+                    torpedo.detachSelf();
+                    BonusActions.runGoodBonus();
+                    bonus.runSink();
+                    deadBonus = bonus;
+                    break;
+                }
+            }
+
+            if (deadBonus != null) {
+                bonuses.remove(deadBonus);
+            }
+
         }
 
         if (deadShip != null) {
+            if (!blockBonus) {
+                createShipBonus(deadShip);
+            }
+
             ships.remove(deadShip);
             Log.d("1log", "killed");
+            deadShip = null;
         }
 
         super.onManagedUpdate(pSecondsElapsed);
@@ -244,5 +294,14 @@ public class GameScene extends Scene {
         this.getChildByIndex(LAYER_THIRD_SHIP_LINE).detachChildren();
         this.getChildByIndex(LAYER_TORPEDO).detachChildren();
         this.getChildByIndex(LAYER_GUN).detachChildren();
+    }
+
+    private void createShipBonus(Ship ship) {
+        if (!CRandom.play(Bonus.bonusShipKillProbability)) {
+            return;
+        }
+
+        Bonus bonus = new Bonus(ship);
+        bonuses.add(bonus);
     }
 }

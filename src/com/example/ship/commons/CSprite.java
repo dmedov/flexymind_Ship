@@ -26,12 +26,20 @@ public class CSprite extends Sprite {
     }
 
     public void setPosition(PointF point) {
-        setX(point.x);
-        setY(point.y);
+        setPosition(point.x, point.y);
+    }
+
+    public PointF getPosition() {
+        return new PointF(getX(), getY());
     }
 
     public PointF getHalfDimensions() {
-        return new PointF(getWidth() * 0.5f, getHeight() * 0.5f);
+        return new PointF(getWidthScaled() * 0.5f, getHeightScaled() * 0.5f);
+    }
+
+    public static PointF getHalfDimensions(Sprite sprite) {
+        return new PointF( sprite.getWidthScaled() * 0.5f
+                         , sprite.getHeightScaled() * 0.5f);
     }
 
     public void setCenterInPosition(PointF point) {
@@ -40,4 +48,39 @@ public class CSprite extends Sprite {
         setY(point.y - halfDimensions.y);
     }
 
+    public PointF getCenter() {
+        float centerX = getX();
+        float centerY = getY();
+        PointF halfDimensions = getHalfDimensions();
+        if (getScaleX() < 0) {
+            centerX -= halfDimensions.x;
+        } else {
+            centerX += halfDimensions.x;
+        }
+        if (getScaleY() < 0) {
+            centerY -= halfDimensions.y;
+        } else {
+            centerY += halfDimensions.y;
+        }
+
+        return new PointF(centerX, centerY);
+    }
+
+    public static PointF getCenter(Sprite sprite) {
+        float centerX = sprite.getX();
+        float centerY = sprite.getY();
+        PointF halfDimensions = CSprite.getHalfDimensions(sprite);
+        if (sprite.getScaleX() < 0) {
+            centerX -= halfDimensions.x;
+        } else {
+            centerX += halfDimensions.x;
+        }
+        if (sprite.getScaleY() < 0) {
+            centerY -= halfDimensions.y;
+        } else {
+            centerY += halfDimensions.y;
+        }
+
+        return new PointF(centerX, centerY);
+    }
 }

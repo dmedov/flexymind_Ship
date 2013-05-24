@@ -27,10 +27,9 @@ public class Gun {
     private static final float ROTATION_MAX_ANGLE  = 40.0f;
     private static final float GUN_PART_ON_SCENE   = 0.9f;
     private static final float BULLET_RELATIVE_START_POINT = 1.0f;
-    private static final float FIRE_DELAY = 1.5f;
     private static final int DEFAULT_DAMAGE = 100;
-    private static final float DEFAULT_PERSPECTIVE_SCALE = 0.6f;
-    
+    private static final float DEFAULT_PERSPECTIVE_SCALE = 0.5f;
+    private static float FIRE_DELAY = 1.5f;
     private float perspectiveScale;
     private boolean rotateLeft;
     private boolean rotationEnabled;
@@ -41,8 +40,10 @@ public class Gun {
     private boolean fireAvailable = true;
     private int damage = DEFAULT_DAMAGE;
     private int reloadProgress   = ProgressBar.FULL_PROGRESS;
+    private boolean autoFire = true;
 
     public Gun(RootActivity activity) {
+        autoFire = RootActivity.DEBUG_GAME_SCENE;
         this.activity = activity;
         rotationEnabled = false;
         ITextureRegion gunTexture = activity.getResourceManager().getLoadedTextureRegion(R.drawable.gun);
@@ -69,6 +70,10 @@ public class Gun {
             @Override
             protected void onManagedUpdate(float pSecondsElapsed) {
                 super.onManagedUpdate(pSecondsElapsed);
+
+                if (autoFire) {
+                    fire();
+                }
 
                 if (!rotationEnabled) {
                     return;
@@ -166,6 +171,18 @@ public class Gun {
 
     public void resumeFireTimer() {
         fireTimerHandler.resume();
+    }
+
+    public void setFireDelay(float fireDelay) {
+        FIRE_DELAY = fireDelay;
+    }
+
+    public float getFireDelay() {
+        return FIRE_DELAY;
+    }
+
+    public void setAutoFire(boolean autoFire) {
+        this.autoFire = autoFire;
     }
 
     private void createTimer() {
