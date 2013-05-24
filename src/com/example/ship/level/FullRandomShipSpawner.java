@@ -20,7 +20,6 @@ import java.util.Random;
  */
 public class FullRandomShipSpawner extends ShipSpawner {
     public static final float MIN_SPAWN_DELAY = 3.0f;
-    public static final float MAX_SPAWN_DELAY = 15.0f;
 
     public FullRandomShipSpawner(RootActivity activity) {
         super(activity, MIN_SPAWN_DELAY, MIN_SPAWN_DELAY);

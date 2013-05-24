@@ -23,7 +23,9 @@ public abstract class ShipSpawner {
     }
 
     public void startSpawn() {
-        activity.getEngine().registerUpdateHandler(timerHandler);
+        if (timerHandler != null) {
+            activity.getEngine().registerUpdateHandler(timerHandler);
+        }
     }
 
     public void pauseSpawn() {

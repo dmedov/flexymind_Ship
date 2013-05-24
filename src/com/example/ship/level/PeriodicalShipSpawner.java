@@ -1,7 +1,6 @@
 package com.example.ship.level;
 
 import android.util.Log;
-import com.example.ship.R;
 import com.example.ship.RootActivity;
 import com.example.ship.game.GameScene;
 import com.example.ship.game.Ship;
@@ -69,12 +68,6 @@ public class PeriodicalShipSpawner extends ShipSpawner {
 
     private class TimerTask implements ITimerCallback {
 
-        Random rnd;
-
-        private TimerTask() {
-            rnd = new Random();
-        }
-
         @Override
         public void onTimePassed(final TimerHandler timerHandler) {
             activity.runOnUiThread(new Runnable() {
@@ -100,24 +93,6 @@ public class PeriodicalShipSpawner extends ShipSpawner {
                     }
                 }
             });
-        }
-
-        private int selectShipType() {
-            int rndValue = rnd.nextInt(100) + 1;
-
-            if (rndValue < activity.getIntResource(R.integer.SAILFISH_SPAWN_PROBABILITY)) {
-                return R.drawable.sailfish;
-            } else {
-                rndValue -= activity.getIntResource(R.integer.SAILFISH_SPAWN_PROBABILITY);
-            }
-
-            if (rndValue < activity.getIntResource(R.integer.BATTLESHIP_SPAWN_PROBABILITY)) {
-                return R.drawable.battleship;
-            } else {
-                rndValue -= activity.getIntResource(R.integer.BATTLESHIP_SPAWN_PROBABILITY);
-            }
-
-            return R.drawable.missileboat;
         }
 
         private int selectLayer() {

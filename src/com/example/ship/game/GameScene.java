@@ -4,7 +4,6 @@ import android.util.Log;
 import com.example.ship.R;
 import com.example.ship.RootActivity;
 import com.example.ship.atlas.ResourceManager;
-import com.example.ship.level.FullRandomShipSpawner;
 import org.andengine.engine.Engine;
 import org.andengine.entity.Entity;
 import org.andengine.entity.scene.Scene;
@@ -43,7 +42,6 @@ public class GameScene extends Scene {
     private Sprite backgroundSprite;
     private ArrayList<Sprite> waveSprites;
     private Gun gun;
-    private FullRandomShipSpawner fullRandomShipSpawner;
     private ArrayList<Ship> ships;
     private HashMap<Integer, Float> shipLinesPosition;
     private Player player;
