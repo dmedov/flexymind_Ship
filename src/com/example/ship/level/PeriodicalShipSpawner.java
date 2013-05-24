@@ -13,27 +13,23 @@ import java.util.Random;
 /**
  * Created with IntelliJ IDEA.
  * User: Vasya
- * Date: 07.05.13
- * Time: 21:59
- *
- * Спаун случайных кораблей на случайных линиях, со случайными задержками
+ * Date: 24.05.13
+ * Time: 14:48
+ * To change this template use File | Settings | File Templates.
  */
-public class FullRandomShipSpawner extends ShipSpawner {
-    public static final float MIN_SPAWN_DELAY = 3.0f;
-    public static final float MAX_SPAWN_DELAY = 15.0f;
+public class PeriodicalShipSpawner extends ShipSpawner {
 
-    public FullRandomShipSpawner(RootActivity activity) {
-        super(activity, MIN_SPAWN_DELAY, MIN_SPAWN_DELAY);
+    private int numberOfShips;
+
+    public PeriodicalShipSpawner(RootActivity activity, float firstSpawnIn, float spawnDelay, int number) {
+        super(activity, firstSpawnIn, spawnDelay);
+        this.numberOfShips = number;
     }
 
     @Override
     public void startSpawn() {
         timerHandler = new PauseableTimerHandler(delay, new TimerTask());
         super.startSpawn();
-    }
-
-    public void setSpawnDelay(float spawnDelay) {
-        this.spawnDelay = spawnDelay;
     }
 
     private class TimerTask implements ITimerCallback {
@@ -50,20 +46,23 @@ public class FullRandomShipSpawner extends ShipSpawner {
                 @Override
                 public void run() {
 
-                    delay = MIN_SPAWN_DELAY + rnd.nextFloat() * spawnDelay;
-                    Log.d("1log", "new ship in..." + delay);
-                    timerHandler.setTimerSeconds(delay);
+                    Log.d("1log", "new ship in..." + spawnDelay);
+                    timerHandler.setTimerSeconds(spawnDelay);
                     timerHandler.reset();
 
                     int layerId = selectLayer();
 
                     GameScene gameScene = activity.getSceneSwitcher().getGameScene();
                     Ship ship = new Ship( activity
-                                        , gameScene.getShipLinePosition(layerId)
-                                        , selectShipType()
-                                        , rnd.nextBoolean());
+                            , gameScene.getShipLinePosition(layerId)
+                            , selectShipType()
+                            , rnd.nextBoolean());
                     gameScene.getShips().add(ship);
                     gameScene.getChildByIndex(layerId).attachChild(ship.getSprite());
+
+                    if (--numberOfShips == 0) {
+                        stopSpawn();
+                    }
                 }
             });
         }

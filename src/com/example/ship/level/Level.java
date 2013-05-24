@@ -7,6 +7,7 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created with IntelliJ IDEA.
@@ -29,10 +30,12 @@ public class Level {
     private int levelGoal;
     private int levelProgress;
     private XmlPullParser parser = null;
+    private ArrayList<FullRandomShipSpawner> fullRandomShipSpawners;
 
     public Level(RootActivity activity) {
         this.activity = activity;
         this.currentLevel = 0;
+        fullRandomShipSpawners = new ArrayList<FullRandomShipSpawner>();
     }
 
     public void startLevel(int level) {
@@ -43,12 +46,14 @@ public class Level {
 //        levelGoal = (int) (FIRST_LEVEL_GOAL * (1 + LEVEL_GOAL_MULTIPLIER * (currentLevel - 1)));
 //        levelProgress = 0;
 //
-//        float newSpawnDelay = (float) ( (RandomShipSpawner.MAX_SPAWN_DELAY - RandomShipSpawner.MIN_SPAWN_DELAY)
+//        float newSpawnDelay = (float) ( (FullRandomShipSpawner.MAX_SPAWN_DELAY - FullRandomShipSpawner.MIN_SPAWN_DELAY)
 //                                        * Math.pow(LEVEL_SPAWN_DELAY_MULTIPLIER, currentLevel - 1));
-//        activity.getSceneSwitcher().getGameScene().getRandomShipSpawner()
+//        activity.getSceneSwitcher().getGameScene().getFullRandomShipSpawner()
 //                .setSpawnDelay(newSpawnDelay);
 //
 //        Ship.setVelocityDivider((float) Math.pow(LEVEL_SHIP_SPEED_MULTIPLIER, currentLevel - 1));
+
+        levelProgress = 0;
 
         activity.getSceneSwitcher().getGameScene().getGameHUD().showNewLevelMessage(currentLevel);
         updateLevelInfoInHud();
@@ -82,6 +87,8 @@ public class Level {
     }
 
     private void initLevelFromXml(int level) {
+
+        levelGoal = 0;
 
         int eventType = 0;
 
@@ -160,7 +167,11 @@ public class Level {
                 direction = value;
             }
 
+            fullRandomShipSpawners.add(new FullRandomShipSpawner(activity));
+
         }
+
+        levelGoal += number;
 
         Log.d("1log", String.format( "num=%d...vel=%s...spaD=%s...fspa=%s...dir=%s"
                                    , number, velocity, spawnDelay, firstSpawnIn, direction));

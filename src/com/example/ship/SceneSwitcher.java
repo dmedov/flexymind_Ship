@@ -1,7 +1,7 @@
 package com.example.ship;
 
 import com.example.ship.game.GameScene;
-import com.example.ship.level.RandomShipSpawner;
+import com.example.ship.level.FullRandomShipSpawner;
 import com.example.ship.menu.MenuHUD;
 import com.example.ship.menu.ShipMenuScene;
 import com.example.ship.sceletone.SceletonScene;
@@ -66,8 +66,8 @@ public class SceneSwitcher {
         rootScene.unregisterTouchArea();
         gameScene.resetGame();
         rootScene.setChildScene(gameScene);
-        RandomShipSpawner randomShipSpawner = new RandomShipSpawner(activity);
-        gameScene.setRandomShipSpawner(randomShipSpawner);
+        FullRandomShipSpawner fullRandomShipSpawner = new FullRandomShipSpawner(activity);
+        gameScene.setFullRandomShipSpawner(fullRandomShipSpawner);
         gameScene.getPlayer().getLevel().startLevel(1);
         switchToGameHUD();
         currentState = GAME_STATE;
@@ -78,7 +78,7 @@ public class SceneSwitcher {
             gameScene.setIgnoreUpdate(false);
         }
         gameScene.switchToGameHUD();
-        gameScene.getRandomShipSpawner().startSpawn();
+        gameScene.getFullRandomShipSpawner().startSpawn();
         if (!activity.getEngine().isRunning()) {
             activity.getEngine().start();
         }
@@ -89,12 +89,12 @@ public class SceneSwitcher {
     public void switchToPauseHUD() {
         gameScene.setIgnoreUpdate(true);
         gameScene.switchToPauseHUD();
-        gameScene.getRandomShipSpawner().stopSpawn();
+        gameScene.getFullRandomShipSpawner().stopSpawn();
         currentState = PAUSE_STATE;
     }
 
     public void switchToGameOverHUD() {
-        gameScene.getRandomShipSpawner().stopSpawn();
+        gameScene.getFullRandomShipSpawner().stopSpawn();
         gameScene.setIgnoreUpdate(true);
         gameScene.switchToGameOverHUD();
         currentState = GAME_OVER_STATE;

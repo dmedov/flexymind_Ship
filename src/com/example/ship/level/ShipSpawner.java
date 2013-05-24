@@ -1,7 +1,6 @@
 package com.example.ship.level;
 
 import com.example.ship.RootActivity;
-import org.andengine.engine.handler.timer.ITimerCallback;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,10 +11,10 @@ import org.andengine.engine.handler.timer.ITimerCallback;
  */
 public abstract class ShipSpawner {
 
-    private final RootActivity activity;
-    private PauseableTimerHandler timerHandler;
-    private float delay;
-    private float spawnDelay;
+    protected final RootActivity activity;
+    protected PauseableTimerHandler timerHandler;
+    protected float delay;
+    protected float spawnDelay;
 
     public ShipSpawner(RootActivity activity, float firstSpawnIn, float spawnDelay) {
         this.activity = activity;
@@ -23,7 +22,9 @@ public abstract class ShipSpawner {
         this.spawnDelay = spawnDelay;
     }
 
-    public abstract void startSpawn();
+    public void startSpawn() {
+        activity.getEngine().registerUpdateHandler(timerHandler);
+    }
 
     public void pauseSpawn() {
         timerHandler.pause();
@@ -38,9 +39,4 @@ public abstract class ShipSpawner {
         timerHandler = null;
     }
 
-    public void setSpawnDelay(float spawnDelay) {
-        this.spawnDelay = spawnDelay;
-    }
-
-    private abstract class TimerTask implements ITimerCallback{}
 }
