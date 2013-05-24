@@ -96,7 +96,7 @@ public class GameOverHUD extends HUD {
         winOrLooseText = new Text( 0
                                  , 0
                                  , font
-                                 , "1"
+                                 , ""
                                  , TEXT_LENGTH
                                  , activity.getEngine().getVertexBufferObjectManager());
         winOrLooseText.setPosition( cameraSize.x * 0.5f - winOrLooseText.getWidth() * 0.5f
@@ -110,7 +110,7 @@ public class GameOverHUD extends HUD {
                             , activity.getResources().getString(R.string.SCORE) + ": 000000"
                             , activity.getEngine().getVertexBufferObjectManager());
         scoreText.setPosition( cameraSize.x * 0.5f - scoreText.getWidth() * 0.5f
-                             , gameOverText.getY() + gameOverText.getHeight()
+                             , winOrLooseText.getY() + winOrLooseText.getHeight()
                                + cameraSize.y * RELATIVE_SPACE_BETWEEN_ELEMENTS_HEIGHT);
 
         this.attachChild(gameOverText);
