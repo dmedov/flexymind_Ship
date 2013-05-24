@@ -1,4 +1,4 @@
-package com.example.ship.atlas;
+package com.example.ship.resource;
 
 import android.content.Context;
 import android.util.Log;
@@ -114,17 +114,19 @@ public class ResourceManager {
         this.musicManager = musicManager;
         int musicId;
         for ( Field field : R.raw.class.getDeclaredFields() ) {
-            try {
-                musicId = context.getResources().getIdentifier( field.getName()
-                                                              , "raw"
-                                                              , context.getPackageName() );
+            if (field.getName().substring(0,1).equals("m")) {
+                try {
+                    musicId = context.getResources().getIdentifier( field.getName()
+                                                                  , "raw"
+                                                                  , context.getPackageName() );
 
-                Music music = MusicFactory.createMusicFromResource( musicManager
-                                                                  , context
-                                                                  , musicId );
-                loadedMusic.put(musicId, music);
-            } catch (IOException e) {
-                Log.d("ship_music","failed to load music");
+                    Music music = MusicFactory.createMusicFromResource( musicManager
+                                                                      , context
+                                                                      , musicId );
+                    loadedMusic.put(musicId, music);
+                } catch (IOException e) {
+                    Log.d("ship_music","failed to load music");
+                }
             }
         }
     }

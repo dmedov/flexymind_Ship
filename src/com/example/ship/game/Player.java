@@ -1,17 +1,17 @@
 package com.example.ship.game;
 
 import com.example.ship.R;
-import com.example.ship.SceletonActivity;
+import com.example.ship.RootActivity;
 
 public class Player {
     public static final int FULL_HP = 6;
     private Level level;
     private int health;
     private int score;
-    private SceletonActivity activity;
+    private RootActivity activity;
     private GameHUD gameHUD;
 
-    public Player(SceletonActivity activity) {
+    public Player(RootActivity activity) {
         this.activity = activity;
         this.level = new Level(activity);
         this.health = FULL_HP;

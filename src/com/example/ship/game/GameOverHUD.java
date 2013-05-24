@@ -4,8 +4,8 @@ import android.graphics.PointF;
 import android.graphics.Typeface;
 import com.example.ship.Events;
 import com.example.ship.R;
-import com.example.ship.SceletonActivity;
-import com.example.ship.atlas.ResourceManager;
+import com.example.ship.RootActivity;
+import com.example.ship.resource.ResourceManager;
 import com.example.ship.menu.MenuButtonSprite;
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.entity.primitive.Rectangle;
@@ -32,7 +32,7 @@ public class GameOverHUD extends HUD {
     private final PointF cameraSize;
 
     private ResourceManager resourceManager;
-    private SceletonActivity activity;
+    private RootActivity activity;
     private Font gameOverFont;
     private Text gameOverText;
     private Text scoreText;
@@ -41,7 +41,7 @@ public class GameOverHUD extends HUD {
     private MenuButtonSprite exitButtonSprite;
     private Rectangle background;
 
-    public GameOverHUD(SceletonActivity activity) {
+    public GameOverHUD(RootActivity activity) {
         super();
 
         this.activity = activity;

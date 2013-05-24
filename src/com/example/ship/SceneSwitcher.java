@@ -4,7 +4,7 @@ import com.example.ship.game.GameScene;
 import com.example.ship.game.ShipSpawner;
 import com.example.ship.menu.MenuHUD;
 import com.example.ship.menu.ShipMenuScene;
-import com.example.ship.sceletone.SceletonScene;
+import com.example.ship.root.RootScene;
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,17 +21,17 @@ public class SceneSwitcher {
     public static final int PAUSE_STATE = 3;
     public static final int GAME_OVER_STATE = 4;
 
-    private final SceletonActivity activity;
-    private SceletonScene rootScene;
+    private final RootActivity activity;
+    private RootScene rootScene;
     private ShipMenuScene menuScene;
     private GameScene gameScene;
     private int currentState;
 
-    public SceneSwitcher(SceletonActivity activity) {
+    public SceneSwitcher(RootActivity activity) {
         this.activity = activity;
         menuScene = new ShipMenuScene(activity);
         gameScene = new GameScene(activity);
-        rootScene = new SceletonScene(activity);
+        rootScene = new RootScene(activity);
         rootScene.setEvents(activity.getEvents());
         manageSound(ROOT_STATE, true);
 
@@ -114,7 +114,7 @@ public class SceneSwitcher {
         return currentState;
     }
 
-    public SceletonScene getRootScene() {
+    public RootScene getRootScene() {
         return rootScene;
     }
 
@@ -126,10 +126,10 @@ public class SceneSwitcher {
         activity.getResourceManager().pauseAllMusic(stopMusic);
         switch (state) {
             case MENU_STATE :
-                activity.getResourceManager().playLoopMusic(R.raw.menu_music, 1.0f);
+                activity.getResourceManager().playLoopMusic(R.raw.m_menu_music, 1.0f);
                 break;
             case GAME_STATE :
-                activity.getResourceManager().playLoopMusic(R.raw.game_music, 0.2f);
+                activity.getResourceManager().playLoopMusic(R.raw.m_game_music, 0.2f);
                 break;
         }
     }
