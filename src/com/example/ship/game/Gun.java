@@ -139,6 +139,7 @@ public class Gun {
                                          , this.getGunAngle());
             activity.getSceneSwitcher().getGameScene().attachSpriteToLayer( torpedo
                                                                           , GameScene.LAYER_TORPEDO);
+            activity.getResourceManager().playOnceSound(R.raw.s_torpedo);
             fireAvailable = false;
             fireTimerHandler.reset();
         }

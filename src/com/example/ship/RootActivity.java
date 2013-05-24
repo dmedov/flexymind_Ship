@@ -53,6 +53,7 @@ public class RootActivity extends BaseGameActivity {
                                                        , zoomCamera);
         engineOptions.getTouchOptions().setNeedsMultiTouch(true);
         engineOptions.getAudioOptions().setNeedsMusic(true);
+        engineOptions.getAudioOptions().setNeedsSound(true);
         return engineOptions;
     }
 
@@ -61,6 +62,7 @@ public class RootActivity extends BaseGameActivity {
         resourceManager = new ResourceManager(this);
         resourceManager.loadAllTextures(mEngine.getTextureManager());
         resourceManager.loadAllMusic(mEngine.getMusicManager());
+        resourceManager.loadAllSound(mEngine.getSoundManager());
 
         FontFactory.setAssetBasePath(getResources().getString(R.string.FONT_BASE_ASSET_PATH));
 
@@ -115,6 +117,7 @@ public class RootActivity extends BaseGameActivity {
     protected void onPause() {
         super.onPause();
         resourceManager.pauseAllMusic();
+        resourceManager.pauseAllSound();
     }
 
     @Override

@@ -7,6 +7,7 @@ import org.andengine.audio.music.Music;
 import org.andengine.audio.music.MusicFactory;
 import org.andengine.audio.music.MusicManager;
 import org.andengine.audio.sound.Sound;
+import org.andengine.audio.sound.SoundFactory;
 import org.andengine.audio.sound.SoundManager;
 import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.texture.TextureOptions;
@@ -88,7 +89,7 @@ public class ResourceManager {
     private void playSound(int resourceID, int volume, boolean looping) {
         Sound sound = loadedSound.get(resourceID);
         sound.setLooping(looping);
-        sound.setVolume( ((float)volume)/100f );
+        sound.setVolume(((float) volume) / 100f);
         sound.play();
     }
 
@@ -135,14 +136,14 @@ public class ResourceManager {
             if (field.getName().substring(0,1).equals("s")) {
                 try {
                     soundId = context.getResources().getIdentifier( field.getName()
-                            , "raw"
-                            , context.getPackageName() );
+                                                                  , "raw"
+                                                                  , context.getPackageName() );
 
-                    Music music = MusicFactory.createMusicFromResource( musicManager
-                            , context
-                            , soundId );
-                    loadedMusic.put(soundId, music);
-                } catch (IOException e) {
+                    Sound sound = SoundFactory.createSoundFromResource( soundManager
+                                                                      , context
+                                                                      , soundId);
+                    loadedSound.put(soundId, sound);
+                } catch (Throwable e) {
                     Log.d("ship_music","failed to load sound " + field.getName());
                 }
             }
@@ -186,7 +187,7 @@ public class ResourceManager {
     }
 
     public void playLoopMusic(int resourceID, int volume) {
-        playMusic(resourceID, volume, true, false );
+        playMusic(resourceID, volume, true, false);
     }
 
     public void playLoopMusic(int resourceID, boolean fromBegining) {
