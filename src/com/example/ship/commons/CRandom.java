@@ -16,4 +16,5 @@ public class CRandom {
         float randomValue = rnd.nextFloat();
         return randomValue < propability;
     }
+
 }

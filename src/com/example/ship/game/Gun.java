@@ -38,8 +38,10 @@ public class Gun {
     private TimerHandler fireTimerHandler;
     private boolean fireAvailable = true;
     private int damage = DEFAULT_DAMAGE;
+    private boolean autoFire = true;
 
     public Gun(RootActivity activity) {
+        autoFire = RootActivity.DEBUG_GAME_SCENE;
         this.activity = activity;
         rotationEnabled = false;
         ITextureRegion gunTexture = activity.getResourceManager().getLoadedTextureRegion(R.drawable.gun);
@@ -66,6 +68,10 @@ public class Gun {
             @Override
             protected void onManagedUpdate(float pSecondsElapsed) {
                 super.onManagedUpdate(pSecondsElapsed);
+
+                if (autoFire) {
+                    fire();
+                }
 
                 if (!rotationEnabled) {
                     return;
@@ -161,6 +167,10 @@ public class Gun {
 
     public float getFireDelay() {
         return FIRE_DELAY;
+    }
+
+    public void setAutoFire(boolean autoFire) {
+        this.autoFire = autoFire;
     }
 
     private void createTimer() {

@@ -1,5 +1,7 @@
 package com.example.ship.bonus;
 
+import android.util.Log;
+import com.example.ship.RootActivity;
 import com.example.ship.commons.A;
 import com.example.ship.game.GameScene;
 import com.example.ship.game.Gun;
@@ -27,14 +29,19 @@ public class BonusActions {
     private static Random rnd = new Random();
 
     public static void runGoodBonus() {
+        rnd.setSeed(ships.size());       // TODO hotfix
         int random = rnd.nextInt(COUNT_GOOD_ACTIONS);
+        Log.e("random", String.valueOf(random));
         switch (random) {
-            case 0: stopAllShips();
-                    break;
-            case 1: setSmallFireDelay();
-                    break;
-            case 2: killAllShips();
-                    break;
+            case 0:
+                setMachineGun();
+                break;
+            case 1:
+                setMachineGun();
+                break;
+            case 2:
+                setMachineGun();
+                break;
         }
     }
 
@@ -61,15 +68,17 @@ public class BonusActions {
         A.e.registerUpdateHandler(bonusTimerHandler);
     }
 
-    public static void setSmallFireDelay() { //TODO gun bonus
-        float gunBonusTime = 5.0f;
+    public static void setMachineGun() { //TODO gun bonus
+        final float gunBonusTime = 5.0f;
         final float previousFireDelay = gun.getFireDelay();
-        gun.setFireDelay(previousFireDelay / 5);
+        gun.setFireDelay(previousFireDelay * 0.1f);
+        gun.setAutoFire(true);
 
         TimerHandler bonusTimerHandler = new TimerHandler(gunBonusTime, new ITimerCallback() {
             @Override
             public void onTimePassed(final TimerHandler timerHandler) {
                 gun.setFireDelay(previousFireDelay);
+                gun.setAutoFire(RootActivity.DEBUG_GAME_SCENE);
                 A.e.unregisterUpdateHandler(timerHandler);
             }
         });
