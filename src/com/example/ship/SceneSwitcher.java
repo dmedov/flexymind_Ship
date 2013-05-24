@@ -77,6 +77,7 @@ public class SceneSwitcher {
         }
         gameScene.switchToGameHUD();
         gameScene.getPlayer().getLevel().resumeSpawn();
+        gameScene.getGun().resumeFireTimer();
         if (!activity.getEngine().isRunning()) {
             activity.getEngine().start();
         }
@@ -88,6 +89,7 @@ public class SceneSwitcher {
         gameScene.setIgnoreUpdate(true);
         gameScene.switchToPauseHUD();
         gameScene.getPlayer().getLevel().pauseSpawn();
+        gameScene.getGun().pauseFireTimer();
         currentState = PAUSE_STATE;
     }
 
