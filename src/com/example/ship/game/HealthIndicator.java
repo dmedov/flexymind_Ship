@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 public class HealthIndicator {
     private static final float RELATIVE_HP_HEIGHT = 0.4f;
+    private static final float CLOUD_ALPHA = 0.75f;
     private Sprite hitPointSprite;
     private Sprite cloudSprite;
     private ArrayList<Sprite> hitPoints;
@@ -25,6 +26,7 @@ public class HealthIndicator {
         cloudSprite.setScaleCenter(cloudSprite.getWidth(), 0);
         cloudSprite.setScale(scale);
         cloudSprite.setPosition(position.x - cloudSprite.getWidth(), position.y);
+        cloudSprite.setAlpha(CLOUD_ALPHA);
         gameHUD.attachChild(cloudSprite);
 
         float cloudHeight =
@@ -32,7 +34,7 @@ public class HealthIndicator {
         float hitPointScale = cloudSprite.getHeight() * RELATIVE_HP_HEIGHT / cloudHeight;
         // 0.1f и 0.3f взяты под данную текстуру облака
         PointF positionHitPoint = new PointF( cloudSprite.getWidth() * 0.1f
-                                            , cloudSprite.getHeight() * 0.3f);
+                                            , cloudSprite.getHeight() * 0.35f);
 
         for (int i = 0; i < Player.FULL_HP; i++) {
             hitPointSprite = new Sprite( 0
@@ -44,7 +46,7 @@ public class HealthIndicator {
             hitPointSprite.setVisible(true);
             cloudSprite.attachChild(hitPointSprite);
             hitPoints.add(hitPointSprite);
-            positionHitPoint.x += hitPointSprite.getWidth();
+            positionHitPoint.x += hitPointSprite.getWidthScaled();
         }
     }
 
