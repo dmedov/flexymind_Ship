@@ -2,7 +2,7 @@ package com.example.ship.game;
 
 import android.graphics.PointF;
 import com.example.ship.R;
-import com.example.ship.SceletonActivity;
+import com.example.ship.RootActivity;
 import org.andengine.entity.sprite.Sprite;
 
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ public class HealthIndicator {
     private Sprite cloudSprite;
     private ArrayList<Sprite> hitPoints;
 
-    public HealthIndicator(SceletonActivity activity, GameHUD gameHUD, PointF position, float scale) {
+    public HealthIndicator(RootActivity activity, GameHUD gameHUD, PointF position, float scale) {
 
         hitPoints = new ArrayList<Sprite>();
 

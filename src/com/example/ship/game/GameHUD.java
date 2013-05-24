@@ -4,7 +4,7 @@ import android.graphics.PointF;
 import android.graphics.Typeface;
 import com.example.ship.Events;
 import com.example.ship.R;
-import com.example.ship.SceletonActivity;
+import com.example.ship.RootActivity;
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.camera.hud.controls.BaseOnScreenControl;
@@ -40,7 +40,7 @@ public class GameHUD extends HUD {
     private static final float RELATIVE_CONTROL_HEIGHT = 0.2f;
     public static final int TEXT_LENGTH = 32;
 
-    private final SceletonActivity activity;
+    private final RootActivity activity;
     private final Engine engine;
     private PointF positionHitPoint;
     private Text scoreText;
@@ -52,7 +52,7 @@ public class GameHUD extends HUD {
     private ArrayList<GameButtonSprite> buttons;
     private HorizontalDigitalOnScreenControl rotateGunDigitalControl;
 
-    public GameHUD(SceletonActivity activity) {
+    public GameHUD(RootActivity activity) {
         super();
         setOnAreaTouchTraversalFrontToBack();
         buttons = new ArrayList<GameButtonSprite>();
@@ -151,7 +151,7 @@ public class GameHUD extends HUD {
         final float KNOB_BORDER = 36f / rotateGunDigitalControl.getControlBase().getWidth();
         final float EXTENT_SIDE = HorizontalDigitalOnScreenControl.STANDART_EXTENT_SIDE
                                   - 0.5f * rotateGunDigitalControl.KNOB_SIZE_IN_PERCENT - KNOB_BORDER;
-        rotateGunDigitalControl.setExtentSide( EXTENT_SIDE );
+        rotateGunDigitalControl.setExtentSide(EXTENT_SIDE);
 
         rotateGunDigitalControl.refreshControlKnobPosition();
         this.setChildScene( rotateGunDigitalControl );

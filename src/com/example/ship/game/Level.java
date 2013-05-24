@@ -2,7 +2,7 @@ package com.example.ship.game;
 
 import android.util.Log;
 import com.example.ship.R;
-import com.example.ship.SceletonActivity;
+import com.example.ship.RootActivity;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,13 +19,13 @@ public class Level {
     public static final float LEVEL_SPAWN_DELAY_MULTIPLIER = 0.95f;
     public static final float LEVEL_SHIP_SPEED_MULTIPLIER = 1.1f;
 
-    private final SceletonActivity activity;
+    private final RootActivity activity;
 
     private int currentLevel;
     private int levelGoal;
     private int levelProgress;
 
-    public Level(SceletonActivity activity) {
+    public Level(RootActivity activity) {
         this.activity = activity;
         this.currentLevel = 0;
     }
