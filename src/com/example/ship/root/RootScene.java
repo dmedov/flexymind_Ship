@@ -1,4 +1,4 @@
-package com.example.ship.sceletone;
+package com.example.ship.root;
 
 import android.graphics.Point;
 import android.graphics.PointF;
