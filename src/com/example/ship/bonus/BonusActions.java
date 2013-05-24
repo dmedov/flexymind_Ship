@@ -49,7 +49,7 @@ public class BonusActions {
 
     }
 
-    public static void stopAllShips() {  // TODO run ship after some seconds
+    public static void stopAllShips() {
         float shipStopTime = 5.0f;
 
         for (Ship ship : ships) {
