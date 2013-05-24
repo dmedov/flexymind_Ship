@@ -1,7 +1,7 @@
 package com.example.ship;
 
+import android.util.Log;
 import com.example.ship.game.GameScene;
-import com.example.ship.game.ShipSpawner;
 import com.example.ship.menu.MenuHUD;
 import com.example.ship.menu.ShipMenuScene;
 import com.example.ship.sceletone.SceletonScene;
@@ -21,13 +21,13 @@ public class SceneSwitcher {
     public static final int PAUSE_STATE = 3;
     public static final int GAME_OVER_STATE = 4;
 
-    private final SceletonActivity activity;
+    private final RootActivity activity;
     private SceletonScene rootScene;
     private ShipMenuScene menuScene;
     private GameScene gameScene;
     private int currentState;
 
-    public SceneSwitcher(SceletonActivity activity) {
+    public SceneSwitcher(RootActivity activity) {
         this.activity = activity;
         menuScene = new ShipMenuScene(activity);
         gameScene = new GameScene(activity);
@@ -66,8 +66,6 @@ public class SceneSwitcher {
         rootScene.unregisterTouchArea();
         gameScene.resetGame();
         rootScene.setChildScene(gameScene);
-        ShipSpawner shipSpawner = new ShipSpawner(activity);
-        gameScene.setShipSpawner(shipSpawner);
         gameScene.getPlayer().getLevel().startLevel(1);
         switchToGameHUD();
         currentState = GAME_STATE;
@@ -78,7 +76,7 @@ public class SceneSwitcher {
             gameScene.setIgnoreUpdate(false);
         }
         gameScene.switchToGameHUD();
-        gameScene.getShipSpawner().startSpawn();
+        gameScene.getPlayer().getLevel().resumeSpawn();
         if (!activity.getEngine().isRunning()) {
             activity.getEngine().start();
         }
@@ -89,13 +87,20 @@ public class SceneSwitcher {
     public void switchToPauseHUD() {
         gameScene.setIgnoreUpdate(true);
         gameScene.switchToPauseHUD();
-        gameScene.getShipSpawner().stopSpawn();
+        gameScene.getPlayer().getLevel().pauseSpawn();
         currentState = PAUSE_STATE;
     }
 
     public void switchToGameOverHUD() {
-        gameScene.getShipSpawner().stopSpawn();
+        gameScene.getPlayer().getLevel().pauseSpawn();
         gameScene.setIgnoreUpdate(true);
+        if (gameScene.getPlayer().getHealth() > 0) {
+            gameScene.getGameOverHUD().setWinOrLooseText(activity.getStringResource(R.string.WIN_LABEL));
+            Log.d("1log", "победа");
+        } else {
+            gameScene.getGameOverHUD().setWinOrLooseText(activity.getStringResource(R.string.LOOSE_LABEL));
+            Log.d("1log", "поражение");
+        }
         gameScene.switchToGameOverHUD();
         currentState = GAME_OVER_STATE;
     }

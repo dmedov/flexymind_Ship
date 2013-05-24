@@ -21,9 +21,9 @@ public class Events implements TouchableMenuButtonSprite
 
     private final static float RELATIVE_BUTTON_JUMP_AMPLITUDE = 0.005f;
     private final static float RELATIVE_BUTTON_PULSE_AMPLITUDE = 0.1f;
-    private final SceletonActivity activity;
+    private final RootActivity activity;
 
-    public Events(SceletonActivity activity) {
+    public Events(RootActivity activity) {
         this.activity = activity;
     }
 

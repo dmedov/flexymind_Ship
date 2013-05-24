@@ -15,4 +15,6 @@
     <!--GameOver Button Labels-->
     <string name="GAME_OVER_RESTART_BUTTON_LABEL">Новая игра</string>
     <string name="GAME_OVER_EXIT_BUTTON_LABEL">Выход</string>
+    <string name="WIN_LABEL">Победа!!!</string>
+    <string name="LOOSE_LABEL">Вы проиграли</string>
 </resources>

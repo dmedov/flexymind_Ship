@@ -6,9 +6,8 @@ Date: 07.05.13
 */
 
 import android.graphics.PointF;
-import android.util.Log;
 import com.example.ship.R;
-import com.example.ship.SceletonActivity;
+import com.example.ship.RootActivity;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.*;
 import org.andengine.entity.sprite.Sprite;
@@ -17,6 +16,7 @@ import org.andengine.util.modifier.ease.EaseQuadIn;
 import org.andengine.util.modifier.ease.EaseQuadInOut;
 import org.andengine.util.modifier.ease.EaseQuadOut;
 
+import java.util.HashMap;
 import java.util.Random;
 
 import static java.lang.Math.abs;
@@ -25,6 +25,13 @@ public class Ship {
 
     public static final boolean TO_LEFT = true;
     public static final boolean TO_RIGHT = false;
+    public static final HashMap<String, Integer> shipsId;
+    static {
+        shipsId = new HashMap<String, Integer>();
+        shipsId.put("missileBoat", R.drawable.missileboat);
+        shipsId.put("battleship", R.drawable.battleship);
+        shipsId.put("sailfish", R.drawable.sailfish);
+    }
 
     private static final float RELATIVE_WATERLINE = 0.1f;
     private static final float FINISH_OFFSET = 300.0f;
@@ -44,7 +51,7 @@ public class Ship {
     private static float velocityDivider = 1;
 
     private final float yPosition;
-    private final SceletonActivity activity;
+    private final RootActivity activity;
     private final int typeId;
     private final boolean direction;
 
@@ -57,7 +64,11 @@ public class Ship {
     private int score;
     private Random rand;
 
-    public Ship(SceletonActivity activity, float yPosition, int shipTypeId, boolean direction) {
+    public Ship(RootActivity activity, float yPosition, String shipType, boolean direction) {
+        this(activity, yPosition, shipsId.get(shipType), direction);
+    }
+
+    public Ship(RootActivity activity, float yPosition, int shipTypeId, boolean direction) {
         this.activity = activity;
         this.yPosition = yPosition;
         this.typeId = shipTypeId;
@@ -77,7 +88,6 @@ public class Ship {
 
     public static void setVelocityDivider(float velocityDivider) {
         Ship.velocityDivider = velocityDivider;
-        Log.d("1log", "velocity divider..." + velocityDivider);
     }
 
     public Sprite getSprite () {
@@ -258,7 +268,6 @@ public class Ship {
                     @Override
                     public void run() {
                         shipSprite.detachSelf();
-                        Log.d("1Log", "Ship is detached from bottom");
                     }
                 });
             }

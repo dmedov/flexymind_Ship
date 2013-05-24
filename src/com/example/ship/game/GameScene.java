@@ -2,7 +2,7 @@ package com.example.ship.game;
 
 import android.util.Log;
 import com.example.ship.R;
-import com.example.ship.SceletonActivity;
+import com.example.ship.RootActivity;
 import com.example.ship.atlas.ResourceManager;
 import org.andengine.engine.Engine;
 import org.andengine.entity.Entity;
@@ -32,7 +32,7 @@ public class GameScene extends Scene {
     private static final float RELATIVE_SKY_HEIGHT = 0.15f;
     private static final float RELATIVE_WAVE_HEIGHT = 0.125f;
 
-    private final SceletonActivity activity;
+    private final RootActivity activity;
     private final Engine mEngine;
     private final ResourceManager resourceManager;
 
@@ -42,12 +42,11 @@ public class GameScene extends Scene {
     private Sprite backgroundSprite;
     private ArrayList<Sprite> waveSprites;
     private Gun gun;
-    private ShipSpawner shipSpawner;
     private ArrayList<Ship> ships;
     private HashMap<Integer, Float> shipLinesPosition;
     private Player player;
 
-    public GameScene(final SceletonActivity activity) {
+    public GameScene(final RootActivity activity) {
         super();
         this.activity = activity;
         this.mEngine = activity.getEngine();
@@ -102,20 +101,16 @@ public class GameScene extends Scene {
         return gameHUD;
     }
 
+    public GameOverHUD getGameOverHUD() {
+        return gameOverHUD;
+    }
+
     public Player getPlayer() {
         return player;
     }
 
     public Gun getGun() {
         return gun;
-    }
-
-    public ShipSpawner getShipSpawner() {
-        return shipSpawner;
-    }
-
-    public void setShipSpawner(ShipSpawner shipSpawner) {
-        this.shipSpawner = shipSpawner;
     }
 
     public float getShipLinePosition(int lineId) {
@@ -141,6 +136,7 @@ public class GameScene extends Scene {
                 ship.missionDone();
                 deadShip = ship;
                 player.reduceHealth();
+                activity.getSceneSwitcher().getGameScene().getPlayer().getLevel().incrementLevelProgress();
             }
         }
 
