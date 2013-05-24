@@ -128,10 +128,11 @@ public class SceneSwitcher {
         activity.getResourceManager().pauseAllMusic();
         switch (state) {
             case MENU_STATE :
-                resourceManager.playLoopMusic(R.raw.m_menu_music, resourceManager.FROM_THE_BEGINING );
+                resourceManager.playLoopMusic(R.raw.m_menu_music, resourceManager.FROM_THE_BEGINING);
                 break;
             case GAME_STATE :
-                resourceManager.playLoopMusic(R.raw.m_game_music, 0.4f);
+                resourceManager.playLoopMusic( R.raw.m_game_music
+                                             , activity.getIntResource(R.integer.GAME_SCENE_MUSIC_VOLUME) );
                 break;
         }
     }

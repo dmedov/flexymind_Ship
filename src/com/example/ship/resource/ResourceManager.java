@@ -85,27 +85,35 @@ public class ResourceManager {
         return loadedSound.get(resourceID);
     }
 
-    private void playSound(int resourceID, float volume, boolean looping) {
+    private void playSound(int resourceID, int volume, boolean looping) {
         Sound sound = loadedSound.get(resourceID);
         sound.setLooping(looping);
-        sound.setVolume(volume);
+        sound.setVolume( ((float)volume)/100f );
         sound.play();
     }
 
-    public void playOnceSound(int resourceID, float volume) {
+    public void stopSound(int resourceID) {
+        loadedSound.get(resourceID).stop();
+    }
+
+    public void pauseSound(int resourceID) {
+        loadedSound.get(resourceID).pause();
+    }
+
+    public void playOnceSound(int resourceID, int volume) {
         playSound(resourceID, volume, false);
     }
 
     public void playOnceSound(int resourceID) {
-        playSound(resourceID, 1.0f, false);
+        playSound(resourceID, 100, false);
     }
 
-    public void playLoopSound(int resourceID, float volume) {
+    public void playLoopSound(int resourceID, int volume) {
         playSound(resourceID, volume, true);
     }
 
     public void playLoopSound(int resourceID) {
-        playSound(resourceID, 1.0f, true);
+        playSound(resourceID, 100, true);
     }
 
     public void stopAllSounds() {
@@ -147,46 +155,46 @@ public class ResourceManager {
         return loadedMusic.get(resourceID);
     }
 
-    private void playMusic(int resourceID, float volume, boolean looping, boolean fromBegining) {
+    private void playMusic(int resourceID, int volume, boolean looping, boolean fromBegining) {
         Music music = loadedMusic.get(resourceID);
         if (fromBegining) {
             music.seekTo(0);
         }
         music.setLooping(looping);
-        music.setVolume(volume);
+        music.setVolume( ((float)volume)/100f );
         music.play();
     }
 
-    public void playOnceMusic(int resourceID, float volume, boolean fromBegining) {
+    public void playOnceMusic(int resourceID, int volume, boolean fromBegining) {
         playMusic(resourceID, volume, false, fromBegining);
     }
 
-    public void playOnceMusic(int resourceID, float volume) {
+    public void playOnceMusic(int resourceID, int volume) {
         playMusic(resourceID, volume, false, false);
     }
 
     public void playOnceMusic(int resourceID, boolean fromBegining) {
-        playMusic(resourceID, 1.0f, false, fromBegining);
+        playMusic(resourceID, 100, false, fromBegining);
     }
 
     public void playOnceMusic(int resourceID) {
-        playMusic(resourceID, 1.0f, false, false);
+        playMusic(resourceID, 100, false, false);
     }
 
-    public void playLoopMusic(int resourceID, float volume, boolean fromBegining) {
+    public void playLoopMusic(int resourceID, int volume, boolean fromBegining) {
         playMusic(resourceID, volume, true, fromBegining);
     }
 
-    public void playLoopMusic(int resourceID, float volume) {
+    public void playLoopMusic(int resourceID, int volume) {
         playMusic(resourceID, volume, true, false );
     }
 
     public void playLoopMusic(int resourceID, boolean fromBegining) {
-        playMusic(resourceID, 1.0f, true, fromBegining );
+        playMusic(resourceID, 100, true, fromBegining );
     }
 
     public void playLoopMusic(int resourceID) {
-        playMusic(resourceID, 1.0f, true, false );
+        playMusic(resourceID, 100, true, false );
     }
 
     public void stopAllMusic() {

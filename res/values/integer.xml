@@ -21,4 +21,6 @@
     <integer name="BATTLESHIP_HITAREA_START_PIXEL">12</integer>
     <integer name="BATTLESHIP_HITAREA_END_PIXEL">193</integer>
     <integer name="BATTLESHIP_SCORE_POINTS">20</integer>
+    <!-- Music Volumes in percent -->
+    <integer name="GAME_SCENE_MUSIC_VOLUME">1</integer>
 </resources>
