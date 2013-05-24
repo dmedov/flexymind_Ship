@@ -192,6 +192,9 @@ public class Level {
             } else if (attribute.equals("periodicSpawnDelay")) {
                 spawnDelay = Float.parseFloat(value);
                 periodicSpawn = true;
+            } else if (attribute.equals("randomSpawnDelay")) {
+                spawnDelay = Float.parseFloat(value);
+                periodicSpawn = false;
             } else if (attribute.equals("firstSpawnIn")) {
                 firstSpawnIn = Float.parseFloat(value);
             } else if (attribute.equals("direction")) {
@@ -204,12 +207,15 @@ public class Level {
         if (!(number == 0 || spawnDelay == 0 || shipType == null || firstSpawnIn == 0)) {
 
             if (periodicSpawn) {
-                PeriodicalShipSpawner spawner = new PeriodicalShipSpawner(activity, firstSpawnIn, spawnDelay, number);
+                PeriodicalShipSpawner spawner =
+                        new PeriodicalShipSpawner(activity, firstSpawnIn, spawnDelay, number);
                 spawner.setShipParameters(shipType, direction, lines);
                 shipSpawners.add(spawner);
             } else {
-                //spawner = new PeriodicalShipSpawner(activity, firstSpawnIn, spawnDelay, number);
-                //shipSpawners.add(spawner);
+                RandomDelayShipSpawner spawner =
+                        new RandomDelayShipSpawner(activity, firstSpawnIn, spawnDelay, number);
+                spawner.setShipParameters(shipType, direction, lines);
+                shipSpawners.add(spawner);
             }
         }
 

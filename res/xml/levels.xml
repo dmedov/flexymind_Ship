@@ -15,8 +15,8 @@
                lines="2"
                direction="to right"/>
         <enemy type="battleship"
-               number="2" periodicSpawnDelay="5.0"
-               firstSpawnIn="20.0"
+               number="2" randomSpawnDelay="20.0"
+               firstSpawnIn="10.0"
                lines="3"
                direction="to right"/>
     </level>
