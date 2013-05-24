@@ -29,6 +29,10 @@ public class CSprite extends Sprite {
         setPosition(point.x, point.y);
     }
 
+    public PointF getPosition() {
+        return new PointF(getX(), getY());
+    }
+
     public PointF getHalfDimensions() {
         return new PointF(getWidthScaled() * 0.5f, getHeightScaled() * 0.5f);
     }
