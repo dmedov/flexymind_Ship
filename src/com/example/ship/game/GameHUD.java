@@ -10,6 +10,7 @@ import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.camera.hud.controls.BaseOnScreenControl;
 import org.andengine.entity.modifier.*;
 import org.andengine.entity.shape.RectangularShape;
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
@@ -37,17 +38,17 @@ public class GameHUD extends HUD {
     private static final int FONT_ATLAS_SIDE = 256;
     
     private static final float TIME_PERIOD_CHECK_CONTROL = 0.1f;
-    private static final float RELATIVE_CONTROL_HEIGHT = 0.5f;
-    private static final float RELATIVE_CONTROL_MIDDLE_Y = 0.25f;
-    private static final float CONTROL_ALPHA = 0.5f;
-
-    public static final int TEXT_LENGTH = 32;
+    private static final float RELATIVE_CONTROL_HEIGHT = 0.2f;
+    private static final int TEXT_LENGTH = 32;
+    private static final float RELATIVE_MEASURED_TEXT_MIDDLE = 0.7f;
 
     private final RootActivity activity;
     private final Engine engine;
     private PointF positionHitPoint;
     private Text scoreText;
-    private Text levelInfoText;
+    private Sprite remainingShipsSprite;
+    private Text currentLevelText;
+    private Text remainingShipsText;
     private Font statFont;
     private PointF cameraSize;
     private ArrayList<GameButtonSprite> buttons;
@@ -117,7 +118,7 @@ public class GameHUD extends HUD {
                 new PointF(0f , rotateGunDigitalControlBaseTextureRegion.getHeight());
         final float CONTROL_BASE_TEXTURE_HEIGHT = rotateGunDigitalControlBaseTextureRegion.getHeight();
         final PointF GUN_DIGITAL_CONTROL_COORDINATE =
-                new PointF( 0f
+                new PointF( RELATIVE_SCREEN_BORDER * cameraSize.x
                           , (1 - RELATIVE_SCREEN_BORDER) * (cameraSize.y - CONTROL_BASE_TEXTURE_HEIGHT));
 
         rotateGunDigitalControl =
@@ -140,7 +141,7 @@ public class GameHUD extends HUD {
                 }
             }
         });
-        rotateGunDigitalControl.getControlBase().setAlpha(CONTROL_ALPHA);
+        rotateGunDigitalControl.getControlBase().setAlpha(BUTTON_ALPHA);
         // Чтобы текстура не выходила за границы экрана при масштабировании
         rotateGunDigitalControl.getControlBase()
                 .setScaleCenter(BASE_TEXTURE_LEFT_BOTTOM.x, BASE_TEXTURE_LEFT_BOTTOM.y);
@@ -148,14 +149,13 @@ public class GameHUD extends HUD {
                 .setScale(cameraSize.y * RELATIVE_CONTROL_HEIGHT
                           / rotateGunDigitalControlBaseTextureRegion.getHeight());
         rotateGunDigitalControl.getControlKnob()
-                .setScale(cameraSize.y * RELATIVE_CONTROL_HEIGHT
-                          / rotateGunDigitalControlBaseTextureRegion.getHeight());
-        // 13f измерено по текстуре, обеспечивает правильный отступ
-        final float KNOB_BORDER = 13f / rotateGunDigitalControl.getControlBase().getWidth();
-        final float EXTENT_SIDE = HorizontalDigitalOnScreenControl.STANDART_RELATIVE_EXTENT_SIDE
+                .setScale( cameraSize.y * RELATIVE_CONTROL_HEIGHT
+                           / rotateGunDigitalControlBaseTextureRegion.getHeight() );
+        // 36f измерено по текстуре, обеспечивает правильный отступ
+        final float KNOB_BORDER = 36f / rotateGunDigitalControl.getControlBase().getWidth();
+        final float EXTENT_SIDE = HorizontalDigitalOnScreenControl.STANDART_EXTENT_SIDE
                                   - 0.5f * rotateGunDigitalControl.KNOB_SIZE_IN_PERCENT - KNOB_BORDER;
         rotateGunDigitalControl.setExtentSide(EXTENT_SIDE);
-        rotateGunDigitalControl.setHeightLevel(RELATIVE_CONTROL_MIDDLE_Y);
 
         rotateGunDigitalControl.refreshControlKnobPosition();
         this.setChildScene(rotateGunDigitalControl);
@@ -181,13 +181,13 @@ public class GameHUD extends HUD {
         }
 
         statFont = FontFactory.create( activity.getEngine().getFontManager()
-                                      , activity.getEngine().getTextureManager()
-                                      , FONT_ATLAS_SIDE
-                                      , FONT_ATLAS_SIDE
-                                      , Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)
-                                      , healthTextureHeight * scale
-                                      , true
-                                      , Color.WHITE_ABGR_PACKED_INT);
+                                     , activity.getEngine().getTextureManager()
+                                     , FONT_ATLAS_SIDE
+                                     , FONT_ATLAS_SIDE
+                                     , Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)
+                                     , healthTextureHeight * scale
+                                     , true
+                                     , Color.WHITE_ABGR_PACKED_INT);
         statFont.load();
 
         // создаем изначальные очки
@@ -200,15 +200,29 @@ public class GameHUD extends HUD {
         scoreText.setPosition( cameraSize.x * 0.5f - scoreText.getWidth() * 0.5f
                              , RELATIVE_SCREEN_BORDER * cameraSize.y);
 
-        levelInfoText = new Text( 0
-                                , 0
-                                , statFont
-                                , ""
-                                , TEXT_LENGTH
-                                , activity.getEngine().getVertexBufferObjectManager());
+        currentLevelText = new Text( 0
+                                   , 0
+                                   , statFont
+                                   , ""
+                                   , TEXT_LENGTH
+                                   , activity.getEngine().getVertexBufferObjectManager());
+        ITextureRegion shipsLeftToDestroyTexture =
+                activity.getResourceManager().getLoadedTextureRegion(R.drawable.ships_left);
+        remainingShipsSprite = new Sprite( 0
+                                         , 0
+                                         , shipsLeftToDestroyTexture
+                                         , activity.getEngine().getVertexBufferObjectManager());
+        remainingShipsText = new Text( 0
+                                     , 0
+                                     , statFont
+                                     , ""
+                                     , TEXT_LENGTH
+                                     , activity.getEngine().getVertexBufferObjectManager());
 
         this.attachChild(scoreText);
-        this.attachChild(levelInfoText);
+        this.attachChild(currentLevelText);
+        this.attachChild(remainingShipsSprite);
+        this.attachChild(remainingShipsText);
     }
 
     public void updateScore() {
@@ -217,10 +231,19 @@ public class GameHUD extends HUD {
                              , RELATIVE_SCREEN_BORDER * cameraSize.y);
     }
 
-    public void updateLevelInfo(String text) {
-        levelInfoText.setText(text);
-        levelInfoText.setPosition( cameraSize.x * 0.25f - levelInfoText.getWidth() * 0.5f
-                                 , RELATIVE_SCREEN_BORDER * cameraSize.y);
+    public void updateLevelInfo(String currentLevel, String shipsToDestroy) {
+        currentLevelText.setText(currentLevel);
+        currentLevelText.setPosition( cameraSize.x * 0.25f - currentLevelText.getWidth() * 0.5f
+                                    , RELATIVE_SCREEN_BORDER * cameraSize.y);
+        remainingShipsSprite.setScale(remainingShipsText.getHeight() / remainingShipsSprite.getHeight());
+        remainingShipsSprite.setPosition( currentLevelText.getX()
+                                        , currentLevelText.getY() + currentLevelText.getHeight()
+                                          + 0.5f * remainingShipsSprite.getHeight());
+        remainingShipsText.setText(shipsToDestroy);
+        remainingShipsText.setPosition( remainingShipsSprite.getX() + remainingShipsSprite.getWidth()
+                                        + 0.5f * remainingShipsSprite.getWidthScaled()
+                                      , remainingShipsSprite.getY()  + 0.5f * remainingShipsSprite.getHeightScaled()
+                                        - RELATIVE_MEASURED_TEXT_MIDDLE * remainingShipsText.getHeight());
     }
 
     public void updateHealthIndicators(int health) {
