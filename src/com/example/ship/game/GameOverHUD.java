@@ -4,7 +4,7 @@ import android.graphics.PointF;
 import android.graphics.Typeface;
 import com.example.ship.Events;
 import com.example.ship.R;
-import com.example.ship.SceletonActivity;
+import com.example.ship.RootActivity;
 import com.example.ship.atlas.ResourceManager;
 import com.example.ship.menu.MenuButtonSprite;
 import org.andengine.engine.camera.hud.HUD;
@@ -30,7 +30,7 @@ public class GameOverHUD extends HUD {
     private static final float RELATIVE_TOP_BORDER = 0.05f;
     private final PointF cameraSize;
     private ResourceManager resourceManager;
-    private SceletonActivity activity;
+    private RootActivity activity;
     private Font gameOverFont;
     private Sprite gameOverBackgound;
     private Text gameOverText;
@@ -39,7 +39,7 @@ public class GameOverHUD extends HUD {
     private MenuButtonSprite menuButtonSprite;
     private MenuButtonSprite exitButtonSprite;
 
-    public GameOverHUD(SceletonActivity activity) {
+    public GameOverHUD(RootActivity activity) {
         super();
 
         this.activity = activity;
@@ -73,8 +73,8 @@ public class GameOverHUD extends HUD {
                                       , gameOverTexture
                                       , activity.getEngine().getVertexBufferObjectManager());
 
-        gameOverBackgound.setPosition( cameraSize.x * 0.5f - gameOverBackgound.getWidth() * 0.5f
-                                     , cameraSize.y * 0.5f - gameOverBackgound.getHeight() * 0.5f);
+        gameOverBackgound.setPosition(cameraSize.x * 0.5f - gameOverBackgound.getWidth() * 0.5f
+                , cameraSize.y * 0.5f - gameOverBackgound.getHeight() * 0.5f);
         gameOverBackgound.setScale(cameraSize.y * RELATIVE_GAME_OVER_BACKGROUND_HEIGHT / gameOverBackgound.getHeight());
 
         yPositionOfElement = gameOverBackgound.getHeight() * RELATIVE_TOP_BORDER;
@@ -131,8 +131,8 @@ public class GameOverHUD extends HUD {
                                     , gameOverFont);
 
         exitButtonSprite.setScale(spaceGameOverButton / exitButtonSprite.getHeight());
-        exitButtonSprite.setPosition( gameOverBackgound.getWidth() * 0.5f - scoreText.getWidth() * 0.5f
-                                    , yPositionOfElement);
+        exitButtonSprite.setPosition(gameOverBackgound.getWidth() * 0.5f - scoreText.getWidth() * 0.5f
+                , yPositionOfElement);
 
         this.registerTouchArea(menuButtonSprite);
         this.registerTouchArea(exitButtonSprite);

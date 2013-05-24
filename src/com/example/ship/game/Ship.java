@@ -8,7 +8,7 @@ Date: 07.05.13
 import android.graphics.PointF;
 import android.widget.Toast;
 import com.example.ship.R;
-import com.example.ship.SceletonActivity;
+import com.example.ship.RootActivity;
 import org.andengine.entity.modifier.*;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.util.modifier.ease.EaseLinear;
@@ -26,7 +26,7 @@ public class Ship {
     private static final float RELATIVE_ROTATION_CENTER_Y_OFFSET = 1.75f;
     private static final int ROTATION_COUNT = 10;
 
-    private final SceletonActivity activity;
+    private final RootActivity activity;
     private final float yPosition;
     private final int typeId;
     private final boolean direction;
@@ -38,7 +38,7 @@ public class Ship {
     private float velocity;
     private int health;
 
-    public Ship(SceletonActivity activity, float yPosition, int shipTypeId, boolean direction) {
+    public Ship(RootActivity activity, float yPosition, int shipTypeId, boolean direction) {
         this.activity = activity;
         this.yPosition = yPosition;
         this.typeId = shipTypeId;

@@ -1,7 +1,7 @@
 package com.example.ship.game;
 
 import com.example.ship.R;
-import com.example.ship.SceletonActivity;
+import com.example.ship.RootActivity;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 
@@ -18,13 +18,13 @@ public class ShipSpawner {
     private static final float MIN_SPAWN_DELAY = 1.0f;
     private static final float MAX_SPAWN_DELAY = 4.0f;
     private static final float FIRST_SPAWN_DELAY = 3.0f;
-    private final SceletonActivity activity;
+    private final RootActivity activity;
     private TimerHandler timerHandler;
     private float delay;
     private boolean spawning;
     private Random rnd;
 
-    public ShipSpawner(SceletonActivity activity) {
+    public ShipSpawner(RootActivity activity) {
         this.activity = activity;
         delay = FIRST_SPAWN_DELAY;
         spawning = false;

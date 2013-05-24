@@ -2,7 +2,7 @@ package com.example.ship.game;
 
 import android.util.Log;
 import com.example.ship.R;
-import com.example.ship.SceletonActivity;
+import com.example.ship.RootActivity;
 import com.example.ship.atlas.ResourceManager;
 import org.andengine.engine.Engine;
 import org.andengine.entity.Entity;
@@ -30,7 +30,7 @@ public class GameScene extends Scene {
     private static final float RELATIVE_SKY_HEIGHT = 0.15f;
     private static final float RELATIVE_WAVE_HEIGHT = 0.125f;
 
-    private final SceletonActivity activity;
+    private final RootActivity activity;
     private final Engine mEngine;
     private final ResourceManager resourceManager;
     private GameHUD gameHUD;
@@ -45,7 +45,7 @@ public class GameScene extends Scene {
     private Player player;
     private boolean cleanGameScene = false;
 
-    public GameScene(final SceletonActivity activity) {
+    public GameScene(final RootActivity activity) {
         super();
         this.activity = activity;
         this.mEngine = activity.getEngine();

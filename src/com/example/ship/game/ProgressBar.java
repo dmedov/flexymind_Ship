@@ -2,7 +2,7 @@ package com.example.ship.game;
 
 import android.graphics.PointF;
 import com.example.ship.R;
-import com.example.ship.SceletonActivity;
+import com.example.ship.RootActivity;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.ITextureRegion;
 
@@ -15,15 +15,14 @@ import org.andengine.opengl.texture.region.ITextureRegion;
  */
 public class ProgressBar {
     public static final int FULL_PROGRESS = 100;
-    private static final float RELATIVE_TORPEDO_INDICATOR_HEIGHT = 0.15f;
+    private static final float RELATIVE_TORPEDO_INDICATOR_HEIGHT = 0.70f;
 
     private Sprite progressBarSprite;
-    private Sprite capacityProgressBarSprite;
-    private SceletonActivity activity;
+    private RootActivity activity;
     MaskRectangle maskRectangle;
     private float progress;
 
-    public ProgressBar(SceletonActivity activity, GameHUD gameHUD) {
+    public ProgressBar(RootActivity activity, GameHUD gameHUD) {
 
         this.activity = activity;
         this.progress = FULL_PROGRESS;
@@ -33,26 +32,26 @@ public class ProgressBar {
                                       , this.getLoadedTextureRegion(R.drawable.ontorpedoindicator)
                                       , activity.getEngine().getVertexBufferObjectManager());
 
-        capacityProgressBarSprite = new Sprite( 0
-                                              , 0
-                                              , this.getLoadedTextureRegion(R.drawable.offtorpedoindicator)
-                                              , activity.getEngine().getVertexBufferObjectManager());
-
+        progressBarSprite.setAlpha(0.75f);
         setScaleToTorpedoIndicator();
 
         maskRectangle = new MaskRectangle( 0
                                          , 0
-                                         , progressBarSprite.getWidth()
-                                         , progressBarSprite.getHeight() * (FULL_PROGRESS - progress) / FULL_PROGRESS
+                                         , progressBarSprite.getWidthScaled()
+                                         , 0
                                          , activity.getVertexBufferObjectManager());
 
-        gameHUD.attachChild(capacityProgressBarSprite);
-        capacityProgressBarSprite.attachChild(maskRectangle);
+        gameHUD.attachChild(maskRectangle);
         maskRectangle.attachChild(progressBarSprite);
     }
 
     public void setProgress(int progress) {
-        maskRectangle.setHeight(progressBarSprite.getHeight() * (FULL_PROGRESS - progress) / FULL_PROGRESS);
+        maskRectangle.setHeight( progressBarSprite.getHeightScaled() * (FULL_PROGRESS - progress)
+                                 / FULL_PROGRESS);
+    }
+
+    public float getWidthProgressBar() {
+        return progressBarSprite.getWidthScaled();
     }
 
     public float getHeightProgressBar() {
@@ -60,15 +59,15 @@ public class ProgressBar {
     }
 
     public void setPosition(PointF point) {
-        capacityProgressBarSprite.setPosition(point.x, point.y);
+        maskRectangle.setPosition(point.x, point.y);
     }
 
     private void setScaleToTorpedoIndicator() {
         float scale = activity.getCamera().getHeightRaw() * RELATIVE_TORPEDO_INDICATOR_HEIGHT
-                / progressBarSprite.getHeight();
+                      / progressBarSprite.getHeight();
 
+        progressBarSprite.setScaleCenter(0, 0);
         progressBarSprite.setScale(scale);
-        capacityProgressBarSprite.setScale(scale);
     }
 
     private ITextureRegion getLoadedTextureRegion(int TextureID) {

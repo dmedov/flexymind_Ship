@@ -4,10 +4,9 @@ import android.graphics.PointF;
 import android.graphics.Typeface;
 import com.example.ship.Events;
 import com.example.ship.R;
-import com.example.ship.SceletonActivity;
+import com.example.ship.RootActivity;
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.hud.HUD;
-import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
@@ -30,12 +29,13 @@ public class GameHUD extends HUD {
     private static final float RELATIVE_SPACE_BETWEEN_CONTROLS = 0.01f;
     private static final float RELATIVE_SCREEN_BORDER = 0.02f;
     private static final float RELATIVE_HP_HEIGHT = 0.05f;
+    private static final float RELATIVE_PROGRESS_BAR_HEIGHT = 0.6f;
     private static final float BUTTON_ALPHA = 0.75f;
     private static final int FONT_ATLAS_SIDE = 256;
     private static final float TIME_PERIOD_CHECK_CONTROL = 0.1f;
     private static final float RELATIVE_CONTROL_HEIGHT = 0.2f;
 
-    private final SceletonActivity activity;
+    private final RootActivity activity;
     private final Engine engine;
     private PointF positionHitPoint;
     private Text scoreText;
@@ -46,7 +46,7 @@ public class GameHUD extends HUD {
     private HorizontalDigitalOnScreenControl rotateGunDigitalControl;
     private ProgressBar progressBar;
 
-    public GameHUD(SceletonActivity activity) {
+    public GameHUD(RootActivity activity) {
         super();
         setOnAreaTouchTraversalFrontToBack();
         buttons = new ArrayList<GameButtonSprite>();
@@ -92,17 +92,17 @@ public class GameHUD extends HUD {
             this.attachChild(button);
         }
 
-        pauseButton.setPosition( RELATIVE_SCREEN_BORDER * cameraSize.x
-                               , RELATIVE_SCREEN_BORDER * cameraSize.y);
-        fireButton.setPosition( (1 - RELATIVE_SCREEN_BORDER) * cameraSize.x - fireButton.getWidth()
-                              , (1 - RELATIVE_SCREEN_BORDER) * cameraSize.y - fireButton.getHeight());
+        pauseButton.setPosition(RELATIVE_SCREEN_BORDER * cameraSize.x
+                , RELATIVE_SCREEN_BORDER * cameraSize.y);
+        fireButton.setPosition((1 - RELATIVE_SCREEN_BORDER) * cameraSize.x - fireButton.getWidth()
+                , (1 - RELATIVE_SCREEN_BORDER) * cameraSize.y - fireButton.getHeight());
     }
 
     private void createRotateGunDigitalControl() {
         ITextureRegion rotateGunDigitalControlBaseTextureRegion = activity.getResourceManager()
                                                        .getLoadedTextureRegion(R.drawable.onscreen_control_base);
         ITextureRegion rotateGunDigitalControlKnobTextureRegion = activity.getResourceManager()
-                                                       .getLoadedTextureRegion( R.drawable.onscreen_control_knob );
+                                                       .getLoadedTextureRegion(R.drawable.onscreen_control_knob);
 
 
 
@@ -136,7 +136,7 @@ public class GameHUD extends HUD {
         rotateGunDigitalControl.getControlBase().setAlpha(BUTTON_ALPHA);
         // Чтобы текстура не выходила за границы экрана при масштабировании
         rotateGunDigitalControl.getControlBase()
-                .setScaleCenter( BASE_TEXTURE_LEFT_BOTTOM.x, BASE_TEXTURE_LEFT_BOTTOM.y );
+                .setScaleCenter(BASE_TEXTURE_LEFT_BOTTOM.x, BASE_TEXTURE_LEFT_BOTTOM.y);
         rotateGunDigitalControl.getControlBase()
                 .setScale( cameraSize.y * RELATIVE_CONTROL_HEIGHT
                            / rotateGunDigitalControlBaseTextureRegion.getHeight());
@@ -147,7 +147,7 @@ public class GameHUD extends HUD {
         final float KNOB_BORDER = 36f /  rotateGunDigitalControl.getControlBase().getWidth();
         final float EXTENT_SIDE = HorizontalDigitalOnScreenControl.STANDART_EXTENT_SIDE
                                 - 0.5f * rotateGunDigitalControl.KNOB_SIZE_IN_PERCENT - KNOB_BORDER;
-        rotateGunDigitalControl.setExtentSide( EXTENT_SIDE );
+        rotateGunDigitalControl.setExtentSide(EXTENT_SIDE);
 
         rotateGunDigitalControl.refreshControlKnobPosition();
         this.setChildScene(rotateGunDigitalControl);
@@ -197,9 +197,9 @@ public class GameHUD extends HUD {
     private void createProgressBar() {
         progressBar = new ProgressBar(activity, this);
 
-        float positionX = (1 - RELATIVE_SCREEN_BORDER - RELATIVE_SPACE_BETWEEN_CONTROLS) * cameraSize.x
-                          - buttons.get(0).getWidth() - progressBar.getHeightProgressBar();
-        float positionY = (1 - RELATIVE_SCREEN_BORDER) * cameraSize.y - progressBar.getHeightProgressBar();
+        float positionX = (1 - RELATIVE_SCREEN_BORDER) * cameraSize.x - progressBar.getWidthProgressBar();
+        // временно, потом будет ограничивается по облаку
+        float positionY = cameraSize.y / 4.0f;
 
         progressBar.setPosition(new PointF(positionX, positionY));
 

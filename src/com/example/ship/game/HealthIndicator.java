@@ -2,7 +2,7 @@ package com.example.ship.game;
 
 import android.graphics.PointF;
 import com.example.ship.R;
-import com.example.ship.SceletonActivity;
+import com.example.ship.RootActivity;
 import org.andengine.entity.sprite.Sprite;
 
 public class HealthIndicator {
@@ -11,7 +11,7 @@ public class HealthIndicator {
     private Sprite onHitPointSprite;
     private Sprite offHitPointSprite;
 
-    public HealthIndicator(SceletonActivity activity, GameHUD gameHUD, PointF point, float scale) {
+    public HealthIndicator(RootActivity activity, GameHUD gameHUD, PointF point, float scale) {
 
         onHitPointSprite = new Sprite( point.x
                                      , point.y
