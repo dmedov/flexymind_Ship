@@ -24,6 +24,7 @@
     <!-- Music Volumes in percent -->
     <integer name="GAME_SCENE_MUSIC_VOLUME">30</integer>
     <integer name="GAME_SCENE_WAVES_VOLUME">30</integer>
+    <integer name="GAME_OVER_SCENE_VOLUME">80</integer>
     <integer name="GUN_FIRE_VOLUME">70</integer>
     <integer name="SHIP_EXPLOSION">50</integer>
     <integer name="NEW_LEVEL_GONG_VOLUME">90</integer>
