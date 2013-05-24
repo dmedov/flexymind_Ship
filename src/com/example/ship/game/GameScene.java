@@ -101,6 +101,10 @@ public class GameScene extends Scene {
         return gameHUD;
     }
 
+    public GameOverHUD getGameOverHUD() {
+        return gameOverHUD;
+    }
+
     public Player getPlayer() {
         return player;
     }

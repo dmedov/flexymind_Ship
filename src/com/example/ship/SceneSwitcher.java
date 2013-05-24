@@ -1,5 +1,6 @@
 package com.example.ship;
 
+import android.util.Log;
 import com.example.ship.game.GameScene;
 import com.example.ship.menu.MenuHUD;
 import com.example.ship.menu.ShipMenuScene;
@@ -93,6 +94,13 @@ public class SceneSwitcher {
     public void switchToGameOverHUD() {
         gameScene.getPlayer().getLevel().pauseSpawn();
         gameScene.setIgnoreUpdate(true);
+        if (gameScene.getPlayer().getHealth() > 0) {
+            gameScene.getGameOverHUD().setWinOrLooseText(activity.getStringResource(R.string.WIN_LABEL));
+            Log.d("1log", "победа");
+        } else {
+            gameScene.getGameOverHUD().setWinOrLooseText(activity.getStringResource(R.string.LOOSE_LABEL));
+            Log.d("1log", "поражение");
+        }
         gameScene.switchToGameOverHUD();
         currentState = GAME_OVER_STATE;
     }

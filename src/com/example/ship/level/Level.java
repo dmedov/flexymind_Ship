@@ -41,12 +41,18 @@ public class Level {
     public void startLevel(int level) {
         currentLevel = level;
         shipSpawners.clear();
-        initLevelFromXml(currentLevel);
+
+        if (!initLevelFromXml(currentLevel)){
+            activity.getSceneSwitcher().switchToGameOverHUD();
+            return;
+        }
+
         for (ShipSpawner spawner: shipSpawners) {
             spawner.startSpawn();
         }
 //
-//     DeathMatch
+//     DeathMatch Mode
+//
 //        levelGoal = (int) (FIRST_LEVEL_GOAL * (1 + LEVEL_GOAL_MULTIPLIER * (currentLevel - 1)));
 //        levelProgress = 0;
 //
@@ -67,8 +73,8 @@ public class Level {
     public void incrementLevelProgress() {
         levelProgress++;
         Log.d("1log", "level progress..." + levelProgress);
-        if (levelProgress >= levelGoal) {
-            activity.getSceneSwitcher().getGameScene().getPlayer().addHealth();
+        if (levelProgress >= levelGoal && activity.getSceneSwitcher().getGameScene().getPlayer().getHealth() > 0) {
+            //activity.getSceneSwitcher().getGameScene().getPlayer().addHealth();
             startLevel(++currentLevel);
         } else {
             updateLevelInfoInHud();
@@ -102,11 +108,12 @@ public class Level {
         activity.getSceneSwitcher().getGameScene().getGameHUD().updateLevelInfo(info);
     }
 
-    private void initLevelFromXml(int level) {
+    private boolean initLevelFromXml(int level) {
 
         levelGoal = 0;
 
         int eventType = 0;
+        boolean levelFound = false;
 
         try {
             parser = activity.getResources().getXml(R.xml.levels);
@@ -122,11 +129,15 @@ public class Level {
                    && parser.getName().equals("level")
                    && parser.getDepth() == 2) {
 
-                    parseLevelTag(level);
+                    levelFound = parseLevelTag(level);
                 }
 
-                parser.next();
-                eventType = parser.getEventType();
+                if (levelFound) {
+                    break;
+                } else {
+                    parser.next();
+                    eventType = parser.getEventType();
+                }
 
             } catch (XmlPullParserException e) {
                 Log.d("1log", e + "xml parser error");
@@ -134,9 +145,10 @@ public class Level {
                 Log.d("1log", e + "xml parser error");
             }
         }
+        return levelFound;
     }
 
-    private void parseLevelTag(float level) throws XmlPullParserException, IOException {
+    private boolean parseLevelTag(float level) throws XmlPullParserException, IOException {
         for (int i = 0; i < parser.getAttributeCount(); i++) {
             String attribute = parser.getAttributeName(i);
             String value = parser.getAttributeValue(i);
@@ -167,8 +179,12 @@ public class Level {
                     }
                     parser.next();
                 }
+
+                return true;
             }
         }
+
+        return false;
     }
 
     private void parseEnemyTag() {
