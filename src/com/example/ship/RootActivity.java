@@ -5,6 +5,9 @@ import android.graphics.PointF;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import com.example.ship.atlas.ResourceManager;
+import com.example.ship.commons.A;
+import com.example.ship.menu.ShipMenuScene;
+import com.example.ship.root.RootScene;
 import org.andengine.engine.camera.ZoomCamera;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
@@ -65,6 +68,7 @@ public class RootActivity extends BaseGameActivity {
 
     @Override
     public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback) {
+        A.init(this);
         sceneSwitcher = new SceneSwitcher(this);
 
         if (DEBUG_GAME_SCENE) {

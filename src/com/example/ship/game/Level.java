@@ -22,6 +22,7 @@ public class Level {
 
     public static final int   FIRST_LEVEL_GOAL = 10;
     public static final float LEVEL_GOAL_MULTIPLIER = 1.2f;
+    public static final float LEVEL_SCORE_MULTIPLIER = 1.1f;
     public static final float LEVEL_SPAWN_DELAY_MULTIPLIER = 0.95f;
     public static final float LEVEL_SHIP_SPEED_MULTIPLIER = 1.1f;
 
@@ -76,7 +77,7 @@ public class Level {
         levelProgress++;
         Log.d("1log", "level progress..." + levelProgress);
         if (levelProgress >= levelGoal && activity.getSceneSwitcher().getGameScene().getPlayer().getHealth() > 0) {
-            //activity.getSceneSwitcher().getGameScene().getPlayer().addHealth();
+            activity.getSceneSwitcher().getGameScene().getPlayer().addHealth();
             startLevel(++currentLevel);
         } else {
             updateLevelInfoInHud();
@@ -100,14 +101,14 @@ public class Level {
     }
 
     private void updateLevelInfoInHud() {
-        String info;
-        info = String.format( "%s: %d\n%s: %d (%d)"
-                            , activity.getStringResource(R.string.LEVEL)
-                            , currentLevel
-                            , activity.getStringResource(R.string.GOAL)
-                            , levelGoal
-                            , levelProgress);
-        activity.getSceneSwitcher().getGameScene().getGameHUD().updateLevelInfo(info);
+        String levelString;
+        levelString = String.format( "%s: %d"
+                                   , activity.getStringResource(R.string.LEVEL)
+                                   , currentLevel );
+        String shipsToDestroyString = String.format( "%d"
+                                                   , levelGoal - levelProgress);
+
+        activity.getSceneSwitcher().getGameScene().getGameHUD().updateLevelInfo(levelString, shipsToDestroyString);
     }
 
     private boolean initLevelFromXml(int level) {

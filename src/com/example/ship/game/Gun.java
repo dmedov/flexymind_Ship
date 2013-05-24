@@ -28,7 +28,7 @@ public class Gun {
     private static final float BULLET_RELATIVE_START_POINT = 1.0f;
     private static final float FIRE_DELAY = 1.5f;
     private static final int DEFAULT_DAMAGE = 100;
-    private static final float DEFAULT_PERSPECTIVE_SCALE = 0.5f;
+    private static final float DEFAULT_PERSPECTIVE_SCALE = 0.6f;
     
     private float perspectiveScale;
     private boolean rotateLeft;
@@ -39,6 +39,7 @@ public class Gun {
     private TimerHandler fireTimerHandler;
     private boolean fireAvailable = true;
     private int damage = DEFAULT_DAMAGE;
+    private int reloadProgress   = ProgressBar.FULL_PROGRESS;
 
     public Gun(RootActivity activity) {
         this.activity = activity;
@@ -140,6 +141,8 @@ public class Gun {
             activity.getSceneSwitcher().getGameScene().attachSpriteToLayer( torpedo
                                                                           , GameScene.LAYER_TORPEDO);
             fireAvailable = false;
+            reloadProgress  = 0;
+            activity.getSceneSwitcher().getGameScene().getGameGUD().updateProgressBar(reloadProgress );
             fireTimerHandler.reset();
         }
     }
@@ -156,10 +159,19 @@ public class Gun {
         return perspectiveScale;
     }
     private void createTimer() {
-        fireTimerHandler = new TimerHandler(FIRE_DELAY, new ITimerCallback() {
+        fireTimerHandler = new TimerHandler(FIRE_DELAY / ProgressBar.FULL_PROGRESS, new ITimerCallback() {
             @Override
             public void onTimePassed(final TimerHandler timerHandler) {
-                fireAvailable = true;
+                if (reloadProgress  == ProgressBar.FULL_PROGRESS - 1) {
+                    reloadProgress ++;
+                    activity.getSceneSwitcher().getGameScene().getGameGUD().updateProgressBar(reloadProgress );
+                    fireAvailable = true;
+                }
+                if (reloadProgress  < ProgressBar.FULL_PROGRESS - 1) {
+                    reloadProgress ++;
+                    activity.getSceneSwitcher().getGameScene().getGameGUD().updateProgressBar(reloadProgress );
+                    fireTimerHandler.reset();
+                }
             }
         });
     }

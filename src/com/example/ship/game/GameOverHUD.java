@@ -110,7 +110,7 @@ public class GameOverHUD extends HUD {
                             , activity.getResources().getString(R.string.SCORE) + ": 000000"
                             , activity.getEngine().getVertexBufferObjectManager());
         scoreText.setPosition( cameraSize.x * 0.5f - scoreText.getWidth() * 0.5f
-                             , winOrLooseText.getY() + winOrLooseText.getHeight()
+                             , gameOverText.getY() + gameOverText.getHeight()
                                + cameraSize.y * RELATIVE_SPACE_BETWEEN_ELEMENTS_HEIGHT);
 
         this.attachChild(gameOverText);
@@ -159,7 +159,7 @@ public class GameOverHUD extends HUD {
     }
 
     public void setScoreToGameOverHUD(String scoreString) {
-        scoreText.setText(scoreString);
+        scoreText.setText(activity.getResources().getString(R.string.SCORE) + scoreString);
     }
 
     private String getStringResource(int id) {

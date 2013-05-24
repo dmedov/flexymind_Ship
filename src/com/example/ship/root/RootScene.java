@@ -6,6 +6,9 @@ import com.example.ship.RootActivity;
 import com.example.ship.atlas.ResourceManager;
 import com.example.ship.Events;
 import com.example.ship.R;
+import com.example.ship.RootActivity;
+import com.example.ship.atlas.ResourceManager;
+import com.example.ship.commons.CSprite;
 import org.andengine.engine.Engine;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
@@ -27,7 +30,7 @@ public class RootScene extends Scene {
     private final ResourceManager resourceManager;
     private       Point textureSize;
     private       TouchableSceletonSprite touchableSceletonSprite;
-    private       Sprite shipSprite;
+    private       CSprite shipSprite;
 
     public RootScene(final RootActivity activity) {
         super();
@@ -59,15 +62,7 @@ public class RootScene extends Scene {
     }
 
     private void createShipLogo() {
-        ITextureRegion shipTextureRegion = resourceManager.getLoadedTextureRegion(R.drawable.ship);
-
-        final PointF shipPosition = new PointF( textureSize.x * 0.5f - shipTextureRegion.getWidth() * 0.5f
-                                              , textureSize.y * 0.5f - shipTextureRegion.getHeight() * 0.5f);
-
-        shipSprite = new Sprite( shipPosition.x
-                                      , shipPosition.y
-                                      , shipTextureRegion
-                                      , engine.getVertexBufferObjectManager()) {
+        shipSprite = new CSprite(R.drawable.ship) {
             @Override
             public boolean onAreaTouched( TouchEvent pSceneTouchEvent
                                         , float pTouchAreaLocalX
@@ -79,6 +74,8 @@ public class RootScene extends Scene {
                 return super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
             }
         };
+
+        shipSprite.setCenterInPosition(new PointF(textureSize.x * 0.5f, textureSize.y * 0.5f));
 
         registerTouchArea();
         this.attachChild(shipSprite);

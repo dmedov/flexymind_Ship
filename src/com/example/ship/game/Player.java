@@ -67,7 +67,7 @@ public class Player {
 
     public String getStringScore() {
         int digitNumber = ("" + score).length();
-        String scoreString  = activity.getResources().getString(R.string.SCORE) + ": ";
+        String scoreString  = " ";
         // дополняем наше Score нулями в начале
         for (int i = 0; i < FULL_HP - digitNumber; i++) {
             scoreString  += "0";
