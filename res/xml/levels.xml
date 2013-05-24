@@ -2,15 +2,17 @@
 
 <resources>
     <level id="1" type="regular">
-        <enemy number="3" velocity="20" constSpawnDelay="5.0" firstSpawnIn="1.0" health="100" points="200" lines="1 2 3" direction="to left">missileboat.png</enemy>
+        <enemy type="sailfish" number="3" periodicSpawnDelay="5.0" firstSpawnIn="1.0" lines="1" direction="to right"/>
+        <enemy type="missileBoat" number="3" periodicSpawnDelay="5.0" firstSpawnIn="10.0" lines="2" direction="to right"/>
+        <enemy type="battleship" number="2" periodicSpawnDelay="5.0" firstSpawnIn="20.0" lines="3" direction="to right"/>
     </level>
     <level id="2" type="regular">
-        <enemy number="3" velocity="30" constSpawnDelay="10.0" firstSpawnIn="3.0" health="200" points="200" lines="1 2 3" direction="to left">sailfish.png</enemy>
-        <enemy number="6" velocity="20" constSpawnDelay="5.0" firstSpawnIn="1.0" health="100" points="200" lines="1 2 3" direction="to right">missileboat.png</enemy>
+        <enemy type="sailfish" number="3" periodicSpawnDelay="10.0" firstSpawnIn="3.0" lines="1 2" direction="to left"/>
+        <enemy type="missileBoat" number="6" periodicSpawnDelay="5.0"  firstSpawnIn="1.0" lines="2 3" direction="to left"/>
     </level>
     <level id="3" type="regular">
-        <enemy number="3"  velocity="40" constSpawnDelay="15.0" firstSpawnIn="5.0" health="300" points="200" lines=" 3" direction="to left">battleship.png</enemy>
-        <enemy number="6" velocity="30" constSpawnDelay="10.0" firstSpawnIn="3.0" health="200" points="200" lines="1 2 3" direction="to left">sailfish.png</enemy>
-        <enemy number="12" velocity="20" constSpawnDelay="5.0" firstSpawnIn="1.0" health="100" points="200" lines="1 2 3" direction="to left">missileboat.png</enemy>
+        <enemy type="battleship" number="3"  periodicSpawnDelay="15.0" firstSpawnIn="5.0" lines=" 3" direction="to left"/>
+        <enemy type="sailfish" number="6"  periodicSpawnDelay="10.0" firstSpawnIn="3.0" lines="1 2 3" direction="to left"/>
+        <enemy type="missileBoat" number="12" periodicSpawnDelay="5.0"  firstSpawnIn="1.0" lines="1 2 3" direction="to left"/>
     </level>
 </resources>

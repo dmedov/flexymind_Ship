@@ -16,6 +16,7 @@ import org.andengine.util.modifier.ease.EaseQuadIn;
 import org.andengine.util.modifier.ease.EaseQuadInOut;
 import org.andengine.util.modifier.ease.EaseQuadOut;
 
+import java.util.HashMap;
 import java.util.Random;
 
 import static java.lang.Math.abs;
@@ -24,6 +25,13 @@ public class Ship {
 
     public static final boolean TO_LEFT = true;
     public static final boolean TO_RIGHT = false;
+    public static final HashMap<String, Integer> shipsId;
+    static {
+        shipsId = new HashMap<String, Integer>();
+        shipsId.put("missileBoat", R.drawable.missileboat);
+        shipsId.put("battleship", R.drawable.battleship);
+        shipsId.put("sailfish", R.drawable.sailfish);
+    }
 
     private static final float RELATIVE_WATERLINE = 0.1f;
     private static final float FINISH_OFFSET = 300.0f;
@@ -55,6 +63,10 @@ public class Ship {
     private int health;
     private int score;
     private Random rand;
+
+    public Ship(RootActivity activity, float yPosition, String shipType, boolean direction) {
+        this(activity, yPosition, shipsId.get(shipType), direction);
+    }
 
     public Ship(RootActivity activity, float yPosition, int shipTypeId, boolean direction) {
         this.activity = activity;

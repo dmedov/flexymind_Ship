@@ -161,37 +161,48 @@ public class Level {
 
     private void parseEnemyTag() {
 
+        String shipType = null;
         int number = 0;
-        float velocity = 0;
         float spawnDelay = 0;
         float firstSpawnIn = 0;
         String direction = null;
+        String lines = null;
+        boolean periodicSpawn = false;
 
         for (int i = 0; i < parser.getAttributeCount(); i++) {
             String attribute = parser.getAttributeName(i);
             String value = parser.getAttributeValue(i);
 
-            if (attribute.equals("number")) {
+            if (attribute.equals("type")) {
+                shipType = value;
+            } else if (attribute.equals("number")) {
                 number = Integer.parseInt(value);
-            } else if (attribute.equals("velocity")) {
-                velocity = Float.parseFloat(value);
-            } else if (attribute.equals("constSpawnDelay")) {
+            } else if (attribute.equals("periodicSpawnDelay")) {
                 spawnDelay = Float.parseFloat(value);
+                periodicSpawn = true;
             } else if (attribute.equals("firstSpawnIn")) {
                 firstSpawnIn = Float.parseFloat(value);
             } else if (attribute.equals("direction")) {
                 direction = value;
+            } else if (attribute.equals("lines")) {
+                lines = value;
             }
-
         }
 
-        PeriodicalShipSpawner spawner = new PeriodicalShipSpawner(activity, firstSpawnIn, spawnDelay, number);
-        shipSpawners.add(spawner);
+        if (!(number == 0 || spawnDelay == 0 || shipType == null || firstSpawnIn == 0)) {
+
+            if (periodicSpawn) {
+                PeriodicalShipSpawner spawner = new PeriodicalShipSpawner(activity, firstSpawnIn, spawnDelay, number);
+                spawner.setShipParameters(shipType, direction, lines);
+                shipSpawners.add(spawner);
+            } else {
+                //spawner = new PeriodicalShipSpawner(activity, firstSpawnIn, spawnDelay, number);
+                //shipSpawners.add(spawner);
+            }
+        }
+
 
         levelGoal += number;
-
-        Log.d("1log", String.format( "num=%d...vel=%s...spaD=%s...fspa=%s...dir=%s"
-                                   , number, velocity, spawnDelay, firstSpawnIn, direction));
     }
 
 }
