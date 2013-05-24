@@ -10,11 +10,11 @@ import org.andengine.engine.handler.timer.TimerHandler;
  * Time: 13:55
  * To change this template use File | Settings | File Templates.
  */
-public class PauseableTimerHandler extends TimerHandler {
+public class PausableTimerHandler extends TimerHandler {
 
     private boolean pause = false;
 
-    public PauseableTimerHandler(float pTimerSeconds, ITimerCallback pTimerCallback) {
+    public PausableTimerHandler(float pTimerSeconds, ITimerCallback pTimerCallback) {
         super(pTimerSeconds, pTimerCallback);
     }
 

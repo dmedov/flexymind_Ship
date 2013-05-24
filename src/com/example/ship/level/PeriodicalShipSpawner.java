@@ -32,7 +32,7 @@ public class PeriodicalShipSpawner extends ShipSpawner {
 
     @Override
     public void startSpawn() {
-        timerHandler = new PauseableTimerHandler(delay, new TimerTask());
+        timerHandler = new PausableTimerHandler(delay, new TimerTask());
         super.startSpawn();
     }
 

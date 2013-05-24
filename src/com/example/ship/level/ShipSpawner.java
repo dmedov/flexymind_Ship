@@ -12,7 +12,7 @@ import com.example.ship.RootActivity;
 public abstract class ShipSpawner {
 
     protected final RootActivity activity;
-    protected PauseableTimerHandler timerHandler;
+    protected PausableTimerHandler timerHandler;
     protected float delay;
     protected float spawnDelay;
 
