@@ -5,6 +5,7 @@ import com.example.ship.RootActivity;
 import com.example.ship.commons.A;
 import com.example.ship.game.GameScene;
 import com.example.ship.game.Gun;
+import com.example.ship.game.Player;
 import com.example.ship.game.Ship;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
@@ -86,8 +87,10 @@ public class BonusActions {
     }
 
     public static void killAllShips() {
+        Player player = gameScene.getPlayer();
         for (Ship ship : ships) {
             ship.killSelf();
+            player.addPoints((int) (ship.getScore() * player.getLevel().getScoreMultiplier()));
         }
         ships.clear();
     }
