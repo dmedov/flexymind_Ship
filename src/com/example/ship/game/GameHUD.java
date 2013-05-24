@@ -9,8 +9,10 @@ import org.andengine.engine.Engine;
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.camera.hud.controls.BaseOnScreenControl;
 import org.andengine.entity.modifier.*;
+import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.shape.RectangularShape;
 import org.andengine.entity.text.Text;
+import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
 import org.andengine.opengl.texture.region.ITextureRegion;
@@ -55,6 +57,7 @@ public class GameHUD extends HUD {
     private ArrayList<GameButtonSprite> buttons;
     private ArrayList<HealthIndicator> healthIndicators;
     private HorizontalDigitalOnScreenControl rotateGunDigitalControl;
+    private TouchableGameButtonSprite touchableGameButtonSprite;
 
     public GameHUD(RootActivity activity) {
         super();
@@ -75,6 +78,7 @@ public class GameHUD extends HUD {
         for (GameButtonSprite button: buttons) {
             button.setEvents(events);
         }
+        this.touchableGameButtonSprite = events;
     }
 
     private void createButtons() {
@@ -86,15 +90,33 @@ public class GameHUD extends HUD {
         buttons.add(pauseButton);
         pauseButton.setScale(cameraSize.y * RELATIVE_PAUSE_BUTTON_HEIGHT / pauseButton.getHeight());
 
-
         GameButtonSprite fireButton;
         fireButton = new GameButtonSprite( activity.getResourceManager()
-                                                    .getLoadedTextureRegion(R.drawable.firebutton)
-                                         , engine.getVertexBufferObjectManager()
-                                         , R.string.GAME_FIRE_BUTTON);
+                .getLoadedTextureRegion(R.drawable.firebutton)
+                , engine.getVertexBufferObjectManager()
+                , R.string.GAME_FIRE_BUTTON);
         buttons.add(fireButton);
         fireButton.setScaleCenter(fireButton.getWidth(), fireButton.getHeight());
         fireButton.setScale(cameraSize.y * RELATIVE_FIRE_BUTTON_HEIGHT / fireButton.getHeight());
+
+        Rectangle fireRectangle = new Rectangle( 0
+                                               , 0
+                                               , cameraSize.x
+                                               , cameraSize.y
+                                               , activity.getVertexBufferObjectManager()) {
+            @Override
+            public boolean onAreaTouched( TouchEvent pSceneTouchEvent
+                    , float pTouchAreaLocalX
+                    , float pTouchAreaLocalY) {
+                if (pSceneTouchEvent.isActionDown()) {
+                    touchableGameButtonSprite.onAreaGameButtonTouched();
+                }
+                return true;
+            }
+        };
+        fireRectangle.setAlpha(0f);
+        this.registerTouchArea(fireRectangle);
+        this.attachChild(fireRectangle);
 
         for (GameButtonSprite button: buttons) {
             button.setAlpha(BUTTON_ALPHA);

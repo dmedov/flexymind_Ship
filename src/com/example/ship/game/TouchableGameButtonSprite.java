@@ -9,5 +9,6 @@ package com.example.ship.game;
  */
 public interface TouchableGameButtonSprite {
     public void onAreaGameButtonTouched(GameButtonSprite button);
+    public void onAreaGameButtonTouched();
     public void onAreaGameButtonReleased(GameButtonSprite button);
 }
