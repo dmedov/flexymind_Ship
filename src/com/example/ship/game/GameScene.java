@@ -5,6 +5,7 @@ import com.example.ship.R;
 import com.example.ship.RootActivity;
 import com.example.ship.atlas.ResourceManager;
 import com.example.ship.bonus.Bonus;
+import com.example.ship.bonus.BonusActions;
 import org.andengine.engine.Engine;
 import org.andengine.entity.Entity;
 import org.andengine.entity.scene.Scene;
@@ -147,6 +148,12 @@ public class GameScene extends Scene {
             }
         }
 
+        if (deadShip != null) {
+            ships.remove(deadShip);
+            Log.d("1log", "ship out of border");
+            deadShip = null;
+        }
+
         Entity layer = (Entity) getChildByIndex(LAYER_TORPEDO);
         for (int i = 0; i < layer.getChildCount(); i++) {
             Sprite sprite = (Sprite) layer.getChildByIndex(i);
@@ -167,17 +174,17 @@ public class GameScene extends Scene {
             for (Ship ship: ships) {
                 if (torpedo.collidesWith(ship.getHitAreaSprite())) {
                     torpedo.detachSelf();
-                    if ( ship.hit(getGun().getDamage()) ) {
+                    if (ship.hit(getGun().getDamage())) {
                         player.addPoints((int) (ship.getScore() * player.getLevel().getScoreMultiplier()));
                         deadShip = ship;
-                        createShipBonus(deadShip);
                     }
                 }
             }
         }
 
         if (deadShip != null) {
-
+            createShipBonus(deadShip);
+            BonusActions.runGoodBonus();
             ships.remove(deadShip);
             Log.d("1log", "killed");
         }

@@ -23,10 +23,10 @@ import org.andengine.util.modifier.ease.EaseQuadInOut;
 public class Bonus {
     static public float bonusShipKillProbability = 0.1f;
     static public float bonusGoodPropability     = 0.8f;
-    static public float bonusWaterLine           = 0.6f;
-    static public float bonusLifeTime            = 10f;
+    static public float bonusLifeTime            = 5f;
 
-    private static final float MAX_ROTATE_ANGLE = 2.0f;
+    private static final float BONUS_WATER_LINE = 0.6f;
+    private static final float MAX_ROTATE_ANGLE = 1.0f;
     private static final float ROTATE_DURATION  = 2.0f;
     private static final int   ROTATION_COUNT   = 20;
     private static final float ALPHA_SINK_TIME  = 10f;
@@ -35,13 +35,14 @@ public class Bonus {
     private TimerHandler bonusTimerHandler;
 
     private CSprite bonusSprite;
+    private boolean canDestroy = false;
 
     public Bonus(Ship killedShip) {
         Sprite killedShipSprite = killedShip.getSprite();
         PointF killedShipCenter = CSprite.getCenter(killedShipSprite);
         bonusSprite = new CSprite(R.drawable.bonus);
         bonusSprite.setCenterInPosition(killedShipCenter);
-        bonusSprite.setY(bonusSprite.getY() + bonusSprite.getHeightScaled() * bonusWaterLine);
+        bonusSprite.setY(bonusSprite.getY() + bonusSprite.getHeightScaled() * BONUS_WATER_LINE);
         killedShip.getSprite().getParent().attachChild(bonusSprite);
         init();
     }
@@ -49,10 +50,6 @@ public class Bonus {
     private void init() {
         runSwim();
         createTimer();
-    }
-
-    static void setBonusShipKillProbability(float probability) {
-        bonusShipKillProbability = probability;
     }
 
     public static boolean canCreate() {
@@ -85,6 +82,7 @@ public class Bonus {
             @Override
             public void onTimePassed(final TimerHandler timerHandler) {
                 runSink();
+                A.e.unregisterUpdateHandler(timerHandler);
             }
         });
         A.e.registerUpdateHandler(bonusTimerHandler);
