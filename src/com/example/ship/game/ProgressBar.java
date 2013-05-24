@@ -5,6 +5,7 @@ import com.example.ship.R;
 import com.example.ship.RootActivity;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.ITextureRegion;
+import org.andengine.util.color.Color;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,7 +20,8 @@ public class ProgressBar {
 
     private Sprite progressBarSprite;
     private RootActivity activity;
-    MaskRectangle maskRectangle;
+    private MaskRectangle maskRectangle;
+    private PointF startPointProgessBar;
 
     public ProgressBar(RootActivity activity, GameHUD gameHUD) {
 
@@ -36,16 +38,18 @@ public class ProgressBar {
         maskRectangle = new MaskRectangle( 0
                                          , 0
                                          , progressBarSprite.getWidthScaled()
-                                         , 0
+                                         , progressBarSprite.getHeightScaled()
                                          , activity.getVertexBufferObjectManager());
+        maskRectangle.setMaskingEnabled(false);
+        maskRectangle.setColor(Color.RED);
 
         gameHUD.attachChild(maskRectangle);
-        maskRectangle.attachChild(progressBarSprite);
+        // maskRectangle.attachChild(progressBarSprite);
     }
 
     public void setProgress(int progress) {
-        maskRectangle.setHeight( progressBarSprite.getHeightScaled() * (FULL_PROGRESS - progress)
-                                 / FULL_PROGRESS);
+        maskRectangle.setHeight(progressBarSprite.getHeightScaled() * progress / FULL_PROGRESS);
+        maskRectangle.setY(startPointProgessBar.y - maskRectangle.getHeight());
     }
 
     public float getWidthProgressBar() {
@@ -58,6 +62,8 @@ public class ProgressBar {
 
     public void setPosition(PointF point) {
         maskRectangle.setPosition(point.x, point.y);
+        startPointProgessBar = new PointF( point.x
+                                         , point.y + maskRectangle.getHeightScaled());
     }
 
     private void setScaleToTorpedoIndicator() {

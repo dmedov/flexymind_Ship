@@ -29,7 +29,6 @@ public class GameHUD extends HUD {
     private static final float RELATIVE_SPACE_BETWEEN_CONTROLS = 0.01f;
     private static final float RELATIVE_SCREEN_BORDER = 0.02f;
     private static final float RELATIVE_HP_HEIGHT = 0.05f;
-    private static final float RELATIVE_PROGRESS_BAR_HEIGHT = 0.6f;
     private static final float BUTTON_ALPHA = 0.75f;
     private static final int FONT_ATLAS_SIDE = 256;
     private static final float TIME_PERIOD_CHECK_CONTROL = 0.1f;
