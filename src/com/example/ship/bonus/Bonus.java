@@ -86,8 +86,7 @@ public class Bonus {
         A.e.registerUpdateHandler(bonusTimerHandler);
     }
 
-
-    private void runSink() {
+    public void runSink() {
         bonusSprite.clearEntityModifiers();
         PointF bonusPosition = bonusSprite.getPosition();
         MoveModifier moveModifierY = new MoveModifier( SINK_VELOCITY
@@ -105,7 +104,7 @@ public class Bonus {
                 A.a.runOnUpdateThread(new Runnable() {
                     @Override
                     public void run() {
-                        remove();
+                        bonusSprite.detachSelf(); //TODO check this
                         Log.d("1Log", "bottom is detached");
                     }
                 });

@@ -134,7 +134,7 @@ public class GameScene extends Scene {
     @Override
     protected void onManagedUpdate(float pSecondsElapsed) {
         Ship deadShip = null;
-
+        boolean stopCheck = false;
         for (Ship ship: ships) {
             Sprite shipSprite = ship.getSprite();
             float maxX = activity.getCamera().getXMax();
@@ -172,22 +172,44 @@ public class GameScene extends Scene {
 
         for (int i = 0; i < layer.getChildCount(); i++) {
             Sprite torpedo = (Sprite) layer.getChildByIndex(i);
+            stopCheck = false;
+
             for (Ship ship: ships) {
                 if (torpedo.collidesWith(ship.getHitAreaSprite())) {
                     torpedo.detachSelf();
+
+                    // check if bonus stopped the ship
+                    if (ship.getSprite().isIgnoreUpdate()) {
+                        ship.getSprite().setIgnoreUpdate(false);
+                    }
+
                     if (ship.hit(getGun().getDamage())) {
                         player.addPoints((int) (ship.getScore() * player.getLevel().getScoreMultiplier()));
                         deadShip = ship;
                     }
+
+                    stopCheck = true;
                 }
             }
 
+            // check if torpedo
+            if (stopCheck) {
+                continue;
+            }
+
+            Bonus deadBonus = null;
             // check for torpedo collides with bonuses
             for (Bonus bonus: bonuses) {
                 if (torpedo.collidesWith(bonus.getSprite())) {
                     torpedo.detachSelf();
                     BonusActions.runGoodBonus();
+                    bonus.runSink();
+                    break;
                 }
+            }
+
+            if (deadBonus != null) {
+                bonuses.remove(deadBonus);
             }
 
         }
