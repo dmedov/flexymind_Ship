@@ -1,8 +1,10 @@
-package com.example.ship.level;
+package com.example.ship.game;
 
 import android.util.Log;
 import com.example.ship.R;
 import com.example.ship.RootActivity;
+import com.example.ship.level.PeriodicalShipSpawner;
+import com.example.ship.level.RandomDelayShipSpawner;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 

@@ -5,6 +5,7 @@ import com.example.ship.R;
 import com.example.ship.RootActivity;
 import com.example.ship.game.GameScene;
 import com.example.ship.game.Ship;
+import com.example.ship.game.ShipSpawner;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 

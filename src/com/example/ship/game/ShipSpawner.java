@@ -1,6 +1,7 @@
-package com.example.ship.level;
+package com.example.ship.game;
 
 import com.example.ship.RootActivity;
+import com.example.ship.level.PausableTimerHandler;
 
 /**
  * Created with IntelliJ IDEA.
