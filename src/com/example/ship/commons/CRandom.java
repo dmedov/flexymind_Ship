@@ -1,4 +1,4 @@
-package com.example.ship.bonus;
+package com.example.ship.commons;
 
 import java.util.Random;
 
