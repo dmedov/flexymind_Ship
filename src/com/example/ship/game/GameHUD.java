@@ -82,6 +82,17 @@ public class GameHUD extends HUD {
     }
 
     private void createButtons() {
+        GameButtonSprite fireScreenButton;
+        fireScreenButton = new GameButtonSprite( activity.getResourceManager()
+                                                         .getLoadedTextureRegion(R.drawable.firebutton)
+                                               , engine.getVertexBufferObjectManager()
+                                               , R.string.GAME_FIRE_BUTTON);
+        buttons.add(fireScreenButton);
+        fireScreenButton.setVisible(false);
+        fireScreenButton.setScaleCenter(0, 0);
+        fireScreenButton.setScale( cameraSize.x
+                                   / Math.min(fireScreenButton.getWidth(), fireScreenButton.getHeight()));
+
         GameButtonSprite pauseButton;
         pauseButton = new GameButtonSprite( activity.getResourceManager()
                                                     .getLoadedTextureRegion(R.drawable.pausebutton)
@@ -99,25 +110,6 @@ public class GameHUD extends HUD {
         fireButton.setScaleCenter(fireButton.getWidth(), fireButton.getHeight());
         fireButton.setScale(cameraSize.y * RELATIVE_FIRE_BUTTON_HEIGHT / fireButton.getHeight());
 
-        Rectangle fireRectangle = new Rectangle( 0
-                                               , 0
-                                               , cameraSize.x
-                                               , cameraSize.y
-                                               , activity.getVertexBufferObjectManager()) {
-            @Override
-            public boolean onAreaTouched( TouchEvent pSceneTouchEvent
-                                        , float pTouchAreaLocalX
-                                        , float pTouchAreaLocalY) {
-                if (pSceneTouchEvent.isActionDown()) {
-                    touchableGameButtonSprite.onAreaGameButtonTouched();
-                }
-                return true;
-            }
-        };
-        fireRectangle.setAlpha(0f);
-        this.registerTouchArea(fireRectangle);
-        this.attachChild(fireRectangle);
-
         for (GameButtonSprite button: buttons) {
             button.setAlpha(BUTTON_ALPHA);
             this.registerTouchArea(button);
@@ -128,6 +120,7 @@ public class GameHUD extends HUD {
                                , RELATIVE_SCREEN_BORDER * cameraSize.y);
         fireButton.setPosition( (1 - RELATIVE_FIRE_SCREEN_BORDER) * cameraSize.x - fireButton.getWidth()
                               , (1 - RELATIVE_SCREEN_BORDER) * cameraSize.y - fireButton.getHeight());
+        fireScreenButton.setPosition(0, 0);
     }
 
     private void createRotateGunDigitalControl() {

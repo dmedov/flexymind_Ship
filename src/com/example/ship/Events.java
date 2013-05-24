@@ -82,16 +82,6 @@ public class Events implements TouchableMenuButtonSprite
     }
 
     @Override
-    public void onAreaGameButtonTouched() {
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                fire();
-            }
-        });
-    }
-
-    @Override
     public void onAreaGameButtonReleased(final GameButtonSprite button) {
         activity.runOnUiThread(new Runnable() {
             @Override
