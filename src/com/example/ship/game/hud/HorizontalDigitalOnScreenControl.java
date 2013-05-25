@@ -1,4 +1,4 @@
-package com.example.ship.game;
+package com.example.ship.game.hud;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.camera.hud.controls.BaseOnScreenControl;

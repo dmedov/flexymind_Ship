@@ -2,15 +2,17 @@ package com.example.ship.root;
 
 import android.graphics.Point;
 import android.graphics.PointF;
+import com.example.ship.RootActivity;
+import com.example.ship.resource.ResourceManager;
 import com.example.ship.Events;
 import com.example.ship.R;
-import com.example.ship.RootActivity;
-import com.example.ship.atlas.ResourceManager;
 import com.example.ship.commons.CSprite;
 import org.andengine.engine.Engine;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.input.touch.TouchEvent;
+import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.util.color.Color;
 
 /**

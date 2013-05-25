@@ -6,7 +6,6 @@ Date: 07.05.13
 */
 
 import android.graphics.PointF;
-import android.util.Log;
 import com.example.ship.R;
 import com.example.ship.RootActivity;
 import org.andengine.entity.IEntity;
@@ -17,6 +16,7 @@ import org.andengine.util.modifier.ease.EaseQuadIn;
 import org.andengine.util.modifier.ease.EaseQuadInOut;
 import org.andengine.util.modifier.ease.EaseQuadOut;
 
+import java.util.HashMap;
 import java.util.Random;
 
 import static java.lang.Math.abs;
@@ -25,6 +25,13 @@ public class Ship {
 
     public static final boolean TO_LEFT = true;
     public static final boolean TO_RIGHT = false;
+    public static final HashMap<String, Integer> shipsId;
+    static {
+        shipsId = new HashMap<String, Integer>();
+        shipsId.put("missileBoat", R.drawable.missileboat);
+        shipsId.put("battleship", R.drawable.battleship);
+        shipsId.put("sailfish", R.drawable.sailfish);
+    }
 
     private static final float RELATIVE_WATERLINE = 0.1f;
     private static final float FINISH_OFFSET = 300.0f;
@@ -59,15 +66,21 @@ public class Ship {
     private Random rand;
     private FireParticles fireParticles;
 
+    public Ship(RootActivity activity, float yPosition, String shipType, boolean direction) {
+        this(activity, yPosition, shipsId.get(shipType), direction);
+    }
+
     public Ship(RootActivity activity, float yPosition, int shipTypeId, boolean direction) {
         this.activity = activity;
         this.yPosition = yPosition;
         this.typeId = shipTypeId;
         this.direction = direction;
+
         shipSprite = new Sprite( 0
                                , 0
                                , activity.getResourceManager().getLoadedTextureRegion(shipTypeId)
                                , activity.getEngine().getVertexBufferObjectManager());
+
         initShipParametersById();
         setScale();        // нельзя менять местами с setDirection()
         setDirection();
@@ -78,7 +91,6 @@ public class Ship {
 
     public static void setVelocityDivider(float velocityDivider) {
         Ship.velocityDivider = velocityDivider;
-        Log.d("1log", "velocity divider..." + velocityDivider);
     }
 
     public Sprite getSprite () {
@@ -115,11 +127,12 @@ public class Ship {
         shipSprite.detachChild(hitAreaSprite);
         shipSprite.clearEntityModifiers();
         createSinkModifier();
-        //fireParticles.finishFire();
     }
 
     public boolean hit(int hitPoints) {
         health -= hitPoints;
+        activity.getResourceManager().playOnceSound( R.raw.s_explosion1
+                                                   , activity.getIntResource(R.integer.SHIP_EXPLOSION));
         fireParticles.updateFireRate();
 
         if ( health <= 0) {
@@ -183,7 +196,6 @@ public class Ship {
                 / ( skyLinePositionFromBottomY - lastShipLinePositionFromBottomY);
         float b = RELATIVE_SIZE_BEYOND - a/skyLinePositionFromBottomY;
         float perspectiveScale = a / ( activity.getCamera().getHeightRaw() - yPosition ) + b;
-        Log.d( "shipScale", "Scale: " + ( (Float) perspectiveScale ).toString() );
         final PointF LEFT_TOP= new PointF( 0f, 0f );  //по умолчанию scaleCenter не всегда в левом верхнем углу
         shipSprite.setScaleCenter( LEFT_TOP.x, LEFT_TOP.y );
         if (direction == TO_LEFT) {
@@ -241,9 +253,9 @@ public class Ship {
 
     private void createHitArea(float hitAreaFromPixel, float hitAreaToPixel) {
         hitAreaSprite = new Sprite( 0
-                , shipSprite.getHeight() * ( 1 - RELATIVE_HIT_AREA_OFFSET )
-                , activity.getResourceManager().getLoadedTextureRegion(R.drawable.hitarea)
-                , activity.getVertexBufferObjectManager() );
+                                  , shipSprite.getHeight() * ( 1 - RELATIVE_HIT_AREA_OFFSET )
+                                  , activity.getResourceManager().getLoadedTextureRegion(R.drawable.hitarea)
+                                  , activity.getVertexBufferObjectManager() );
         hitAreaSprite.setScaleCenterX(0);
         hitAreaSprite.setScaleX((hitAreaToPixel - hitAreaFromPixel) / hitAreaSprite.getWidthScaled());
         hitAreaSprite.setX(hitAreaFromPixel);
@@ -276,6 +288,7 @@ public class Ship {
                 , shipSprite.getY()
                 , shipSprite.getY() + shipSprite.getHeightScaled()
                 , EaseQuadIn.getInstance() );
+
         RotationModifier rotation = new RotationModifier( sinkRotationVelocity
                 , shipSprite.getRotation()
                 , sinkRotationAngle ){
@@ -297,7 +310,6 @@ public class Ship {
                     public void run() {
                         fireParticles.detachSelf();
                         shipSprite.detachSelf();
-                        Log.d("1Log", "Ship is detached from bottom");
                     }
                 });
             }
@@ -306,5 +318,3 @@ public class Ship {
         shipSprite.registerEntityModifier(moveShip);
     }
 }
-
-

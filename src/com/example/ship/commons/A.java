@@ -1,7 +1,7 @@
 package com.example.ship.commons;
 
 import com.example.ship.RootActivity;
-import com.example.ship.atlas.ResourceManager;
+import com.example.ship.resource.ResourceManager;
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.ZoomCamera;
 
