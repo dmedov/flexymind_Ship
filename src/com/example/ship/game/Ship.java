@@ -57,6 +57,7 @@ public class Ship {
     private int health;
     private int score;
     private Random rand;
+    private FireParticles fireParticles;
 
     public Ship(RootActivity activity, float yPosition, int shipTypeId, boolean direction) {
         this.activity = activity;
@@ -72,6 +73,7 @@ public class Ship {
         setDirection();
         shipSprite.setPosition(startPoint.x, startPoint.y);
         createModifier();
+        fireParticles = new FireParticles(this);
     }
 
     public static void setVelocityDivider(float velocityDivider) {
@@ -104,11 +106,13 @@ public class Ship {
     }
 
     public void missionDone() {
+        fireParticles.finishFire();
         hitAreaSprite.detachSelf();
         shipSprite.detachSelf();
     }
 
     public void killSelf() {
+        fireParticles.finishFire();
         shipSprite.detachChild(hitAreaSprite);
         shipSprite.clearEntityModifiers();
         createSinkModifier();
@@ -116,13 +120,19 @@ public class Ship {
 
     public boolean hit(int hitPoints) {
         health -= hitPoints;
+        fireParticles.updateFireRate();
+
         if ( health <= 0) {
             activity.getSceneSwitcher().getGameScene().getPlayer().getLevel().incrementLevelProgress();
+            fireParticles.finishFire();
             killSelf();
             return true;
         }
 
         return false;
+    }
+    public int getType() {
+        return typeId;
     }
 
     private void initShipParametersById() {

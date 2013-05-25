@@ -24,5 +24,6 @@
                 <texture name="onhealth"/>
                 <texture name="offhealth"/>
                 <texture name="ships_left"/>
+                <texture name="particle_point"/>
            </Atlas>
 </resources>
