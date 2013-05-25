@@ -3,7 +3,7 @@ package com.example.ship.menu;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import com.example.ship.RootActivity;
-import com.example.ship.atlas.ResourceManager;
+import com.example.ship.resource.ResourceManager;
 import com.example.ship.Events;
 import com.example.ship.R;
 import org.andengine.engine.Engine;
@@ -38,7 +38,7 @@ public class ShipMenuScene extends Scene {
     private       Font buttonFont;
     private       HUD hud;
 
-    public ShipMenuScene( final RootActivity activity) {
+    public ShipMenuScene(final RootActivity activity) {
         super();
         this.activity = activity;
         this.mEngine = activity.getEngine();

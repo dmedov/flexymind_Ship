@@ -3,7 +3,7 @@ package com.example.ship.game;
 import android.util.Log;
 import com.example.ship.R;
 import com.example.ship.RootActivity;
-import com.example.ship.atlas.ResourceManager;
+import com.example.ship.resource.ResourceManager;
 import com.example.ship.bonus.Bonus;
 import com.example.ship.bonus.BonusActions;
 import com.example.ship.commons.CRandom;

@@ -5,7 +5,7 @@ import android.graphics.Typeface;
 import com.example.ship.Events;
 import com.example.ship.R;
 import com.example.ship.RootActivity;
-import com.example.ship.atlas.ResourceManager;
+import com.example.ship.resource.ResourceManager;
 import com.example.ship.menu.MenuButtonSprite;
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.entity.primitive.Rectangle;
@@ -59,13 +59,13 @@ public class GameOverHUD extends HUD {
 
     private void createGameOverFont() {
         font = FontFactory.create( activity.getEngine().getFontManager()
-                                         , activity.getEngine().getTextureManager()
-                                         , FONT_ATLAS_SIDE
-                                         , FONT_ATLAS_SIDE
-                                         , Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)
-                                         , cameraSize.y * RELATIVE_FONT_SIZE
-                                         , true
-                                         , Color.WHITE_ABGR_PACKED_INT);
+                                 , activity.getEngine().getTextureManager()
+                                 , FONT_ATLAS_SIDE
+                                 , FONT_ATLAS_SIDE
+                                 , Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)
+                                 , cameraSize.y * RELATIVE_FONT_SIZE
+                                 , true
+                                 , Color.WHITE_ABGR_PACKED_INT);
         font.load();
     }
 

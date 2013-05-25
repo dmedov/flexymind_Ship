@@ -2,6 +2,8 @@ package com.example.ship.game;
 
 import com.example.ship.RootActivity;
 import com.example.ship.level.PausableTimerHandler;
+import android.util.Log;
+import com.example.ship.R;
 
 /**
  * Created with IntelliJ IDEA.

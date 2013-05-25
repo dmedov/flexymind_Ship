@@ -128,6 +128,8 @@ public class Ship {
 
     public boolean hit(int hitPoints) {
         health -= hitPoints;
+        activity.getResourceManager().playOnceSound( R.raw.s_explosion1
+                                                   , activity.getIntResource(R.integer.SHIP_EXPLOSION));
         if ( health <= 0) {
             activity.getSceneSwitcher().getGameScene().getPlayer().getLevel().incrementLevelProgress();
             killSelf();
@@ -243,9 +245,9 @@ public class Ship {
 
     private void createHitArea(float hitAreaFromPixel, float hitAreaToPixel) {
         hitAreaSprite = new Sprite( 0
-                , shipSprite.getHeight() * ( 1 - RELATIVE_HIT_AREA_OFFSET )
-                , activity.getResourceManager().getLoadedTextureRegion(R.drawable.hitarea)
-                , activity.getVertexBufferObjectManager() );
+                                  , shipSprite.getHeight() * ( 1 - RELATIVE_HIT_AREA_OFFSET )
+                                  , activity.getResourceManager().getLoadedTextureRegion(R.drawable.hitarea)
+                                  , activity.getVertexBufferObjectManager() );
         hitAreaSprite.setScaleCenterX(0);
         hitAreaSprite.setScaleX((hitAreaToPixel - hitAreaFromPixel) / hitAreaSprite.getWidthScaled());
         hitAreaSprite.setX(hitAreaFromPixel);

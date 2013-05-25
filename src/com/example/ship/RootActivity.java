@@ -23,7 +23,7 @@ public class RootActivity extends BaseGameActivity {
     private ResourceManager resourceManager;
     private Events events;
     private ZoomCamera zoomCamera;
-    private SceneSwitcher sceneSwitcher;
+    private SceneSwitcher sceneSwitcher = null;
 
     private ZoomCamera createZoomCamera() {
         DisplayMetrics metrics = new DisplayMetrics();
@@ -51,13 +51,17 @@ public class RootActivity extends BaseGameActivity {
                                                        , new FillResolutionPolicy()
                                                        , zoomCamera);
         engineOptions.getTouchOptions().setNeedsMultiTouch(true);
+        engineOptions.getAudioOptions().setNeedsMusic(true);
+        engineOptions.getAudioOptions().setNeedsSound(true);
         return engineOptions;
     }
 
     @Override
     public void onCreateResources(OnCreateResourcesCallback pOnCreateResourcesCallback) {
-        resourceManager = new ResourceManager();
-        resourceManager.loadAllTextures(this, mEngine.getTextureManager());
+        resourceManager = new ResourceManager(this);
+        resourceManager.loadAllTextures(mEngine.getTextureManager());
+        resourceManager.loadAllMusic(mEngine.getMusicManager());
+        resourceManager.loadAllSound(mEngine.getSoundManager());
 
         FontFactory.setAssetBasePath(getResources().getString(R.string.FONT_BASE_ASSET_PATH));
 
@@ -106,6 +110,21 @@ public class RootActivity extends BaseGameActivity {
 
         } else {
             return super.onKeyDown(keyCode, event);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        resourceManager.pauseAllMusic();
+        resourceManager.pauseAllSound();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (sceneSwitcher != null) {
+            sceneSwitcher.manageSound(sceneSwitcher.getCurrentState());
         }
     }
 
