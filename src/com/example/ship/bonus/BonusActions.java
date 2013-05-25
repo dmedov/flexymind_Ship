@@ -22,7 +22,7 @@ import java.util.Random;
  */
 public class BonusActions {
     private static int COUNT_GOOD_ACTIONS = 3;
-    private static int COUNT_BAD_ACTIONS = 1;
+    private static int COUNT_BAD_ACTIONS  = 1;
 
     private static GameScene gameScene = A.a.getSceneSwitcher().getGameScene();
     private static Gun gun = gameScene.getGun();
@@ -91,6 +91,7 @@ public class BonusActions {
         for (Ship ship : ships) {
             ship.killSelf();
             player.addPoints((int) (ship.getScore() * player.getLevel().getScoreMultiplier()));
+            player.getLevel().incrementLevelProgress();
         }
         ships.clear();
     }

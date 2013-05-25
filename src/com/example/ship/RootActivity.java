@@ -15,9 +15,9 @@ import org.andengine.opengl.font.FontFactory;
 import org.andengine.ui.activity.BaseGameActivity;
 
 public class RootActivity extends BaseGameActivity {
-    public static final boolean DEBUG_GAME_SCENE = false;
     private static final int TEXTURE_WIDTH = 1739;
     private static final int TEXTURE_HEIGHT = 900;
+    private static final boolean DEBUG_GAME_SCENE = false;
     private ResourceManager resourceManager;
     private Events events;
     private ZoomCamera zoomCamera;
