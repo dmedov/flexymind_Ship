@@ -1,4 +1,4 @@
-package com.example.ship.game;
+package com.example.ship.game.hud;
 
 import android.graphics.PointF;
 import android.graphics.Typeface;
@@ -99,9 +99,9 @@ public class GameOverHUD extends HUD {
                                  , ""
                                  , TEXT_LENGTH
                                  , activity.getEngine().getVertexBufferObjectManager());
-        winOrLooseText.setPosition( cameraSize.x * 0.5f - winOrLooseText.getWidth() * 0.5f
-                                  , gameOverText.getY() + gameOverText.getHeight()
-                                    + cameraSize.y * RELATIVE_SPACE_BETWEEN_ELEMENTS_HEIGHT);
+        winOrLooseText.setPosition(cameraSize.x * 0.5f - winOrLooseText.getWidth() * 0.5f
+                , gameOverText.getY() + gameOverText.getHeight()
+                + cameraSize.y * RELATIVE_SPACE_BETWEEN_ELEMENTS_HEIGHT);
 
 
         scoreText = new Text( 0

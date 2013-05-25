@@ -1,4 +1,4 @@
-package com.example.ship.game;
+package com.example.ship.game.hud;
 
 /**
  * Created with IntelliJ IDEA.

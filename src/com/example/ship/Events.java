@@ -1,8 +1,8 @@
 package com.example.ship;
 
-import com.example.ship.game.GameButtonSprite;
+import com.example.ship.game.hud.GameButtonSprite;
 import com.example.ship.game.Gun;
-import com.example.ship.game.TouchableGameButtonSprite;
+import com.example.ship.game.hud.TouchableGameButtonSprite;
 import com.example.ship.menu.MenuButtonSprite;
 import com.example.ship.menu.TouchableMenuButtonSprite;
 import com.example.ship.root.TouchableSceletonSprite;

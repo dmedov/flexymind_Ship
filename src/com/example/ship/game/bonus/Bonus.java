@@ -1,4 +1,4 @@
-package com.example.ship.bonus;
+package com.example.ship.game.bonus;
 
 import android.graphics.PointF;
 import android.util.Log;
@@ -23,7 +23,7 @@ import org.andengine.util.modifier.ease.EaseQuadInOut;
  */
 
 public class Bonus {
-    static public float bonusShipKillProbability = 1f;  // 1f for DEBUG
+    static public float bonusShipKillProbability = 0.2f;  // 1f for DEBUG
     static public float bonusGoodPropability     = 0.8f;
     static public float bonusLifeTime            = 10f;
 

@@ -1,8 +1,9 @@
-package com.example.ship.game;
+package com.example.ship.game.hud;
 
 import android.graphics.PointF;
 import com.example.ship.R;
 import com.example.ship.RootActivity;
+import com.example.ship.game.Player;
 import org.andengine.entity.sprite.Sprite;
 
 import java.util.ArrayList;

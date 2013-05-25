@@ -1,9 +1,7 @@
-package com.example.ship.game;
+package com.example.ship.game.spawn;
 
 import com.example.ship.RootActivity;
-import com.example.ship.level.PausableTimerHandler;
-import android.util.Log;
-import com.example.ship.R;
+import com.example.ship.commons.PausableTimerHandler;
 
 /**
  * Created with IntelliJ IDEA.

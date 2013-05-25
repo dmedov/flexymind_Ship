@@ -1,4 +1,4 @@
-package com.example.ship.game;
+package com.example.ship.game.hud;
 
 import android.graphics.PointF;
 import com.example.ship.Events;

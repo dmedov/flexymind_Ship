@@ -3,7 +3,8 @@ package com.example.ship.game;
 import android.graphics.PointF;
 import com.example.ship.R;
 import com.example.ship.RootActivity;
-import com.example.ship.level.PausableTimerHandler;
+import com.example.ship.game.hud.ProgressBar;
+import com.example.ship.commons.PausableTimerHandler;
 import org.andengine.engine.camera.ZoomCamera;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
@@ -146,8 +147,8 @@ public class Gun {
                                          , this.getGunAngle());
             activity.getSceneSwitcher().getGameScene().attachSpriteToLayer( torpedo
                                                                           , GameScene.LAYER_TORPEDO);
-            activity.getResourceManager().playOnceSound( R.raw.s_torpedo
-                                                       , activity.getIntResource(R.integer.GUN_FIRE_VOLUME));
+            activity.getResourceManager().playOnceSound(R.raw.s_torpedo
+                    , activity.getIntResource(R.integer.GUN_FIRE_VOLUME));
             fireAvailable = false;
             reloadProgress  = 0;
             activity.getSceneSwitcher().getGameScene().getGameGUD().updateProgressBar(reloadProgress );

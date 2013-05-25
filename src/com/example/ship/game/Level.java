@@ -3,8 +3,9 @@ package com.example.ship.game;
 import android.util.Log;
 import com.example.ship.R;
 import com.example.ship.RootActivity;
-import com.example.ship.level.PeriodicalShipSpawner;
-import com.example.ship.level.RandomDelayShipSpawner;
+import com.example.ship.game.spawn.PeriodicalShipSpawner;
+import com.example.ship.game.spawn.RandomDelayShipSpawner;
+import com.example.ship.game.spawn.ShipSpawner;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -71,8 +72,8 @@ public class Level {
         activity.getSceneSwitcher().getGameScene().getGameHUD().showNewLevelMessage(currentLevel);
         updateLevelInfoInHud();
 
-        activity.getResourceManager().playOnceSound( R.raw.s_gong
-                                                   , activity.getIntResource(R.integer.NEW_LEVEL_GONG_VOLUME) );
+        activity.getResourceManager().playOnceSound(R.raw.s_gong
+                , activity.getIntResource(R.integer.NEW_LEVEL_GONG_VOLUME));
 
     }
 

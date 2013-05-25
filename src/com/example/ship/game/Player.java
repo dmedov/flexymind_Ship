@@ -1,7 +1,7 @@
 package com.example.ship.game;
 
-import com.example.ship.R;
 import com.example.ship.RootActivity;
+import com.example.ship.game.hud.GameHUD;
 
 public class Player {
     public static final int FULL_HP = 6;

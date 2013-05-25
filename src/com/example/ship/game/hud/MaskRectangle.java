@@ -1,16 +1,12 @@
-package com.example.ship.game;
+package com.example.ship.game.hud;
 
 import org.andengine.engine.camera.Camera;
 
 import org.andengine.entity.primitive.Rectangle;
-import org.andengine.entity.primitive.vbo.IRectangleVertexBufferObject;
 import org.andengine.opengl.util.GLState;
-import org.andengine.opengl.vbo.DrawType;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 import android.opengl.GLES20;
-
-import javax.microedition.khronos.opengles.GL10;
 
 
 public class MaskRectangle extends Rectangle{

@@ -1,4 +1,4 @@
-package com.example.ship.bonus;
+package com.example.ship.game.bonus;
 
 import android.util.Log;
 import com.example.ship.RootActivity;
