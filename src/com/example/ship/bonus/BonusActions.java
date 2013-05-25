@@ -91,6 +91,7 @@ public class BonusActions {
         for (Ship ship : ships) {
             ship.killSelf();
             player.addPoints((int) (ship.getScore() * player.getLevel().getScoreMultiplier()));
+            player.getLevel().incrementLevelProgress();
         }
         ships.clear();
     }
