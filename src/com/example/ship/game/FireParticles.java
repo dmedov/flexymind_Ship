@@ -32,13 +32,10 @@ public class FireParticles {
 
     private final static float MIN_VELOCITY_Y = -15f;
     private final static float MAX_VELOCITY_Y = -25f;
-    private final static Color MIN_FIRE_COLOR = new Color(1f, 1f, 1f);
-    private final static Color MAX_FIRE_COLOR = new Color(1f, 1f, 1f);
-    private final static Color MIN_SMOKE_COLOR = new Color(1f, 1f, 1f);
-    private final static Color MAX_SMOKE_COLOR = new Color(0f, 0f, 0f);
-    private final static PointF FIRE_TIME_PERIOD = new PointF(0f , 2f);
+    private final static Color BEGIN_SMOKE_COLOR = new Color(1f, 1f, 1f);
+    private final static Color END_SMOKE_COLOR = new Color(0f, 0f, 0f);
     private final static PointF GLOBAL_TIME_PERIOD = new PointF(0f , 4f);
-    private final static PointF ALPHA_RANGE = new PointF(1f , 1f);
+    private final static PointF ALPHA_RANGE = new PointF(1f , 0.5f);
     private final static PointF SCALE_RANGE = new PointF(0.2f , 1f);
     private final static float LIFE_TIME = 4f;
     private final static float WIND_FORCE = 1.1f;
@@ -88,23 +85,20 @@ public class FireParticles {
                                                            , MIN_VELOCITY_Y
                                                            , MAX_VELOCITY_Y));
             particleSystem.addParticleInitializer(new ExpireParticleInitializer<Sprite>(FireParticles.LIFE_TIME));
-            particleSystem.addParticleInitializer(
-                    new ColorParticleInitializer<Sprite>( MIN_FIRE_COLOR, MAX_FIRE_COLOR));
-            particleSystem.addParticleInitializer(new BlendFunctionParticleInitializer<Sprite>(GLES20.GL_ONE, GLES20.GL_ONE_MINUS_SRC_ALPHA));
             particleSystem.addParticleModifier(
                     new ScaleParticleModifier<Sprite>(GLOBAL_TIME_PERIOD.x
                                                      , GLOBAL_TIME_PERIOD.y
                                                      , SCALE_RANGE.x
                                                      , SCALE_RANGE.y));
             particleSystem.addParticleModifier(
-                    new ColorParticleModifier<Sprite>( FIRE_TIME_PERIOD.x
-                                                     , FIRE_TIME_PERIOD.y
-                                                     , MIN_SMOKE_COLOR.getRed()
-                                                     , MAX_SMOKE_COLOR.getRed()
-                                                     , MIN_FIRE_COLOR.getGreen()
-                                                     , MAX_SMOKE_COLOR.getGreen()
-                                                     , MIN_SMOKE_COLOR.getBlue()
-                                                     , MAX_SMOKE_COLOR.getBlue()));
+                    new ColorParticleModifier<Sprite>( GLOBAL_TIME_PERIOD.x
+                                                     , GLOBAL_TIME_PERIOD.y
+                                                     , BEGIN_SMOKE_COLOR.getRed()
+                                                     , END_SMOKE_COLOR.getRed()
+                                                     , BEGIN_SMOKE_COLOR.getGreen()
+                                                     , END_SMOKE_COLOR.getGreen()
+                                                     , BEGIN_SMOKE_COLOR.getBlue()
+                                                     , END_SMOKE_COLOR.getBlue()));
             particleSystem.addParticleModifier(
                     new AlphaParticleModifier<Sprite>( GLOBAL_TIME_PERIOD.x
                                                      , GLOBAL_TIME_PERIOD.y
