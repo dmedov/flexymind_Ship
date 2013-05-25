@@ -2,7 +2,7 @@ package com.example.ship.game;
 
 import android.graphics.PointF;
 import com.example.ship.R;
-import com.example.ship.SceletonActivity;
+import com.example.ship.RootActivity;
 import org.andengine.entity.modifier.*;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.util.modifier.ease.EaseExponentialOut;
@@ -15,7 +15,7 @@ public class Torpedo extends Sprite {
     private PointF finishPoint;
     private double radians;
 
-    public Torpedo(SceletonActivity activity, PointF point, float angle) {
+    public Torpedo(RootActivity activity, PointF point, float angle) {
         super( point.x
              , point.y
              , activity.getResourceManager().getLoadedTextureRegion(R.drawable.torpedo)
@@ -38,11 +38,7 @@ public class Torpedo extends Sprite {
         finishPoint.y = 0;
         finishPoint.x = startPoint.x + (float) Math.tan(radians) * startPoint.y;
 
-        // AlphaModifier(время исполнения, изначальная прозрачность, конечная прозрачность)
-        // LoopEntityModifier - выполняет модификатор пока не отменим
         LoopEntityModifier alphaLoopEntityModifier = new LoopEntityModifier(new AlphaModifier(1, 1, 0));
-
-        // EaseExponentialOut.getInstance() - способ передвижения
         MoveModifier moveModifier = new MoveModifier( TIME_OF_FLIGHT / (float) Math.cos(radians)
                                                     , startPoint.x
                                                     , finishPoint.x
@@ -50,7 +46,6 @@ public class Torpedo extends Sprite {
                                                     , finishPoint.y
                                                     , EaseExponentialOut.getInstance());
 
-        // ParallelEntityModifier - выполняет модификаторы параллельно
         ParallelEntityModifier parallelEntityModifier =
                 new ParallelEntityModifier(alphaLoopEntityModifier, moveModifier);
 

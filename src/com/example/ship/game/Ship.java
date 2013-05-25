@@ -6,9 +6,8 @@ Date: 07.05.13
 */
 
 import android.graphics.PointF;
-import android.util.Log;
 import com.example.ship.R;
-import com.example.ship.SceletonActivity;
+import com.example.ship.RootActivity;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.*;
 import org.andengine.entity.sprite.Sprite;
@@ -17,6 +16,7 @@ import org.andengine.util.modifier.ease.EaseQuadIn;
 import org.andengine.util.modifier.ease.EaseQuadInOut;
 import org.andengine.util.modifier.ease.EaseQuadOut;
 
+import java.util.HashMap;
 import java.util.Random;
 
 import static java.lang.Math.abs;
@@ -25,13 +25,20 @@ public class Ship {
 
     public static final boolean TO_LEFT = true;
     public static final boolean TO_RIGHT = false;
+    public static final HashMap<String, Integer> shipsId;
+    static {
+        shipsId = new HashMap<String, Integer>();
+        shipsId.put("missileBoat", R.drawable.missileboat);
+        shipsId.put("battleship", R.drawable.battleship);
+        shipsId.put("sailfish", R.drawable.sailfish);
+    }
 
     private static final float RELATIVE_WATERLINE = 0.1f;
     private static final float FINISH_OFFSET = 300.0f;
     private static final float MAX_ROTATE_ANGLE = 5.0f;
     private static final float ROTATE_DURATION = 3.0f;
     private static final float RELATIVE_ROTATION_CENTER_Y_OFFSET = 1.75f;
-    private static final float HIT_AREA_OFFSET = 20f;
+    private static final float RELATIVE_HIT_AREA_OFFSET = 0.1f;
     private static final float SINK_ACCELERATION = 40f;
     private static final float MAX_SINK_ROTATION_ANGLE = 90f;
     private static final float MAX_SINK_ROTATION_VELOCITY = 20f;
@@ -40,11 +47,12 @@ public class Ship {
     private static final float MIN_SINK_VELOCITY = 2f;
     private static final float ALPHA_SINK_TIME = 20f;
     private static final int ROTATION_COUNT = 10;
-
+    private static final float RELATIVE_SIZE_AROUND = 1f;
+    private static final float RELATIVE_SIZE_BEYOND = 0.5f;
     private static float velocityDivider = 1;
 
     private final float yPosition;
-    private final SceletonActivity activity;
+    private final RootActivity activity;
     private final int typeId;
     private final boolean direction;
 
@@ -57,7 +65,11 @@ public class Ship {
     private int score;
     private Random rand;
 
-    public Ship(SceletonActivity activity, float yPosition, int shipTypeId, boolean direction) {
+    public Ship(RootActivity activity, float yPosition, String shipType, boolean direction) {
+        this(activity, yPosition, shipsId.get(shipType), direction);
+    }
+
+    public Ship(RootActivity activity, float yPosition, int shipTypeId, boolean direction) {
         this.activity = activity;
         this.yPosition = yPosition;
         this.typeId = shipTypeId;
@@ -69,7 +81,7 @@ public class Ship {
                                , activity.getEngine().getVertexBufferObjectManager());
 
         initShipParametersById();
-
+        setScale();        // нельзя менять местами с setDirection()
         setDirection();
         shipSprite.setPosition(startPoint.x, startPoint.y);
         createModifier();
@@ -77,7 +89,6 @@ public class Ship {
 
     public static void setVelocityDivider(float velocityDivider) {
         Ship.velocityDivider = velocityDivider;
-        Log.d("1log", "velocity divider..." + velocityDivider);
     }
 
     public Sprite getSprite () {
@@ -117,6 +128,8 @@ public class Ship {
 
     public boolean hit(int hitPoints) {
         health -= hitPoints;
+        activity.getResourceManager().playOnceSound( R.raw.s_explosion1
+                                                   , activity.getIntResource(R.integer.SHIP_EXPLOSION));
         if ( health <= 0) {
             activity.getSceneSwitcher().getGameScene().getPlayer().getLevel().incrementLevelProgress();
             killSelf();
@@ -160,19 +173,42 @@ public class Ship {
         this.velocity /= velocityDivider;
     }
 
+    private void setScale() {
+        GameScene gameScene = activity.getSceneSwitcher().getGameScene();
+        float lastShipLinePositionFromBottomY =
+                activity.getCamera().getHeightRaw() - gameScene.getShipLinePosition( GameScene.LAYER_THIRD_SHIP_LINE );
+        float skyLinePositionFromBottomY =
+                activity.getCamera().getHeightRaw() - gameScene.getChildByIndex( GameScene.LAYER_FIRST_WAVE )
+                        .getFirstChild().getY();
+
+        // увеличение f(x)=a/x + b, равно RELATIVE_SIZE_AROUND на самой ближайшей линии спауна кораблей,
+        // RELATIVE_SIZE_BEYOND на горизонте
+        float a = ( RELATIVE_SIZE_AROUND - RELATIVE_SIZE_BEYOND )
+                * ( lastShipLinePositionFromBottomY * skyLinePositionFromBottomY )
+                / ( skyLinePositionFromBottomY - lastShipLinePositionFromBottomY);
+        float b = RELATIVE_SIZE_BEYOND - a/skyLinePositionFromBottomY;
+        float perspectiveScale = a / ( activity.getCamera().getHeightRaw() - yPosition ) + b;
+        final PointF LEFT_TOP= new PointF( 0f, 0f );  //по умолчанию scaleCenter не всегда в левом верхнем углу
+        shipSprite.setScaleCenter( LEFT_TOP.x, LEFT_TOP.y );
+        if (direction == TO_LEFT) {
+            shipSprite.setScale( perspectiveScale, perspectiveScale );
+        } else {
+            shipSprite.setScale( -perspectiveScale, perspectiveScale );
+        }
+    }
     private void setDirection() {
         if (direction == TO_LEFT) {
             startPoint = new PointF( activity.getCamera().getXMax()
-                                   , yPosition - shipSprite.getHeight() * (1 - RELATIVE_WATERLINE));
-            finishPoint = new PointF( activity.getCamera().getXMin() - shipSprite.getWidth()
+                                   , yPosition - shipSprite.getHeightScaled() * (1 - RELATIVE_WATERLINE));
+
+            finishPoint = new PointF( activity.getCamera().getXMin() - shipSprite.getWidthScaled()
                                                                      - FINISH_OFFSET
                                     , startPoint.y);
         } else {
             startPoint = new PointF( activity.getCamera().getXMin() - shipSprite.getWidth()
-                                   , yPosition - shipSprite.getHeight() * (1 - RELATIVE_WATERLINE));
+                                   , yPosition - shipSprite.getHeightScaled() * (1 - RELATIVE_WATERLINE));
             finishPoint = new PointF( activity.getCamera().getXMax() + FINISH_OFFSET
                                     , startPoint.y);
-            shipSprite.setScaleX(-1);
         }
     }
 
@@ -184,7 +220,8 @@ public class Ship {
                                                     , finishPoint.y
                                                     , EaseLinear.getInstance());
 
-        shipSprite.setRotationCenterY(shipSprite.getRotationCenterX() * RELATIVE_ROTATION_CENTER_Y_OFFSET);
+        shipSprite.setRotationCenterX( 0.5f * shipSprite.getWidthScaled() );
+        shipSprite.setRotationCenterY(abs( shipSprite.getRotationCenterX() ) * RELATIVE_ROTATION_CENTER_Y_OFFSET);
 
         RotationModifier rotateUpModifier = new RotationModifier( ROTATE_DURATION
                                                                 , MAX_ROTATE_ANGLE
@@ -208,9 +245,9 @@ public class Ship {
 
     private void createHitArea(float hitAreaFromPixel, float hitAreaToPixel) {
         hitAreaSprite = new Sprite( 0
-                , shipSprite.getHeight() - HIT_AREA_OFFSET
-                , activity.getResourceManager().getLoadedTextureRegion(R.drawable.hitarea)
-                , activity.getVertexBufferObjectManager() );
+                                  , shipSprite.getHeight() * ( 1 - RELATIVE_HIT_AREA_OFFSET )
+                                  , activity.getResourceManager().getLoadedTextureRegion(R.drawable.hitarea)
+                                  , activity.getVertexBufferObjectManager() );
         hitAreaSprite.setScaleCenterX(0);
         hitAreaSprite.setScaleX((hitAreaToPixel - hitAreaFromPixel) / hitAreaSprite.getWidthScaled());
         hitAreaSprite.setX(hitAreaFromPixel);
@@ -241,7 +278,7 @@ public class Ship {
                 , sinkPointX
                 , sinkPointX
                 , shipSprite.getY()
-                , shipSprite.getY() + shipSprite.getHeight()
+                , shipSprite.getY() + shipSprite.getHeightScaled()
                 , EaseQuadIn.getInstance() );
 
         RotationModifier rotation = new RotationModifier( sinkRotationVelocity
@@ -258,7 +295,6 @@ public class Ship {
                     @Override
                     public void run() {
                         shipSprite.detachSelf();
-                        Log.d("1Log", "Ship is detached from bottom");
                     }
                 });
             }
@@ -267,5 +303,4 @@ public class Ship {
         shipSprite.registerEntityModifier(moveShip);
     }
 }
-
 

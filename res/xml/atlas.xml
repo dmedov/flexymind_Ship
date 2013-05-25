@@ -22,6 +22,10 @@
                 <texture name="onscreen_control_knob"/>
                 <texture name="hitarea"/>
                 <texture name="onhealth"/>
-                <texture name="offhealth"/>
+                <texture name="cloud"/>
+                <texture name="score"/>
+                <texture name="ships_left"/>
+                <texture name="progressbar"/>
+                <texture name="bonus"/>
            </Atlas>
 </resources>

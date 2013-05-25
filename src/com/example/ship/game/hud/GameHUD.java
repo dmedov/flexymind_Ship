@@ -1,15 +1,17 @@
-package com.example.ship.game;
+package com.example.ship.game.hud;
 
 import android.graphics.PointF;
 import android.graphics.Typeface;
 import com.example.ship.Events;
 import com.example.ship.R;
-import com.example.ship.SceletonActivity;
+import com.example.ship.RootActivity;
+import com.example.ship.game.*;
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.camera.hud.controls.BaseOnScreenControl;
 import org.andengine.entity.modifier.*;
 import org.andengine.entity.shape.RectangularShape;
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
@@ -29,33 +31,46 @@ import java.util.ArrayList;
  */
 public class GameHUD extends HUD {
 
-    private static final float RELATIVE_BUTTON_HEIGHT = 0.15f;
+    private static final float RELATIVE_PAUSE_BUTTON_HEIGHT = 0.15f;
+    private static final float RELATIVE_FIRE_BUTTON_HEIGHT = 0.25f;
     private static final float RELATIVE_SPACE_BETWEEN_CONTROLS = 0.01f;
     private static final float RELATIVE_SCREEN_BORDER = 0.02f;
+    private static final float RELATIVE_CLOUD_HEIGHT = 0.15f;
+    private static final float RELATIVE_SCORE_HEIGHT = 0.05f;
+    private static final float RELATIVE_FIRE_SCREEN_BORDER = 0.12f;
     private static final float RELATIVE_HP_HEIGHT = 0.05f;
     private static final float BUTTON_ALPHA = 0.75f;
     private static final int FONT_ATLAS_SIDE = 256;
     
     private static final float TIME_PERIOD_CHECK_CONTROL = 0.1f;
-    private static final float RELATIVE_CONTROL_HEIGHT = 0.2f;
+    private static final float RELATIVE_CONTROL_HEIGHT = 0.5f;
+    private static final float RELATIVE_CONTROL_MIDDLE_Y = 0.25f;
+    private static final float RELATIVE_MEASURED_TEXT_MIDDLE = 0.7f;
+    private static final float CONTROL_ALPHA = 0.5f;
+
     public static final int TEXT_LENGTH = 32;
 
-    private final SceletonActivity activity;
+    private final RootActivity activity;
     private final Engine engine;
     private PointF positionHitPoint;
     private Text scoreText;
     private Text levelInfoText;
+    private Sprite scoreSprite;
+    private Sprite remainingShipsSprite;
+    private Text currentLevelText;
+    private Text remainingShipsText;
     private Font statFont;
     private PointF cameraSize;
+    private HealthIndicator healthIndicator;
     private ArrayList<GameButtonSprite> buttons;
-    private ArrayList<HealthIndicator> healthIndicators;
     private HorizontalDigitalOnScreenControl rotateGunDigitalControl;
+    private ProgressBar progressBar;
+    private TouchableGameButtonSprite touchableGameButtonSprite;
 
-    public GameHUD(SceletonActivity activity) {
+    public GameHUD(RootActivity activity) {
         super();
         setOnAreaTouchTraversalFrontToBack();
         buttons = new ArrayList<GameButtonSprite>();
-        healthIndicators = new ArrayList<HealthIndicator>();
         this.activity = activity;
         engine = this.activity.getEngine();
         cameraSize = new PointF( this.activity.getCamera().getWidthRaw()
@@ -64,57 +79,69 @@ public class GameHUD extends HUD {
         createButtons();
         createStats();
         createRotateGunDigitalControl();
+        createProgressBar();
     }
 
     public void setEventsToChildren(Events events) {
         for (GameButtonSprite button: buttons) {
             button.setEvents(events);
         }
+        this.touchableGameButtonSprite = events;
     }
 
     private void createButtons() {
+        GameButtonSprite fireScreenButton;
+        fireScreenButton = new GameButtonSprite( activity.getResourceManager()
+                                                         .getLoadedTextureRegion(R.drawable.firebutton)
+                                               , engine.getVertexBufferObjectManager()
+                                               , R.string.GAME_FIRE_BUTTON);
+        buttons.add(fireScreenButton);
+        fireScreenButton.setVisible(false);
+        fireScreenButton.setScaleCenter(0, 0);
+        fireScreenButton.setScale( cameraSize.x
+                                   / Math.min(fireScreenButton.getWidth(), fireScreenButton.getHeight()));
+
         GameButtonSprite pauseButton;
         pauseButton = new GameButtonSprite( activity.getResourceManager()
                                                     .getLoadedTextureRegion(R.drawable.pausebutton)
                                           , engine.getVertexBufferObjectManager()
                                           , R.string.GAME_PAUSE_BUTTON);
         buttons.add(pauseButton);
+        pauseButton.setScale(cameraSize.y * RELATIVE_PAUSE_BUTTON_HEIGHT / pauseButton.getHeight());
 
         GameButtonSprite fireButton;
         fireButton = new GameButtonSprite( activity.getResourceManager()
-                                                    .getLoadedTextureRegion(R.drawable.firebutton)
+                                                   .getLoadedTextureRegion(R.drawable.firebutton)
                                          , engine.getVertexBufferObjectManager()
                                          , R.string.GAME_FIRE_BUTTON);
         buttons.add(fireButton);
+        fireButton.setScaleCenter(fireButton.getWidth(), fireButton.getHeight());
+        fireButton.setScale(cameraSize.y * RELATIVE_FIRE_BUTTON_HEIGHT / fireButton.getHeight());
+
         for (GameButtonSprite button: buttons) {
-            if (button.getId() == R.string.GAME_BORDER_BUTTON) {
-                continue;
-            }
             button.setAlpha(BUTTON_ALPHA);
-            button.setScale(cameraSize.y * RELATIVE_BUTTON_HEIGHT / fireButton.getHeight());
             this.registerTouchArea(button);
             this.attachChild(button);
         }
 
         pauseButton.setPosition( RELATIVE_SCREEN_BORDER * cameraSize.x
                                , RELATIVE_SCREEN_BORDER * cameraSize.y);
-        fireButton.setPosition( (1 - RELATIVE_SCREEN_BORDER) * cameraSize.x - fireButton.getWidth()
+        fireButton.setPosition( (1 - RELATIVE_FIRE_SCREEN_BORDER) * cameraSize.x - fireButton.getWidth()
                               , (1 - RELATIVE_SCREEN_BORDER) * cameraSize.y - fireButton.getHeight());
+        fireScreenButton.setPosition(0, 0);
     }
 
     private void createRotateGunDigitalControl() {
         ITextureRegion rotateGunDigitalControlBaseTextureRegion =
-                activity.getResourceManager().getLoadedTextureRegion( R.drawable.onscreen_control_base );
+                activity.getResourceManager().getLoadedTextureRegion(R.drawable.onscreen_control_base);
         ITextureRegion rotateGunDigitalControlKnobTextureRegion =
-                activity.getResourceManager().getLoadedTextureRegion( R.drawable.onscreen_control_knob );
-
-
+                activity.getResourceManager().getLoadedTextureRegion(R.drawable.onscreen_control_knob);
 
         final PointF BASE_TEXTURE_LEFT_BOTTOM =
-                new PointF( 0f , rotateGunDigitalControlBaseTextureRegion.getHeight() );
+                new PointF(0f , rotateGunDigitalControlBaseTextureRegion.getHeight());
         final float CONTROL_BASE_TEXTURE_HEIGHT = rotateGunDigitalControlBaseTextureRegion.getHeight();
         final PointF GUN_DIGITAL_CONTROL_COORDINATE =
-                new PointF( RELATIVE_SCREEN_BORDER * cameraSize.x
+                new PointF( 0f
                           , (1 - RELATIVE_SCREEN_BORDER) * (cameraSize.y - CONTROL_BASE_TEXTURE_HEIGHT));
 
         rotateGunDigitalControl =
@@ -127,84 +154,120 @@ public class GameHUD extends HUD {
                                                     , activity.getVertexBufferObjectManager()
                                                     , new BaseOnScreenControl.IOnScreenControlListener() {
             @Override
-            public void onControlChange( BaseOnScreenControl baseOnScreenControl, float xShift, float yShift ) {
-                if          ( xShift < 0 ) {
+            public void onControlChange(BaseOnScreenControl baseOnScreenControl, float xShift, float yShift) {
+                if          (xShift < 0) {
                     getGun().rotateLeft();
-                } else if   ( xShift > 0 ) {
+                } else if   (xShift > 0) {
                     getGun().rotateRight();
                 } else {
                     getGun().stopRotate();
                 }
             }
         });
-        rotateGunDigitalControl.getControlBase().setAlpha(BUTTON_ALPHA);
+        rotateGunDigitalControl.getControlBase().setAlpha(CONTROL_ALPHA);
         // Чтобы текстура не выходила за границы экрана при масштабировании
         rotateGunDigitalControl.getControlBase()
-                .setScaleCenter( BASE_TEXTURE_LEFT_BOTTOM.x, BASE_TEXTURE_LEFT_BOTTOM.y );
+                .setScaleCenter(BASE_TEXTURE_LEFT_BOTTOM.x, BASE_TEXTURE_LEFT_BOTTOM.y);
         rotateGunDigitalControl.getControlBase()
-                .setScale( cameraSize.y * RELATIVE_CONTROL_HEIGHT
-                           / rotateGunDigitalControlBaseTextureRegion.getHeight() );
+                .setScale(cameraSize.y * RELATIVE_CONTROL_HEIGHT
+                        / rotateGunDigitalControlBaseTextureRegion.getHeight());
         rotateGunDigitalControl.getControlKnob()
-                .setScale( cameraSize.y * RELATIVE_CONTROL_HEIGHT
-                           / rotateGunDigitalControlBaseTextureRegion.getHeight() );
-        // 36f измерено по текстуре, обеспечивает правильный отступ
-        final float KNOB_BORDER = 36f / rotateGunDigitalControl.getControlBase().getWidth();
-        final float EXTENT_SIDE = HorizontalDigitalOnScreenControl.STANDART_EXTENT_SIDE
-                                  - 0.5f * rotateGunDigitalControl.KNOB_SIZE_IN_PERCENT - KNOB_BORDER;
-        rotateGunDigitalControl.setExtentSide( EXTENT_SIDE );
+                .setScale(cameraSize.y * RELATIVE_CONTROL_HEIGHT
+                        / rotateGunDigitalControlBaseTextureRegion.getHeight());
+        // 13f измерено по текстуре, обеспечивает правильный отступ
+        final float KNOB_BORDER = 13f / rotateGunDigitalControl.getControlBase().getWidth();
+        final float EXTENT_SIDE = HorizontalDigitalOnScreenControl.STANDART_RELATIVE_EXTENT_SIDE
+                - 0.5f * rotateGunDigitalControl.KNOB_SIZE_IN_PERCENT - KNOB_BORDER;
+        rotateGunDigitalControl.setExtentSide(EXTENT_SIDE);
+        rotateGunDigitalControl.setHeightLevel(RELATIVE_CONTROL_MIDDLE_Y);
 
         rotateGunDigitalControl.refreshControlKnobPosition();
-        this.setChildScene( rotateGunDigitalControl );
+        this.setChildScene(rotateGunDigitalControl);
     }
 
     private void createStats() {
-        float healthTextureHeight =
-                activity.getResourceManager().getLoadedTextureRegion(R.drawable.onhealth).getHeight();
-        float scale = cameraSize.y * RELATIVE_HP_HEIGHT / healthTextureHeight;
-        float healthTextureWidth =
-                activity.getResourceManager().getLoadedTextureRegion(R.drawable.onhealth).getWidth() * scale;
+        float fontSize = cameraSize.y * RELATIVE_SCORE_HEIGHT;
+        float scoreTextureHeight =
+                activity.getResourceManager().getLoadedTextureRegion(R.drawable.score).getHeight();
+        float scoreScale = cameraSize.y * RELATIVE_SCORE_HEIGHT / scoreTextureHeight;
+        float cloudTextureHeight =
+                activity.getResourceManager().getLoadedTextureRegion(R.drawable.cloud).getHeight();
+        float cloudScale = cameraSize.y * RELATIVE_CLOUD_HEIGHT / cloudTextureHeight;
 
-        positionHitPoint = new PointF( (1 - RELATIVE_SCREEN_BORDER) * cameraSize.x - healthTextureWidth
-                                     , RELATIVE_SCREEN_BORDER * cameraSize.y * scale);
+        positionHitPoint = new PointF( (1 - RELATIVE_SCREEN_BORDER) * cameraSize.x
+                                     , RELATIVE_SCREEN_BORDER * cameraSize.y);
 
-        for (int i = 0; i < Player.FULL_HP; i++) {
-            HealthIndicator healthIndicator = new HealthIndicator( activity
-                                                                 , this
-                                                                 , positionHitPoint
-                                                                 , scale);
-            healthIndicators.add(healthIndicator);
-            positionHitPoint.x -= RELATIVE_SPACE_BETWEEN_CONTROLS * cameraSize.x + healthTextureWidth;
-        }
+        healthIndicator = new HealthIndicator(activity, this, positionHitPoint, cloudScale);
 
         statFont = FontFactory.create( activity.getEngine().getFontManager()
-                                      , activity.getEngine().getTextureManager()
-                                      , FONT_ATLAS_SIDE
-                                      , FONT_ATLAS_SIDE
-                                      , Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)
-                                      , healthTextureHeight * scale
-                                      , true
-                                      , Color.WHITE_ABGR_PACKED_INT);
+                                     , activity.getEngine().getTextureManager()
+                                     , FONT_ATLAS_SIDE
+                                     , FONT_ATLAS_SIDE
+                                     , Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)
+                                     , fontSize
+                                     , true
+                                     , Color.WHITE_ABGR_PACKED_INT);
         statFont.load();
 
         // создаем изначальные очки
         scoreText = new Text( positionHitPoint.x
                             , positionHitPoint.y
                             , statFont
-                            , activity.getResources().getString(R.string.SCORE) + ": 000000"
+                            , " 000000"
                             , TEXT_LENGTH
                             , activity.getEngine().getVertexBufferObjectManager());
         scoreText.setPosition( cameraSize.x * 0.5f - scoreText.getWidth() * 0.5f
                              , RELATIVE_SCREEN_BORDER * cameraSize.y);
 
-        levelInfoText = new Text( 0
-                                , 0
-                                , statFont
-                                , ""
-                                , TEXT_LENGTH
-                                , activity.getEngine().getVertexBufferObjectManager());
+        currentLevelText = new Text( 0
+                                   , 0
+                                   , statFont
+                                   , ""
+                                   , TEXT_LENGTH
+                                   , activity.getEngine().getVertexBufferObjectManager());
+        ITextureRegion shipsLeftToDestroyTexture =
+                activity.getResourceManager().getLoadedTextureRegion(R.drawable.ships_left);
 
+        remainingShipsSprite = new Sprite( 0
+                                         , 0
+                                         , shipsLeftToDestroyTexture
+                                         , activity.getEngine().getVertexBufferObjectManager());
+        remainingShipsText = new Text( 0
+                                     , 0
+                                     , statFont
+                                     , ""
+                                     , TEXT_LENGTH
+                                     , activity.getEngine().getVertexBufferObjectManager());
+
+        scoreSprite = new Sprite( 0
+                                , 0
+                                , activity.getResourceManager().getLoadedTextureRegion(R.drawable.score)
+                                , activity.getVertexBufferObjectManager());
+        scoreSprite.setScaleCenter(scoreSprite.getWidth(), scoreSprite.getHeight() / 2.0f);
+        scoreSprite.setScale(scoreScale);
+        scoreSprite.setPosition( scoreText.getX() - scoreSprite.getWidth()
+                               , scoreText.getY() + (scoreText.getHeight()- scoreSprite.getHeight()) / 2.0f);
+
+        this.attachChild(scoreSprite);
         this.attachChild(scoreText);
-        this.attachChild(levelInfoText);
+        this.attachChild(currentLevelText);
+        this.attachChild(remainingShipsSprite);
+        this.attachChild(remainingShipsText);
+    }
+
+    private void createProgressBar() {
+        progressBar = new ProgressBar(activity, this);
+
+        float positionX = (1 - RELATIVE_SCREEN_BORDER) * cameraSize.x - progressBar.getWidthProgressBar();
+        // временно, потом будет ограничивается по облаку
+        float positionY = cameraSize.y / 4.0f;
+
+        progressBar.setPosition(new PointF(positionX, positionY));
+
+    }
+
+    public void updateProgressBar(int progress) {
+        progressBar.setProgress(progress);
     }
 
     public void updateScore() {
@@ -213,20 +276,23 @@ public class GameHUD extends HUD {
                              , RELATIVE_SCREEN_BORDER * cameraSize.y);
     }
 
-    public void updateLevelInfo(String text) {
-        levelInfoText.setText(text);
-        levelInfoText.setPosition( cameraSize.x * 0.25f - levelInfoText.getWidth() * 0.5f
-                                 , RELATIVE_SCREEN_BORDER * cameraSize.y);
+    public void updateLevelInfo(String currentLevel, String shipsToDestroy) {
+        currentLevelText.setText(currentLevel);
+        currentLevelText.setPosition( cameraSize.x * 0.25f - currentLevelText.getWidth() * 0.5f
+                                    , RELATIVE_SCREEN_BORDER * cameraSize.y);
+        remainingShipsSprite.setScale(remainingShipsText.getHeight() / remainingShipsSprite.getHeight());
+        remainingShipsSprite.setPosition( currentLevelText.getX()
+                                        , currentLevelText.getY() + currentLevelText.getHeight()
+                                          + 0.5f * remainingShipsSprite.getHeight());
+        remainingShipsText.setText(shipsToDestroy);
+        remainingShipsText.setPosition( remainingShipsSprite.getX() + remainingShipsSprite.getWidth()
+                                        + 0.5f * remainingShipsSprite.getWidthScaled()
+                                      , remainingShipsSprite.getY()  + 0.5f * remainingShipsSprite.getHeightScaled()
+                                        - RELATIVE_MEASURED_TEXT_MIDDLE * remainingShipsText.getHeight());
     }
 
     public void updateHealthIndicators(int health) {
-        for (int i = 0; i < healthIndicators.size(); i++) {
-            if (i < health) {
-                healthIndicators.get(i).setState(HealthIndicator.ALIVE_STATE);
-            } else {
-                healthIndicators.get(i).setState(HealthIndicator.DEAD_STATE);
-            }
-        }
+        healthIndicator.updateHealth(health);
     }
 
     public void showNewLevelMessage(int level) {

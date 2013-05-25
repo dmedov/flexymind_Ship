@@ -1,10 +1,11 @@
 package com.example.ship;
 
+import android.util.Log;
 import com.example.ship.game.GameScene;
-import com.example.ship.game.ShipSpawner;
 import com.example.ship.menu.MenuHUD;
 import com.example.ship.menu.ShipMenuScene;
-import com.example.ship.sceletone.SceletonScene;
+import com.example.ship.resource.ResourceManager;
+import com.example.ship.root.RootScene;
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,18 +22,19 @@ public class SceneSwitcher {
     public static final int PAUSE_STATE = 3;
     public static final int GAME_OVER_STATE = 4;
 
-    private final SceletonActivity activity;
-    private SceletonScene rootScene;
+    private final RootActivity activity;
+    private RootScene rootScene;
     private ShipMenuScene menuScene;
     private GameScene gameScene;
     private int currentState;
 
-    public SceneSwitcher(SceletonActivity activity) {
+    public SceneSwitcher(RootActivity activity) {
         this.activity = activity;
         menuScene = new ShipMenuScene(activity);
         gameScene = new GameScene(activity);
-        rootScene = new SceletonScene(activity);
+        rootScene = new RootScene(activity);
         rootScene.setEvents(activity.getEvents());
+        manageSound(ROOT_STATE);
 
         currentState = ROOT_STATE;
     }
@@ -41,6 +43,7 @@ public class SceneSwitcher {
         activity.getCamera().setHUD(null);
         rootScene.clearChildScene();
         rootScene.registerTouchArea();
+        manageSound(ROOT_STATE);
 
         currentState = ROOT_STATE;
     }
@@ -55,6 +58,7 @@ public class SceneSwitcher {
         MenuHUD menuHUD = new MenuHUD(activity);
         menuHUD.setEventsToChildren(activity.getEvents());
         activity.getCamera().setHUD(menuHUD);
+        manageSound(MENU_STATE);
 
         currentState = MENU_STATE;
     }
@@ -66,10 +70,10 @@ public class SceneSwitcher {
         rootScene.unregisterTouchArea();
         gameScene.resetGame();
         rootScene.setChildScene(gameScene);
-        ShipSpawner shipSpawner = new ShipSpawner(activity);
-        gameScene.setShipSpawner(shipSpawner);
         gameScene.getPlayer().getLevel().startLevel(1);
         switchToGameHUD();
+        manageSound(GAME_STATE);
+
         currentState = GAME_STATE;
     }
 
@@ -78,10 +82,12 @@ public class SceneSwitcher {
             gameScene.setIgnoreUpdate(false);
         }
         gameScene.switchToGameHUD();
-        gameScene.getShipSpawner().startSpawn();
+        gameScene.getPlayer().getLevel().resumeSpawn();
+        gameScene.getGun().resumeFireTimer();
         if (!activity.getEngine().isRunning()) {
             activity.getEngine().start();
         }
+        manageSound(GAME_STATE);
 
         currentState = GAME_STATE;
     }
@@ -89,14 +95,26 @@ public class SceneSwitcher {
     public void switchToPauseHUD() {
         gameScene.setIgnoreUpdate(true);
         gameScene.switchToPauseHUD();
-        gameScene.getShipSpawner().stopSpawn();
+        gameScene.getPlayer().getLevel().pauseSpawn();
+        gameScene.getGun().pauseFireTimer();
+        manageSound(PAUSE_STATE);
+
         currentState = PAUSE_STATE;
     }
 
     public void switchToGameOverHUD() {
-        gameScene.getShipSpawner().stopSpawn();
+        gameScene.getPlayer().getLevel().pauseSpawn();
         gameScene.setIgnoreUpdate(true);
+        if (gameScene.getPlayer().getHealth() > 0) {
+            gameScene.getGameOverHUD().setWinOrLooseText(activity.getStringResource(R.string.WIN_LABEL));
+            Log.d("1log", "победа");
+        } else {
+            gameScene.getGameOverHUD().setWinOrLooseText(activity.getStringResource(R.string.LOOSE_LABEL));
+            Log.d("1log", "поражение");
+        }
         gameScene.switchToGameOverHUD();
+        manageSound(GAME_OVER_STATE);
+
         currentState = GAME_OVER_STATE;
     }
 
@@ -104,11 +122,33 @@ public class SceneSwitcher {
         return currentState;
     }
 
-    public SceletonScene getRootScene() {
+    public RootScene getRootScene() {
         return rootScene;
     }
 
     public GameScene getGameScene() {
         return gameScene;
+    }
+
+    public void manageSound(int state) {
+        ResourceManager resourceManager = activity.getResourceManager();
+        resourceManager.pauseAllMusic();
+        resourceManager.pauseAllSound();
+
+        switch (state) {
+            case MENU_STATE :
+                resourceManager.playLoopMusic(R.raw.m_menu_music, resourceManager.FROM_THE_BEGINING);
+                break;
+            case GAME_STATE :
+                resourceManager.playLoopMusic( R.raw.m_game_music
+                                             , activity.getIntResource(R.integer.GAME_SCENE_MUSIC_VOLUME) );
+                resourceManager.playLoopMusic( R.raw.m_waves
+                                             , activity.getIntResource(R.integer.GAME_SCENE_WAVES_VOLUME) );
+                break;
+            case GAME_OVER_STATE :
+                resourceManager.playLoopMusic( R.raw.m_game_over
+                        , activity.getIntResource(R.integer.GAME_OVER_SCENE_VOLUME) );
+                break;
+        }
     }
 }

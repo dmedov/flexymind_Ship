@@ -1,8 +1,14 @@
-package com.example.ship.atlas;
+package com.example.ship.resource;
 
 import android.content.Context;
 import android.util.Log;
 import com.example.ship.R;
+import org.andengine.audio.music.Music;
+import org.andengine.audio.music.MusicFactory;
+import org.andengine.audio.music.MusicManager;
+import org.andengine.audio.sound.Sound;
+import org.andengine.audio.sound.SoundFactory;
+import org.andengine.audio.sound.SoundManager;
 import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
@@ -17,6 +23,7 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -48,30 +55,221 @@ loadAllTextures ( this, mEngine.getTextureManager() );
 
 Для получения ITextureRegion нужного ресурса вызываем метод класса
 getLoadedTextureRegion ( " [Сюда пишем ID ресурса (например: R.drawable.ship)] " );
+
+Звук:
+
+Засовываем звук в любом формате в папку /res/raw/
+Названия файлов должны начинаться с "s" или "m" для звуков и музыки соответственно. После этого в OnCreateResources
+добавляем методы resourceManager.loadAllMusic(mEngine.getMusicManager());
+                 resourceManager.loadAllSound(mEngine.getSoundManager());
+
+и не забываем подключить звуки в engineOptions:
+                engineOptions.getAudioOptions().setNeedsMusic(true);
+                engineOptions.getAudioOptions().setNeedsSound(true);
+
+После сих действий запускаем звуки:
+                resourceManager.playLoopSound( [Сюда пишем ID ресурса (например: R.raw.s_explosion)]  );
+                resourceManager.playOnceSound( [Сюда пишем ID ресурса (например: R.raw.s_explosion)]  );
+                resourceManager.playLoopMusic( [Сюда пишем ID ресурса (например: R.raw.m_menu_music)] );
+                resourceManager.playOnceMusic( [Сюда пишем ID ресурса (например: R.raw.m_menu_music)] );
+
+Можно задать дополнительно громкость: Integer в процентах.
+Для музыки можно задать булевую переменную resourceManager.FROM_THE_BEGINING, которая запустит музыку сначала,
+а не с того места, где музыку настигла пауза.
+
 */
 
 public class ResourceManager {
     private final Map<Integer, ITextureRegion> loadedTextures;
+    private final Map<Integer, Music> loadedMusic;
+    private final Map<Integer, Sound> loadedSound;
     protected final ArrayList<BuildableBitmapTextureAtlas> atlasList;
 
     private XmlPullParser parser = null;
     private TextureManager textureManager = null;
+    private MusicManager musicManager = null;
+    private SoundManager soundManager = null;
     private Context context;
     private int currentAtlasId;
 
-    public ResourceManager() {
+    public final boolean FROM_THE_BEGINING = true;
+
+    public ResourceManager(Context context) {
+        this.context = context;
         loadedTextures = new HashMap<Integer, ITextureRegion>();
+        loadedMusic = new HashMap<Integer, Music>();
+        loadedSound = new HashMap<Integer, Sound>();
         atlasList = new ArrayList<BuildableBitmapTextureAtlas>();
     }
+
+    // ================= SOUND ==================== //
+
+    public Sound getLoadedSound(int resourceID) {
+        return loadedSound.get(resourceID);
+    }
+
+    private void playSound(int resourceID, int volume, boolean looping) {
+        Sound sound = loadedSound.get(resourceID);
+        sound.setLooping(looping);
+        sound.setVolume(((float) volume) / 100f);
+        sound.play();
+    }
+
+    public void stopSound(int resourceID) {
+        loadedSound.get(resourceID).stop();
+    }
+
+    public void pauseSound(int resourceID) {
+        loadedSound.get(resourceID).pause();
+    }
+
+    public void playOnceSound(int resourceID, int volume) {
+        playSound(resourceID, volume, false);
+    }
+
+    public void playOnceSound(int resourceID) {
+        playSound(resourceID, 100, false);
+    }
+
+    public void playLoopSound(int resourceID, int volume) {
+        playSound(resourceID, volume, true);
+    }
+
+    public void playLoopSound(int resourceID) {
+        playSound(resourceID, 100, true);
+    }
+
+    public void stopAllSounds() {
+        for (HashMap.Entry<Integer, Sound> e : loadedSound.entrySet()) {
+            e.getValue().stop();
+        }
+    }
+
+    public void pauseAllSound() {
+        for (HashMap.Entry<Integer, Sound> e : loadedSound.entrySet()) {
+            e.getValue().pause();
+        }
+    }
+
+    public void loadAllSound(SoundManager soundManager) {
+        this.soundManager = soundManager;
+        int soundId;
+        for ( Field field : R.raw.class.getDeclaredFields() ) {
+            if (field.getName().substring(0,1).equals("s")) {
+                try {
+                    soundId = context.getResources().getIdentifier( field.getName()
+                                                                  , "raw"
+                                                                  , context.getPackageName() );
+
+                    Sound sound = SoundFactory.createSoundFromResource( soundManager
+                                                                      , context
+                                                                      , soundId);
+                    loadedSound.put(soundId, sound);
+                } catch (Throwable e) {
+                    Log.d("ship_music","failed to load sound " + field.getName());
+                }
+            }
+        }
+    }
+
+    // ================= MUSIC ==================== //
+
+    public Music getLoadedMusic(int resourceID) {
+        return loadedMusic.get(resourceID);
+    }
+
+    private void playMusic(int resourceID, int volume, boolean looping, boolean fromBegining) {
+        Music music = loadedMusic.get(resourceID);
+        if (fromBegining) {
+            music.seekTo(0);
+        }
+        music.setLooping(looping);
+        music.setVolume( ((float)volume)/100f );
+        music.play();
+    }
+
+    public void playOnceMusic(int resourceID, int volume, boolean fromBegining) {
+        playMusic(resourceID, volume, false, fromBegining);
+    }
+
+    public void playOnceMusic(int resourceID, int volume) {
+        playMusic(resourceID, volume, false, false);
+    }
+
+    public void playOnceMusic(int resourceID, boolean fromBegining) {
+        playMusic(resourceID, 100, false, fromBegining);
+    }
+
+    public void playOnceMusic(int resourceID) {
+        playMusic(resourceID, 100, false, false);
+    }
+
+    public void playLoopMusic(int resourceID, int volume, boolean fromBegining) {
+        playMusic(resourceID, volume, true, fromBegining);
+    }
+
+    public void playLoopMusic(int resourceID, int volume) {
+        playMusic(resourceID, volume, true, false);
+    }
+
+    public void playLoopMusic(int resourceID, boolean fromBegining) {
+        playMusic(resourceID, 100, true, fromBegining );
+    }
+
+    public void playLoopMusic(int resourceID) {
+        playMusic(resourceID, 100, true, false );
+    }
+
+    public void stopAllMusic() {
+        Music music;
+        for (HashMap.Entry<Integer, Music> e : loadedMusic.entrySet()) {
+            music = e.getValue();
+            if (music.isPlaying()) {
+                music.stop();
+            }
+        }
+    }
+
+    public void pauseAllMusic() {
+        Music music;
+        for (HashMap.Entry<Integer, Music> e : loadedMusic.entrySet()) {
+            music = e.getValue();
+            if (music.isPlaying()) {
+                music.pause();
+            }
+        }
+    }
+
+    public void loadAllMusic(MusicManager musicManager) {
+        this.musicManager = musicManager;
+        int musicId;
+        for ( Field field : R.raw.class.getDeclaredFields() ) {
+            if (field.getName().substring(0,1).equals("m")) {
+                try {
+                    musicId = context.getResources().getIdentifier( field.getName()
+                                                                  , "raw"
+                                                                  , context.getPackageName() );
+
+                    Music music = MusicFactory.createMusicFromResource( musicManager
+                                                                      , context
+                                                                      , musicId );
+                    loadedMusic.put(musicId, music);
+                } catch (IOException e) {
+                    Log.d("ship_music","failed to load music " + field.getName());
+                }
+            }
+        }
+    }
+
+    // ============== TEXTURE ================ //
 
     public ITextureRegion getLoadedTextureRegion(int resourceID) {
         return loadedTextures.get(resourceID);
     }
 
-    public void loadAllTextures(Context context, TextureManager textureManager) {
+    public void loadAllTextures(TextureManager textureManager) {
         this.textureManager = textureManager;
         this.currentAtlasId = 0;
-        this.context = context;
         int eventType = 0;
 
         try {
