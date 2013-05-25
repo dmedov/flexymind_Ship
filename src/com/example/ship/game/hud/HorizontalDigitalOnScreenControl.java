@@ -20,9 +20,11 @@ public class HorizontalDigitalOnScreenControl extends BaseOnScreenControl {
     private final float BASE_WIDTH = this.getControlBase().getWidth();
 
     public final float KNOB_SIZE_IN_PERCENT = KNOB_WIDTH / BASE_WIDTH;
+    public final float STANDART_RELATIVE_ROUGH_ZONE = 0.5f * KNOB_SIZE_IN_PERCENT;
 
     private float extentSide;
     private float heightLevel;
+    private float roughZone;
 
     public HorizontalDigitalOnScreenControl( float pX, float pY, float extentSide
                                            , Camera pCamera
@@ -40,6 +42,7 @@ public class HorizontalDigitalOnScreenControl extends BaseOnScreenControl {
              , pOnScreenControlListener);
         this.extentSide = extentSide;
         this.heightLevel = STANDART_RELATIVE_HEIGHT_LEVEL;
+        this.roughZone = STANDART_RELATIVE_ROUGH_ZONE;
     }
 
     public HorizontalDigitalOnScreenControl( float pX, float pY
@@ -57,12 +60,12 @@ public class HorizontalDigitalOnScreenControl extends BaseOnScreenControl {
 
     @Override
     protected void onUpdateControlKnob(float pRelativeX, float pRelativeY) {
-        if(pRelativeX == 0) {
-            super.onUpdateControlKnob(0, heightLevel);
-        } else if(pRelativeX > 0) {
+        if(pRelativeX > roughZone) {
             super.onUpdateControlKnob(extentSide, heightLevel);
-        } else if(pRelativeX < 0) {
+        } else if(pRelativeX < -roughZone) {
             super.onUpdateControlKnob(-extentSide, heightLevel);
+        } else {
+        super.onUpdateControlKnob(0, heightLevel);
         }
     }
 
@@ -77,5 +80,13 @@ public class HorizontalDigitalOnScreenControl extends BaseOnScreenControl {
     }
     public float getExtentSide(){
         return this.extentSide;
+    }
+
+    public float getRoughZone() {
+        return roughZone;
+    }
+
+    public void setRoughZone(float roughZone) {
+        this.roughZone = roughZone;
     }
 }
