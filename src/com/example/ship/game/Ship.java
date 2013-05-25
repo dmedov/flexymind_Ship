@@ -112,10 +112,10 @@ public class Ship {
     }
 
     public void killSelf() {
-        fireParticles.finishFire();
         shipSprite.detachChild(hitAreaSprite);
         shipSprite.clearEntityModifiers();
         createSinkModifier();
+        //fireParticles.finishFire();
     }
 
     public boolean hit(int hitPoints) {
@@ -124,7 +124,6 @@ public class Ship {
 
         if ( health <= 0) {
             activity.getSceneSwitcher().getGameScene().getPlayer().getLevel().incrementLevelProgress();
-            fireParticles.finishFire();
             killSelf();
             return true;
         }
@@ -277,10 +276,15 @@ public class Ship {
                 , shipSprite.getY()
                 , shipSprite.getY() + shipSprite.getHeightScaled()
                 , EaseQuadIn.getInstance() );
-
         RotationModifier rotation = new RotationModifier( sinkRotationVelocity
                 , shipSprite.getRotation()
-                , sinkRotationAngle );
+                , sinkRotationAngle ){
+            @Override
+            protected void onModifierStarted(IEntity pItem) {
+                super.onModifierStarted(pItem);
+                fireParticles.finishFire();
+            }
+        };
 
         AlphaModifier alphaModifier = new AlphaModifier(ALPHA_SINK_TIME, 1, 0);
 
@@ -291,6 +295,7 @@ public class Ship {
                 activity.runOnUpdateThread(new Runnable() {
                     @Override
                     public void run() {
+                        fireParticles.detachSelf();
                         shipSprite.detachSelf();
                         Log.d("1Log", "Ship is detached from bottom");
                     }
