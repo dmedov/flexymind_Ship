@@ -2,7 +2,9 @@ package com.example.ship.game;
 
 import android.graphics.PointF;
 import com.example.ship.R;
-import com.example.ship.SceletonActivity;
+import com.example.ship.RootActivity;
+import com.example.ship.game.hud.ProgressBar;
+import com.example.ship.commons.PausableTimerHandler;
 import org.andengine.engine.camera.ZoomCamera;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
@@ -26,21 +28,23 @@ public class Gun {
     private static final float ROTATION_MAX_ANGLE  = 40.0f;
     private static final float GUN_PART_ON_SCENE   = 0.9f;
     private static final float BULLET_RELATIVE_START_POINT = 1.0f;
-    private static final float FIRE_DELAY = 1.5f;
     private static final int DEFAULT_DAMAGE = 100;
     private static final float DEFAULT_PERSPECTIVE_SCALE = 0.5f;
-    
+    private static float FIRE_DELAY = 1.5f;
     private float perspectiveScale;
     private boolean rotateLeft;
     private boolean rotationEnabled;
     private Sprite gunSprite;
     private Sprite gunMask;
-    private SceletonActivity activity;
-    private TimerHandler fireTimerHandler;
+    private RootActivity activity;
+    private PausableTimerHandler fireTimerHandler;
     private boolean fireAvailable = true;
     private int damage = DEFAULT_DAMAGE;
+    private int reloadProgress   = ProgressBar.FULL_PROGRESS;
+    private boolean autoFire = true;
 
-    public Gun(SceletonActivity activity) {
+    public Gun(RootActivity activity) {
+        autoFire = RootActivity.DEBUG_GAME_SCENE;
         this.activity = activity;
         rotationEnabled = false;
         ITextureRegion gunTexture = activity.getResourceManager().getLoadedTextureRegion(R.drawable.gun);
@@ -67,6 +71,10 @@ public class Gun {
             @Override
             protected void onManagedUpdate(float pSecondsElapsed) {
                 super.onManagedUpdate(pSecondsElapsed);
+
+                if (autoFire) {
+                    fire();
+                }
 
                 if (!rotationEnabled) {
                     return;
@@ -139,7 +147,11 @@ public class Gun {
                                          , this.getGunAngle());
             activity.getSceneSwitcher().getGameScene().attachSpriteToLayer( torpedo
                                                                           , GameScene.LAYER_TORPEDO);
+            activity.getResourceManager().playOnceSound(R.raw.s_torpedo
+                    , activity.getIntResource(R.integer.GUN_FIRE_VOLUME));
             fireAvailable = false;
+            reloadProgress  = 0;
+            activity.getSceneSwitcher().getGameScene().getGameGUD().updateProgressBar(reloadProgress );
             fireTimerHandler.reset();
         }
     }
@@ -155,12 +167,43 @@ public class Gun {
     public float getPerspectiveScale() {
         return perspectiveScale;
     }
+
+    public void pauseFireTimer() {
+        fireTimerHandler.pause();
+    }
+
+    public void resumeFireTimer() {
+        fireTimerHandler.resume();
+    }
+
+    public void setFireDelay(float fireDelay) {
+        FIRE_DELAY = fireDelay;
+    }
+
+    public float getFireDelay() {
+        return FIRE_DELAY;
+    }
+
+    public void setAutoFire(boolean autoFire) {
+        this.autoFire = autoFire;
+    }
+
     private void createTimer() {
-        fireTimerHandler = new TimerHandler(FIRE_DELAY, new ITimerCallback() {
+        fireTimerHandler = new PausableTimerHandler(FIRE_DELAY / ProgressBar.FULL_PROGRESS, new ITimerCallback() {
             @Override
             public void onTimePassed(final TimerHandler timerHandler) {
-                fireAvailable = true;
+                if (reloadProgress  == ProgressBar.FULL_PROGRESS - 1) {
+                    reloadProgress ++;
+                    activity.getSceneSwitcher().getGameScene().getGameGUD().updateProgressBar(reloadProgress );
+                    fireAvailable = true;
+                }
+                if (reloadProgress  < ProgressBar.FULL_PROGRESS - 1) {
+                    reloadProgress ++;
+                    activity.getSceneSwitcher().getGameScene().getGameGUD().updateProgressBar(reloadProgress );
+                    fireTimerHandler.reset();
+                }
             }
         });
+
     }
 }

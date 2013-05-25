@@ -4,7 +4,7 @@ import android.graphics.PointF;
 import android.graphics.Typeface;
 import com.example.ship.Events;
 import com.example.ship.R;
-import com.example.ship.SceletonActivity;
+import com.example.ship.RootActivity;
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.opengl.font.Font;
@@ -26,13 +26,13 @@ public class MenuHUD extends HUD {
     private final static float RELATIVE_TITLE_HEIGHT = 0.25f;
     private final static float RELATIVE_BUTTON_HEIGHT = 0.15f;
     private final static float RELATIVE_BUTTON_OFFSET_HEIGHT = 0.175f;
-    private final SceletonActivity activity;
+    private final RootActivity activity;
     private ArrayList<MenuButtonSprite> buttons;
     private Engine engine;
     private PointF cameraSize;
     private Font buttonFont;
 
-    public MenuHUD(final SceletonActivity activity) {
+    public MenuHUD(final RootActivity activity) {
         super();
 
         this.activity = activity;

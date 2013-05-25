@@ -1,4 +1,4 @@
-package com.example.ship.game;
+package com.example.ship.game.hud;
 
 import com.example.ship.Events;
 import org.andengine.entity.sprite.Sprite;

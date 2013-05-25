@@ -2,10 +2,10 @@ package com.example.ship.menu;
 
 import android.graphics.Point;
 import android.graphics.Typeface;
-import com.example.ship.atlas.ResourceManager;
+import com.example.ship.RootActivity;
+import com.example.ship.resource.ResourceManager;
 import com.example.ship.Events;
 import com.example.ship.R;
-import com.example.ship.SceletonActivity;
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.entity.scene.Scene;
@@ -30,7 +30,7 @@ public class ShipMenuScene extends Scene {
     private final static int FONT_ATLAS_SIDE = 256;
     private final static int TITLE_FONT_HEIGHT = 70;
     private final static int BUTTON_FONT_HEIGHT = 50;
-    private final SceletonActivity activity;
+    private final RootActivity activity;
     private final Engine mEngine;
     private final ResourceManager resourceManager;
     private       Point textureSize;
@@ -38,7 +38,7 @@ public class ShipMenuScene extends Scene {
     private       Font buttonFont;
     private       HUD hud;
 
-    public ShipMenuScene( final SceletonActivity activity) {
+    public ShipMenuScene(final RootActivity activity) {
         super();
         this.activity = activity;
         this.mEngine = activity.getEngine();

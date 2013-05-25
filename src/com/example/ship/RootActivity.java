@@ -4,9 +4,8 @@ import android.graphics.Point;
 import android.graphics.PointF;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
-import com.example.ship.atlas.ResourceManager;
-import com.example.ship.menu.ShipMenuScene;
-import com.example.ship.sceletone.SceletonScene;
+import com.example.ship.commons.A;
+import com.example.ship.resource.ResourceManager;
 import org.andengine.engine.camera.ZoomCamera;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
@@ -15,16 +14,15 @@ import org.andengine.entity.scene.Scene;
 import org.andengine.opengl.font.FontFactory;
 import org.andengine.ui.activity.BaseGameActivity;
 
-public class SceletonActivity extends BaseGameActivity {
+public class RootActivity extends BaseGameActivity {
+    public static final boolean DEBUG_GAME_SCENE = false;
+
     private static final int TEXTURE_WIDTH = 1739;
     private static final int TEXTURE_HEIGHT = 900;
-    private static final boolean DEBUG_GAME_SCENE = false;
-    private SceletonScene sceletonScene;
-    private ShipMenuScene menuScene;
     private ResourceManager resourceManager;
     private Events events;
     private ZoomCamera zoomCamera;
-    private SceneSwitcher sceneSwitcher;
+    private SceneSwitcher sceneSwitcher = null;
 
     private ZoomCamera createZoomCamera() {
         DisplayMetrics metrics = new DisplayMetrics();
@@ -52,13 +50,17 @@ public class SceletonActivity extends BaseGameActivity {
                                                        , new FillResolutionPolicy()
                                                        , zoomCamera);
         engineOptions.getTouchOptions().setNeedsMultiTouch(true);
+        engineOptions.getAudioOptions().setNeedsMusic(true);
+        engineOptions.getAudioOptions().setNeedsSound(true);
         return engineOptions;
     }
 
     @Override
     public void onCreateResources(OnCreateResourcesCallback pOnCreateResourcesCallback) {
-        resourceManager = new ResourceManager();
-        resourceManager.loadAllTextures(this, mEngine.getTextureManager());
+        resourceManager = new ResourceManager(this);
+        resourceManager.loadAllTextures(mEngine.getTextureManager());
+        resourceManager.loadAllMusic(mEngine.getMusicManager());
+        resourceManager.loadAllSound(mEngine.getSoundManager());
 
         FontFactory.setAssetBasePath(getResources().getString(R.string.FONT_BASE_ASSET_PATH));
 
@@ -69,6 +71,7 @@ public class SceletonActivity extends BaseGameActivity {
 
     @Override
     public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback) {
+        A.init(this);
         sceneSwitcher = new SceneSwitcher(this);
 
         if (DEBUG_GAME_SCENE) {
@@ -106,6 +109,21 @@ public class SceletonActivity extends BaseGameActivity {
 
         } else {
             return super.onKeyDown(keyCode, event);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        resourceManager.pauseAllMusic();
+        resourceManager.pauseAllSound();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (sceneSwitcher != null) {
+            sceneSwitcher.manageSound(sceneSwitcher.getCurrentState());
         }
     }
 
