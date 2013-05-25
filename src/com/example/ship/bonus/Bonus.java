@@ -31,8 +31,8 @@ public class Bonus {
     private static final float MAX_ROTATE_ANGLE = 1.0f;
     private static final float ROTATE_DURATION  = 2.0f;
     private static final int   ROTATION_COUNT   = 20;
-    private static final float ALPHA_SINK_TIME  = 10f;
-    private static final float SINK_VELOCITY    = 5f;
+    private static final float ALPHA_SINK_TIME  = 2f;
+    private static final float SINK_VELOCITY    = 2f;
 
     private TimerHandler bonusTimerHandler;
 
@@ -44,7 +44,9 @@ public class Bonus {
         bonusSprite = new CSprite(R.drawable.bonus);
         bonusSprite.setCenterInPosition(killedShipCenter);
         bonusSprite.setY(bonusSprite.getY() + bonusSprite.getHeightScaled() * BONUS_WATER_LINE);
+        bonusSprite.setScale(0.8f);
         killedShip.getSprite().getParent().attachChild(bonusSprite);
+
         init();
     }
 
