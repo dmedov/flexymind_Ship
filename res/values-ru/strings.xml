@@ -11,7 +11,7 @@
     <string name="SCORE">Очки</string>
     <string name="LEVEL">Уровень</string>
     <string name="LEFT">Осталось</string>
-    <string name="NEW_LEVEL_MESSAGE">Новый уровень </string>
+    <string name="NEW_LEVEL_MESSAGE">Уровень</string>
     <!--GameOver Button Labels-->
     <string name="GAME_OVER_RESTART_BUTTON_LABEL">Новая игра</string>
     <string name="GAME_OVER_EXIT_BUTTON_LABEL">Выход</string>
