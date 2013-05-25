@@ -148,6 +148,7 @@ public class GameScene extends Scene {
                 deadShip = ship;
                 player.reduceHealth();
                 activity.getSceneSwitcher().getGameScene().getPlayer().getLevel().incrementLevelProgress();
+                break;
             }
         }
 
@@ -221,7 +222,7 @@ public class GameScene extends Scene {
             if (!blockBonus) {
                 createShipBonus(deadShip);
             }
-
+            activity.getSceneSwitcher().getGameScene().getPlayer().getLevel().incrementLevelProgress();
             ships.remove(deadShip);
             Log.d("1log", "killed");
             deadShip = null;
