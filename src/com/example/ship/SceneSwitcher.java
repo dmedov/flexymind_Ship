@@ -2,6 +2,8 @@ package com.example.ship;
 
 import android.util.Log;
 import com.example.ship.game.GameScene;
+import com.example.ship.game.highscores.HighScoresManager;
+import com.example.ship.game.highscores.ScoreRecord;
 import com.example.ship.menu.MenuHUD;
 import com.example.ship.menu.ShipMenuScene;
 import com.example.ship.resource.ResourceManager;
@@ -105,6 +107,13 @@ public class SceneSwitcher {
     public void switchToGameOverHUD() {
         gameScene.getPlayer().getLevel().pauseSpawn();
         gameScene.setIgnoreUpdate(true);
+
+        HighScoresManager hsm = new HighScoresManager();
+        Log.d("1log", "рекорды:" + hsm.getHighScores().toString());
+
+        hsm.addScore(new ScoreRecord("ShadowCaptain", gameScene.getPlayer().getScore()));
+        Log.d("1log", "рекорды:" + hsm.getHighScores().toString());
+
         if (gameScene.getPlayer().getHealth() > 0) {
             gameScene.getGameOverHUD().setWinOrLooseText(activity.getStringResource(R.string.WIN_LABEL));
             Log.d("1log", "победа");

@@ -1,6 +1,7 @@
 package com.example.ship.game.highscores;
 
 import android.content.Context;
+import android.util.Log;
 import com.example.ship.commons.A;
 
 import java.io.*;
@@ -36,11 +37,13 @@ public class HighScoresManager {
             String name;
             while ((line = br.readLine()) != null) {
 
+                Log.d("1log", "строка:" + line);
+
                 separatorPosition = line.indexOf('\t');
                 if (separatorPosition > -1) {
                     name = line.substring(separatorPosition + 1);
                     try {
-                        score = Integer.parseInt(line.substring(0, separatorPosition - 1));
+                        score = Integer.parseInt(line.substring(0, separatorPosition));
                     } catch (NumberFormatException e) {
                         continue;
                     }
@@ -51,9 +54,9 @@ public class HighScoresManager {
             fis.close();
 
         } catch (FileNotFoundException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            Log.d("1log", "Файл рекордов отсутствует (чтение)");
         } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
 
         sortHighScores();
@@ -106,9 +109,9 @@ public class HighScoresManager {
             fos.write(text.toString().getBytes());
             fos.close();
         } catch (FileNotFoundException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            Log.d("1log", "Файл рекордов отсутствует (запись)");
         } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
     }
 
