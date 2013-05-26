@@ -1,4 +1,4 @@
-package com.example.ship.game;
+package com.example.ship.game.highscores;
 
 /**
  * Created with IntelliJ IDEA.

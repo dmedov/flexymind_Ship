@@ -1,4 +1,4 @@
-package com.example.ship.game;
+package com.example.ship.game.highscores;
 
 import android.content.Context;
 import com.example.ship.commons.A;
