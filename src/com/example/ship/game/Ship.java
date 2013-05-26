@@ -8,16 +8,17 @@ Date: 07.05.13
 import android.graphics.PointF;
 import com.example.ship.R;
 import com.example.ship.RootActivity;
+import com.example.ship.game.particlesystem.Effects;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.*;
+import org.andengine.entity.particle.SpriteParticleSystem;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.util.modifier.ease.EaseLinear;
 import org.andengine.util.modifier.ease.EaseQuadIn;
 import org.andengine.util.modifier.ease.EaseQuadInOut;
 import org.andengine.util.modifier.ease.EaseQuadOut;
 
-import java.util.HashMap;
-import java.util.Random;
+import java.util.*;
 
 import static java.lang.Math.abs;
 
@@ -33,38 +34,71 @@ public class Ship {
         shipsId.put("sailfish", R.drawable.sailfish);
     }
 
-    private static final float RELATIVE_WATERLINE = 0.1f;
-    private static final float FINISH_OFFSET = 300.0f;
-    private static final float MAX_ROTATE_ANGLE = 5.0f;
-    private static final float ROTATE_DURATION = 3.0f;
+    private static final float RELATIVE_WATERLINE                = 0.1f;
+    private static final float FINISH_OFFSET                     = 300.0f;
+    private static final float MAX_ROTATE_ANGLE                  = 5.0f;
+    private static final float ROTATE_DURATION                   = 3.0f;
     private static final float RELATIVE_ROTATION_CENTER_Y_OFFSET = 1.75f;
-    private static final float RELATIVE_HIT_AREA_OFFSET = 0.1f;
-    private static final float SINK_ACCELERATION = 40f;
-    private static final float MAX_SINK_ROTATION_ANGLE = 90f;
-    private static final float MAX_SINK_ROTATION_VELOCITY = 20f;
-    private static final float MIN_SINK_ROTATION_VELOCITY = 2f;
-    private static final float MAX_SINK_VELOCITY = 20f;
-    private static final float MIN_SINK_VELOCITY = 2f;
-    private static final float ALPHA_SINK_TIME = 20f;
-    private static final int ROTATION_COUNT = 10;
-    private static final float RELATIVE_SIZE_AROUND = 1f;
-    private static final float RELATIVE_SIZE_BEYOND = 0.5f;
-    private static float velocityDivider = 1;
+    private static final float RELATIVE_HIT_AREA_OFFSET          = 0.1f;
+    private static final float SINK_ACCELERATION                 = 40f;
+    private static final float MAX_SINK_ROTATION_ANGLE           = 90f;
+    private static final float MAX_SINK_ROTATION_VELOCITY        = 20f;
+    private static final float MIN_SINK_ROTATION_VELOCITY        = 2f;
+    private static final float MAX_SINK_VELOCITY                 = 20f;
+    private static final float MIN_SINK_VELOCITY                 = 2f;
+    private static final float ALPHA_SINK_TIME                   = 20f;
+    private static final int   ROTATION_COUNT                    = 10;
+    private static final float RELATIVE_SIZE_AROUND              = 1f;
+    private static final float RELATIVE_SIZE_BEYOND              = 0.5f;
+    private static       float velocityDivider                   = 1;
 
-    private final float yPosition;
+    private final float        yPosition;
     private final RootActivity activity;
-    private final int typeId;
-    private final boolean direction;
+    private final int          typeId;
+    private final boolean      direction;
 
     private PointF startPoint;
     private PointF finishPoint;
     private Sprite shipSprite;
     private Sprite hitAreaSprite;
-    private float velocity;
-    private int health;
-    private int score;
+    private float  velocity;
+    private int    health;
+    private int    score;
     private Random rand;
-    private FireParticles fireParticles;
+    private int currentFireLevel = 0;
+
+    //    private FireParticles fireParticles;
+    private class FireEffects {
+        private Queue<SpriteParticleSystem> fireParticleSystems;
+
+        public FireEffects() {
+            fireParticleSystems = new LinkedList<SpriteParticleSystem>();
+        }
+
+        public void addFire() {
+            SpriteParticleSystem particleSystem = Effects.FireParticleSystemFactory.build( shipSprite
+                                                                                         , currentFireLevel);
+            currentFireLevel++;
+            particleSystem.setParticlesSpawnEnabled(true);
+            shipSprite.attachChild(particleSystem);
+            fireParticleSystems.add(particleSystem);
+            if (currentFireLevel != 1){
+                poll();
+            }
+        }
+
+        public void poll() {
+            fireParticleSystems.peek().setParticlesSpawnEnabled(false);
+            fireParticleSystems.poll().detachSelf();
+
+        }
+        public void stopFire(){
+            fireParticleSystems.peek().setParticlesSpawnEnabled(false);
+            fireParticleSystems.poll().detachSelf();
+        }
+    }
+
+    private FireEffects fireEffects;
 
     public Ship(RootActivity activity, float yPosition, String shipType, boolean direction) {
         this(activity, yPosition, shipsId.get(shipType), direction);
@@ -80,13 +114,14 @@ public class Ship {
                                , 0
                                , activity.getResourceManager().getLoadedTextureRegion(shipTypeId)
                                , activity.getEngine().getVertexBufferObjectManager());
-
+        shipSprite.setTag(shipTypeId);
         initShipParametersById();
         setScale();        // нельзя менять местами с setDirection()
         setDirection();
         shipSprite.setPosition(startPoint.x, startPoint.y);
         createModifier();
-        fireParticles = new FireParticles(this);
+        fireEffects = new FireEffects();
+//  fireParticles = new FireParticles(this);
     }
 
     public static void setVelocityDivider(float velocityDivider) {
@@ -118,7 +153,7 @@ public class Ship {
     }
 
     public void missionDone() {
-        fireParticles.finishFire();
+  //      fireParticles.finishFire();
         hitAreaSprite.detachSelf();
         shipSprite.detachSelf();
     }
@@ -131,9 +166,10 @@ public class Ship {
 
     public boolean hit(int hitPoints) {
         health -= hitPoints;
-        activity.getResourceManager().playOnceSound( R.raw.s_explosion1
-                                                   , activity.getIntResource(R.integer.SHIP_EXPLOSION));
-        fireParticles.updateFireRate();
+        fireEffects.addFire();
+        activity.getResourceManager().playOnceSound(R.raw.s_explosion1
+                , activity.getIntResource(R.integer.SHIP_EXPLOSION));
+ //       fireParticles.updateFireRate();
 
         if ( health <= 0) {
             activity.getSceneSwitcher().getGameScene().getPlayer().getLevel().incrementLevelProgress();
@@ -153,8 +189,8 @@ public class Ship {
                 this.velocity = activity.getIntResource(R.integer.SAILFISH_VELOCITY);
                 this.health =   activity.getIntResource(R.integer.SAILFISH_HEALTH);
                 this.score =    activity.getIntResource(R.integer.SAILFISH_SCORE_POINTS);
-                createHitArea ( activity.getIntResource(R.integer.SAILFISH_HITAREA_START_PIXEL)
-                              , activity.getIntResource(R.integer.SAILFISH_HITAREA_END_PIXEL));
+                createHitArea(activity.getIntResource(R.integer.SAILFISH_HITAREA_START_PIXEL)
+                        , activity.getIntResource(R.integer.SAILFISH_HITAREA_END_PIXEL));
                 break;
             case R.drawable.missileboat:
                 this.velocity = activity.getIntResource(R.integer.MISSILEBOAT_VELOCITY);
@@ -295,7 +331,7 @@ public class Ship {
             @Override
             protected void onModifierStarted(IEntity pItem) {
                 super.onModifierStarted(pItem);
-                fireParticles.finishFire();
+                fireEffects.stopFire();
             }
         };
 
@@ -308,7 +344,7 @@ public class Ship {
                 activity.runOnUpdateThread(new Runnable() {
                     @Override
                     public void run() {
-                        fireParticles.detachSelf();
+ //                       fireParticles.detachSelf();
                         shipSprite.detachSelf();
                     }
                 });
