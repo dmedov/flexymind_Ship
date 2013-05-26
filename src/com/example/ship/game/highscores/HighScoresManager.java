@@ -69,10 +69,10 @@ public class HighScoresManager {
     public void addScore(ScoreRecord scoreRecord) {
         if (testScore(scoreRecord.getScore())) {
             highScores.add(scoreRecord);
+            sortHighScores();
             if (highScores.size() > MAX_SIZE) {
                 highScores.remove(highScores.size() - 1);
             }
-            sortHighScores();
             saveFile();
         }
     }
@@ -90,7 +90,7 @@ public class HighScoresManager {
         Collections.sort(highScores, new Comparator<ScoreRecord>() {
             @Override
             public int compare(ScoreRecord lhs, ScoreRecord rhs) {
-                return lhs.getScore() - rhs.getScore();
+                return rhs.getScore() - lhs.getScore();
             }
         });
     }
