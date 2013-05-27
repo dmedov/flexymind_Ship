@@ -20,6 +20,7 @@ public class SceneSwitcher {
     public static final int GAME_STATE = 2;
     public static final int PAUSE_STATE = 3;
     public static final int GAME_OVER_STATE = 4;
+    public static final int HIGH_SCORES_STATE = 5;
 
     private final RootActivity activity;
     private RootScene rootScene;
@@ -58,6 +59,19 @@ public class SceneSwitcher {
         manageSound(MENU_STATE);
 
         currentState = MENU_STATE;
+    }
+
+    public void switchToMenuHud() {
+        menuScene.switchToMenuHud();
+
+        currentState = MENU_STATE;
+    }
+
+
+    public void switchToHighScoresHUD() {
+        menuScene.switchToHighScoresHud();
+
+        currentState = HIGH_SCORES_STATE;
     }
 
     public void switchToGameScene() {
@@ -153,4 +167,5 @@ public class SceneSwitcher {
                 break;
         }
     }
+
 }

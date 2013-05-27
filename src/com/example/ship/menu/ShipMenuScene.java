@@ -4,6 +4,7 @@ import android.graphics.Point;
 import com.example.ship.R;
 import com.example.ship.RootActivity;
 import com.example.ship.commons.A;
+import com.example.ship.game.hud.HighScoresHUD;
 import com.example.ship.resource.ResourceManager;
 import org.andengine.engine.Engine;
 import org.andengine.entity.scene.Scene;
@@ -31,6 +32,7 @@ public class ShipMenuScene extends Scene {
     private final ResourceManager resourceManager;
     private       Point textureSize;
     private       MenuHUD menuHUD;
+    private       HighScoresHUD highScoresHUD;
 
     public ShipMenuScene(final RootActivity activity) {
         super();
@@ -47,6 +49,8 @@ public class ShipMenuScene extends Scene {
     private void createHuds() {
         menuHUD = new MenuHUD(activity);
         menuHUD.setEventsToChildren(activity.getEvents());
+
+        highScoresHUD = new HighScoresHUD();
     }
 
     public MenuHUD getMenuHud() {
@@ -55,6 +59,10 @@ public class ShipMenuScene extends Scene {
 
     public void switchToMenuHud() {
         A.a.getCamera().setHUD(menuHUD);
+    }
+
+    public void switchToHighScoresHud() {
+        A.a.getCamera().setHUD(highScoresHUD);
     }
 
     private void createTitle() {

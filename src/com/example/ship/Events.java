@@ -100,9 +100,16 @@ public class Events implements TouchableMenuButtonSprite
                     case R.string.GAME_PAUSE_BACK_BUTTON:
                         backToGame();
                         break;
+                    case R.string.HIGHSCORES_BACK_BUTTON:
+                        backToMenuHud();
+                        break;
                 }
             }
         });
+    }
+
+    private void backToMenuHud() {
+        activity.getSceneSwitcher().switchToMenuHud();
     }
 
     private void menuButtonJump (Sprite button, boolean up) {
@@ -140,6 +147,7 @@ public class Events implements TouchableMenuButtonSprite
     }
 
     private void showHighscores() {
+        activity.getSceneSwitcher().switchToHighScoresHUD();
         Log.d("1log", A.a.getHighScoresManager().getHighScores().toString());
     }
 

@@ -9,6 +9,7 @@
     <string name="MENU_HS_BUTTON">highscoresID</string>
     <string name="MENU_CREDITS_BUTTON">creditsID</string>
     <string name="MENU_EXIT_BUTTON">exitID</string>
+    <string name="HIGHSCORES_BACK_BUTTON">hsBackID</string>
     <!--Menu Button Labels-->
     <string name="MENU_START_BUTTON_LABEL">Start</string>
     <string name="MENU_HS_BUTTON_LABEL">High Scores</string>
