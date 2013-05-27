@@ -23,7 +23,7 @@ import org.andengine.util.modifier.ease.EaseQuadInOut;
  */
 
 public class Bonus {
-    static public float bonusShipKillProbability = 0.2f;  // 1f for DEBUG
+    static public float bonusShipKillProbability = 0.3f;  // 1f for DEBUG
     static public float bonusGoodPropability     = 0.8f;
     static public float bonusLifeTime            = 10f;
 
@@ -44,7 +44,7 @@ public class Bonus {
         bonusSprite = new CSprite(R.drawable.bonus);
         bonusSprite.setCenterInPosition(killedShipCenter);
         bonusSprite.setY(bonusSprite.getY() + bonusSprite.getHeightScaled() * BONUS_WATER_LINE);
-        bonusSprite.setScale(0.8f);
+        CSprite.setPerspectiveScale(bonusSprite, killedShip.getDirection(), killedShip.getyPosition());
         killedShip.getSprite().getParent().attachChild(bonusSprite);
 
         init();
