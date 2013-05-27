@@ -46,20 +46,20 @@ public class HighScoresHUD extends HUD {
         String scoresString = "";
         ArrayList<ScoreRecord> scoreRecords = A.a.getHighScoresManager().getHighScores();
         if (scoreRecords.size() == 0) {
-            scoresString = "No records";
+            scoresString = A.a.getStringResource(R.string.NO_RECORDS);
         } else {
             for (int i = 0; i < scoreRecords.size(); i++) {
                 scoresString += String.format( "%d.\t%d6\t%s"
-                        , i + 1
-                        , scoreRecords.get(i).getScore()
-                        , scoreRecords.get(i).getPlayerName());
+                                             , i + 1
+                                             , scoreRecords.get(i).getScore()
+                                             , scoreRecords.get(i).getPlayerName());
             }
         }
 
         scoreListText.setText(scoresString);
 
         scoreListText.setPosition( cameraSize.x * 0.5f - scoreListText.getWidth() * 0.5f
-                , label.getY() + label.getHeight() + cameraSize.y * 0.05f);
+                                 , label.getY() + label.getHeight() + cameraSize.y * 0.05f);
     }
 
     private void createTexts() {
@@ -84,13 +84,13 @@ public class HighScoresHUD extends HUD {
         this.attachChild(label);
 
         Font scoreListFont = FontFactory.create( A.a.getFontManager()
-                                          , A.a.getTextureManager()
-                                          , FONT_ATLAS_SIDE
-                                          , FONT_ATLAS_SIDE
-                                          , Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)
-                                          , cameraSize.y * 0.04f
-                                          , true
-                                          , Color.WHITE_ABGR_PACKED_INT);
+                                                , A.a.getTextureManager()
+                                                , FONT_ATLAS_SIDE
+                                                , FONT_ATLAS_SIDE
+                                                , Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)
+                                                , cameraSize.y * 0.04f
+                                                , true
+                                                , Color.WHITE_ABGR_PACKED_INT);
         scoreListFont.load();
 
         scoreListText = new Text(0, 0, scoreListFont, "", 512, A.a.getVertexBufferObjectManager());
