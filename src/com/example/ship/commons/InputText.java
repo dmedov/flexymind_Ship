@@ -26,21 +26,23 @@ public class InputText extends ButtonSprite implements OnClickListener {
     private Text text;
     private Text underline;
 
-    public InputText( float pX, float pY, int rId, Font font, String title) {
+    public InputText(float pX, float pY, int rId, Font font, String title, String defaultInputValue) {
 
         super(pX, pY, A.rm.getLoadedTextureRegion(rId), A.e.getVertexBufferObjectManager());
         this.title = title;
+        inputString = defaultInputValue;
 
         underline = new Text(0, 0, font, "__________________", A.e.getVertexBufferObjectManager());
         underline.setPosition( this.getWidth() * 0.5f - underline.getWidth() * 0.5f
                              , this.getHeight() * 0.5f - underline.getHeight() * 0.5f);
-        text = new Text(0, 0, font, "", 256, A.e.getVertexBufferObjectManager());
+
+        text = new Text(0, 0, font, defaultInputValue, 128, A.e.getVertexBufferObjectManager());
+        text.setPosition(underline.getWidth() * 0.5f - text.getWidth() * 0.5f, underline.getY());
+
         attachChild(text);
         attachChild(underline);
 
         setOnClickListener(this);
-
-        inputString = "";
     }
 
     public String getInputString() {

@@ -103,6 +103,7 @@ public class RootActivity extends BaseGameActivity {
                     sceneSwitcher.switchToGameHUD();
                     break;
                 case SceneSwitcher.GAME_OVER_STATE:
+                    sceneSwitcher.getGameScene().getGameOverHUD().addHighScore();
                     sceneSwitcher.switchToMenuScene();
                     break;
                 default:
