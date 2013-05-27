@@ -2,9 +2,6 @@ package com.example.ship;
 
 import android.util.Log;
 import com.example.ship.game.GameScene;
-import com.example.ship.game.highscores.HighScoresManager;
-import com.example.ship.game.highscores.ScoreRecord;
-import com.example.ship.menu.MenuHUD;
 import com.example.ship.menu.ShipMenuScene;
 import com.example.ship.resource.ResourceManager;
 import com.example.ship.root.RootScene;
@@ -56,10 +53,8 @@ public class SceneSwitcher {
         }
         rootScene.unregisterTouchArea();
         rootScene.setChildScene(menuScene);
+        menuScene.switchToMenuHud();
 
-        MenuHUD menuHUD = new MenuHUD(activity);
-        menuHUD.setEventsToChildren(activity.getEvents());
-        activity.getCamera().setHUD(menuHUD);
         manageSound(MENU_STATE);
 
         currentState = MENU_STATE;
@@ -108,12 +103,6 @@ public class SceneSwitcher {
         gameScene.getPlayer().getLevel().pauseSpawn();
         gameScene.setIgnoreUpdate(true);
 
-        HighScoresManager hsm = new HighScoresManager();
-        Log.d("1log", "рекорды:" + hsm.getHighScores().toString());
-
-        hsm.addScore(new ScoreRecord("ShadowCaptain", gameScene.getPlayer().getScore()));
-        Log.d("1log", "рекорды:" + hsm.getHighScores().toString());
-
         if (gameScene.getPlayer().getHealth() > 0) {
             gameScene.getGameOverHUD().setWinOrLooseText(activity.getStringResource(R.string.WIN_LABEL));
             Log.d("1log", "победа");
@@ -133,6 +122,10 @@ public class SceneSwitcher {
 
     public RootScene getRootScene() {
         return rootScene;
+    }
+
+    public ShipMenuScene getMenuScene() {
+        return menuScene;
     }
 
     public GameScene getGameScene() {

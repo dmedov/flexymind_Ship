@@ -2,11 +2,15 @@ package com.example.ship.game.hud;
 
 import android.graphics.PointF;
 import android.graphics.Typeface;
+import android.util.Log;
 import com.example.ship.Events;
 import com.example.ship.R;
 import com.example.ship.RootActivity;
-import com.example.ship.resource.ResourceManager;
+import com.example.ship.commons.A;
+import com.example.ship.commons.InputText;
+import com.example.ship.game.highscores.ScoreRecord;
 import com.example.ship.menu.MenuButtonSprite;
+import com.example.ship.resource.ResourceManager;
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.text.Text;
@@ -35,13 +39,14 @@ public class GameOverHUD extends HUD {
     private ResourceManager resourceManager;
     private RootActivity activity;
     private Font font;
-    private Text gameOverText;
     private Text winOrLooseText;
     private Text scoreText;
-    private float yPositionOfElement;
     private MenuButtonSprite restartButtonSprite;
     private MenuButtonSprite exitButtonSprite;
     private Rectangle background;
+    private Text inTopText;
+    private InputText inputText;
+    private int score;
 
     public GameOverHUD(RootActivity activity) {
         super();
@@ -85,13 +90,6 @@ public class GameOverHUD extends HUD {
     }
 
     private void createGameOverHUDLabels() {
-        gameOverText = new Text( 0
-                               , 0
-                               , font
-                               , "Game Over"
-                               , activity.getEngine().getVertexBufferObjectManager());
-        gameOverText.setPosition( cameraSize.x * 0.5f - gameOverText.getWidth() * 0.5f
-                                , cameraSize.y * 0.25f);
 
         winOrLooseText = new Text( 0
                                  , 0
@@ -99,10 +97,24 @@ public class GameOverHUD extends HUD {
                                  , ""
                                  , TEXT_LENGTH
                                  , activity.getEngine().getVertexBufferObjectManager());
-        winOrLooseText.setPosition(cameraSize.x * 0.5f - winOrLooseText.getWidth() * 0.5f
-                , gameOverText.getY() + gameOverText.getHeight()
-                + cameraSize.y * RELATIVE_SPACE_BETWEEN_ELEMENTS_HEIGHT);
+        winOrLooseText.setPosition( cameraSize.x * 0.5f - winOrLooseText.getWidth() * 0.5f
+                                  , cameraSize.y * 0.25f);
 
+        inputText = new InputText(0, 0, R.drawable.menubutton, font, "Type your name");
+
+        inTopText = new Text( 0
+                            , 0
+                            , font
+                            , "You are in top-10"
+                            , TEXT_LENGTH
+                            , activity.getEngine().getVertexBufferObjectManager());
+
+        inTopText.setPosition( cameraSize.x * 0.5f - winOrLooseText.getWidth() * 0.5f - inputText.getWidth() * 0.5f
+                             , winOrLooseText.getY() + winOrLooseText.getHeight()
+                               + cameraSize.y * RELATIVE_SPACE_BETWEEN_ELEMENTS_HEIGHT);
+        inputText.setPosition( inTopText.getX() + inTopText.getWidth()
+                               + cameraSize.y * RELATIVE_SPACE_BETWEEN_ELEMENTS_HEIGHT
+                             , inTopText.getY() + inTopText.getHeight() * 0.5f - inputText.getHeight() * 0.5f);
 
         scoreText = new Text( 0
                             , 0
@@ -110,12 +122,13 @@ public class GameOverHUD extends HUD {
                             , activity.getResources().getString(R.string.SCORE) + ": 000000"
                             , activity.getEngine().getVertexBufferObjectManager());
         scoreText.setPosition( cameraSize.x * 0.5f - scoreText.getWidth() * 0.5f
-                             , winOrLooseText.getY() + winOrLooseText.getHeight()
+                             , inTopText.getY() + inTopText.getHeight()
                                + cameraSize.y * RELATIVE_SPACE_BETWEEN_ELEMENTS_HEIGHT);
 
-        this.attachChild(gameOverText);
         this.attachChild(winOrLooseText);
         this.attachChild(scoreText);
+        this.attachChild(inTopText);
+        this.attachChild(inputText);
     }
 
     public void setWinOrLooseText(String text) {
@@ -137,8 +150,6 @@ public class GameOverHUD extends HUD {
                                        , scoreText.getY() + scoreText.getHeight()
                                          + cameraSize.y * RELATIVE_SPACE_BETWEEN_ELEMENTS_HEIGHT);
 
-        yPositionOfElement += restartButtonSprite.getHeight();
-
         exitButtonSprite =
                 new MenuButtonSprite( resourceManager.getLoadedTextureRegion(R.drawable.menubutton)
                                     , activity.getEngine().getVertexBufferObjectManager()
@@ -153,12 +164,37 @@ public class GameOverHUD extends HUD {
 
         this.registerTouchArea(restartButtonSprite);
         this.registerTouchArea(exitButtonSprite);
-
         this.attachChild(restartButtonSprite);
         this.attachChild(exitButtonSprite);
     }
 
-    public void setScoreToGameOverHUD(String scoreString) {
+    public void setNewHighScoreMode(boolean mode) {
+        if (mode) {
+            this.clearTouchAreas();
+            this.registerTouchArea(inputText);
+            inputText.setVisible(true);
+            inTopText.setVisible(true);
+            this.registerTouchArea(restartButtonSprite);
+            this.registerTouchArea(exitButtonSprite);
+        } else {
+            this.clearTouchAreas();
+            inputText.setVisible(false);
+            inTopText.setVisible(false);
+            this.registerTouchArea(restartButtonSprite);
+            this.registerTouchArea(exitButtonSprite);
+        }
+    }
+
+    public void addHighScore() {
+        ScoreRecord s = new ScoreRecord( inputText.getInputString()
+                                       , score);
+        Log.d("1log", s.toString());
+        A.a.getHighScoresManager().addScore(s);
+    }
+
+    public void setScoreToGameOverHUD(String scoreString, int score) {
+        this.score = score;
+        setNewHighScoreMode(A.a.getHighScoresManager().testScore(score));
         scoreText.setText(activity.getResources().getString(R.string.SCORE) + scoreString);
     }
 
