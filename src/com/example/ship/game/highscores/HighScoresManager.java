@@ -22,43 +22,12 @@ public class HighScoresManager {
     private static final int MAX_SIZE = 10;
 
     private ArrayList<ScoreRecord> highScores;
+    private String lastPlayerName = "";
 
     public HighScoresManager() {
 
         highScores = new ArrayList<ScoreRecord>();
-
-        try {
-            FileInputStream fis = A.a.openFileInput(FILE_NAME);
-            BufferedReader br = new BufferedReader(new InputStreamReader(fis));
-
-            String line;
-            int separatorPosition;
-            int score;
-            String name;
-            while ((line = br.readLine()) != null) {
-
-                Log.d("1log", "строка:" + line);
-
-                separatorPosition = line.indexOf('\t');
-                if (separatorPosition > -1) {
-                    name = line.substring(separatorPosition + 1);
-                    try {
-                        score = Integer.parseInt(line.substring(0, separatorPosition));
-                    } catch (NumberFormatException e) {
-                        continue;
-                    }
-                    highScores.add(new ScoreRecord(name, score));
-                }
-            }
-
-            fis.close();
-
-        } catch (FileNotFoundException e) {
-            Log.d("1log", "Файл рекордов отсутствует (чтение)");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        parseFile();
         sortHighScores();
     }
 
@@ -73,6 +42,7 @@ public class HighScoresManager {
             if (highScores.size() > MAX_SIZE) {
                 highScores.remove(highScores.size() - 1);
             }
+            lastPlayerName = scoreRecord.getPlayerName();
             saveFile();
         }
     }
@@ -86,6 +56,10 @@ public class HighScoresManager {
         saveFile();
     }
 
+    public String getLastPlayerName() {
+        return lastPlayerName;
+    }
+
     private void sortHighScores() {
         Collections.sort(highScores, new Comparator<ScoreRecord>() {
             @Override
@@ -93,6 +67,45 @@ public class HighScoresManager {
                 return rhs.getScore() - lhs.getScore();
             }
         });
+    }
+
+    private void parseFile() {
+        try {
+            FileInputStream fis = A.a.openFileInput(FILE_NAME);
+            BufferedReader br = new BufferedReader(new InputStreamReader(fis));
+
+            String line;
+            int separatorPosition;
+            int score;
+            String name;
+            while ((line = br.readLine()) != null) {
+
+                Log.d("1log", "строка:" + line);
+
+                if (line.startsWith("lp=")) {
+                    lastPlayerName = line.substring(3);
+                } else {
+
+                    separatorPosition = line.indexOf('\t');
+                    if (separatorPosition > -1) {
+                        name = line.substring(separatorPosition + 1);
+                        try {
+                            score = Integer.parseInt(line.substring(0, separatorPosition));
+                        } catch (NumberFormatException e) {
+                            continue;
+                        }
+                        highScores.add(new ScoreRecord(name, score));
+                    }
+                }
+            }
+
+            fis.close();
+
+        } catch (FileNotFoundException e) {
+            Log.d("1log", "Файл рекордов отсутствует (чтение)");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void saveFile() {
@@ -103,6 +116,7 @@ public class HighScoresManager {
         for (ScoreRecord record: highScores) {
             text.append(record).append("\r\n");
         }
+        text.append("lp=").append(lastPlayerName).append("\r\n");
 
         try {
             FileOutputStream fos = A.a.openFileOutput(FILE_NAME, Context.MODE_PRIVATE);
@@ -114,5 +128,4 @@ public class HighScoresManager {
             e.printStackTrace();
         }
     }
-
 }

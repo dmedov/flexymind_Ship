@@ -69,7 +69,8 @@ public class InputText extends ButtonSprite implements OnClickListener {
                     @Override
                     public void onShow(DialogInterface dialog) {
                         editText.requestFocus();
-                        final InputMethodManager imm = (InputMethodManager) A.a.getSystemService(Context.INPUT_METHOD_SERVICE);
+                        final InputMethodManager imm =
+                                (InputMethodManager) A.a.getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
                     }
                 });
