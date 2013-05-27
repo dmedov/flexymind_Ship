@@ -32,42 +32,42 @@ public class Recipe {
     public Recipe( int typeId, int level, float centerX, float centerY, float width, float height, Point lifeTime
                  , PointF scaleRange, Color initFireColor, Color endFireColor, float rateMinimum, float rateMaximum
                  , int particlesMaximum, float minVelocityY, float maxVelocityY) {
-        this.typeId = typeId;
-        this.level = level;
-        this.centerX = centerX;
-        this.centerY = centerY;
-        this.width = width;
-        this.height = height;
-        this.lifeTime = lifeTime;
-        this.scaleRange = scaleRange;
-        this.initFireColor = initFireColor;
-        this.endFireColor = endFireColor;
-        this.rateMinimum = rateMinimum;
-        this.rateMaximum = rateMaximum;
+        this.typeId =           typeId;
+        this.level =            level;
+        this.centerX =          centerX;
+        this.centerY =          centerY;
+        this.width =            width;
+        this.height =           height;
+        this.lifeTime =         lifeTime;
+        this.scaleRange =       scaleRange;
+        this.initFireColor =    initFireColor;
+        this.endFireColor =     endFireColor;
+        this.rateMinimum =      rateMinimum;
+        this.rateMaximum =      rateMaximum;
         this.particlesMaximum = particlesMaximum;
-        this.minVelocityY = minVelocityY;
-        this.maxVelocityY = maxVelocityY;
-        this.alpha = 1f;
+        this.minVelocityY =     minVelocityY;
+        this.maxVelocityY =     maxVelocityY;
+        this.alpha =            1f;
     }
     public Recipe( int typeId, int level, float centerX, float centerY, float width, float height, Point lifeTime
             , PointF scaleRange, Color initFireColor, Color endFireColor, float rateMinimum, float rateMaximum
             , int particlesMaximum, float minVelocityY, float maxVelocityY, float alpha) {
-        this.typeId = typeId;
-        this.level = level;
-        this.centerX = centerX;
-        this.centerY = centerY;
-        this.width = width;
-        this.height = height;
-        this.lifeTime = lifeTime;
-        this.scaleRange = scaleRange;
-        this.initFireColor = initFireColor;
-        this.endFireColor = endFireColor;
-        this.rateMinimum = rateMinimum;
-        this.rateMaximum = rateMaximum;
+        this.typeId =           typeId;
+        this.level =            level;
+        this.centerX =          centerX;
+        this.centerY =          centerY;
+        this.width =            width;
+        this.height =           height;
+        this.lifeTime =         lifeTime;
+        this.scaleRange =       scaleRange;
+        this.initFireColor =    initFireColor;
+        this.endFireColor =     endFireColor;
+        this.rateMinimum =      rateMinimum;
+        this.rateMaximum =      rateMaximum;
         this.particlesMaximum = particlesMaximum;
-        this.minVelocityY = minVelocityY;
-        this.maxVelocityY = maxVelocityY;
-        this.alpha = alpha;
+        this.minVelocityY =     minVelocityY;
+        this.maxVelocityY =     maxVelocityY;
+        this.alpha =            alpha;
     }
     public String toString() {
         String string = new String();

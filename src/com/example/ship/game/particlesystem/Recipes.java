@@ -35,19 +35,19 @@ public class Recipes {
     public static Recipe missileboatLevel2 = new Recipe( R.drawable.missileboat
                                                        , 2
                                                        , 40f
-                                                       , 45f
+                                                       , 65f
                                                        , 100f
                                                        , 0f
                                                        , new Point(1, 2)
                                                        , new PointF(1f, 0.2f)
-                                                       , new Color(1f, 0.5f, 0f)
+                                                       , new Color(1f, 0.2f, 0f)
                                                        , new Color(0.7f, 0.05f, 0f)
                                                        , 30f
                                                        , 25f
                                                        , 100
                                                        , -10f
                                                        , -20f
-                                                       , 0.5f );
+                                                       , 1f );
 
     public static Recipe missileboatLevel3 = new Recipe( R.drawable.missileboat
                                                        , 3
@@ -57,7 +57,7 @@ public class Recipes {
                                                        , 0f
                                                        , new Point(3, 5)
                                                        , new PointF(2f, 0.2f)
-                                                       , new Color(1f, 0.5f, 0f)
+                                                       , new Color(1f, 0.2f, 0f)
                                                        , new Color(0.7f, 0.05f, 0f)
                                                        , 20f
                                                        , 20f
@@ -73,7 +73,7 @@ public class Recipes {
                                                     , 0f
                                                     , new Point(1, 1)
                                                     , new PointF(1f, 0.2f)
-                                                    , new Color(1f, 0.3f, 0f)
+                                                    , new Color(1f, 0.2f, 0f)
                                                     , new Color(0.7f, 0.05f, 0f)
                                                     , 10f
                                                     , 10f
