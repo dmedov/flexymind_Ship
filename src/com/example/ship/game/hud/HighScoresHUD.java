@@ -72,7 +72,12 @@ public class HighScoresHUD extends HUD {
                                            , true
                                            , Color.WHITE_ABGR_PACKED_INT);
         labelFont.load();
-        label = new Text(0, 0, labelFont, "HighScores", A.a.getVertexBufferObjectManager());
+
+        label = new Text( 0
+                        , 0
+                        , labelFont
+                        , A.a.getStringResource(R.string.MENU_HS_BUTTON_LABEL)
+                        , A.a.getVertexBufferObjectManager());
         label.setPosition( cameraSize.x * 0.5f - label.getWidth() * 0.5f
                          , cameraSize.y * 0.05f);
 
