@@ -9,6 +9,7 @@ import android.graphics.PointF;
 import com.example.ship.R;
 import com.example.ship.RootActivity;
 import com.example.ship.game.particlesystem.Effects;
+import com.example.ship.game.particlesystem.Recipes;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.*;
 import org.andengine.entity.particle.SpriteParticleSystem;
@@ -76,9 +77,9 @@ public class Ship {
         }
 
         public void addFire() {
-            SpriteParticleSystem particleSystem = Effects.FireParticleSystemFactory.build( shipSprite
-                                                                                         , currentFireLevel);
-            currentFireLevel++;
+            SpriteParticleSystem particleSystem =
+                    Effects.FireParticleSystemFactory.build( shipSprite
+                                                           , Recipes.find(typeId, ++currentFireLevel));
             particleSystem.setParticlesSpawnEnabled(true);
             shipSprite.attachChild(particleSystem);
             fireParticleSystems.add(particleSystem);
@@ -94,7 +95,7 @@ public class Ship {
         }
         public void stopFire(){
             fireParticleSystems.peek().setParticlesSpawnEnabled(false);
-            fireParticleSystems.poll().detachSelf();
+            //fireParticleSystems.poll().detachSelf();
         }
     }
 

@@ -3,78 +3,27 @@
     <!--Missile boat-->
     <integer name="MISSILEBOAT_SPAWN_PROBABILITY">45</integer>
     <integer name="MISSILEBOAT_VELOCITY">30</integer>
-    <integer name="MISSILEBOAT_HEALTH">200</integer>
+    <integer name="MISSILEBOAT_HEALTH">300</integer>
     <integer name="MISSILEBOAT_HITAREA_START_PIXEL">17</integer>
     <integer name="MISSILEBOAT_HITAREA_END_PIXEL">189</integer>
     <integer name="MISSILEBOAT_SCORE_POINTS">40</integer>
-    <integer name="MISSILEBOAT_FIRE_CENTER_X">139</integer>
-    <integer name="MISSILEBOAT_FIRE_CENTER_Y">92</integer>
-    <integer name="MISSILEBOAT_FIRE_WIDTH">74</integer>
 
-    <integer-array name="LIFE_TIME_1">
-        <item>1</item>
-        <item>1</item>
-    </integer-array>
-    <integer-array name="SCALE_RANGE">
-        <item>100</item>
-        <item>20</item>
-    </integer-array>
-    <integer-array name="INIT_FIRE_COLOR_1">
-        <item>100</item>
-        <item>30</item>
-        <item>0</item>
-    </integer-array>
-    <integer name="RATE_MINIMUM_1">10</integer>
-    <integer name="RATE_MAXIMUM_1">10</integer>
-    <integer name="PARTICLES_MAXIMUM_1">100</integer>
-
-    <integer-array name="LIFE_TIME_2">
-        <item>3</item>
-        <item>5</item>
-    </integer-array>
-    <integer-array name="SCALE_RANGE_2">
-        <item>200</item>
-        <item>20</item>
-    </integer-array>
-    <integer-array name="INIT_FIRE_COLOR_2">
-        <item>100</item>
-        <item>50</item>
-        <item>0</item>
-    </integer-array>
-    <integer name="RATE_MINIMUM_2">40</integer>
-    <integer name="RATE_MAXIMUM_2">50</integer>
-    <integer name="PARTICLES_MAXIMUM_2">500</integer>
-
-    <!--Sailfish-->
-    <integer name="SAILFISH_SPAWN_PROBABILITY">35</integer>
-    <integer name="SAILFISH_VELOCITY">50</integer>
-    <integer name="SAILFISH_HEALTH">200</integer>
-    <integer name="SAILFISH_HITAREA_START_PIXEL">44</integer>
-    <integer name="SAILFISH_HITAREA_END_PIXEL">177</integer>
-    <integer name="SAILFISH_SCORE_POINTS">10</integer>
-    <integer name="SAILFISH_FIRE_CENTER_X">115</integer>
-    <integer name="SAILFISH_FIRE_CENTER_Y">149</integer>
-    <integer name="SAILFISH_FIRE_WIDTH">19</integer>
-    <integer-array name="SAILFISH_FIRE_MAX_VELOCITY">
-        <item>-5</item>
-        <item>-20</item>
-    </integer-array>
     <!--Battleship-->
     <integer name="BATTLESHIP_SPAWN_PROBABILITY">10</integer>
     <integer name="BATTLESHIP_VELOCITY">60</integer>
-    <integer name="BATTLESHIP_HEALTH">200</integer>
+    <integer name="BATTLESHIP_HEALTH">300</integer>
     <integer name="BATTLESHIP_HITAREA_START_PIXEL">12</integer>
     <integer name="BATTLESHIP_HITAREA_END_PIXEL">193</integer>
     <integer name="BATTLESHIP_SCORE_POINTS">20</integer>
-    <integer name="BATTLESHIP_FIRE_CENTER_X">111</integer>
-    <integer name="BATTLESHIP_FIRE_CENTER_Y">149</integer>
-    <integer name="BATTLESHIP_FIRE_WIDTH">23</integer>
-    <integer-array name="BATTLESHIP_FIRE_MAX_VELOCITY">
-        <item>-100</item>
-        <item>-200</item>
-    </integer-array>
+    <!--Sailfish-->
+    <integer name="SAILFISH_SPAWN_PROBABILITY">35</integer>
+    <integer name="SAILFISH_VELOCITY">50</integer>
+    <integer name="SAILFISH_HEALTH">300</integer>
+    <integer name="SAILFISH_HITAREA_START_PIXEL">44</integer>
+    <integer name="SAILFISH_HITAREA_END_PIXEL">177</integer>
+    <integer name="SAILFISH_SCORE_POINTS">10</integer>
 
-    <!-- Music Volumes in percent -->
+    <!--Music Volumes in percent-->
     <integer name="GAME_SCENE_MUSIC_VOLUME">30</integer>
     <integer name="GAME_SCENE_WAVES_VOLUME">30</integer>
     <integer name="GAME_OVER_SCENE_VOLUME">80</integer>
@@ -82,3 +31,4 @@
     <integer name="SHIP_EXPLOSION">50</integer>
     <integer name="NEW_LEVEL_GONG_VOLUME">90</integer>
 </resources>
+
