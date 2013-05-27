@@ -26,6 +26,10 @@ public class InputText extends ButtonSprite implements OnClickListener {
     private Text text;
     private Text underline;
 
+    public InputText(int rId, Font font, String title, String defaultInputValue) {
+        this(0, 0, rId, font, title, defaultInputValue);
+    }
+
     public InputText(float pX, float pY, int rId, Font font, String title, String defaultInputValue) {
 
         super(pX, pY, A.rm.getLoadedTextureRegion(rId), A.e.getVertexBufferObjectManager());

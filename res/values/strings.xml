@@ -19,6 +19,10 @@
     <string name="LEVEL">Level</string>
     <string name="LEFT">Left</string>
     <string name="NEW_LEVEL_MESSAGE">Level</string>
+    <string name="TYPE_NAME">Type your name</string>
+    <string name="TYPE_NAME">Type your name</string>
+    <string name="IN_TOP">You are in top-10</string>
+    <string name="IN_TOP">You are in top-10</string>
     <!--Game Button ID-->
     <string name="GAME_PAUSE_BUTTON">pauseID</string>
     <string name="GAME_PAUSE_BACK_BUTTON">backID</string>

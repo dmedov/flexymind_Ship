@@ -12,6 +12,8 @@
     <string name="LEVEL">Уровень</string>
     <string name="LEFT">Осталось</string>
     <string name="NEW_LEVEL_MESSAGE">Уровень</string>
+    <string name="TYPE_NAME">Введите свое имя</string>
+    <string name="IN_TOP">Вы попали в топ-10</string>
     <!--GameOver Button Labels-->
     <string name="GAME_OVER_RESTART_BUTTON_LABEL">Новая игра</string>
     <string name="GAME_OVER_EXIT_BUTTON_LABEL">Выход</string>

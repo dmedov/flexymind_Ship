@@ -100,12 +100,12 @@ public class GameOverHUD extends HUD {
         winOrLooseText.setPosition( cameraSize.x * 0.5f - winOrLooseText.getWidth() * 0.5f
                                   , cameraSize.y * 0.25f);
 
-        inputText = new InputText(0, 0, R.drawable.menubutton, font, "Type your name", "");
+        inputText = new InputText(R.drawable.menubutton, font, A.a.getStringResource(R.string.TYPE_NAME), "");
 
         inTopText = new Text( 0
                             , 0
                             , font
-                            , "You are in top-10"
+                            , A.a.getStringResource(R.string.IN_TOP)
                             , TEXT_LENGTH
                             , activity.getEngine().getVertexBufferObjectManager());
 
