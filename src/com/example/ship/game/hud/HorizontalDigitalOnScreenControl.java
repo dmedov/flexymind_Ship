@@ -69,7 +69,7 @@ public class HorizontalDigitalOnScreenControl extends BaseOnScreenControl {
         } else if(pRelativeX < -RELATIVE_ROUGH_ZONE) {
             super.onUpdateControlKnob(-extentSide, heightLevel);
         } else {
-        super.onUpdateControlKnob(0, heightLevel);
+            super.onUpdateControlKnob(0, heightLevel);
         }
     }
 
