@@ -24,15 +24,23 @@ public class InputText extends ButtonSprite implements OnClickListener {
     private String title;
     private String inputString;
     private Text text;
+    private Text underline;
 
     public InputText( float pX, float pY, int rId, Font font, String title) {
 
         super(pX, pY, A.rm.getLoadedTextureRegion(rId), A.e.getVertexBufferObjectManager());
         this.title = title;
-        text = new Text(10, 10, font, "", 256, A.e.getVertexBufferObjectManager());
-        inputString = "";
+
+        underline = new Text(0, 0, font, "__________________", A.e.getVertexBufferObjectManager());
+        underline.setPosition( this.getWidth() * 0.5f - underline.getWidth() * 0.5f
+                             , this.getHeight() * 0.5f - underline.getHeight() * 0.5f);
+        text = new Text(0, 0, font, "", 256, A.e.getVertexBufferObjectManager());
         attachChild(text);
+        attachChild(underline);
+
         setOnClickListener(this);
+
+        inputString = "";
     }
 
     public String getInputString() {
@@ -75,6 +83,7 @@ public class InputText extends ButtonSprite implements OnClickListener {
             public void onClick(DialogInterface dialog, int which) {
                 inputString = editText.getText().toString();
                 text.setText(inputString);
+                text.setPosition(underline.getWidth() * 0.5f - text.getWidth() * 0.5f, underline.getY());
             }
         });
         return alert;
