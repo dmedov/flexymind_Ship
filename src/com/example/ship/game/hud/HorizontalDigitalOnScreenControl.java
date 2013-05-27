@@ -26,12 +26,12 @@ public class HorizontalDigitalOnScreenControl extends BaseOnScreenControl {
     private float heightLevel;
 
     public HorizontalDigitalOnScreenControl(float pX, float pY, float extentSide
-            , Camera pCamera
-            , ITextureRegion pControlBaseTextureRegion
-            , ITextureRegion pControlKnobTextureRegion
-            , float pTimeBetweenUpdates
-            , VertexBufferObjectManager pVertexBufferObjectManager
-            , IOnScreenControlListener pOnScreenControlListener) {
+                                           , Camera pCamera
+                                           , ITextureRegion pControlBaseTextureRegion
+                                           , ITextureRegion pControlKnobTextureRegion
+                                           , float pTimeBetweenUpdates
+                                           , VertexBufferObjectManager pVertexBufferObjectManager
+                                           , IOnScreenControlListener pOnScreenControlListener) {
         super( pX, pY
              , pCamera
              , pControlBaseTextureRegion
@@ -50,7 +50,9 @@ public class HorizontalDigitalOnScreenControl extends BaseOnScreenControl {
                                            , float pTimeBetweenUpdates
                                            , VertexBufferObjectManager pVertexBufferObjectManager
                                            , IOnScreenControlListener pOnScreenControlListener) {
-        this( pX, pY, STANDART_RELATIVE_EXTENT_SIDE
+        this( pX
+            , pY
+            , STANDART_RELATIVE_EXTENT_SIDE
             , pCamera, pControlBaseTextureRegion
             , pControlKnobTextureRegion, pTimeBetweenUpdates
             , pVertexBufferObjectManager, pOnScreenControlListener);
