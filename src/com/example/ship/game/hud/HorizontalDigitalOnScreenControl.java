@@ -14,25 +14,24 @@ import org.andengine.opengl.vbo.VertexBufferObjectManager;
  */
 public class HorizontalDigitalOnScreenControl extends BaseOnScreenControl {
 
-    public final static float STANDART_RELATIVE_EXTENT_SIDE = 0.5f;
+    public final static float STANDART_RELATIVE_EXTENT_SIDE  = 0.5f;
     public final static float STANDART_RELATIVE_HEIGHT_LEVEL = 0f;
-    private final float KNOB_WIDTH = this.getControlKnob().getWidth();
-    private final float BASE_WIDTH = this.getControlBase().getWidth();
+    private final       float KNOB_WIDTH                     = this.getControlKnob().getWidth();
+    private final       float BASE_WIDTH                     = this.getControlBase().getWidth();
 
     public final float KNOB_SIZE_IN_PERCENT = KNOB_WIDTH / BASE_WIDTH;
-    public final float STANDART_RELATIVE_ROUGH_ZONE = 0.5f * KNOB_SIZE_IN_PERCENT;
+    public final float RELATIVE_ROUGH_ZONE  = 0.5f * KNOB_SIZE_IN_PERCENT;
 
     private float extentSide;
     private float heightLevel;
-    private float roughZone;
 
-    public HorizontalDigitalOnScreenControl( float pX, float pY, float extentSide
-                                           , Camera pCamera
-                                           , ITextureRegion pControlBaseTextureRegion
-                                           , ITextureRegion pControlKnobTextureRegion
-                                           , float pTimeBetweenUpdates
-                                           , VertexBufferObjectManager pVertexBufferObjectManager
-                                           , IOnScreenControlListener pOnScreenControlListener) {
+    public HorizontalDigitalOnScreenControl(float pX, float pY, float extentSide
+            , Camera pCamera
+            , ITextureRegion pControlBaseTextureRegion
+            , ITextureRegion pControlKnobTextureRegion
+            , float pTimeBetweenUpdates
+            , VertexBufferObjectManager pVertexBufferObjectManager
+            , IOnScreenControlListener pOnScreenControlListener) {
         super( pX, pY
              , pCamera
              , pControlBaseTextureRegion
@@ -42,7 +41,6 @@ public class HorizontalDigitalOnScreenControl extends BaseOnScreenControl {
              , pOnScreenControlListener);
         this.extentSide = extentSide;
         this.heightLevel = STANDART_RELATIVE_HEIGHT_LEVEL;
-        this.roughZone = STANDART_RELATIVE_ROUGH_ZONE;
     }
 
     public HorizontalDigitalOnScreenControl( float pX, float pY
@@ -60,9 +58,9 @@ public class HorizontalDigitalOnScreenControl extends BaseOnScreenControl {
 
     @Override
     protected void onUpdateControlKnob(float pRelativeX, float pRelativeY) {
-        if(pRelativeX > roughZone) {
+        if(pRelativeX > RELATIVE_ROUGH_ZONE) {
             super.onUpdateControlKnob(extentSide, heightLevel);
-        } else if(pRelativeX < -roughZone) {
+        } else if(pRelativeX < -RELATIVE_ROUGH_ZONE) {
             super.onUpdateControlKnob(-extentSide, heightLevel);
         } else {
         super.onUpdateControlKnob(0, heightLevel);
@@ -82,11 +80,4 @@ public class HorizontalDigitalOnScreenControl extends BaseOnScreenControl {
         return this.extentSide;
     }
 
-    public float getRoughZone() {
-        return roughZone;
-    }
-
-    public void setRoughZone(float roughZone) {
-        this.roughZone = roughZone;
-    }
 }
