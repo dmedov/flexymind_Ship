@@ -62,6 +62,7 @@ public class InputText extends ButtonSprite implements OnClickListener {
                 final EditText editText = new EditText(A.a);
                 editText.setText(inputString);
                 editText.setGravity(Gravity.CENTER_HORIZONTAL);
+                editText.setMaxLines(1);
 
                 AlertDialog dialog = buildAlert(editText).create();
                 dialog.setOnShowListener(new DialogInterface.OnShowListener() {

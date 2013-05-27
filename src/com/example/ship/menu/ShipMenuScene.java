@@ -62,6 +62,7 @@ public class ShipMenuScene extends Scene {
     }
 
     public void switchToHighScoresHud() {
+        highScoresHUD.updateScores();
         A.a.getCamera().setHUD(highScoresHUD);
     }
 

@@ -48,7 +48,8 @@ public class HighScoresManager {
     }
 
     public boolean testScore(int score) {
-        return highScores.size() < MAX_SIZE || highScores.get(highScores.size() - 1).getScore() < score;
+        return (highScores.size() < MAX_SIZE || highScores.get(highScores.size() - 1).getScore() < score)
+               && score > 0;
     }
 
     public void clearScores() {
