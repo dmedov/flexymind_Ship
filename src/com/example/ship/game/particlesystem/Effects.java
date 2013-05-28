@@ -130,7 +130,7 @@ public class Effects {
         private static Color  endFireColor      = new Color(0.3f, 0.3f, 0.3f);  //0.1
         private static float  pRateMinimum      = 25f;
         private static float  pRateMaximum      = 30f;
-        private static int    pParticlesMaximum = 500;
+        private static int    pParticlesMaximum = 200;
         private static float  pMinVelocityY     = -15f;
         private static float  pMaxVelocityY     = -20f;
         private static float  WIND_FORCE        = 1.5f;

@@ -88,8 +88,8 @@ public class Ship {
             fireParticleSystem.setParticlesSpawnEnabled(true);
             smokeParticleSystem.setParticlesSpawnEnabled(true);
 
-            shipSprite.attachChild(fireParticleSystem);
             shipSprite.attachChild(smokeParticleSystem);
+            shipSprite.attachChild(fireParticleSystem);
 
             fireParticleSystems.add(fireParticleSystem);
             smokeParticleSystems.add(smokeParticleSystem);
@@ -102,10 +102,10 @@ public class Ship {
         }
         public void detachSelf(){
             if(fireParticleSystems.size() > 0 && smokeParticleSystems.size() > 0) {
-                for (SpriteParticleSystem particleSystem : fireParticleSystems) {
+                for (SpriteParticleSystem particleSystem : smokeParticleSystems) {
                     particleSystem.detachSelf();
                 }
-                for (SpriteParticleSystem particleSystem : smokeParticleSystems) {
+                for (SpriteParticleSystem particleSystem : fireParticleSystems) {
                     particleSystem.detachSelf();
                 }
             }
