@@ -1,6 +1,5 @@
 package com.example.ship.game.particlesystem;
 
-import android.graphics.Point;
 import android.graphics.PointF;
 import android.opengl.GLES20;
 import android.util.Log;
@@ -13,12 +12,10 @@ import org.andengine.entity.particle.emitter.RectangleParticleEmitter;
 import org.andengine.entity.particle.initializer.AlphaParticleInitializer;
 import org.andengine.entity.particle.initializer.BlendFunctionParticleInitializer;
 import org.andengine.entity.particle.initializer.VelocityParticleInitializer;
-import org.andengine.entity.particle.modifier.ColorParticleModifier;
-import org.andengine.entity.particle.modifier.ExpireParticleInitializer;
-import org.andengine.entity.particle.modifier.IParticleModifier;
-import org.andengine.entity.particle.modifier.ScaleParticleModifier;
+import org.andengine.entity.particle.modifier.*;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.util.color.Color;
+import org.andengine.util.modifier.ease.EaseQuadOut;
 
 import static java.lang.Math.abs;
 
@@ -27,7 +24,7 @@ import static java.lang.Math.abs;
  * User: Gregory
  * Date: 26.05.13
  * Time: 20:43
- * To change this template use File | Settings | File Templates.
+ * Фабрика рецептов
  */
 public class Effects {
     public static final class FireParticleSystemFactory {
@@ -37,7 +34,7 @@ public class Effects {
         private static float pWidth;
         private static float pHeight;
         private static float pAlpha;
-        private static Point lifeTime;
+        private static PointF lifeTime;
         private static PointF scaleRange;
         private static Color initFireColor;
         private static Color endFireColor;
@@ -101,20 +98,20 @@ public class Effects {
         private static void init(RecipeFire recipe) {
 
             Log.d("ship", recipe.toString());
-            pCenterX = recipe.centerX;
-            pCenterY = recipe.centerY;
-            pWidth = recipe.width;
-            pHeight = recipe.height;
-            lifeTime = recipe.lifeTime;
-            scaleRange = recipe.scaleRange;
-            pAlpha = recipe.alpha;
-            initFireColor = recipe.initFireColor;
-            pRateMinimum = recipe.rateMinimum;
-            pRateMaximum = recipe.rateMaximum;
-            pParticlesMaximum = recipe.particlesMaximum;
-            endFireColor = recipe.endFireColor;
-            pMinVelocityY = recipe.minVelocityY;
-            pMaxVelocityY = recipe.maxVelocityY;
+            pCenterX            = recipe.centerX;
+            pCenterY            = recipe.centerY;
+            pWidth              = recipe.width;
+            pHeight             = recipe.height;
+            lifeTime            = recipe.lifeTime;
+            scaleRange          = recipe.scaleRange;
+            pAlpha              = recipe.alpha;
+            initFireColor       = recipe.initFireColor;
+            pRateMinimum        = recipe.rateMinimum;
+            pRateMaximum        = recipe.rateMaximum;
+            pParticlesMaximum   = recipe.particlesMaximum;
+            endFireColor        = recipe.endFireColor;
+            pMinVelocityY       = recipe.minVelocityY;
+            pMaxVelocityY       = recipe.maxVelocityY;
         }
     }
     public static final class SmokeParticleSystemFactory {
@@ -123,8 +120,8 @@ public class Effects {
         private static float pCenterY;
         private static float pWidth;
         private static float pHeight;
-        private static float  pAlpha            = 0.5f;
-        private static Point  lifeTime          = new Point(5, 6);
+        private static float  pAlphaInit        = 0.5f;
+        private static PointF lifeTime          = new PointF(5, 6);
         private static PointF scaleRange        = new PointF(0.2f, 3f);
         private static Color  initFireColor     = new Color(1f, 1f, 1f);
         private static Color  endFireColor      = new Color(0.3f, 0.3f, 0.3f);  //0.1
@@ -135,8 +132,9 @@ public class Effects {
         private static float  pMaxVelocityY     = -20f;
         private static float  WIND_FORCE        = 1.5f;
         private static PointF scaleTime;
-        private static PointF colorTime = new PointF(1f, 5f);
-
+        private static PointF colorTime         = new PointF(1f, 5f);
+        private static PointF alphaTime         = new PointF(4.5f, 6f);
+        private static PointF alphaRange        = new PointF(0.5f, 0f);
 
         public static SpriteParticleSystem build(RecipeSmoke recipe) {
 
@@ -168,7 +166,7 @@ public class Effects {
                                                            , 0f
                                                            , pMinVelocityY
                                                            , pMaxVelocityY));
-            particleSystem.addParticleInitializer(new AlphaParticleInitializer<Sprite>(pAlpha));
+            particleSystem.addParticleInitializer(new AlphaParticleInitializer<Sprite>(pAlphaInit));
 
             //Modifiers
             particleSystem.addParticleModifier(
@@ -186,6 +184,11 @@ public class Effects {
                                                      , initFireColor.getBlue()
                                                      , endFireColor.getBlue()));
 
+            particleSystem.addParticleModifier(new AlphaParticleModifier<Sprite>( alphaTime.x
+                                                                                , alphaTime.y
+                                                                                , alphaRange.x
+                                                                                , alphaRange.y
+                                                                                , EaseQuadOut.getInstance()));
             particleSystem.addParticleModifier(new IParticleModifier<Sprite>() {
                 @Override
                 public void onUpdateParticle(Particle<Sprite> pParticle) {
@@ -208,16 +211,16 @@ public class Effects {
         private static void init(RecipeSmoke recipe) {
 
             Log.d("ship", recipe.toString());
-            pCenterX = recipe.centerX;
-            pCenterY = recipe.centerY;
-            pWidth = recipe.width;
-            pHeight = recipe.height;
-            pMinVelocityY = recipe.minVelocityY;
-            pMaxVelocityY = recipe.maxVelocityY;
-            endFireColor = recipe.endFireColor;
-            pAlpha = recipe.alpha;
-            scaleRange = recipe.scaleRange;
-            scaleTime = recipe.scaleTime;
+            pCenterX        = recipe.centerX;
+            pCenterY        = recipe.centerY;
+            pWidth          = recipe.width;
+            pHeight         = recipe.height;
+            pMinVelocityY   = recipe.minVelocityY;
+            pMaxVelocityY   = recipe.maxVelocityY;
+            endFireColor    = recipe.endFireColor;
+            pAlphaInit      = recipe.alpha;
+            scaleRange      = recipe.scaleRange;
+            scaleTime       = recipe.scaleTime;
         }
     }
 

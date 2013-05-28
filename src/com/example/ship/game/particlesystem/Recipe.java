@@ -1,6 +1,5 @@
 package com.example.ship.game.particlesystem;
 
-import android.graphics.Point;
 import android.graphics.PointF;
 import org.andengine.util.color.Color;
 
@@ -9,7 +8,7 @@ import org.andengine.util.color.Color;
  * User: Gregory
  * Date: 27.05.13
  * Time: 11:28
- * To change this template use File | Settings | File Templates.
+ * Класс рецептов, в них описываются настройки нужного эффекта
  */
 public class Recipe {
     public final int      typeId;
@@ -41,7 +40,7 @@ public class Recipe {
 
 class RecipeFire extends Recipe {
 
-    public final Point    lifeTime;
+    public final PointF    lifeTime;
     public final PointF   scaleRange;
     public final Color    initFireColor;
     public final Color    endFireColor;
@@ -58,7 +57,7 @@ class RecipeFire extends Recipe {
                      , float centerY
                      , float width
                      , float height
-                     , Point lifeTime
+                     , PointF lifeTime
                      , PointF scaleRange
                      , Color initFireColor
                      , Color endFireColor
@@ -86,7 +85,7 @@ class RecipeFire extends Recipe {
                      , float centerY
                      , float width
                      , float height
-                     , Point lifeTime
+                     , PointF lifeTime
                      , PointF scaleRange
                      , Color initFireColor
                      , Color endFireColor
@@ -112,16 +111,16 @@ class RecipeFire extends Recipe {
     public String toString() {
         String string = "";
         string += super.toString();
-        string += "lifeTime: " + lifeTime.toString()+"\n";
-        string += "scaleRange: " + scaleRange.toString()+"\n";
-        string += "initFireColor: " + initFireColor.toString()+"\n";
-        string += "endFireColor: " + endFireColor.toString()+"\n";
-        string += "rateMinimum: " + ((Float) rateMinimum).toString()+"\n";
-        string += "rateMaximum: " + ((Float) rateMaximum).toString()+"\n";
-        string += "particlesMaximum: " + ((Integer) particlesMaximum).toString()+"\n";
-        string += "minVelocityY: " + ((Float) minVelocityY).toString()+"\n";
-        string += "maxVelocityY: " + ((Float) maxVelocityY).toString()+"\n";
-        string += "alpha: " + ((Float) alpha).toString()+"\n";
+        string += "lifeTime: "          + lifeTime.toString()+"\n";
+        string += "scaleRange: "        + scaleRange.toString()+"\n";
+        string += "initFireColor: "     + initFireColor.toString()+"\n";
+        string += "endFireColor: "      + endFireColor.toString()+"\n";
+        string += "rateMinimum: "       + ((Float) rateMinimum).toString()+"\n";
+        string += "rateMaximum: "       + ((Float) rateMaximum).toString()+"\n";
+        string += "particlesMaximum: "  + ((Integer) particlesMaximum).toString()+"\n";
+        string += "minVelocityY: "      + ((Float) minVelocityY).toString()+"\n";
+        string += "maxVelocityY: "      + ((Float) maxVelocityY).toString()+"\n";
+        string += "alpha: "             + ((Float) alpha).toString()+"\n";
         return string;
     }
 }
@@ -137,7 +136,7 @@ class RecipeSmoke extends Recipe {
     RecipeSmoke(int typeId, int level, float centerX, float centerY, float width, float height){
         super(typeId, level, centerX, centerY, width, height);
         this.scaleRange =       new PointF(0.2f, 1f);
-        this.endFireColor =     new Color(0.3f, 0.3f, 0.3f);
+        this.endFireColor =     new Color(0.1f, 0.1f, 0.1f);
         this.minVelocityY =     -15f;
         this.maxVelocityY =     -20f;
         this.alpha =            1f;

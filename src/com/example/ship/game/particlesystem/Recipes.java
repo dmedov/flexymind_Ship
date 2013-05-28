@@ -1,7 +1,6 @@
 package com.example.ship.game.particlesystem;
 
 
-import android.graphics.Point;
 import android.graphics.PointF;
 import com.example.ship.R;
 import org.andengine.util.color.Color;
@@ -12,7 +11,7 @@ import org.andengine.util.color.Color;
  * User: Gregory
  * Date: 27.05.13
  * Time: 11:45
- * To change this template use File | Settings | File Templates.
+ * Класс для удобного хранения настроек эффектов
  */
 public class Recipes {
     public static class Fire {
@@ -22,7 +21,7 @@ public class Recipes {
                                                                    , 61f
                                                                    , 23
                                                                    , 0f
-                                                                   , new Point(1, 1)
+                                                                   , new PointF(1f, 1f)
                                                                    , new PointF(1f, 0.2f)
                                                                    , new Color(1f, 0.3f, 0f)
                                                                    , new Color(0.7f, 0.05f, 0f)
@@ -38,7 +37,7 @@ public class Recipes {
                                                                    , 65f
                                                                    , 100f
                                                                    , 0f
-                                                                   , new Point(1, 2)
+                                                                   , new PointF(1f, 2f)
                                                                    , new PointF(1f, 0.2f)
                                                                    , new Color(1f, 0.2f, 0f)
                                                                    , new Color(0.7f, 0.05f, 0f)
@@ -55,7 +54,7 @@ public class Recipes {
                                                                    , 65f
                                                                    , 144f
                                                                    , 0f
-                                                                   , new Point(3, 5)
+                                                                   , new PointF(3f, 5f)
                                                                    , new PointF(2f, 0.2f)
                                                                    , new Color(1f, 0.2f, 0f)
                                                                    , new Color(0.7f, 0.05f, 0f)
@@ -71,7 +70,7 @@ public class Recipes {
                                                                 , 127f
                                                                 , 23
                                                                 , 0f
-                                                                , new Point(1, 1)
+                                                                , new PointF(1f, 1f)
                                                                 , new PointF(1f, 0.2f)
                                                                 , new Color(1f, 0.2f, 0f)
                                                                 , new Color(0.7f, 0.05f, 0f)
@@ -87,7 +86,7 @@ public class Recipes {
                                                                 , 126f
                                                                 , 58f
                                                                 , 0f
-                                                                , new Point(1, 2)
+                                                                , new PointF(1f, 2f)
                                                                 , new PointF(1f, 0.2f)
                                                                 , new Color(1f, 0.5f, 0f)
                                                                 , new Color(0.7f, 0.05f, 0f)
@@ -104,7 +103,7 @@ public class Recipes {
                                                                 , 131f
                                                                 , 100f
                                                                 , 0f
-                                                                , new Point(3, 5)
+                                                                , new PointF(3f, 5f)
                                                                 , new PointF(2f, 0.2f)
                                                                 , new Color(1f, 0.5f, 0f)
                                                                 , new Color(0.7f, 0.05f, 0f)
@@ -120,7 +119,7 @@ public class Recipes {
                                                                   , 120f
                                                                   , 23
                                                                   , 0f
-                                                                  , new Point(1, 1)
+                                                                  , new PointF(1f, 1f)
                                                                   , new PointF(1f, 0.2f)
                                                                   , new Color(1f, 0.3f, 0f)
                                                                   , new Color(0.7f, 0.05f, 0f)
@@ -136,7 +135,7 @@ public class Recipes {
                                                                   , 132f
                                                                   , 100f
                                                                   , 0f
-                                                                  , new Point(1, 2)
+                                                                  , new PointF(1f, 2f)
                                                                   , new PointF(1f, 0.2f)
                                                                   , new Color(1f, 0.5f, 0f)
                                                                   , new Color(0.7f, 0.05f, 0f)
@@ -153,7 +152,7 @@ public class Recipes {
                                                                   , 132f
                                                                   , 146f
                                                                   , 0f
-                                                                  , new Point(3, 5)
+                                                                  , new PointF(3f, 5f)
                                                                   , new PointF(2f, 0.2f)
                                                                   , new Color(1f, 0.5f, 0f)
                                                                   , new Color(0.7f, 0.05f, 0f)
