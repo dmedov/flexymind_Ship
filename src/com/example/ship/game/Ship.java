@@ -9,16 +9,18 @@ import android.graphics.PointF;
 import com.example.ship.R;
 import com.example.ship.RootActivity;
 import com.example.ship.commons.CSprite;
+import com.example.ship.game.particlesystem.Effects;
+import com.example.ship.game.particlesystem.Recipes;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.*;
+import org.andengine.entity.particle.SpriteParticleSystem;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.util.modifier.ease.EaseLinear;
 import org.andengine.util.modifier.ease.EaseQuadIn;
 import org.andengine.util.modifier.ease.EaseQuadInOut;
 import org.andengine.util.modifier.ease.EaseQuadOut;
 
-import java.util.HashMap;
-import java.util.Random;
+import java.util.*;
 
 import static java.lang.Math.abs;
 
@@ -34,35 +36,85 @@ public class Ship {
         shipsId.put("sailfish", R.drawable.sailfish);
     }
 
-    private static final float RELATIVE_WATERLINE = 0.1f;
-    private static final float FINISH_OFFSET = 300.0f;
-    private static final float MAX_ROTATE_ANGLE = 5.0f;
-    private static final float ROTATE_DURATION = 3.0f;
+    private static final float RELATIVE_WATERLINE                = 0.1f;
+    private static final float FINISH_OFFSET                     = 300.0f;
+    private static final float MAX_ROTATE_ANGLE                  = 5.0f;
+    private static final float ROTATE_DURATION                   = 3.0f;
     private static final float RELATIVE_ROTATION_CENTER_Y_OFFSET = 1.75f;
-    private static final float RELATIVE_HIT_AREA_OFFSET = 0.1f;
-    private static final float SINK_ACCELERATION = 40f;
-    private static final float MAX_SINK_ROTATION_ANGLE = 90f;
-    private static final float MAX_SINK_ROTATION_VELOCITY = 20f;
-    private static final float MIN_SINK_ROTATION_VELOCITY = 2f;
-    private static final float MAX_SINK_VELOCITY = 20f;
-    private static final float MIN_SINK_VELOCITY = 2f;
-    private static final float ALPHA_SINK_TIME = 20f;
-    private static final int ROTATION_COUNT = 10;
-    private static float velocityDivider = 1;
+    private static final float RELATIVE_HIT_AREA_OFFSET          = 0.1f;
+    private static final float SINK_ACCELERATION                 = 40f;
+    private static final float MAX_SINK_ROTATION_ANGLE           = 90f;
+    private static final float MAX_SINK_ROTATION_VELOCITY        = 10f;
+    private static final float MIN_SINK_ROTATION_VELOCITY        = 2f;
+    private static final float MAX_SINK_VELOCITY                 = 10f;
+    private static final float MIN_SINK_VELOCITY                 = 2f;
+    private static final float ALPHA_SINK_TIME                   = 20f;
+    private static final int   ROTATION_COUNT                    = 10;
+    private static       float velocityDivider                   = 1;
 
-    private final float yPosition;
+    private final float        yPosition;
     private final RootActivity activity;
-    private final int typeId;
-    private final boolean direction;
+    private final int          typeId;
+    private final boolean      direction;
 
     private PointF startPoint;
     private PointF finishPoint;
     private Sprite shipSprite;
     private Sprite hitAreaSprite;
-    private float velocity;
-    private int health;
-    private int score;
+    private float  velocity;
+    private int    health;
+    private int    score;
     private Random rand;
+    private int currentFireLevel = 0;
+    private FireEffects fireEffects;
+
+    private class FireEffects {
+        private ArrayList<SpriteParticleSystem> fireParticleSystems;
+        private ArrayList<SpriteParticleSystem> smokeParticleSystems;
+        public FireEffects() {
+            fireParticleSystems = new ArrayList<SpriteParticleSystem>();
+            smokeParticleSystems = new ArrayList<SpriteParticleSystem>();
+        }
+
+        public void addFire() {
+            if (currentFireLevel != 0){
+                stopLastEffect();
+            }
+            SpriteParticleSystem fireParticleSystem =
+                    Effects.FireParticleSystemFactory.build(Recipes.Fire.find(typeId, ++currentFireLevel));
+            SpriteParticleSystem smokeParticleSystem =
+                    Effects.SmokeParticleSystemFactory.build(Recipes.Smoke.find(typeId, currentFireLevel));
+
+            fireParticleSystem.setParticlesSpawnEnabled(true);
+            smokeParticleSystem.setParticlesSpawnEnabled(true);
+
+            shipSprite.attachChild(smokeParticleSystem);
+            shipSprite.attachChild(fireParticleSystem);
+
+            fireParticleSystems.add(fireParticleSystem);
+            smokeParticleSystems.add(smokeParticleSystem);
+        }
+
+        public void stopLastEffect() {
+
+            if (fireParticleSystems.size() > 0 && smokeParticleSystems.size() > 0) {
+                int LAST = fireParticleSystems.size() - 1;
+                fireParticleSystems.get(LAST).setParticlesSpawnEnabled(false);
+                smokeParticleSystems.get(LAST).setParticlesSpawnEnabled(false);
+            }
+        }
+        public void detachSelf(){
+            if(fireParticleSystems.size() > 0 && smokeParticleSystems.size() > 0) {
+                for (SpriteParticleSystem particleSystem : smokeParticleSystems) {
+                    particleSystem.detachSelf();
+                }
+                for (SpriteParticleSystem particleSystem : fireParticleSystems) {
+                    particleSystem.detachSelf();
+                }
+            }
+        }
+    }
+
 
     public Ship(RootActivity activity, float yPosition, String shipType, boolean direction) {
         this(activity, yPosition, shipsId.get(shipType), direction);
@@ -78,12 +130,13 @@ public class Ship {
                                , 0
                                , activity.getResourceManager().getLoadedTextureRegion(shipTypeId)
                                , activity.getEngine().getVertexBufferObjectManager());
-
+        shipSprite.setTag(shipTypeId);
         initShipParametersById();
         CSprite.setPerspectiveScale(shipSprite, direction, yPosition);// нельзя менять местами с setDirection()
         setDirection();
         shipSprite.setPosition(startPoint.x, startPoint.y);
         createModifier();
+        fireEffects = new FireEffects();
     }
 
     public float getyPosition() {
@@ -131,8 +184,10 @@ public class Ship {
 
     public boolean hit(int hitPoints) {
         health -= hitPoints;
-        activity.getResourceManager().playOnceSound( R.raw.s_explosion1
-                                                   , activity.getIntResource(R.integer.SHIP_EXPLOSION));
+        fireEffects.addFire();
+        activity.getResourceManager().playOnceSound(R.raw.s_explosion1
+                , activity.getIntResource(R.integer.SHIP_EXPLOSION));
+
         if ( health <= 0) {
             activity.getSceneSwitcher().getGameScene().getPlayer().getLevel().incrementLevelProgress();
             killSelf();
@@ -140,6 +195,9 @@ public class Ship {
         }
 
         return false;
+    }
+    public int getType() {
+        return typeId;
     }
 
     private void initShipParametersById() {
@@ -186,7 +244,8 @@ public class Ship {
         } else {
             startPoint = new PointF( activity.getCamera().getXMin() - abs(shipSprite.getWidthScaled())
                                    , yPosition - shipSprite.getHeightScaled() * (1 - RELATIVE_WATERLINE));
-            finishPoint = new PointF( activity.getCamera().getXMax() + FINISH_OFFSET
+            finishPoint = new PointF( activity.getCamera().getXMax() + 2f * abs(shipSprite.getWidthScaled())
+                                                                     + FINISH_OFFSET
                                     , startPoint.y);
         }
     }
@@ -242,27 +301,33 @@ public class Ship {
 
         float sinkRotationAngle = MAX_SINK_ROTATION_ANGLE * (2 * rand.nextFloat() - 1);
         float sinkRotationVelocity = (MAX_SINK_ROTATION_VELOCITY - MIN_SINK_ROTATION_VELOCITY) * rand.nextFloat()
-                + MIN_SINK_ROTATION_VELOCITY;
+                                      + MIN_SINK_ROTATION_VELOCITY;
         float sinkVelocity = (MAX_SINK_VELOCITY - MIN_SINK_VELOCITY) * rand.nextFloat()
-                + MIN_SINK_VELOCITY;
+                              + MIN_SINK_VELOCITY;
 
         MoveModifier moveModifierX = new MoveModifier( START_SPEED / SINK_ACCELERATION
-                , shipSprite.getX()
-                , sinkPointX
-                , shipSprite.getY()
-                , shipSprite.getY()
-                , EaseQuadOut.getInstance() );
+                                                     , shipSprite.getX()
+                                                     , sinkPointX
+                                                     , shipSprite.getY()
+                                                     , shipSprite.getY()
+                                                     , EaseQuadOut.getInstance() );
 
         MoveModifier moveModifierY = new MoveModifier( sinkVelocity
-                , sinkPointX
-                , sinkPointX
-                , shipSprite.getY()
-                , shipSprite.getY() + shipSprite.getHeightScaled()
-                , EaseQuadIn.getInstance() );
+                                                     , sinkPointX
+                                                     , sinkPointX
+                                                     , shipSprite.getY()
+                                                     , shipSprite.getY() + shipSprite.getHeightScaled()
+                                                     , EaseQuadIn.getInstance() );
 
         RotationModifier rotation = new RotationModifier( sinkRotationVelocity
-                , shipSprite.getRotation()
-                , sinkRotationAngle );
+                                                        , shipSprite.getRotation()
+                                                        , sinkRotationAngle ){
+            @Override
+            protected void onModifierStarted(IEntity pItem) {
+                super.onModifierStarted(pItem);
+                fireEffects.stopLastEffect();
+            }
+        };
 
         AlphaModifier alphaModifier = new AlphaModifier(ALPHA_SINK_TIME, 1, 0);
 
@@ -273,6 +338,7 @@ public class Ship {
                 activity.runOnUpdateThread(new Runnable() {
                     @Override
                     public void run() {
+                        fireEffects.detachSelf();
                         shipSprite.detachSelf();
                     }
                 });
@@ -282,4 +348,3 @@ public class Ship {
         shipSprite.registerEntityModifier(moveShip);
     }
 }
-
