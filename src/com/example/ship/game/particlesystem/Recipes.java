@@ -207,8 +207,8 @@ public class Recipes {
                                                                      , 65f
                                                                      , 144f
                                                                      , 0f
-                                                                     , -35f   //20
-                                                                     , -45f    //40
+                                                                     , -35f
+                                                                     , -45f
                                                                      , new PointF(0.2f, 3f)
                                                                      , new Color(0.1f, 0.1f, 0.1f)
                                                                      , 0.5f
