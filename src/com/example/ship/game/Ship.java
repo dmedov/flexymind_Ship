@@ -50,8 +50,6 @@ public class Ship {
     private static final float MIN_SINK_VELOCITY                 = 2f;
     private static final float ALPHA_SINK_TIME                   = 20f;
     private static final int   ROTATION_COUNT                    = 10;
-    private static final float RELATIVE_SIZE_AROUND              = 1f;
-    private static final float RELATIVE_SIZE_BEYOND              = 0.5f;
     private static       float velocityDivider                   = 1;
 
     private final float        yPosition;
@@ -68,39 +66,52 @@ public class Ship {
     private int    score;
     private Random rand;
     private int currentFireLevel = 0;
+    private FireEffects fireEffects;
 
-    //    private FireParticles fireParticles;
     private class FireEffects {
-        private Queue<SpriteParticleSystem> fireParticleSystems;
-
+        private ArrayList<SpriteParticleSystem> fireParticleSystems;
+        private ArrayList<SpriteParticleSystem> smokeParticleSystems;
         public FireEffects() {
-            fireParticleSystems = new LinkedList<SpriteParticleSystem>();
+            fireParticleSystems = new ArrayList<SpriteParticleSystem>();
+            smokeParticleSystems = new ArrayList<SpriteParticleSystem>();
         }
 
         public void addFire() {
-            SpriteParticleSystem particleSystem =
-                    Effects.FireParticleSystemFactory.build( shipSprite
-                                                           , Recipes.find(typeId, ++currentFireLevel));
-            particleSystem.setParticlesSpawnEnabled(true);
-            shipSprite.attachChild(particleSystem);
-            fireParticleSystems.add(particleSystem);
-            if (currentFireLevel != 1){
-                poll();
+            if (currentFireLevel != 0){
+                stopLastEffect();
             }
+            SpriteParticleSystem fireParticleSystem =
+                    Effects.FireParticleSystemFactory.build(Recipes.Fire.find(typeId, ++currentFireLevel));
+            SpriteParticleSystem smokeParticleSystem =
+                    Effects.SmokeParticleSystemFactory.build(Recipes.Smoke.find(typeId, currentFireLevel));
+
+            fireParticleSystem.setParticlesSpawnEnabled(true);
+            smokeParticleSystem.setParticlesSpawnEnabled(true);
+
+            shipSprite.attachChild(fireParticleSystem);
+            shipSprite.attachChild(smokeParticleSystem);
+
+            fireParticleSystems.add(fireParticleSystem);
+            smokeParticleSystems.add(smokeParticleSystem);
         }
 
-        public void poll() {
-            fireParticleSystems.peek().setParticlesSpawnEnabled(false);
-            fireParticleSystems.poll().detachSelf();
-
+        public void stopLastEffect() {
+            int LAST = fireParticleSystems.size() - 1;
+            fireParticleSystems.get(LAST).setParticlesSpawnEnabled(false);
+            smokeParticleSystems.get(LAST).setParticlesSpawnEnabled(false);
         }
-        public void stopFire(){
-            fireParticleSystems.peek().setParticlesSpawnEnabled(false);
-            //fireParticleSystems.poll().detachSelf();
+        public void detachSelf(){
+            if(fireParticleSystems.size() > 0 && smokeParticleSystems.size() > 0) {
+                for (SpriteParticleSystem particleSystem : fireParticleSystems) {
+                    particleSystem.detachSelf();
+                }
+                for (SpriteParticleSystem particleSystem : smokeParticleSystems) {
+                    particleSystem.detachSelf();
+                }
+            }
         }
     }
 
-    private FireEffects fireEffects;
 
     public Ship(RootActivity activity, float yPosition, String shipType, boolean direction) {
         this(activity, yPosition, shipsId.get(shipType), direction);
@@ -123,7 +134,6 @@ public class Ship {
         shipSprite.setPosition(startPoint.x, startPoint.y);
         createModifier();
         fireEffects = new FireEffects();
-//  fireParticles = new FireParticles(this);
     }
 
     public float getyPosition() {
@@ -159,7 +169,6 @@ public class Ship {
     }
 
     public void missionDone() {
-  //      fireParticles.finishFire();
         hitAreaSprite.detachSelf();
         shipSprite.detachSelf();
     }
@@ -175,7 +184,6 @@ public class Ship {
         fireEffects.addFire();
         activity.getResourceManager().playOnceSound(R.raw.s_explosion1
                 , activity.getIntResource(R.integer.SHIP_EXPLOSION));
- //       fireParticles.updateFireRate();
 
         if ( health <= 0) {
             activity.getSceneSwitcher().getGameScene().getPlayer().getLevel().incrementLevelProgress();
@@ -233,7 +241,8 @@ public class Ship {
         } else {
             startPoint = new PointF( activity.getCamera().getXMin() - abs(shipSprite.getWidthScaled())
                                    , yPosition - shipSprite.getHeightScaled() * (1 - RELATIVE_WATERLINE));
-            finishPoint = new PointF( activity.getCamera().getXMax() + shipSprite.getWidth() + FINISH_OFFSET
+            finishPoint = new PointF( activity.getCamera().getXMax() + 2f * abs(shipSprite.getWidthScaled())
+                                                                     + FINISH_OFFSET
                                     , startPoint.y);
         }
     }
@@ -289,31 +298,31 @@ public class Ship {
 
         float sinkRotationAngle = MAX_SINK_ROTATION_ANGLE * (2 * rand.nextFloat() - 1);
         float sinkRotationVelocity = (MAX_SINK_ROTATION_VELOCITY - MIN_SINK_ROTATION_VELOCITY) * rand.nextFloat()
-                + MIN_SINK_ROTATION_VELOCITY;
+                                      + MIN_SINK_ROTATION_VELOCITY;
         float sinkVelocity = (MAX_SINK_VELOCITY - MIN_SINK_VELOCITY) * rand.nextFloat()
-                + MIN_SINK_VELOCITY;
+                              + MIN_SINK_VELOCITY;
 
         MoveModifier moveModifierX = new MoveModifier( START_SPEED / SINK_ACCELERATION
-                , shipSprite.getX()
-                , sinkPointX
-                , shipSprite.getY()
-                , shipSprite.getY()
-                , EaseQuadOut.getInstance() );
+                                                     , shipSprite.getX()
+                                                     , sinkPointX
+                                                     , shipSprite.getY()
+                                                     , shipSprite.getY()
+                                                     , EaseQuadOut.getInstance() );
 
         MoveModifier moveModifierY = new MoveModifier( sinkVelocity
-                , sinkPointX
-                , sinkPointX
-                , shipSprite.getY()
-                , shipSprite.getY() + shipSprite.getHeightScaled()
-                , EaseQuadIn.getInstance() );
+                                                     , sinkPointX
+                                                     , sinkPointX
+                                                     , shipSprite.getY()
+                                                     , shipSprite.getY() + shipSprite.getHeightScaled()
+                                                     , EaseQuadIn.getInstance() );
 
         RotationModifier rotation = new RotationModifier( sinkRotationVelocity
-                , shipSprite.getRotation()
-                , sinkRotationAngle ){
+                                                        , shipSprite.getRotation()
+                                                        , sinkRotationAngle ){
             @Override
             protected void onModifierStarted(IEntity pItem) {
                 super.onModifierStarted(pItem);
-                fireEffects.stopFire();
+                fireEffects.stopLastEffect();
             }
         };
 
@@ -326,7 +335,7 @@ public class Ship {
                 activity.runOnUpdateThread(new Runnable() {
                     @Override
                     public void run() {
- //                       fireParticles.detachSelf();
+                        fireEffects.detachSelf();
                         shipSprite.detachSelf();
                     }
                 });
