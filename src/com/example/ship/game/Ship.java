@@ -44,9 +44,9 @@ public class Ship {
     private static final float RELATIVE_HIT_AREA_OFFSET          = 0.1f;
     private static final float SINK_ACCELERATION                 = 40f;
     private static final float MAX_SINK_ROTATION_ANGLE           = 90f;
-    private static final float MAX_SINK_ROTATION_VELOCITY        = 20f;
+    private static final float MAX_SINK_ROTATION_VELOCITY        = 10f;
     private static final float MIN_SINK_ROTATION_VELOCITY        = 2f;
-    private static final float MAX_SINK_VELOCITY                 = 20f;
+    private static final float MAX_SINK_VELOCITY                 = 10f;
     private static final float MIN_SINK_VELOCITY                 = 2f;
     private static final float ALPHA_SINK_TIME                   = 20f;
     private static final int   ROTATION_COUNT                    = 10;
@@ -96,9 +96,12 @@ public class Ship {
         }
 
         public void stopLastEffect() {
-            int LAST = fireParticleSystems.size() - 1;
-            fireParticleSystems.get(LAST).setParticlesSpawnEnabled(false);
-            smokeParticleSystems.get(LAST).setParticlesSpawnEnabled(false);
+
+            if (fireParticleSystems.size() > 0 && smokeParticleSystems.size() > 0) {
+                int LAST = fireParticleSystems.size() - 1;
+                fireParticleSystems.get(LAST).setParticlesSpawnEnabled(false);
+                smokeParticleSystems.get(LAST).setParticlesSpawnEnabled(false);
+            }
         }
         public void detachSelf(){
             if(fireParticleSystems.size() > 0 && smokeParticleSystems.size() > 0) {
