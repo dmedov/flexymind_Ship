@@ -172,19 +172,16 @@ public class GameOverHUD extends HUD {
     }
 
     public void setNewHighScoreMode(boolean mode) {
+        this.clearTouchAreas();
+        this.registerTouchArea(restartButtonSprite);
+        this.registerTouchArea(exitButtonSprite);
         if (mode) {
-            this.clearTouchAreas();
             this.registerTouchArea(inputText);
             inputText.setVisible(true);
             inTopText.setVisible(true);
-            this.registerTouchArea(restartButtonSprite);
-            this.registerTouchArea(exitButtonSprite);
         } else {
-            this.clearTouchAreas();
             inputText.setVisible(false);
             inTopText.setVisible(false);
-            this.registerTouchArea(restartButtonSprite);
-            this.registerTouchArea(exitButtonSprite);
         }
     }
 
