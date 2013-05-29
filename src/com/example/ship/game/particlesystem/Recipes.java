@@ -17,150 +17,114 @@ public class Recipes {
     public static class Fire {
         public static RecipeFire missileboatLevel1 = new RecipeFire( R.drawable.missileboat
                                                                    , 1
-                                                                   , 110f
-                                                                   , 61f
-                                                                   , 23
-                                                                   , 0f
+                                                                   , new PointF(110f, 61f)
+                                                                   , new PointF(23, 0f)
                                                                    , new PointF(1f, 1f)
                                                                    , new PointF(1f, 0.2f)
                                                                    , new Color(1f, 0.3f, 0f)
                                                                    , new Color(0.7f, 0.05f, 0f)
-                                                                   , 10f
-                                                                   , 10f
+                                                                   , new PointF(10f, 10f)
                                                                    , 100
-                                                                   , -10f
-                                                                   , -20f );
+                                                                   , new PointF(-10f, -20f) );
 
         public static RecipeFire missileboatLevel2 = new RecipeFire( R.drawable.missileboat
                                                                    , 2
-                                                                   , 40f
-                                                                   , 65f
-                                                                   , 100f
-                                                                   , 0f
+                                                                   , new PointF(40f, 65f)
+                                                                   , new PointF(100f, 0f)
                                                                    , new PointF(1f, 2f)
                                                                    , new PointF(1f, 0.2f)
                                                                    , new Color(1f, 0.2f, 0f)
                                                                    , new Color(0.7f, 0.05f, 0f)
-                                                                   , 30f
-                                                                   , 25f
+                                                                   , new PointF(30f, 25f)
                                                                    , 100
-                                                                   , -10f
-                                                                   , -20f
+                                                                   , new PointF(-10f, -20f)
                                                                    , 1f );
 
         public static RecipeFire missileboatLevel3 = new RecipeFire( R.drawable.missileboat
                                                                    , 3
-                                                                   , 15f
-                                                                   , 65f
-                                                                   , 144f
-                                                                   , 0f
+                                                                   , new PointF(15f, 65f)
+                                                                   , new PointF(144f, 0f)
                                                                    , new PointF(3f, 5f)
                                                                    , new PointF(2f, 0.2f)
                                                                    , new Color(1f, 0.2f, 0f)
                                                                    , new Color(0.7f, 0.05f, 0f)
-                                                                   , 20f
-                                                                   , 20f
+                                                                   , new PointF(20f, 20f)
                                                                    , 100
-                                                                   , -20f
-                                                                   , -40f );
+                                                                   , new PointF(-20f, -40f) );
 
         public static RecipeFire sailfishLevel1 = new RecipeFire( R.drawable.sailfish
                                                                 , 1
-                                                                , 93f
-                                                                , 127f
-                                                                , 23
-                                                                , 0f
+                                                                , new PointF(93f, 127f)
+                                                                , new PointF(23, 0f)
                                                                 , new PointF(1f, 1f)
                                                                 , new PointF(1f, 0.2f)
                                                                 , new Color(1f, 0.2f, 0f)
                                                                 , new Color(0.7f, 0.05f, 0f)
-                                                                , 10f
-                                                                , 10f
+                                                                , new PointF(10f, 10f)
                                                                 , 100
-                                                                , -10f
-                                                                , -20f );
+                                                                , new PointF(-10f, -20f) );
 
         public static RecipeFire sailfishLevel2 = new RecipeFire( R.drawable.sailfish
                                                                 , 2
-                                                                ,80f
-                                                                , 126f
-                                                                , 58f
-                                                                , 0f
+                                                                , new PointF(80f, 126f)
+                                                                , new PointF(58f, 0f)
                                                                 , new PointF(1f, 2f)
                                                                 , new PointF(1f, 0.2f)
                                                                 , new Color(1f, 0.5f, 0f)
                                                                 , new Color(0.7f, 0.05f, 0f)
-                                                                , 30f
-                                                                , 25f
+                                                                , new PointF(30f, 25f)
                                                                 , 100
-                                                                , -10f
-                                                                , -20f
+                                                                , new PointF(-10f, -20f)
                                                                 , 0.5f );
 
         public static RecipeFire sailfishLevel3 = new RecipeFire( R.drawable.sailfish
                                                                 , 3
-                                                                , 52f
-                                                                , 131f
-                                                                , 100f
-                                                                , 0f
+                                                                , new PointF(52f, 131f)
+                                                                , new PointF(100f, 0f)
                                                                 , new PointF(3f, 5f)
                                                                 , new PointF(2f, 0.2f)
                                                                 , new Color(1f, 0.5f, 0f)
                                                                 , new Color(0.7f, 0.05f, 0f)
-                                                                , 20f
-                                                                , 20f
+                                                                , new PointF(20f, 20f)
                                                                 , 100
-                                                                , -20f
-                                                                , -40f );
+                                                                , new PointF(-20f, -40f) );
 
         public static RecipeFire battleshipLevel1 = new RecipeFire( R.drawable.battleship
                                                                   , 1
-                                                                  , 93f
-                                                                  , 120f
-                                                                  , 23
-                                                                  , 0f
+                                                                  , new PointF(93f, 120f)
+                                                                  , new PointF(23, 0f)
                                                                   , new PointF(1f, 1f)
                                                                   , new PointF(1f, 0.2f)
                                                                   , new Color(1f, 0.3f, 0f)
                                                                   , new Color(0.7f, 0.05f, 0f)
-                                                                  , 10f
-                                                                  , 10f
+                                                                  , new PointF(10f, 10f)
                                                                   , 100
-                                                                  , -10f
-                                                                  , -20f );
+                                                                  , new PointF(-10f, -20f) );
 
         public static RecipeFire battleshipLevel2 = new RecipeFire( R.drawable.battleship
                                                                   , 2
-                                                                  , 55f
-                                                                  , 132f
-                                                                  , 100f
-                                                                  , 0f
+                                                                  , new PointF(55f, 132f)
+                                                                  , new PointF(100f, 0f)
                                                                   , new PointF(1f, 2f)
                                                                   , new PointF(1f, 0.2f)
                                                                   , new Color(1f, 0.5f, 0f)
                                                                   , new Color(0.7f, 0.05f, 0f)
-                                                                  , 30f
-                                                                  , 25f
+                                                                  , new PointF(30f, 25f)
                                                                   , 100
-                                                                  , -10f
-                                                                  , -20f
+                                                                  , new PointF(-10f, -20f)
                                                                   , 0.5f );
 
         public static RecipeFire battleshipLevel3 = new RecipeFire( R.drawable.battleship
                                                                   , 3
-                                                                  , 18f
-                                                                  , 132f
-                                                                  , 146f
-                                                                  , 0f
+                                                                  , new PointF(18f, 132f)
+                                                                  , new PointF(146f, 0f)
                                                                   , new PointF(3f, 5f)
                                                                   , new PointF(2f, 0.2f)
                                                                   , new Color(1f, 0.5f, 0f)
                                                                   , new Color(0.7f, 0.05f, 0f)
-                                                                  , 20f
-                                                                  , 20f
+                                                                  , new PointF(20f, 20f)
                                                                   , 100
-                                                                  , -20f
-                                                                  , -40f );
+                                                                  , new PointF(-20f, -40f) );
 
         public static RecipeFire find(int typeId, int level){
             if(typeId == battleshipLevel1.typeId && level == battleshipLevel1.level){
@@ -189,26 +153,19 @@ public class Recipes {
     public static class Smoke {
         public static RecipeSmoke missileboatLevel1 = new RecipeSmoke( R.drawable.missileboat
                                                                      , 1
-                                                                     , 110f
-                                                                     , 61f
-                                                                     , 23
-                                                                     , 0f);
+                                                                     , new PointF(110f, 61f)
+                                                                     , new PointF(23, 0f) );
 
         public static RecipeSmoke missileboatLevel2 = new RecipeSmoke( R.drawable.missileboat
                                                                      , 2
-                                                                     , 40f
-                                                                     , 65f
-                                                                     , 100f
-                                                                     , 0f);
+                                                                     , new PointF(40f, 65f)
+                                                                     , new PointF(100f, 0f) );
 
         public static RecipeSmoke missileboatLevel3 = new RecipeSmoke( R.drawable.missileboat
                                                                      , 3
-                                                                     , 15f
-                                                                     , 65f
-                                                                     , 144f
-                                                                     , 0f
-                                                                     , -35f
-                                                                     , -45f
+                                                                     , new PointF(15f, 65f)
+                                                                     , new PointF(144f, 0f)
+                                                                     , new PointF(-35f, -45f)
                                                                      , new PointF(0.2f, 3f)
                                                                      , new Color(0.1f, 0.1f, 0.1f)
                                                                      , 0.5f
@@ -216,26 +173,19 @@ public class Recipes {
 
         public static RecipeSmoke sailfishLevel1 = new RecipeSmoke( R.drawable.sailfish
                                                                   , 1
-                                                                  , 93f
-                                                                  , 127f
-                                                                  , 23
-                                                                  , 0f);
+                                                                  , new PointF(93f, 127f)
+                                                                  , new PointF(23, 0f) );
 
         public static RecipeSmoke sailfishLevel2 = new RecipeSmoke( R.drawable.sailfish
                                                                   , 2
-                                                                  , 80f
-                                                                  , 126f
-                                                                  , 58f
-                                                                  , 0f);
+                                                                  , new PointF(80f, 126f)
+                                                                  , new PointF(58f, 0f) );
 
         public static RecipeSmoke sailfishLevel3 = new RecipeSmoke( R.drawable.sailfish
                                                                   , 3
-                                                                  , 52f
-                                                                  , 131f
-                                                                  , 100f
-                                                                  , 0f
-                                                                  , -35f
-                                                                  , -45f
+                                                                  , new PointF(52f, 131f)
+                                                                  , new PointF(100f, 0f)
+                                                                  , new PointF(-35f, -45f)
                                                                   , new PointF(0.2f, 3f)
                                                                   , new Color(0.1f, 0.1f, 0.1f)
                                                                   , 0.5f
@@ -243,26 +193,19 @@ public class Recipes {
 
         public static RecipeSmoke battleshipLevel1 = new RecipeSmoke( R.drawable.battleship
                                                                     , 1
-                                                                    , 93f
-                                                                    , 120f
-                                                                    , 23
-                                                                    , 0f);
+                                                                    , new PointF(93f, 120f)
+                                                                    , new PointF(23, 0f) );
 
         public static RecipeSmoke battleshipLevel2 = new RecipeSmoke( R.drawable.battleship
                                                                     , 2
-                                                                    , 55f
-                                                                    , 132f
-                                                                    , 100f
-                                                                    , 0f);
+                                                                    , new PointF(55f, 132f)
+                                                                    , new PointF(100f, 0f) );
 
-        public static RecipeSmoke battleshipLevel3 = new RecipeSmoke(R.drawable.battleship
+        public static RecipeSmoke battleshipLevel3 = new RecipeSmoke( R.drawable.battleship
                                                                     , 3
-                                                                    , 18f
-                                                                    , 132f
-                                                                    , 146f
-                                                                    , 0f
-                                                                    , -35f
-                                                                    , -45f
+                                                                    , new PointF(18f, 132f)
+                                                                    , new PointF(146f, 0f)
+                                                                    , new PointF(-35f, -45f)
                                                                     , new PointF(0.2f, 3f)
                                                                     , new Color(0.1f, 0.1f, 0.1f)
                                                                     , 0.5f

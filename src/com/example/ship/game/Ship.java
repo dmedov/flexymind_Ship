@@ -68,54 +68,6 @@ public class Ship {
     private int currentFireLevel = 0;
     private FireEffects fireEffects;
 
-    private class FireEffects {
-        private ArrayList<SpriteParticleSystem> fireParticleSystems;
-        private ArrayList<SpriteParticleSystem> smokeParticleSystems;
-        public FireEffects() {
-            fireParticleSystems = new ArrayList<SpriteParticleSystem>();
-            smokeParticleSystems = new ArrayList<SpriteParticleSystem>();
-        }
-
-        public void addFire() {
-            if (currentFireLevel != 0){
-                stopLastEffect();
-            }
-            SpriteParticleSystem fireParticleSystem =
-                    Effects.FireParticleSystemFactory.build(Recipes.Fire.find(typeId, ++currentFireLevel));
-            SpriteParticleSystem smokeParticleSystem =
-                    Effects.SmokeParticleSystemFactory.build(Recipes.Smoke.find(typeId, currentFireLevel));
-
-            fireParticleSystem.setParticlesSpawnEnabled(true);
-            smokeParticleSystem.setParticlesSpawnEnabled(true);
-
-            shipSprite.attachChild(smokeParticleSystem);
-            shipSprite.attachChild(fireParticleSystem);
-
-            fireParticleSystems.add(fireParticleSystem);
-            smokeParticleSystems.add(smokeParticleSystem);
-        }
-
-        public void stopLastEffect() {
-
-            if (fireParticleSystems.size() > 0 && smokeParticleSystems.size() > 0) {
-                int LAST = fireParticleSystems.size() - 1;
-                fireParticleSystems.get(LAST).setParticlesSpawnEnabled(false);
-                smokeParticleSystems.get(LAST).setParticlesSpawnEnabled(false);
-            }
-        }
-        public void detachSelf(){
-            if(fireParticleSystems.size() > 0 && smokeParticleSystems.size() > 0) {
-                for (SpriteParticleSystem particleSystem : smokeParticleSystems) {
-                    particleSystem.detachSelf();
-                }
-                for (SpriteParticleSystem particleSystem : fireParticleSystems) {
-                    particleSystem.detachSelf();
-                }
-            }
-        }
-    }
-
-
     public Ship(RootActivity activity, float yPosition, String shipType, boolean direction) {
         this(activity, yPosition, shipsId.get(shipType), direction);
     }
@@ -198,6 +150,53 @@ public class Ship {
     }
     public int getType() {
         return typeId;
+    }
+
+    private class FireEffects {
+        private ArrayList<SpriteParticleSystem> fireParticleSystems;
+        private ArrayList<SpriteParticleSystem> smokeParticleSystems;
+        public FireEffects() {
+            fireParticleSystems = new ArrayList<SpriteParticleSystem>();
+            smokeParticleSystems = new ArrayList<SpriteParticleSystem>();
+        }
+
+        public void addFire() {
+            if (currentFireLevel != 0){
+                stopLastEffect();
+            }
+            SpriteParticleSystem fireParticleSystem =
+                    Effects.FireParticleSystemFactory.build(Recipes.Fire.find(typeId, ++currentFireLevel));
+            SpriteParticleSystem smokeParticleSystem =
+                    Effects.SmokeParticleSystemFactory.build(Recipes.Smoke.find(typeId, currentFireLevel));
+
+            fireParticleSystem.setParticlesSpawnEnabled(true);
+            smokeParticleSystem.setParticlesSpawnEnabled(true);
+
+            shipSprite.attachChild(smokeParticleSystem);
+            shipSprite.attachChild(fireParticleSystem);
+
+            fireParticleSystems.add(fireParticleSystem);
+            smokeParticleSystems.add(smokeParticleSystem);
+        }
+
+        public void stopLastEffect() {
+
+            if (fireParticleSystems.size() > 0 && smokeParticleSystems.size() > 0) {
+                int last = fireParticleSystems.size() - 1;
+                fireParticleSystems.get(last).setParticlesSpawnEnabled(false);
+                smokeParticleSystems.get(last).setParticlesSpawnEnabled(false);
+            }
+        }
+        public void detachSelf(){
+            if(fireParticleSystems.size() > 0 && smokeParticleSystems.size() > 0) {
+                for (SpriteParticleSystem particleSystem : smokeParticleSystems) {
+                    particleSystem.detachSelf();
+                }
+                for (SpriteParticleSystem particleSystem : fireParticleSystems) {
+                    particleSystem.detachSelf();
+                }
+            }
+        }
     }
 
     private void initShipParametersById() {

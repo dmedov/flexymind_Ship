@@ -13,26 +13,20 @@ import org.andengine.util.color.Color;
 public class Recipe {
     public final int      typeId;
     public final int      level;
-    public final float    centerX;
-    public final float    centerY;
-    public final float    width;
-    public final float    height;
-    public Recipe(int typeId, int level, float centerX, float centerY, float width, float height) {
+    public final PointF   center;
+    public final PointF   proportions;
+    public Recipe(int typeId, int level, PointF center, PointF proportions) {
         this.typeId =           typeId;
         this.level =            level;
-        this.centerX =          centerX;
-        this.centerY =          centerY;
-        this.width =            width;
-        this.height =           height;
+        this.center =          center;
+        this.proportions =     proportions;
     }
     public String toString() {
         String string = "";
-        string += "typeId: "    + ((Integer) typeId).toString()+"\n";
-        string += "level: "     + ((Integer) level).toString()+"\n";
-        string += "centerX: "   + ((Float) centerX).toString()+"\n";
-        string += "centerY: "   + ((Float) centerY).toString()+"\n";
-        string += "width: "     + ((Float) width).toString()+"\n";
-        string += "height: "    + ((Float) height).toString()+"\n";
+        string += "typeId: "        + ((Integer) typeId).toString()+"\n";
+        string += "level: "         + ((Integer) level).toString()+"\n";
+        string += "center: "        + center.toString()+"\n";
+        string += "proportions: "   + proportions.toString()+"\n";
         return string;
     }
 }
@@ -44,67 +38,53 @@ class RecipeFire extends Recipe {
     public final PointF   scaleRange;
     public final Color    initFireColor;
     public final Color    endFireColor;
-    public final float    rateMinimum;
-    public final float    rateMaximum;
+    public final PointF    rateRange;
     public final int      particlesMaximum;
-    public final float    minVelocityY;
-    public final float    maxVelocityY;
+    public final PointF    velocityYRange;
     public final float    alpha;
 
     public RecipeFire( int typeId
                      , int level
-                     , float centerX
-                     , float centerY
-                     , float width
-                     , float height
+                     , PointF center
+                     , PointF proportions
                      , PointF lifeTime
                      , PointF scaleRange
                      , Color initFireColor
                      , Color endFireColor
-                     , float rateMinimum
-                     , float rateMaximum
+                     , PointF rateRange
                      , int particlesMaximum
-                     , float minVelocityY
-                     , float maxVelocityY ) {
-        super(typeId, level, centerX, centerY, width, height);
+                     , PointF velocityYRange ) {
+        super(typeId, level, center, proportions);
         this.lifeTime =         lifeTime;
         this.scaleRange =       scaleRange;
         this.initFireColor =    initFireColor;
         this.endFireColor =     endFireColor;
-        this.rateMinimum =      rateMinimum;
-        this.rateMaximum =      rateMaximum;
+        this.rateRange =        rateRange;
         this.particlesMaximum = particlesMaximum;
-        this.minVelocityY =     minVelocityY;
-        this.maxVelocityY =     maxVelocityY;
+        this.velocityYRange =     velocityYRange;
         this.alpha =            1f;
     }
 
     public RecipeFire( int typeId
                      , int level
-                     , float centerX
-                     , float centerY
-                     , float width
-                     , float height
+                     , PointF center
+                     , PointF proportions
                      , PointF lifeTime
                      , PointF scaleRange
                      , Color initFireColor
                      , Color endFireColor
-                     , float rateMinimum
-                     , float rateMaximum
+                     , PointF rateRange
                      , int particlesMaximum
-                     , float minVelocityY
-                     , float maxVelocityY
+                     , PointF velocityYRange
                      , float alpha ) {
-        super(typeId, level, centerX, centerY, width, height);
+        super(typeId, level, center, proportions);
         this.lifeTime =         lifeTime;
         this.scaleRange =       scaleRange;
         this.initFireColor =    initFireColor;
         this.endFireColor =     endFireColor;
-        this.rateMinimum =      rateMinimum;
-        this.rateMaximum =      rateMaximum;
+        this.rateRange =      rateRange;
         this.particlesMaximum = particlesMaximum;
-        this.minVelocityY =     minVelocityY;
-        this.maxVelocityY =     maxVelocityY;
+        this.velocityYRange =     velocityYRange;
         this.alpha =            alpha;
     }
 
@@ -115,50 +95,42 @@ class RecipeFire extends Recipe {
         string += "scaleRange: "        + scaleRange.toString()+"\n";
         string += "initFireColor: "     + initFireColor.toString()+"\n";
         string += "endFireColor: "      + endFireColor.toString()+"\n";
-        string += "rateMinimum: "       + ((Float) rateMinimum).toString()+"\n";
-        string += "rateMaximum: "       + ((Float) rateMaximum).toString()+"\n";
+        string += "rateRange: "         + rateRange.toString()+"\n";
         string += "particlesMaximum: "  + ((Integer) particlesMaximum).toString()+"\n";
-        string += "minVelocityY: "      + ((Float) minVelocityY).toString()+"\n";
-        string += "maxVelocityY: "      + ((Float) maxVelocityY).toString()+"\n";
+        string += "velocityYRange: "    + velocityYRange.toString()+"\n";
         string += "alpha: "             + ((Float) alpha).toString()+"\n";
         return string;
     }
 }
 class RecipeSmoke extends Recipe {
-    public final float    minVelocityY;
-    public final float    maxVelocityY;
+    public final PointF   velocityYRange;
     public final Color    endFireColor;
     public final float    alpha;
     public final PointF   scaleRange;
     public final PointF   scaleTime;
 
 
-    RecipeSmoke(int typeId, int level, float centerX, float centerY, float width, float height){
-        super(typeId, level, centerX, centerY, width, height);
+    RecipeSmoke(int typeId, int level, PointF center, PointF proportions) {
+        super(typeId, level, center, proportions);
         this.scaleRange =       new PointF(0.2f, 1f);
         this.endFireColor =     new Color(0.1f, 0.1f, 0.1f);
-        this.minVelocityY =     -15f;
-        this.maxVelocityY =     -20f;
+        this.velocityYRange =     new PointF(-20, -15f);
         this.alpha =            1f;
         this.scaleTime =        new PointF(0f, 4.5f);
     }
     RecipeSmoke( int typeId
                , int level
-               , float centerX
-               , float centerY
-               , float width
-               , float height
-               , float minVelocityY
-               , float maxVelocityY
+               , PointF center
+               , PointF proportions
+               , PointF velocityRange
                , PointF scaleRange
                , Color endFireColor
                , float alpha
                , PointF scaleTime ) {
-        super(typeId, level, centerX, centerY, width, height);
+        super(typeId, level, center, proportions);
         this.scaleRange =       scaleRange;
         this.endFireColor =     endFireColor;
-        this.minVelocityY =     minVelocityY;
-        this.maxVelocityY =     maxVelocityY;
+        this.velocityYRange =     velocityRange;
         this.alpha =            alpha;
         this.scaleTime =        scaleTime;
 
@@ -169,8 +141,7 @@ class RecipeSmoke extends Recipe {
         string += "scaleRange: "    + scaleRange.toString()+"\n";
         string += "scaleTime: "     + scaleTime.toString()+"\n";
         string += "endFireColor: "  + endFireColor.toString()+"\n";
-        string += "minVelocityY: "  + ((Float) minVelocityY).toString()+"\n";
-        string += "maxVelocityY: "  + ((Float) maxVelocityY).toString()+"\n";
+        string += "velocityRange: " + velocityYRange.toString()+"\n";
         string += "alpha: "         + ((Float) alpha).toString()+"\n";
         return string;
 

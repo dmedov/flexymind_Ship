@@ -29,34 +29,30 @@ import static java.lang.Math.abs;
 public class Effects {
     public static final class FireParticleSystemFactory {
 
-        private static float pCenterX;
-        private static float pCenterY;
-        private static float pWidth;
-        private static float pHeight;
+        private static PointF pCenter;
+        private static PointF pProportions;
         private static float pAlpha;
         private static PointF lifeTime;
         private static PointF scaleRange;
         private static Color initFireColor;
         private static Color endFireColor;
-        private static float pRateMinimum;
-        private static float pRateMaximum;
+        private static PointF pRateRange;
         private static int pParticlesMaximum;
-        private static float pMinVelocityY;
-        private static float pMaxVelocityY;
+        private static PointF pVelocityYRange;
 
         public static SpriteParticleSystem build(RecipeFire recipe) {
 
             init(recipe);
 
             RectangleParticleEmitter particleEmitter=
-                    new RectangleParticleEmitter( pCenterX + 0.5f * pWidth
-                                                , pCenterY
-                                                , pWidth
-                                                , pHeight );
+                    new RectangleParticleEmitter( pCenter.x + 0.5f * pProportions.x
+                                                , pCenter.y
+                                                , pProportions.x
+                                                , pProportions.y );
             SpriteParticleSystem particleSystem =
                     new SpriteParticleSystem( particleEmitter
-                                            , pRateMinimum
-                                            , pRateMaximum
+                                            , pRateRange.x
+                                            , pRateRange.y
                                             , pParticlesMaximum
                                             , A.rm.getLoadedTextureRegion(R.drawable.particle_point)
                                             , A.e.getVertexBufferObjectManager());
@@ -72,8 +68,8 @@ public class Effects {
             particleSystem.addParticleInitializer(
                     new VelocityParticleInitializer<Sprite>( 0f
                                                            , 0f
-                                                           , pMinVelocityY
-                                                           , pMaxVelocityY ));
+                                                           , pVelocityYRange.x
+                                                           , pVelocityYRange.y ));
             particleSystem.addParticleInitializer(new AlphaParticleInitializer<Sprite>(pAlpha));
 
             //Modifiers
@@ -98,38 +94,30 @@ public class Effects {
         private static void init(RecipeFire recipe) {
 
             Log.d("ship", recipe.toString());
-            pCenterX            = recipe.centerX;
-            pCenterY            = recipe.centerY;
-            pWidth              = recipe.width;
-            pHeight             = recipe.height;
+            pCenter             = recipe.center;
+            pProportions        = recipe.proportions;
             lifeTime            = recipe.lifeTime;
             scaleRange          = recipe.scaleRange;
             pAlpha              = recipe.alpha;
             initFireColor       = recipe.initFireColor;
-            pRateMinimum        = recipe.rateMinimum;
-            pRateMaximum        = recipe.rateMaximum;
+            pRateRange          = recipe.rateRange;
             pParticlesMaximum   = recipe.particlesMaximum;
             endFireColor        = recipe.endFireColor;
-            pMinVelocityY       = recipe.minVelocityY;
-            pMaxVelocityY       = recipe.maxVelocityY;
+            pVelocityYRange     = recipe.velocityYRange;
         }
     }
     public static final class SmokeParticleSystemFactory {
 
-        private static float pCenterX;
-        private static float pCenterY;
-        private static float pWidth;
-        private static float pHeight;
+        private static PointF pCenter;
+        private static PointF pProportions;
         private static float  pAlphaInit        = 0.5f;
         private static PointF lifeTime          = new PointF(5, 6);
         private static PointF scaleRange        = new PointF(0.2f, 3f);
         private static Color  initFireColor     = new Color(1f, 1f, 1f);
         private static Color  endFireColor      = new Color(0.3f, 0.3f, 0.3f);  //0.1
-        private static float  pRateMinimum      = 25f;
-        private static float  pRateMaximum      = 30f;
+        private static PointF  pRateRange       = new PointF(25f, 30f);
         private static int    pParticlesMaximum = 200;
-        private static float  pMinVelocityY     = -15f;
-        private static float  pMaxVelocityY     = -20f;
+        private static PointF  pVelocityYRange   = new PointF(-20f,-15f);
         private static float  WIND_FORCE        = 1.5f;
         private static PointF scaleTime;
         private static PointF colorTime         = new PointF(1f, 5f);
@@ -141,14 +129,14 @@ public class Effects {
             init(recipe);
 
             final RectangleParticleEmitter particleEmitter =
-                    new RectangleParticleEmitter( pCenterX + 0.5f * pWidth
-                                                , pCenterY
-                                                , pWidth
-                                                , pHeight);
+                    new RectangleParticleEmitter( pCenter.x + 0.5f * pProportions.x
+                                                , pCenter.y
+                                                , pProportions.x
+                                                , pProportions.y );
             SpriteParticleSystem particleSystem =
                     new SpriteParticleSystem( particleEmitter
-                                            , pRateMinimum
-                                            , pRateMaximum
+                                            , pRateRange.x
+                                            , pRateRange.y
                                             , pParticlesMaximum
                                             , A.rm.getLoadedTextureRegion(R.drawable.particle_point)
                                             , A.e.getVertexBufferObjectManager());
@@ -164,8 +152,8 @@ public class Effects {
             particleSystem.addParticleInitializer(
                     new VelocityParticleInitializer<Sprite>( 0f
                                                            , 0f
-                                                           , pMinVelocityY
-                                                           , pMaxVelocityY));
+                                                           , pVelocityYRange.x
+                                                           , pVelocityYRange.y));
             particleSystem.addParticleInitializer(new AlphaParticleInitializer<Sprite>(pAlphaInit));
 
             //Modifiers
@@ -211,12 +199,9 @@ public class Effects {
         private static void init(RecipeSmoke recipe) {
 
             Log.d("ship", recipe.toString());
-            pCenterX        = recipe.centerX;
-            pCenterY        = recipe.centerY;
-            pWidth          = recipe.width;
-            pHeight         = recipe.height;
-            pMinVelocityY   = recipe.minVelocityY;
-            pMaxVelocityY   = recipe.maxVelocityY;
+            pCenter         = recipe.center;
+            pProportions    = recipe.proportions;
+            pVelocityYRange   = recipe.velocityYRange;
             endFireColor    = recipe.endFireColor;
             pAlphaInit      = recipe.alpha;
             scaleRange      = recipe.scaleRange;
