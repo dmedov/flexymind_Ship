@@ -16,7 +16,7 @@ direction - направление: на лево, на право, случай
 <resources>
     <level id="1" type="regular" scoreMultiplier="1.0">
         <enemy type="sailfish" number="1" firstSpawnIn="4.0" lines="1" direction="to right"/>
-        <enemy type="sailfish" number="2" firstSpawnIn="1.0" periodicSpawnDelay="8.0" lines="2" direction="to right"/>
+        <enemy type="sailfish" number="4" firstSpawnIn="1.0" periodicSpawnDelay="8.0" lines="2" direction="to right"/>
         <enemy type="sailfish" number="1" firstSpawnIn="4.0" lines="3" direction="to right"/>
     </level>
 

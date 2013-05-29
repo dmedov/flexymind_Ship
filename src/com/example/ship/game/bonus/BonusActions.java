@@ -57,12 +57,14 @@ public class BonusActions {
             ship.getSprite().setIgnoreUpdate(true);
         }
 
+        gameScene.getPlayer().getLevel().pauseSpawn();
         TimerHandler bonusTimerHandler = new TimerHandler(shipStopTime, new ITimerCallback() {
             @Override
             public void onTimePassed(final TimerHandler timerHandler) {
                 for (Ship ship : ships) {
                     ship.getSprite().setIgnoreUpdate(false);
                 }
+                gameScene.getPlayer().getLevel().resumeSpawn();
                 A.e.unregisterUpdateHandler(timerHandler);
             }
         });

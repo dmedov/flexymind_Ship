@@ -206,6 +206,11 @@ public class GameScene extends Scene {
             Bonus deadBonus = null;
             // check for torpedo collides with bonuses
             for (Bonus bonus: bonuses) {
+                // check if bonus sink already
+                if (!bonus.isLive()) {
+                    deadBonus = bonus;
+                    break;
+                }
                 if (torpedo.collidesWith(bonus.getSprite())) {
                     torpedo.detachSelf();
                     BonusActions.runGoodBonus();
