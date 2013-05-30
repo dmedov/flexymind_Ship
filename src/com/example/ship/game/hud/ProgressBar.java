@@ -15,7 +15,7 @@ import org.andengine.util.color.Color;
  * To change this template use File | Settings | File Templates.
  */
 public class ProgressBar {
-    public static final int FULL_PROGRESS = 100;
+    public static final float FULL_PROGRESS = 100f;
     private static final float RELATIVE_TORPEDO_INDICATOR_HEIGHT = 0.70f;
 
     private Sprite progressBarSprite;
@@ -48,7 +48,7 @@ public class ProgressBar {
         // maskRectangle.attachChild(progressBarSprite);
     }
 
-    public void setProgress(int progress) {
+    public void setProgress(float progress) {
         maskRectangle.setHeight(progressBarSprite.getHeightScaled() * progress / FULL_PROGRESS);
         maskRectangle.setY(startPointProgessBar.y - maskRectangle.getHeight());
     }

@@ -58,6 +58,7 @@ public class BonusActions {
         }
 
         gameScene.getPlayer().getLevel().pauseSpawn();
+
         TimerHandler bonusTimerHandler = new TimerHandler(shipStopTime, new ITimerCallback() {
             @Override
             public void onTimePassed(final TimerHandler timerHandler) {
