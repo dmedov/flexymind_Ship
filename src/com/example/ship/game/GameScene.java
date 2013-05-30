@@ -52,6 +52,7 @@ public class GameScene extends Scene {
     private ArrayList<Bonus> bonuses;
     private HashMap<Integer, Float> shipLinesPosition;
     private Player player;
+    private boolean clearShips = false;
 
     public GameScene(final RootActivity activity) {
         super();
@@ -129,6 +130,10 @@ public class GameScene extends Scene {
         return shipLinesPosition.get(lineId);
     }
 
+    public void clearShips() {
+        clearShips = true;
+    }
+
     public ArrayList<Ship> getShips() {
         return ships;
     }
@@ -138,6 +143,11 @@ public class GameScene extends Scene {
         Ship deadShip = null;
         boolean stopCheck = false;
         boolean blockBonus = false;
+
+        if (clearShips) {
+            ships.clear();
+            clearShips = false;
+        }
 
         for (Ship ship: ships) {
             Sprite shipSprite = ship.getSprite();
