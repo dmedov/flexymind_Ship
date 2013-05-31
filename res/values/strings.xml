@@ -22,7 +22,7 @@
     <string name="LEFT">Left</string>
     <string name="NEW_LEVEL_MESSAGE">Level</string>
     <string name="TYPE_NAME">Enter your name</string>
-    <string name="IN_TOP">You are in top-10, your name:</string>
+    <string name="IN_TOP">Your name:</string>
     <!--Game Button ID-->
     <string name="GAME_PAUSE_BUTTON">pauseID</string>
     <string name="GAME_PAUSE_BACK_BUTTON">backID</string>
