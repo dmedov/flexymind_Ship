@@ -57,18 +57,6 @@ public class Level {
         for (ShipSpawner spawner: shipSpawners) {
             spawner.startSpawn();
         }
-//
-//     DeathMatch Mode
-//
-//        levelGoal = (int) (FIRST_LEVEL_GOAL * (1 + LEVEL_GOAL_MULTIPLIER * (currentLevel - 1)));
-//        levelProgress = 0;
-//
-//        float newSpawnDelay = (float) ( (FullRandomShipSpawner.MAX_SPAWN_DELAY - FullRandomShipSpawner.MIN_SPAWN_DELAY)
-//                                        * Math.pow(LEVEL_SPAWN_DELAY_MULTIPLIER, currentLevel - 1));
-//        activity.getSceneSwitcher().getGameScene().getFullRandomShipSpawner()
-//                .setSpawnDelay(newSpawnDelay);
-//
-//        Ship.setVelocityDivider((float) Math.pow(LEVEL_SHIP_SPEED_MULTIPLIER, currentLevel - 1));
 
         levelProgress = 0;
 
@@ -105,6 +93,10 @@ public class Level {
         for (ShipSpawner spawner: shipSpawners) {
             spawner.resumeSpawn();
         }
+    }
+
+    public boolean isBonus() {
+        return isBonus;
     }
 
     private void updateLevelInfoInHud() {
