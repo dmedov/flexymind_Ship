@@ -46,7 +46,7 @@ public class RootActivity extends BaseGameActivity {
         zoomCamera = createZoomCamera();
 
         EngineOptions engineOptions = new EngineOptions( true
-                                                       , ScreenOrientation.LANDSCAPE_FIXED
+                                                       , ScreenOrientation.LANDSCAPE_SENSOR
                                                        , new FillResolutionPolicy()
                                                        , zoomCamera);
         engineOptions.getTouchOptions().setNeedsMultiTouch(true);
