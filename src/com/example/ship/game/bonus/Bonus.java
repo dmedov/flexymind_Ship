@@ -23,7 +23,7 @@ import org.andengine.util.modifier.ease.EaseQuadInOut;
  */
 
 public class Bonus {
-    static public float bonusShipKillProbability = 0.3f;  // 1f for DEBUG
+    static public float bonusShipKillProbability = 0.2f;  // 1f for DEBUG
     static public float bonusGoodPropability     = 0.8f;
     static public float bonusLifeTime            = 10f;
 
@@ -31,12 +31,13 @@ public class Bonus {
     private static final float MAX_ROTATE_ANGLE = 1.0f;
     private static final float ROTATE_DURATION  = 2.0f;
     private static final int   ROTATION_COUNT   = 20;
-    private static final float ALPHA_SINK_TIME  = 2f;
+    private static final float ALPHA_SINK_TIME  = 1f;
     private static final float SINK_VELOCITY    = 2f;
 
     private TimerHandler bonusTimerHandler;
 
     private CSprite bonusSprite;
+    private boolean live = true;
 
     public Bonus(Ship killedShip) {
         Sprite killedShipSprite = killedShip.getSprite();
@@ -97,7 +98,7 @@ public class Bonus {
                                                      , bonusPosition.y + 2 * bonusSprite.getHeightScaled()
                                                      , EaseQuadIn.getInstance() );
 
-        AlphaModifier alphaModifier = new AlphaModifier(ALPHA_SINK_TIME, 1, 0);
+        AlphaModifier alphaModifier = new AlphaModifier(ALPHA_SINK_TIME, 1, 0.5f);
 
         ParallelEntityModifier parallel = new ParallelEntityModifier(alphaModifier, moveModifierY) {
                 @Override
@@ -105,8 +106,9 @@ public class Bonus {
                 A.a.runOnUpdateThread(new Runnable() {
                     @Override
                     public void run() {
+                        live = false;
                         bonusSprite.detachSelf(); //TODO check this
-                        Log.d("1Log", "bottom is detached");
+                        Log.d("1Log", "bonus is detached");
                     }
                 });
             }
@@ -120,6 +122,10 @@ public class Bonus {
 
     public void remove() {
         bonusSprite.detachSelf();
+    }
+
+    public boolean isLive() {
+        return live;
     }
 }
 

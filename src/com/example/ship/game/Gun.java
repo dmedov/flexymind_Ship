@@ -30,7 +30,7 @@ public class Gun {
     private static final float BULLET_RELATIVE_START_POINT = 1.0f;
     private static final int DEFAULT_DAMAGE = 100;
     private static final float DEFAULT_PERSPECTIVE_SCALE = 0.7f;
-    private static float FIRE_DELAY = 1.5f;
+    private static float fireDelay = 1.5f;
     private float perspectiveScale;
     private boolean rotateLeft;
     private boolean rotationEnabled;
@@ -40,7 +40,7 @@ public class Gun {
     private PausableTimerHandler fireTimerHandler;
     private boolean fireAvailable = true;
     private int damage = DEFAULT_DAMAGE;
-    private int reloadProgress   = ProgressBar.FULL_PROGRESS;
+    private float reloadProgress   = ProgressBar.FULL_PROGRESS;
     private boolean autoFire = true;
 
     public Gun(RootActivity activity) {
@@ -57,7 +57,7 @@ public class Gun {
 
         perspectiveScale = DEFAULT_PERSPECTIVE_SCALE;
         fireAvailable = true;
-        createTimer();
+        updateTimer();
         activity.getEngine().registerUpdateHandler(fireTimerHandler);
 
         gunMask = new Sprite( gunPosition.x
@@ -177,33 +177,34 @@ public class Gun {
     }
 
     public void setFireDelay(float fireDelay) {
-        FIRE_DELAY = fireDelay;
+        Gun.fireDelay = fireDelay;
+        updateTimer();
     }
 
     public float getFireDelay() {
-        return FIRE_DELAY;
+        return fireDelay;
     }
 
     public void setAutoFire(boolean autoFire) {
         this.autoFire = autoFire;
     }
 
-    private void createTimer() {
-        fireTimerHandler = new PausableTimerHandler(FIRE_DELAY / ProgressBar.FULL_PROGRESS, new ITimerCallback() {
-            @Override
-            public void onTimePassed(final TimerHandler timerHandler) {
-                if (reloadProgress  == ProgressBar.FULL_PROGRESS - 1) {
-                    reloadProgress ++;
-                    activity.getSceneSwitcher().getGameScene().getGameGUD().updateProgressBar(reloadProgress );
+    private void updateTimer() {
+        if (fireTimerHandler != null) {
+            fireTimerHandler.setTimerSeconds(fireDelay);
+            fireTimerHandler.reset();
+        } else {
+            fireTimerHandler = new PausableTimerHandler(fireDelay, new ITimerCallback() {
+                @Override
+                public void onTimePassed(final TimerHandler timerHandler) {
                     fireAvailable = true;
-                }
-                if (reloadProgress  < ProgressBar.FULL_PROGRESS - 1) {
-                    reloadProgress ++;
-                    activity.getSceneSwitcher().getGameScene().getGameGUD().updateProgressBar(reloadProgress );
                     fireTimerHandler.reset();
                 }
-            }
-        });
+            });
+        }
+    }
 
+    public float getTime() {
+        return fireTimerHandler.getTimerSecondsElapsed();
     }
 }
