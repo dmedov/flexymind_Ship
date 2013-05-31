@@ -4,7 +4,6 @@ import android.graphics.Point;
 import com.example.ship.R;
 import com.example.ship.RootActivity;
 import com.example.ship.commons.A;
-import com.example.ship.game.hud.HighScoresHUD;
 import com.example.ship.resource.ResourceManager;
 import org.andengine.engine.Engine;
 import org.andengine.entity.scene.Scene;
@@ -67,15 +66,15 @@ public class ShipMenuScene extends Scene {
     }
 
     private void createTitle() {
-        Font titleFont = FontFactory.createFromAsset( activity.getFontManager()
-                                                    , activity.getTextureManager()
-                                                    , FONT_ATLAS_SIDE
-                                                    , FONT_ATLAS_SIDE
-                                                    , activity.getAssets()
-                                                    , A.a.getStringResource(R.string.FONT_PLOK_FILE)
-                                                    , TITLE_FONT_HEIGHT
-                                                    , true
-                                                    , android.graphics.Color.BLACK);
+        Font titleFont = FontFactory.createFromAsset(activity.getFontManager()
+                , activity.getTextureManager()
+                , FONT_ATLAS_SIDE
+                , FONT_ATLAS_SIDE
+                , activity.getAssets()
+                , A.a.getStringResource(R.string.FONT_PLOK_FILE)
+                , TITLE_FONT_HEIGHT
+                , true
+                , android.graphics.Color.BLACK);
         titleFont.load();
         Text title = new Text( 0
                              , 0

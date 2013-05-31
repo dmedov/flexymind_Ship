@@ -1,10 +1,11 @@
-package com.example.ship.game.hud;
+package com.example.ship.menu;
 
 import android.graphics.PointF;
 import android.graphics.Typeface;
 import com.example.ship.R;
 import com.example.ship.commons.A;
 import com.example.ship.game.highscores.ScoreRecord;
+import com.example.ship.game.hud.GameButtonSprite;
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.text.Text;
@@ -49,7 +50,7 @@ public class HighScoresHUD extends HUD {
             scoresString = A.a.getStringResource(R.string.NO_RECORDS);
         } else {
             for (int i = 0; i < scoreRecords.size(); i++) {
-                scoresString += String.format( "%d.\t%d6\t%s"
+                scoresString += String.format( "%d.\t%d\t%s\n"
                                              , i + 1
                                              , scoreRecords.get(i).getScore()
                                              , scoreRecords.get(i).getPlayerName());
