@@ -140,8 +140,10 @@ public class SceneSwitcher {
                 resourceManager.playLoopMusic(R.raw.m_menu_music, resourceManager.FROM_THE_BEGINING);
                 break;
             case GAME_STATE :
-                resourceManager.playLoopMusic( R.raw.m_game_music
-                                             , activity.getIntResource(R.integer.GAME_SCENE_MUSIC_VOLUME) );
+                resourceManager.playMusicRandom( activity.getIntResource(R.integer.GAME_SCENE_MUSIC_VOLUME)
+                                               , R.raw.m_game_music
+                                               , R.raw.m_menu_music);
+
                 resourceManager.playLoopMusic( R.raw.m_waves
                                              , activity.getIntResource(R.integer.GAME_SCENE_WAVES_VOLUME) );
                 break;
