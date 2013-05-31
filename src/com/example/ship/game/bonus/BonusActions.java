@@ -10,8 +10,8 @@ import com.example.ship.game.Ship;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 
-import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Created with IntelliJ IDEA.
@@ -26,7 +26,7 @@ public class BonusActions {
 
     private static GameScene gameScene = A.a.getSceneSwitcher().getGameScene();
     private static Gun gun = gameScene.getGun();
-    private static ArrayList<Ship> ships = gameScene.getShips();
+    private static CopyOnWriteArrayList<Ship> ships = gameScene.getShips();
     private static Random rnd = new Random();
 
     public static void runGoodBonus() {
@@ -93,6 +93,6 @@ public class BonusActions {
             player.addPoints((int) (ship.getScore() * player.getLevel().getScoreMultiplier()));
             player.getLevel().incrementLevelProgress();
         }
-        ships.clear();
+        gameScene.clearShips();
     }
 }

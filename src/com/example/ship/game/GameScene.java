@@ -20,6 +20,7 @@ import org.andengine.util.color.Color;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class GameScene extends Scene {
     private static int layerCount = 0;
@@ -48,10 +49,11 @@ public class GameScene extends Scene {
     private Sprite backgroundSprite;
     private ArrayList<Sprite> waveSprites;
     private Gun gun;
-    private ArrayList<Ship> ships;
-    private ArrayList<Bonus> bonuses;
+    private CopyOnWriteArrayList<Ship> ships;
+    private CopyOnWriteArrayList<Bonus> bonuses;
     private HashMap<Integer, Float> shipLinesPosition;
     private Player player;
+    private boolean clearShips = false;
 
     public GameScene(final RootActivity activity) {
         super();
@@ -64,8 +66,8 @@ public class GameScene extends Scene {
         }
 
         shipLinesPosition = new HashMap<Integer, Float>();
-        ships = new ArrayList<Ship>();
-        bonuses = new ArrayList<Bonus>();
+        ships = new CopyOnWriteArrayList<Ship>();
+        bonuses = new CopyOnWriteArrayList<Bonus>();
         waveSprites = new ArrayList<Sprite>();
 
         createBackground();
@@ -129,7 +131,11 @@ public class GameScene extends Scene {
         return shipLinesPosition.get(lineId);
     }
 
-    public ArrayList<Ship> getShips() {
+    public void clearShips() {
+        clearShips = true;
+    }
+
+    public CopyOnWriteArrayList<Ship> getShips() {
         return ships;
     }
 
@@ -138,6 +144,11 @@ public class GameScene extends Scene {
         Ship deadShip = null;
         boolean stopCheck = false;
         boolean blockBonus = false;
+
+        if (clearShips) {
+            ships.clear();
+            clearShips = false;
+        }
 
         for (Ship ship: ships) {
             Sprite shipSprite = ship.getSprite();
