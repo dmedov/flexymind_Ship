@@ -187,15 +187,13 @@ public class Ship {
                 smokeParticleSystems.get(last).setParticlesSpawnEnabled(false);
             }
         }
-        public void detachSelf(){
-            if(fireParticleSystems.size() > 0 && smokeParticleSystems.size() > 0) {
+        public void detachSelf() {
                 for (SpriteParticleSystem particleSystem : smokeParticleSystems) {
                     particleSystem.detachSelf();
                 }
                 for (SpriteParticleSystem particleSystem : fireParticleSystems) {
                     particleSystem.detachSelf();
                 }
-            }
         }
     }
 
