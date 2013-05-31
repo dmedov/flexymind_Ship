@@ -48,7 +48,7 @@ public class Effects {
                     new RectangleParticleEmitter( pCenter.x + 0.5f * pProportions.x
                                                 , pCenter.y
                                                 , pProportions.x
-                                                , pProportions.y );
+                                                , pProportions.y);
             SpriteParticleSystem particleSystem =
                     new SpriteParticleSystem( particleEmitter
                                             , pRateRange.x
@@ -60,16 +60,16 @@ public class Effects {
             //Initializers
             particleSystem.addParticleInitializer(
                     new BlendFunctionParticleInitializer<Sprite>( GLES20.GL_SRC_ALPHA
-                                                                , GLES20.GL_ONE ));
+                                                                , GLES20.GL_ONE));
 
             particleSystem.addParticleInitializer(
                     new ExpireParticleInitializer<Sprite>( lifeTime.x
-                                                         , lifeTime.y ));
+                                                         , lifeTime.y));
             particleSystem.addParticleInitializer(
                     new VelocityParticleInitializer<Sprite>( 0f
                                                            , 0f
                                                            , pVelocityYRange.x
-                                                           , pVelocityYRange.y ));
+                                                           , pVelocityYRange.y));
             particleSystem.addParticleInitializer(new AlphaParticleInitializer<Sprite>(pAlpha));
 
             //Modifiers
@@ -77,7 +77,7 @@ public class Effects {
                     new ScaleParticleModifier<Sprite>( lifeTime.x
                                                      , lifeTime.x
                                                      , scaleRange.x
-                                                     , scaleRange.y ));
+                                                     , scaleRange.y));
             particleSystem.addParticleModifier(
                     new ColorParticleModifier<Sprite>( lifeTime.x
                                                      , lifeTime.y
@@ -106,6 +106,7 @@ public class Effects {
             pVelocityYRange     = recipe.velocityYRange;
         }
     }
+
     public static final class SmokeParticleSystemFactory {
 
         private static PointF pCenter;
@@ -114,7 +115,7 @@ public class Effects {
         private static PointF lifeTime          = new PointF(5, 6);
         private static PointF scaleRange        = new PointF(0.2f, 3f);
         private static Color  initFireColor     = new Color(1f, 1f, 1f);
-        private static Color  endFireColor      = new Color(0.3f, 0.3f, 0.3f);  //0.1
+        private static Color  endFireColor      = new Color(0.3f, 0.3f, 0.3f);
         private static PointF  pRateRange       = new PointF(25f, 30f);
         private static int    pParticlesMaximum = 200;
         private static PointF  pVelocityYRange   = new PointF(-20f,-15f);
@@ -132,7 +133,7 @@ public class Effects {
                     new RectangleParticleEmitter( pCenter.x + 0.5f * pProportions.x
                                                 , pCenter.y
                                                 , pProportions.x
-                                                , pProportions.y );
+                                                , pProportions.y);
             SpriteParticleSystem particleSystem =
                     new SpriteParticleSystem( particleEmitter
                                             , pRateRange.x

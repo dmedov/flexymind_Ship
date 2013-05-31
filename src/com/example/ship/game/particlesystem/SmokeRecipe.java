@@ -19,6 +19,7 @@ public class SmokeRecipe extends Recipe {
         this.alpha =            1f;
         this.scaleTime =        new PointF(0f, 4.5f);
     }
+
     SmokeRecipe( int typeId
                , int level
                , PointF center
@@ -36,6 +37,7 @@ public class SmokeRecipe extends Recipe {
         this.scaleTime =        scaleTime;
 
     }
+
     public String toString() {
         String string = "";
         string += super.toString();

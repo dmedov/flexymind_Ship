@@ -148,6 +148,7 @@ public class Ship {
 
         return false;
     }
+
     public int getType() {
         return typeId;
     }
@@ -161,7 +162,7 @@ public class Ship {
         }
 
         public void addFire() {
-            if (currentFireLevel != 0){
+            if (currentFireLevel != 0) {
                 stopLastEffect();
             }
             SpriteParticleSystem fireParticleSystem =
@@ -187,6 +188,7 @@ public class Ship {
                 smokeParticleSystems.get(last).setParticlesSpawnEnabled(false);
             }
         }
+
         public void detachSelf() {
                 for (SpriteParticleSystem particleSystem : smokeParticleSystems) {
                     particleSystem.detachSelf();
@@ -233,16 +235,16 @@ public class Ship {
 
     private void setDirection() {
         if (direction == TO_LEFT) {
-            startPoint = new PointF( activity.getCamera().getXMax()
+            startPoint = new PointF(activity.getCamera().getXMax()
                                    , yPosition - shipSprite.getHeightScaled() * (1 - RELATIVE_WATERLINE));
-            finishPoint = new PointF( activity.getCamera().getXMin() - abs(shipSprite.getWidthScaled())
-                                                                     - FINISH_OFFSET
+            finishPoint = new PointF(activity.getCamera().getXMin() - abs(shipSprite.getWidthScaled())
+                                                                    - FINISH_OFFSET
                                     , startPoint.y);
         } else {
             startPoint = new PointF( activity.getCamera().getXMin() - abs(shipSprite.getWidthScaled())
                                    , yPosition - shipSprite.getHeightScaled() * (1 - RELATIVE_WATERLINE));
-            finishPoint = new PointF( activity.getCamera().getXMax() + 2f * abs(shipSprite.getWidthScaled())
-                                                                     + FINISH_OFFSET
+            finishPoint = new PointF(activity.getCamera().getXMax() + 2f * abs(shipSprite.getWidthScaled())
+                                                                    + FINISH_OFFSET
                                     , startPoint.y);
         }
     }
@@ -255,8 +257,8 @@ public class Ship {
                                                     , finishPoint.y
                                                     , EaseLinear.getInstance());
 
-        shipSprite.setRotationCenterX( 0.5f * shipSprite.getWidthScaled() );
-        shipSprite.setRotationCenterY(abs( shipSprite.getRotationCenterX() ) * RELATIVE_ROTATION_CENTER_Y_OFFSET);
+        shipSprite.setRotationCenterX(0.5f * shipSprite.getWidthScaled());
+        shipSprite.setRotationCenterY(abs(shipSprite.getRotationCenterX()) * RELATIVE_ROTATION_CENTER_Y_OFFSET);
 
         RotationModifier rotateUpModifier = new RotationModifier( ROTATE_DURATION
                                                                 , MAX_ROTATE_ANGLE
@@ -282,7 +284,7 @@ public class Ship {
         hitAreaSprite = new Sprite( 0
                                   , shipSprite.getHeight() * ( 1 - RELATIVE_HIT_AREA_OFFSET )
                                   , activity.getResourceManager().getLoadedTextureRegion(R.drawable.hitarea)
-                                  , activity.getVertexBufferObjectManager() );
+                                  , activity.getVertexBufferObjectManager());
         hitAreaSprite.setScaleCenterX(0);
         hitAreaSprite.setScaleX((hitAreaToPixel - hitAreaFromPixel) / hitAreaSprite.getWidthScaled());
         hitAreaSprite.setX(hitAreaFromPixel);
@@ -307,18 +309,18 @@ public class Ship {
                                                      , sinkPointX
                                                      , shipSprite.getY()
                                                      , shipSprite.getY()
-                                                     , EaseQuadOut.getInstance() );
+                                                     , EaseQuadOut.getInstance());
 
         MoveModifier moveModifierY = new MoveModifier( sinkVelocity
                                                      , sinkPointX
                                                      , sinkPointX
                                                      , shipSprite.getY()
                                                      , shipSprite.getY() + shipSprite.getHeightScaled()
-                                                     , EaseQuadIn.getInstance() );
+                                                     , EaseQuadIn.getInstance());
 
         RotationModifier rotation = new RotationModifier( sinkRotationVelocity
                                                         , shipSprite.getRotation()
-                                                        , sinkRotationAngle ){
+                                                        , sinkRotationAngle){
             @Override
             protected void onModifierStarted(IEntity pItem) {
                 super.onModifierStarted(pItem);

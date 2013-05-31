@@ -24,7 +24,7 @@ public class FireRecipe extends Recipe {
                      , Color endFireColor
                      , PointF rateRange
                      , int particlesMaximum
-                     , PointF velocityYRange ) {
+                     , PointF velocityYRange) {
         super(typeId, level, center, proportions);
         this.lifeTime =         lifeTime;
         this.scaleRange =       scaleRange;
@@ -47,7 +47,7 @@ public class FireRecipe extends Recipe {
                      , PointF rateRange
                      , int particlesMaximum
                      , PointF velocityYRange
-                     , float alpha ) {
+                     , float alpha) {
         super(typeId, level, center, proportions);
         this.lifeTime =         lifeTime;
         this.scaleRange =       scaleRange;
