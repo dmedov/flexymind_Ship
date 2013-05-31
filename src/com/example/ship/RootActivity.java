@@ -48,7 +48,7 @@ public class RootActivity extends BaseGameActivity {
         zoomCamera = createZoomCamera();
 
         EngineOptions engineOptions = new EngineOptions( true
-                                                       , ScreenOrientation.LANDSCAPE_FIXED
+                                                       , ScreenOrientation.LANDSCAPE_SENSOR
                                                        , new FillResolutionPolicy()
                                                        , zoomCamera);
         engineOptions.getTouchOptions().setNeedsMultiTouch(true);
@@ -161,7 +161,9 @@ public class RootActivity extends BaseGameActivity {
     public int getIntResource(int id) {
         return this.getResources().getInteger(id);
     }
-
+    public int[] getIntArrayResource(int id) {
+        return this.getResources().getIntArray(id);
+    }
     public String getStringResource(int id) {
         return this.getResources().getString(id);
     }
