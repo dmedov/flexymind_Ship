@@ -165,9 +165,9 @@ public class Ship {
                 stopLastEffect();
             }
             SpriteParticleSystem fireParticleSystem =
-                    Effects.FireParticleSystemFactory.build(Recipes.Fire.find(typeId, ++currentFireLevel));
+                    Effects.FireParticleSystemFactory.build(Recipes.FireRecipes.find(typeId, ++currentFireLevel));
             SpriteParticleSystem smokeParticleSystem =
-                    Effects.SmokeParticleSystemFactory.build(Recipes.Smoke.find(typeId, currentFireLevel));
+                    Effects.SmokeParticleSystemFactory.build(Recipes.SmokeRecipes.find(typeId, currentFireLevel));
 
             fireParticleSystem.setParticlesSpawnEnabled(true);
             smokeParticleSystem.setParticlesSpawnEnabled(true);

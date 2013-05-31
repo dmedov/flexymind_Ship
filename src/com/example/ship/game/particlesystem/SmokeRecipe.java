@@ -3,7 +3,7 @@ package com.example.ship.game.particlesystem;
 import android.graphics.PointF;
 import org.andengine.util.color.Color;
 
-public class RecipeSmoke extends Recipe {
+public class SmokeRecipe extends Recipe {
     public final PointF velocityYRange;
     public final Color  endFireColor;
     public final float  alpha;
@@ -11,15 +11,15 @@ public class RecipeSmoke extends Recipe {
     public final PointF scaleTime;
 
 
-    RecipeSmoke(int typeId, int level, PointF center, PointF proportions) {
+    SmokeRecipe(int typeId, int level, PointF center, PointF proportions) {
         super(typeId, level, center, proportions);
-        this.scaleRange = new PointF(0.2f, 1f);
+        this.scaleRange =       new PointF(0.2f, 1f);
         this.endFireColor =     new Color(0.1f, 0.1f, 0.1f);
-        this.velocityYRange =     new PointF(-20, -15f);
+        this.velocityYRange =   new PointF(-20, -15f);
         this.alpha =            1f;
         this.scaleTime =        new PointF(0f, 4.5f);
     }
-    RecipeSmoke( int typeId
+    SmokeRecipe( int typeId
                , int level
                , PointF center
                , PointF proportions
@@ -27,7 +27,7 @@ public class RecipeSmoke extends Recipe {
                , PointF scaleRange
                , Color endFireColor
                , float alpha
-               , PointF scaleTime ) {
+               , PointF scaleTime) {
         super(typeId, level, center, proportions);
         this.scaleRange =       scaleRange;
         this.endFireColor =     endFireColor;

@@ -40,7 +40,7 @@ public class Effects {
         private static int pParticlesMaximum;
         private static PointF pVelocityYRange;
 
-        public static SpriteParticleSystem build(RecipeFire recipe) {
+        public static SpriteParticleSystem build(FireRecipe recipe) {
 
             init(recipe);
 
@@ -91,7 +91,7 @@ public class Effects {
             return particleSystem;
         }
 
-        private static void init(RecipeFire recipe) {
+        private static void init(FireRecipe recipe) {
 
             Log.d("ship", recipe.toString());
             pCenter             = recipe.center;
@@ -124,7 +124,7 @@ public class Effects {
         private static PointF alphaTime         = new PointF(4.5f, 6f);
         private static PointF alphaRange        = new PointF(0.5f, 0f);
 
-        public static SpriteParticleSystem build(RecipeSmoke recipe) {
+        public static SpriteParticleSystem build(SmokeRecipe recipe) {
 
             init(recipe);
 
@@ -196,7 +196,7 @@ public class Effects {
             return particleSystem;
         }
 
-        private static void init(RecipeSmoke recipe) {
+        private static void init(SmokeRecipe recipe) {
 
             Log.d("ship", recipe.toString());
             pCenter         = recipe.center;

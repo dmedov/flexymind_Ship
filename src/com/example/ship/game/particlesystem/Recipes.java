@@ -16,12 +16,12 @@ import java.util.ArrayList;
  * Класс для удобного хранения настроек эффектов
  */
 public class Recipes {
-    public static class Fire {
-        private static ArrayList<RecipeFire> fieryRecipes;
+    public static class FireRecipes {
+        private static ArrayList<FireRecipe> fieryRecipes;
 
         static {
-            fieryRecipes = new ArrayList<RecipeFire>();
-            fieryRecipes.add(new RecipeFire( R.drawable.missileboat
+            fieryRecipes = new ArrayList<FireRecipe>();
+            fieryRecipes.add(new FireRecipe(R.drawable.missileboat
                                            , 1
                                            , new PointF(110f, 61f)
                                            , new PointF(23, 0f)
@@ -32,7 +32,7 @@ public class Recipes {
                                            , new PointF(10f, 10f)
                                            , 100
                                            , new PointF(-10f, -20f) ));
-            fieryRecipes.add(new RecipeFire( R.drawable.missileboat
+            fieryRecipes.add(new FireRecipe( R.drawable.missileboat
                                            , 2
                                            , new PointF(40f, 65f)
                                            , new PointF(100f, 0f)
@@ -44,7 +44,7 @@ public class Recipes {
                                            , 100
                                            , new PointF(-10f, -20f)
                                            , 1f ));
-            fieryRecipes.add(new RecipeFire( R.drawable.missileboat
+            fieryRecipes.add(new FireRecipe( R.drawable.missileboat
                                            , 3
                                            , new PointF(15f, 65f)
                                            , new PointF(144f, 0f)
@@ -55,7 +55,7 @@ public class Recipes {
                                            , new PointF(20f, 20f)
                                            , 100
                                            , new PointF(-20f, -40f) ));
-            fieryRecipes.add(new RecipeFire( R.drawable.sailfish
+            fieryRecipes.add(new FireRecipe( R.drawable.sailfish
                                            , 1
                                            , new PointF(93f, 127f)
                                            , new PointF(23, 0f)
@@ -66,7 +66,7 @@ public class Recipes {
                                            , new PointF(10f, 10f)
                                            , 100
                                            , new PointF(-10f, -20f) ));
-            fieryRecipes.add(new RecipeFire( R.drawable.sailfish
+            fieryRecipes.add(new FireRecipe( R.drawable.sailfish
                                            , 2
                                            , new PointF(80f, 126f)
                                            , new PointF(58f, 0f)
@@ -78,7 +78,7 @@ public class Recipes {
                                            , 100
                                            , new PointF(-10f, -20f)
                                            , 0.5f ));
-            fieryRecipes.add(new RecipeFire( R.drawable.sailfish
+            fieryRecipes.add(new FireRecipe( R.drawable.sailfish
                                            , 3
                                            , new PointF(52f, 131f)
                                            , new PointF(100f, 0f)
@@ -89,7 +89,7 @@ public class Recipes {
                                            , new PointF(20f, 20f)
                                            , 100
                                            , new PointF(-20f, -40f) ));
-            fieryRecipes.add(new RecipeFire( R.drawable.battleship
+            fieryRecipes.add(new FireRecipe( R.drawable.battleship
                                            , 1
                                            , new PointF(93f, 120f)
                                            , new PointF(23, 0f)
@@ -100,7 +100,7 @@ public class Recipes {
                                            , new PointF(10f, 10f)
                                            , 100
                                             , new PointF(-10f, -20f) ));
-            fieryRecipes.add(new RecipeFire( R.drawable.battleship
+            fieryRecipes.add(new FireRecipe( R.drawable.battleship
                                            , 2
                                            , new PointF(55f, 132f)
                                            , new PointF(100f, 0f)
@@ -112,7 +112,7 @@ public class Recipes {
                                            , 100
                                            , new PointF(-10f, -20f)
                                            , 0.5f ));
-            fieryRecipes.add(new RecipeFire( R.drawable.battleship
+            fieryRecipes.add(new FireRecipe( R.drawable.battleship
                                            , 3
                                            , new PointF(18f, 132f)
                                            , new PointF(146f, 0f)
@@ -125,9 +125,9 @@ public class Recipes {
                                            , new PointF(-20f, -40f) ));
         }
 
-        public static RecipeFire find(int typeId, int level) {
+        public static FireRecipe find(int typeId, int level) {
             final int FIRST = 0;
-            for (RecipeFire recipe : fieryRecipes) {
+            for (FireRecipe recipe : fieryRecipes) {
                 if (typeId == recipe.typeId && level == recipe.level) {
                     return recipe;
                 }
@@ -135,21 +135,21 @@ public class Recipes {
             return fieryRecipes.get(FIRST);
         }
     }
-    public static class Smoke {
+    public static class SmokeRecipes {
 
-        private static ArrayList<RecipeSmoke> smokyRecipes;
+        private static ArrayList<SmokeRecipe> smokyRecipes;
 
         static {
-            smokyRecipes = new ArrayList<RecipeSmoke>();
-            smokyRecipes.add(new RecipeSmoke( R.drawable.missileboat
+            smokyRecipes = new ArrayList<SmokeRecipe>();
+            smokyRecipes.add(new SmokeRecipe( R.drawable.missileboat
                                             , 1
                                             , new PointF(110f, 61f)
-                                            , new PointF(23, 0f) ));
-            smokyRecipes.add(new RecipeSmoke( R.drawable.missileboat
+                                            , new PointF(23, 0f)));
+            smokyRecipes.add(new SmokeRecipe(R.drawable.missileboat
                                             , 2
                                             , new PointF(40f, 65f)
-                                            , new PointF(100f, 0f) ));
-            smokyRecipes.add(new RecipeSmoke( R.drawable.missileboat
+                                            , new PointF(100f, 0f)));
+            smokyRecipes.add(new SmokeRecipe( R.drawable.missileboat
                                             , 3
                                             , new PointF(15f, 65f)
                                             , new PointF(144f, 0f)
@@ -157,16 +157,16 @@ public class Recipes {
                                             , new PointF(0.2f, 3f)
                                             , new Color(0.1f, 0.1f, 0.1f)
                                             , 0.5f
-                                            , new PointF(0f, 2f) ));
-            smokyRecipes.add(new RecipeSmoke( R.drawable.sailfish
+                                            , new PointF(0f, 2f)));
+            smokyRecipes.add(new SmokeRecipe( R.drawable.sailfish
                                             , 1
                                             , new PointF(93f, 127f)
-                                            , new PointF(23, 0f) ));
-            smokyRecipes.add(new RecipeSmoke( R.drawable.sailfish
+                                            , new PointF(23, 0f)));
+            smokyRecipes.add(new SmokeRecipe( R.drawable.sailfish
                                             , 2
                                             , new PointF(80f, 126f)
-                                            , new PointF(58f, 0f) ));
-            smokyRecipes.add(new RecipeSmoke( R.drawable.sailfish
+                                            , new PointF(58f, 0f)));
+            smokyRecipes.add(new SmokeRecipe( R.drawable.sailfish
                                             , 3
                                             , new PointF(52f, 131f)
                                             , new PointF(100f, 0f)
@@ -174,16 +174,16 @@ public class Recipes {
                                             , new PointF(0.2f, 3f)
                                             , new Color(0.1f, 0.1f, 0.1f)
                                             , 0.5f
-                                            , new PointF(0f, 2f) ));
-            smokyRecipes.add(new RecipeSmoke( R.drawable.battleship
+                                            , new PointF(0f, 2f)));
+            smokyRecipes.add(new SmokeRecipe( R.drawable.battleship
                                             , 1
                                             , new PointF(93f, 120f)
-                                            , new PointF(23, 0f) ));
-            smokyRecipes.add(new RecipeSmoke( R.drawable.battleship
+                                            , new PointF(23, 0f)));
+            smokyRecipes.add(new SmokeRecipe( R.drawable.battleship
                                             , 2
                                             , new PointF(55f, 132f)
-                                            , new PointF(100f, 0f) ));
-            smokyRecipes.add(new RecipeSmoke( R.drawable.battleship
+                                            , new PointF(100f, 0f)));
+            smokyRecipes.add(new SmokeRecipe( R.drawable.battleship
                                             , 3
                                             , new PointF(18f, 132f)
                                             , new PointF(146f, 0f)
@@ -191,13 +191,12 @@ public class Recipes {
                                             , new PointF(0.2f, 3f)
                                             , new Color(0.1f, 0.1f, 0.1f)
                                             , 0.5f
-                                            , new PointF(0f, 2f) ));
-
+                                            , new PointF(0f, 2f)));
         }
 
-        public static RecipeSmoke find(int typeId, int level) {
+        public static SmokeRecipe find(int typeId, int level) {
             final int FIRST = 0;
-            for (RecipeSmoke recipe : smokyRecipes) {
+            for (SmokeRecipe recipe : smokyRecipes) {
                 if (typeId == recipe.typeId && level == recipe.level) {
                     return recipe;
                 }
