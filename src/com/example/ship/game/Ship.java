@@ -63,6 +63,7 @@ public class Ship {
     private int health;
     private int score;
     private Random rand;
+    private boolean frozen = false;
 
     public Ship(RootActivity activity, float yPosition, String shipType, boolean direction) {
         this(activity, yPosition, shipsId.get(shipType), direction);
@@ -236,9 +237,12 @@ public class Ship {
     private void createSinkModifier() {
         final float START_SPEED = abs(finishPoint.x - startPoint.x) / velocity;
         rand = new Random();
-        float sinkPointX = (direction == TO_LEFT) ?
+        float sinkPointX = shipSprite.getX();
+        if (!frozen) {
+            sinkPointX = (direction == TO_LEFT) ?
                 (shipSprite.getX() - START_SPEED * START_SPEED / (2 * SINK_ACCELERATION))
                 : (shipSprite.getX() + START_SPEED * START_SPEED / (2 * SINK_ACCELERATION));
+        }
 
         float sinkRotationAngle = MAX_SINK_ROTATION_ANGLE * (2 * rand.nextFloat() - 1);
         float sinkRotationVelocity = (MAX_SINK_ROTATION_VELOCITY - MIN_SINK_ROTATION_VELOCITY) * rand.nextFloat()
@@ -279,7 +283,12 @@ public class Ship {
             }
         };
 
+
         shipSprite.registerEntityModifier(moveShip);
+    }
+
+    public void setFrozen(boolean frozen) {
+        this.frozen = frozen;
     }
 }
 

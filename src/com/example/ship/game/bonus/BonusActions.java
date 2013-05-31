@@ -35,13 +35,13 @@ public class BonusActions {
         Log.e("random", String.valueOf(random));
         switch (random) {
             case 0:
-                setMachineGun();
+                stopAllShips();
                 break;
             case 1:
                 stopAllShips();
                 break;
             case 2:
-                killAllShips();
+                stopAllShips();
                 break;
         }
     }
@@ -55,6 +55,7 @@ public class BonusActions {
 
         for (Ship ship : ships) {
             ship.getSprite().setIgnoreUpdate(true);
+            ship.setFrozen(true);
         }
 
         gameScene.getPlayer().getLevel().pauseSpawn();
@@ -64,6 +65,7 @@ public class BonusActions {
             public void onTimePassed(final TimerHandler timerHandler) {
                 for (Ship ship : ships) {
                     ship.getSprite().setIgnoreUpdate(false);
+                    ship.setFrozen(false);
                 }
                 gameScene.getPlayer().getLevel().resumeSpawn();
                 A.e.unregisterUpdateHandler(timerHandler);
