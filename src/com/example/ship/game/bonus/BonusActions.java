@@ -35,13 +35,13 @@ public class BonusActions {
         Log.e("random", String.valueOf(random));
         switch (random) {
             case 0:
-                stopAllShips();
+                setMachineGun();
                 break;
             case 1:
                 stopAllShips();
                 break;
             case 2:
-                stopAllShips();
+                killAllShips();
                 break;
         }
     }
@@ -75,9 +75,10 @@ public class BonusActions {
     }
 
     public static void setMachineGun() { //TODO gun bonus
-        final float gunBonusTime = 5.0f;
+        final float gunBonusTime = 7.0f;
+        final float timeMultiplier = 0.3f;
         final float previousFireDelay = gun.getFireDelay();
-        gun.setFireDelay(previousFireDelay * 0.1f);
+        gun.setFireDelay(previousFireDelay * timeMultiplier);
         gun.setAutoFire(true);
 
         TimerHandler bonusTimerHandler = new TimerHandler(gunBonusTime, new ITimerCallback() {
