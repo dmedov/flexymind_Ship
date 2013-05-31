@@ -193,7 +193,6 @@ public class GameScene extends Scene {
                     }
 
                     if (ship.hit(getGun().getDamage())) {
-                        player.addPoints((int) (ship.getScore() * player.getLevel().getScoreMultiplier()));
                         deadShip = ship;
                     }
 

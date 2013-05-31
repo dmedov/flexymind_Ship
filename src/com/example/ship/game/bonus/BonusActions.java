@@ -90,7 +90,7 @@ public class BonusActions {
         Player player = gameScene.getPlayer();
         for (Ship ship : ships) {
             ship.killSelf();
-            player.addPoints((int) (ship.getScore() * player.getLevel().getScoreMultiplier()));
+            player.addPoints(ship.getScore());
             player.getLevel().incrementLevelProgress();
         }
         ships.clear();

@@ -8,6 +8,7 @@ Date: 07.05.13
 import android.graphics.PointF;
 import com.example.ship.R;
 import com.example.ship.RootActivity;
+import com.example.ship.commons.A;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.*;
 import org.andengine.entity.sprite.Sprite;
@@ -131,6 +132,7 @@ public class Ship {
         activity.getResourceManager().playOnceSound( R.raw.s_explosion1
                                                    , activity.getIntResource(R.integer.SHIP_EXPLOSION));
         if ( health <= 0) {
+            A.a.getSceneSwitcher().getGameScene().getPlayer().addPoints(this.getScore());
             activity.getSceneSwitcher().getGameScene().getPlayer().getLevel().incrementLevelProgress();
             killSelf();
             return true;
