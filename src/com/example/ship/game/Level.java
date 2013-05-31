@@ -60,7 +60,7 @@ public class Level {
 
         levelProgress = 0;
 
-        activity.getSceneSwitcher().getGameScene().getGameHUD().showNewLevelMessage(currentLevel);
+        activity.getSceneSwitcher().getGameScene().getGameHUD().showNewLevelMessage(currentLevel, isBonus);
         updateLevelInfoInHud();
 
         activity.getResourceManager().playOnceSound(R.raw.s_gong
