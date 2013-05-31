@@ -30,7 +30,7 @@ public class Gun {
     private static final float BULLET_RELATIVE_START_POINT = 1.0f;
     private static final int DEFAULT_DAMAGE = 100;
     private static final float DEFAULT_PERSPECTIVE_SCALE = 0.7f;
-    private static float FIRE_DELAY = 1.0f;
+    private static float fireDelay = 1.0f;
     private float perspectiveScale;
     private boolean rotateLeft;
     private boolean rotationEnabled;
@@ -177,11 +177,11 @@ public class Gun {
     }
 
     public void setFireDelay(float fireDelay) {
-        FIRE_DELAY = fireDelay;
+        Gun.fireDelay = fireDelay;
     }
 
     public float getFireDelay() {
-        return FIRE_DELAY;
+        return fireDelay;
     }
 
     public void setAutoFire(boolean autoFire) {
@@ -189,7 +189,7 @@ public class Gun {
     }
 
     private void createTimer() {
-        fireTimerHandler = new PausableTimerHandler(FIRE_DELAY, new ITimerCallback() {
+        fireTimerHandler = new PausableTimerHandler(fireDelay, new ITimerCallback() {
             @Override
             public void onTimePassed(final TimerHandler timerHandler) {
                 /*if (reloadProgress  == ProgressBar.FULL_PROGRESS - 1) {
@@ -207,5 +207,9 @@ public class Gun {
             }
         });
 
+    }
+
+    public float getTime() {
+        return fireTimerHandler.getTimerSecondsElapsed();
     }
 }

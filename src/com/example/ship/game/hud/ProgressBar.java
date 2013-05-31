@@ -3,6 +3,8 @@ package com.example.ship.game.hud;
 import android.graphics.PointF;
 import com.example.ship.R;
 import com.example.ship.RootActivity;
+import com.example.ship.commons.A;
+import com.example.ship.game.Gun;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.util.color.Color;
@@ -39,7 +41,15 @@ public class ProgressBar {
                                          , 0
                                          , progressBarSprite.getWidthScaled()
                                          , progressBarSprite.getHeightScaled()
-                                         , activity.getVertexBufferObjectManager());
+                                         , activity.getVertexBufferObjectManager())  {
+            @Override
+            protected void onManagedUpdate(float pSecondsElapsed) {
+                super.onManagedUpdate(pSecondsElapsed);
+                Gun gun = A.a.getSceneSwitcher().getGameScene().getGun();
+                setProgress(gun.getTime() / gun.getFireDelay() * 100f);
+            }
+        };;
+
         maskRectangle.setMaskingEnabled(false);
         maskRectangle.setColor(Color.RED);
         maskRectangle.setAlpha(0.75f);
