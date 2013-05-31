@@ -97,8 +97,6 @@ public class GameOverHUD extends HUD {
                                  , ""
                                  , TEXT_LENGTH
                                  , activity.getEngine().getVertexBufferObjectManager());
-        winOrLooseText.setPosition( cameraSize.x * 0.5f - winOrLooseText.getWidth() * 0.5f
-                                  , cameraSize.y * 0.25f);
 
         inputText = new InputText( R.drawable.menubutton
                                  , font
@@ -112,21 +110,26 @@ public class GameOverHUD extends HUD {
                             , TEXT_LENGTH
                             , activity.getEngine().getVertexBufferObjectManager());
 
-        inTopText.setPosition( cameraSize.x * 0.5f - winOrLooseText.getWidth() * 0.5f - inputText.getWidth() * 0.5f
-                             , winOrLooseText.getY() + winOrLooseText.getHeight()
-                               + cameraSize.y * RELATIVE_SPACE_BETWEEN_ELEMENTS_HEIGHT);
-        inputText.setPosition( inTopText.getX() + inTopText.getWidth()
-                               + cameraSize.y * RELATIVE_SPACE_BETWEEN_ELEMENTS_HEIGHT
-                             , inTopText.getY() + inTopText.getHeight() * 0.5f - inputText.getHeight() * 0.5f);
-
         scoreText = new Text( 0
                             , 0
                             , font
                             , activity.getResources().getString(R.string.SCORE) + ": 000000"
                             , activity.getEngine().getVertexBufferObjectManager());
+
+        winOrLooseText.setPosition( cameraSize.x * 0.5f - winOrLooseText.getWidth() * 0.5f
+                                  , cameraSize.y * 0.2f);
+
         scoreText.setPosition( cameraSize.x * 0.5f - scoreText.getWidth() * 0.5f
-                             , inTopText.getY() + inTopText.getHeight()
+                             , winOrLooseText.getY() + winOrLooseText.getHeight()
                                + cameraSize.y * RELATIVE_SPACE_BETWEEN_ELEMENTS_HEIGHT);
+
+        inTopText.setPosition( cameraSize.x * 0.5f - inTopText.getWidth() * 0.5f - inputText.getWidth() * 0.5f
+                             , scoreText.getY() + scoreText.getHeight()
+                               + cameraSize.y * RELATIVE_SPACE_BETWEEN_ELEMENTS_HEIGHT);
+
+        inputText.setPosition( inTopText.getX() + inTopText.getWidth()
+                               + cameraSize.y * RELATIVE_SPACE_BETWEEN_ELEMENTS_HEIGHT
+                             , inTopText.getY() + inTopText.getHeight() * 0.5f - inputText.getHeight() * 0.5f);
 
         this.attachChild(winOrLooseText);
         this.attachChild(scoreText);
@@ -150,7 +153,7 @@ public class GameOverHUD extends HUD {
 
         restartButtonSprite.setScale(cameraSize.y * RELATIVE_GAME_OVER_BUTTON / restartButtonSprite.getHeight());
         restartButtonSprite.setPosition( cameraSize.x * 0.5f - restartButtonSprite.getWidth() * 0.5f
-                                       , scoreText.getY() + scoreText.getHeight()
+                                       , inTopText.getY() + inTopText.getHeight()
                                          + cameraSize.y * RELATIVE_SPACE_BETWEEN_ELEMENTS_HEIGHT);
 
         exitButtonSprite =

@@ -34,6 +34,9 @@ public class InputText extends ButtonSprite implements OnClickListener {
     public InputText(float pX, float pY, int rId, Font font, String title, String defaultInputValue) {
 
         super(pX, pY, A.rm.getLoadedTextureRegion(rId), A.e.getVertexBufferObjectManager());
+
+        this.setAlpha(0);
+
         this.title = title;
         inputString = defaultInputValue;
 
@@ -42,7 +45,7 @@ public class InputText extends ButtonSprite implements OnClickListener {
                              , this.getHeight() * 0.5f - underline.getHeight() * 0.5f);
 
         text = new Text(0, 0, font, defaultInputValue, TEXT_LENGTH, A.e.getVertexBufferObjectManager());
-        text.setPosition(underline.getWidth() * 0.5f - text.getWidth() * 0.5f, underline.getY());
+        text.setPosition(underline.getX() + underline.getWidth() * 0.5f - text.getWidth() * 0.5f, underline.getY());
 
         attachChild(text);
         attachChild(underline);
