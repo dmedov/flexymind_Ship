@@ -14,13 +14,14 @@ direction - направление: на лево, на право, случай
 -->
 
 <resources>
-    <level id="1" type="regular" scoreMultiplier="1.0">
+    <level id="1" type="bonus" number="10" delay="3.0" scoreMultiplier="1.0"/>
+    <level id="2" type="regular" scoreMultiplier="1.0">
         <enemy type="battleship" number="2" firstSpawnIn="4.0" periodicSpawnDelay="8.0" lines="1" direction="to right"/>
         <enemy type="missileBoat" number="2" firstSpawnIn="1.0" periodicSpawnDelay="8.0" lines="2" direction="to right"/>
         <enemy type="sailfish" number="2" firstSpawnIn="4.0" periodicSpawnDelay="8.0" lines="3" direction="to right"/>
     </level>
 
-    <level id="2" type="regular" scoreMultiplier="1.5">
+    <level id="3" type="regular" scoreMultiplier="1.5">
         <enemy type="sailfish" number="1" firstSpawnIn="1.0" lines="1" direction="to right"/>
         <enemy type="sailfish" number="2" firstSpawnIn="3.0" periodicSpawnDelay="8.0" lines="2" direction="to right"/>
         <enemy type="sailfish" number="1" firstSpawnIn="1.0" lines="3" direction="to right"/>
@@ -29,7 +30,7 @@ direction - направление: на лево, на право, случай
         <enemy type="missileBoat" number="2" randomSpawnDelay="12.0" firstSpawnIn="22.0" lines="3" direction="to left"/>
     </level>
 
-    <level id="3" type="regular" scoreMultiplier="2.0">
+    <level id="4" type="regular" scoreMultiplier="2.0">
         <enemy type="missileBoat" number="10" firstSpawnIn="1.0" randomSpawnDelay="10.0" lines="1 2 3" direction="both"/>
         <enemy type="sailfish"    number="3"  firstSpawnIn="5.0" randomSpawnDelay="15.0" lines="1 2 3" direction="both"/>
         <enemy type="battleship"  number="1"  firstSpawnIn="35.0" lines="1 2" direction="both"/>

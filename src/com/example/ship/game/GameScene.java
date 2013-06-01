@@ -208,6 +208,7 @@ public class GameScene extends Scene {
                     }
 
                     stopCheck = true;
+                    break;
                 }
             }
 

@@ -13,6 +13,7 @@
     <string name="LEVEL">Уровень</string>
     <string name="LEFT">Осталось</string>
     <string name="NEW_LEVEL_MESSAGE">Уровень</string>
+    <string name="BONUS_LEVEL">Бонусный</string>
     <string name="TYPE_NAME">Введите свое имя</string>
     <string name="IN_TOP">Ваше имя:</string>
     <!--GameOver Button Labels-->

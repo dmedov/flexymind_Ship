@@ -21,6 +21,7 @@
     <string name="LEVEL">Level</string>
     <string name="LEFT">Left</string>
     <string name="NEW_LEVEL_MESSAGE">Level</string>
+    <string name="BONUS_LEVEL">Bonus</string>
     <string name="TYPE_NAME">Enter your name</string>
     <string name="IN_TOP">Your name:</string>
     <!--Game Button ID-->

@@ -3,6 +3,7 @@ package com.example.ship.game;
 import android.util.Log;
 import com.example.ship.R;
 import com.example.ship.RootActivity;
+import com.example.ship.game.spawn.FullRandomShipSpawner;
 import com.example.ship.game.spawn.PeriodicalShipSpawner;
 import com.example.ship.game.spawn.RandomDelayShipSpawner;
 import com.example.ship.game.spawn.ShipSpawner;
@@ -35,6 +36,7 @@ public class Level {
     private float scoreMultiplier;
     private XmlPullParser parser = null;
     private ArrayList<ShipSpawner> shipSpawners;
+    private boolean isBonus = false;
 
     public Level(RootActivity activity) {
         this.activity = activity;
@@ -45,6 +47,7 @@ public class Level {
     public void startLevel(int level) {
         currentLevel = level;
         shipSpawners.clear();
+        isBonus = false;
 
         if (!initLevelFromXml(currentLevel)){
             activity.getSceneSwitcher().switchToGameOverHUD();
@@ -54,22 +57,10 @@ public class Level {
         for (ShipSpawner spawner: shipSpawners) {
             spawner.startSpawn();
         }
-//
-//     DeathMatch Mode
-//
-//        levelGoal = (int) (FIRST_LEVEL_GOAL * (1 + LEVEL_GOAL_MULTIPLIER * (currentLevel - 1)));
-//        levelProgress = 0;
-//
-//        float newSpawnDelay = (float) ( (FullRandomShipSpawner.MAX_SPAWN_DELAY - FullRandomShipSpawner.MIN_SPAWN_DELAY)
-//                                        * Math.pow(LEVEL_SPAWN_DELAY_MULTIPLIER, currentLevel - 1));
-//        activity.getSceneSwitcher().getGameScene().getFullRandomShipSpawner()
-//                .setSpawnDelay(newSpawnDelay);
-//
-//        Ship.setVelocityDivider((float) Math.pow(LEVEL_SHIP_SPEED_MULTIPLIER, currentLevel - 1));
 
         levelProgress = 0;
 
-        activity.getSceneSwitcher().getGameScene().getGameHUD().showNewLevelMessage(currentLevel);
+        activity.getSceneSwitcher().getGameScene().getGameHUD().showNewLevelMessage(currentLevel, isBonus);
         updateLevelInfoInHud();
 
         activity.getResourceManager().playOnceSound(R.raw.s_gong
@@ -102,6 +93,10 @@ public class Level {
         for (ShipSpawner spawner: shipSpawners) {
             spawner.resumeSpawn();
         }
+    }
+
+    public boolean isBonus() {
+        return isBonus;
     }
 
     private void updateLevelInfoInHud() {
@@ -162,15 +157,33 @@ public class Level {
 
             if (attribute.equals("id") && level == Integer.parseInt(value)) {
                 scoreMultiplier = 0.0f;
+                int number = 10;
+                float spawnDelay = 1.0f;
 
                 for (int j = 0; j < parser.getAttributeCount(); j++) {
                     if (parser.getAttributeName(j).equals("scoreMultiplier")) {
                         scoreMultiplier = Float.parseFloat(parser.getAttributeValue(j));
                     }
+                    if (parser.getAttributeName(j).equals("type") && parser.getAttributeValue(j).equals("bonus")) {
+                        isBonus = true;
+                    }
+                    if (parser.getAttributeName(j).equals("number")) {
+                        number = Integer.parseInt(parser.getAttributeValue(j));
+                    }
+                    if (parser.getAttributeName(j).equals("delay")) {
+                        spawnDelay = Float.parseFloat(parser.getAttributeValue(j));
+                    }
                 }
 
                 if (scoreMultiplier == 0.0f) {
                     scoreMultiplier = 1.0f;
+                }
+
+                if (isBonus) {
+                    levelGoal = number;
+                    FullRandomShipSpawner spawner = new FullRandomShipSpawner(number, spawnDelay);
+                    shipSpawners.add(spawner);
+                    return true;
                 }
 
                 while (!(  parser.getEventType() == XmlPullParser.END_TAG
