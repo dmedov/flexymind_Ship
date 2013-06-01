@@ -1,6 +1,7 @@
 package com.example.ship.resource;
 
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.util.Log;
 import com.example.ship.R;
 import org.andengine.audio.music.Music;
@@ -27,6 +28,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 /*
 Created by: IVAN
@@ -83,6 +85,7 @@ public class ResourceManager {
     private final Map<Integer, ITextureRegion> loadedTextures;
     private final Map<Integer, Music> loadedMusic;
     private final Map<Integer, Sound> loadedSound;
+    private ArrayList<int[]> playLists;
     protected final ArrayList<BuildableBitmapTextureAtlas> atlasList;
 
     private XmlPullParser parser = null;
@@ -91,6 +94,8 @@ public class ResourceManager {
     private SoundManager soundManager = null;
     private Context context;
     private int currentAtlasId;
+    private Random rand;
+    private int randomCurrentMusicPlaying = -1;
 
     public final boolean FROM_THE_BEGINING = true;
 
@@ -99,7 +104,9 @@ public class ResourceManager {
         loadedTextures = new HashMap<Integer, ITextureRegion>();
         loadedMusic = new HashMap<Integer, Music>();
         loadedSound = new HashMap<Integer, Sound>();
+        playLists = new ArrayList<int[]>();
         atlasList = new ArrayList<BuildableBitmapTextureAtlas>();
+        rand = new Random();
     }
 
     // ================= SOUND ==================== //
@@ -218,6 +225,32 @@ public class ResourceManager {
 
     public void playLoopMusic(int resourceID) {
         playMusic(resourceID, 100, true, false );
+    }
+
+    public void playMusicRandom(final int volume, final int ... resourcesID) {
+        playLists.add(resourcesID);
+        startNextRandomInPlayList(volume, playLists.size() - 1);
+    }
+
+    private void startNextRandomInPlayList(final int volume, final int currPlayList) {
+        Music music;
+        if (randomCurrentMusicPlaying == -1) {
+            int next_music = (rand.nextInt() % playLists.get(currPlayList).length
+                                             + playLists.get(currPlayList).length)/2;
+            music = loadedMusic.get(playLists.get(currPlayList)[next_music]);
+            music.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mediaPlayer) {
+                    randomCurrentMusicPlaying = -1;
+                    startNextRandomInPlayList(volume, currPlayList);
+                }
+            });
+            randomCurrentMusicPlaying = next_music;
+        } else {
+            music = loadedMusic.get(playLists.get(currPlayList)[randomCurrentMusicPlaying]);
+        }
+        music.setVolume(((float)volume)/100f);
+        music.play();
     }
 
     public void stopAllMusic() {
