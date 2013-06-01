@@ -14,25 +14,80 @@ direction - направление: на лево, на право, случай
 -->
 
 <resources>
-    <level id="1" type="bonus" number="10" delay="3.0" scoreMultiplier="1.0"/>
+    <level id="1" type="regular" scoreMultiplier="1.0">
+        <enemy type="sailfish" number="1" firstSpawnIn="1.0" lines="2" direction="both"/>
+        <enemy type="sailfish" number="1" firstSpawnIn="4.0" lines="3" direction="both"/>
+    </level>
+
     <level id="2" type="regular" scoreMultiplier="1.0">
-        <enemy type="battleship" number="2" firstSpawnIn="4.0" periodicSpawnDelay="8.0" lines="1" direction="to right"/>
-        <enemy type="missileBoat" number="2" firstSpawnIn="1.0" periodicSpawnDelay="8.0" lines="2" direction="to right"/>
-        <enemy type="sailfish" number="2" firstSpawnIn="4.0" periodicSpawnDelay="8.0" lines="3" direction="to right"/>
+        <enemy type="sailfish" number="1" firstSpawnIn="1.5" lines="1" direction="to right"/>
+        <enemy type="sailfish" number="2" firstSpawnIn="1.0" periodicSpawnDelay="4.0" lines="2" direction="both"/>
+        <enemy type="sailfish" number="1" firstSpawnIn="1.5" lines="3" direction="to right"/>
     </level>
 
-    <level id="3" type="regular" scoreMultiplier="1.5">
-        <enemy type="sailfish" number="1" firstSpawnIn="1.0" lines="1" direction="to right"/>
-        <enemy type="sailfish" number="2" firstSpawnIn="3.0" periodicSpawnDelay="8.0" lines="2" direction="to right"/>
-        <enemy type="sailfish" number="1" firstSpawnIn="1.0" lines="3" direction="to right"/>
-        <enemy type="missileBoat" number="2" randomSpawnDelay="12.0" firstSpawnIn="18.0" lines="1" direction="to left"/>
-        <enemy type="missileBoat" number="2" randomSpawnDelay="12.0" firstSpawnIn="20.0" lines="2" direction="to left"/>
-        <enemy type="missileBoat" number="2" randomSpawnDelay="12.0" firstSpawnIn="22.0" lines="3" direction="to left"/>
+    <level id="3" type="regular" scoreMultiplier="1.0">
+        <enemy type="sailfish" number="3" firstSpawnIn="1.0" randomSpawnDelay="10.0" lines="1" direction="both"/>
+        <enemy type="sailfish"    number="3"  firstSpawnIn="3.0" randomSpawnDelay="15.0" lines="2" direction="both"/>
+        <enemy type="sailfish"  number="2"  firstSpawnIn="7.0" randomSpawnDelay="15.0" lines="3" direction="both"/>
     </level>
 
-    <level id="4" type="regular" scoreMultiplier="2.0">
-        <enemy type="missileBoat" number="10" firstSpawnIn="1.0" randomSpawnDelay="10.0" lines="1 2 3" direction="both"/>
-        <enemy type="sailfish"    number="3"  firstSpawnIn="5.0" randomSpawnDelay="15.0" lines="1 2 3" direction="both"/>
-        <enemy type="battleship"  number="1"  firstSpawnIn="35.0" lines="1 2" direction="both"/>
+    <level id="4" type="regular" scoreMultiplier="1.1">
+        <enemy type="missileBoat" number="1" firstSpawnIn="20.0" lines="1" direction="to left"/>
+        <enemy type="sailfish" number="3" firstSpawnIn="10.0" lines="1" direction="to right"/>
+        <enemy type="sailfish" number="4" firstSpawnIn="7.0" periodicSpawnDelay="6.0" lines="2" direction="both"/>
+        <enemy type="sailfish" number="4" firstSpawnIn="2.0" periodicSpawnDelay="6.0" lines="3" direction="both"/>
     </level>
+
+    <level id="5" type="regular" scoreMultiplier="1.1">
+        <enemy type="sailfish" number="5" firstSpawnIn="10.0" periodicSpawnDelay="8.0" lines="1 2" direction="to right"/>
+        <enemy type="missileBoat" number="3" firstSpawnIn="15.0" periodicSpawnDelay="8.0" lines="1 2 3" direction="to left"/>
+        <enemy type="sailfish" number="5" firstSpawnIn="4.0" periodicSpawnDelay="8.0" lines="2 3" direction="to right"/>
+    </level>
+
+    <level id="6" type="regular" scoreMultiplier="1.2">
+        <enemy type="sailfish" number="6" firstSpawnIn="4.0" periodicSpawnDelay="10.0" lines="1 3" direction="to left"/>
+        <enemy type="missileBoat" number="5" firstSpawnIn="15.0" periodicSpawnDelay="10.0" lines="2" direction="to left"/>
+        <enemy type="sailfish" number="6" firstSpawnIn="4.0" periodicSpawnDelay="10.0" lines="2 3" direction="to left"/>
+    </level>
+
+    <level id="7" type="regular" scoreMultiplier="1.2">
+        <enemy type="sailfish" number="7" firstSpawnIn="4.0" periodicSpawnDelay="10.0" lines="1 2" direction="to right"/>
+        <enemy type="missileBoat" number="6" firstSpawnIn="15.0" periodicSpawnDelay="10.0" lines="1 2" direction="to right"/>
+        <enemy type="sailfish" number="7" firstSpawnIn="4.0" periodicSpawnDelay="10.0" lines="2 3" direction="to right"/>
+    </level>
+
+    <level id="8" type="regular" scoreMultiplier="1.2">
+        <enemy type="sailfish" number="7" firstSpawnIn="4.0" periodicSpawnDelay="10.0" lines="1 2" direction="both"/>
+        <enemy type="missileBoat" number="6" firstSpawnIn="15.0" periodicSpawnDelay="10.0" lines="1 2" direction="both"/>
+        <enemy type="sailfish" number="7" firstSpawnIn="4.0" periodicSpawnDelay="10.0" lines="2 3" direction="both"/>
+    </level>
+
+    <level id="9" type="regular" scoreMultiplier="1.0">
+        <enemy type="battleship" number="2" firstSpawnIn="15.0" periodicSpawnDelay="8.0" lines="1" direction="both"/>
+        <enemy type="missileBoat" number="5" firstSpawnIn="1.0" periodicSpawnDelay="8.0" lines="2" direction="both"/>
+        <enemy type="sailfish" number="12" firstSpawnIn="4.0" periodicSpawnDelay="8.0" lines="3" direction="both"/>
+    </level>
+
+    <level id="10" type="bonus" number="15" delay="8.0" scoreMultiplier="2.0"/>
+
+    <level id="11" type="bonus" number="20" delay="8.0" scoreMultiplier="2.0"/>
+
+    <level id="12" type="bonus" number="22" delay="8.0" scoreMultiplier="2.0"/>
+
+    <level id="13" type="bonus" number="24" delay="8.0" scoreMultiplier="2.0"/>
+
+    <level id="14" type="bonus" number="26" delay="8.0" scoreMultiplier="2.0"/>
+
+    <level id="15" type="bonus" number="30" delay="7.0" scoreMultiplier="2.5"/>
+
+    <level id="16" type="bonus" number="30" delay="6.0" scoreMultiplier="3.0"/>
+
+    <level id="17" type="bonus" number="30" delay="5.0" scoreMultiplier="3.5"/>
+
+    <level id="18" type="bonus" number="30" delay="4.0" scoreMultiplier="4.0"/>
+
+    <level id="19" type="bonus" number="30" delay="3.0" scoreMultiplier="5.0"/>
+
+    <level id="20" type="bonus" number="30" delay="2.0" scoreMultiplier="6.0"/>
+
 </resources>
