@@ -8,6 +8,7 @@ Date: 07.05.13
 import android.graphics.PointF;
 import com.example.ship.R;
 import com.example.ship.RootActivity;
+import com.example.ship.commons.A;
 import com.example.ship.commons.CSprite;
 import com.example.ship.game.particlesystem.Effects;
 import com.example.ship.game.particlesystem.Recipes;
@@ -144,6 +145,7 @@ public class Ship {
                                                    , activity.getIntResource(R.integer.SHIP_EXPLOSION));
 
         if ( health <= 0) {
+            A.a.getSceneSwitcher().getGameScene().getPlayer().addPoints(this.getScore());
             activity.getSceneSwitcher().getGameScene().getPlayer().getLevel().incrementLevelProgress();
             killSelf();
             return true;
@@ -240,14 +242,15 @@ public class Ship {
         if (direction == TO_LEFT) {
             startPoint = new PointF( activity.getCamera().getXMax()
                                    , yPosition - shipSprite.getHeightScaled() * (1 - RELATIVE_WATERLINE));
+
             finishPoint = new PointF( activity.getCamera().getXMin() - abs(shipSprite.getWidthScaled())
-                                                                    - FINISH_OFFSET
+                                                                     - FINISH_OFFSET
                                     , startPoint.y);
         } else {
             startPoint = new PointF( activity.getCamera().getXMin() - abs(shipSprite.getWidthScaled())
                                    , yPosition - shipSprite.getHeightScaled() * (1 - RELATIVE_WATERLINE));
             finishPoint = new PointF( activity.getCamera().getXMax() + 2f * abs(shipSprite.getWidthScaled())
-                                                                    + FINISH_OFFSET
+                                                                     + FINISH_OFFSET
                                     , startPoint.y);
         }
     }
