@@ -25,6 +25,7 @@
                 <texture name="cloud"/>
                 <texture name="score"/>
                 <texture name="ships_left"/>
+                <texture name="particle_point"/>
                 <texture name="progressbar"/>
                 <texture name="bonus"/>
            </Atlas>

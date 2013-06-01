@@ -10,8 +10,8 @@ import com.example.ship.game.Ship;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 
-import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Created with IntelliJ IDEA.
@@ -26,7 +26,7 @@ public class BonusActions {
 
     private static GameScene gameScene = A.a.getSceneSwitcher().getGameScene();
     private static Gun gun = gameScene.getGun();
-    private static ArrayList<Ship> ships = gameScene.getShips();
+    private static CopyOnWriteArrayList<Ship> ships = gameScene.getShips();
     private static Random rnd = new Random();
 
     public static void runGoodBonus() {
@@ -55,14 +55,19 @@ public class BonusActions {
 
         for (Ship ship : ships) {
             ship.getSprite().setIgnoreUpdate(true);
+            ship.setFrozen(true);
         }
+
+        gameScene.getPlayer().getLevel().pauseSpawn();
 
         TimerHandler bonusTimerHandler = new TimerHandler(shipStopTime, new ITimerCallback() {
             @Override
             public void onTimePassed(final TimerHandler timerHandler) {
                 for (Ship ship : ships) {
                     ship.getSprite().setIgnoreUpdate(false);
+                    ship.setFrozen(false);
                 }
+                gameScene.getPlayer().getLevel().resumeSpawn();
                 A.e.unregisterUpdateHandler(timerHandler);
             }
         });
@@ -70,9 +75,10 @@ public class BonusActions {
     }
 
     public static void setMachineGun() { //TODO gun bonus
-        final float gunBonusTime = 5.0f;
+        final float gunBonusTime = 7.0f;
+        final float timeMultiplier = 0.3f;
         final float previousFireDelay = gun.getFireDelay();
-        gun.setFireDelay(previousFireDelay * 0.1f);
+        gun.setFireDelay(previousFireDelay * timeMultiplier);
         gun.setAutoFire(true);
 
         TimerHandler bonusTimerHandler = new TimerHandler(gunBonusTime, new ITimerCallback() {
@@ -90,9 +96,9 @@ public class BonusActions {
         Player player = gameScene.getPlayer();
         for (Ship ship : ships) {
             ship.killSelf();
-            player.addPoints((int) (ship.getScore() * player.getLevel().getScoreMultiplier()));
+            player.addPoints(ship.getScore());
             player.getLevel().incrementLevelProgress();
         }
-        ships.clear();
+        gameScene.clearShips();
     }
 }

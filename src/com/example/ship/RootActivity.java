@@ -5,6 +5,7 @@ import android.graphics.PointF;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import com.example.ship.commons.A;
+import com.example.ship.game.highscores.HighScoresManager;
 import com.example.ship.resource.ResourceManager;
 import org.andengine.engine.camera.ZoomCamera;
 import org.andengine.engine.options.EngineOptions;
@@ -23,6 +24,7 @@ public class RootActivity extends BaseGameActivity {
     private Events events;
     private ZoomCamera zoomCamera;
     private SceneSwitcher sceneSwitcher = null;
+    private HighScoresManager highScoresManager;
 
     private ZoomCamera createZoomCamera() {
         DisplayMetrics metrics = new DisplayMetrics();
@@ -46,7 +48,7 @@ public class RootActivity extends BaseGameActivity {
         zoomCamera = createZoomCamera();
 
         EngineOptions engineOptions = new EngineOptions( true
-                                                       , ScreenOrientation.LANDSCAPE_FIXED
+                                                       , ScreenOrientation.LANDSCAPE_SENSOR
                                                        , new FillResolutionPolicy()
                                                        , zoomCamera);
         engineOptions.getTouchOptions().setNeedsMultiTouch(true);
@@ -72,6 +74,7 @@ public class RootActivity extends BaseGameActivity {
     @Override
     public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback) {
         A.init(this);
+        highScoresManager = new HighScoresManager();
         sceneSwitcher = new SceneSwitcher(this);
 
         if (DEBUG_GAME_SCENE) {
@@ -100,7 +103,11 @@ public class RootActivity extends BaseGameActivity {
                     sceneSwitcher.switchToGameHUD();
                     break;
                 case SceneSwitcher.GAME_OVER_STATE:
+                    sceneSwitcher.getGameScene().getGameOverHUD().addHighScore();
                     sceneSwitcher.switchToMenuScene();
+                    break;
+                case SceneSwitcher.HIGH_SCORES_STATE:
+                    sceneSwitcher.switchToMenuHud();
                     break;
                 default:
                     return super.onKeyDown(keyCode, event);
@@ -147,10 +154,16 @@ public class RootActivity extends BaseGameActivity {
         return sceneSwitcher;
     }
 
+    public HighScoresManager getHighScoresManager() {
+        return highScoresManager;
+    }
+
     public int getIntResource(int id) {
         return this.getResources().getInteger(id);
     }
-
+    public int[] getIntArrayResource(int id) {
+        return this.getResources().getIntArray(id);
+    }
     public String getStringResource(int id) {
         return this.getResources().getString(id);
     }

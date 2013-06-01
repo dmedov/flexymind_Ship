@@ -30,6 +30,8 @@ public class MaskRectangle extends Rectangle{
         mMaskingEnabled = pMaskingEnabled;
     }
 
+
+
     @Override
     protected void onManagedDraw(final GLState pGLState, final Camera pCamera) {
         if (mMaskingEnabled) {
