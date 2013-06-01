@@ -5,6 +5,7 @@ import android.graphics.Typeface;
 import com.example.ship.Events;
 import com.example.ship.R;
 import com.example.ship.RootActivity;
+import com.example.ship.commons.A;
 import com.example.ship.game.*;
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.hud.HUD;
@@ -266,7 +267,7 @@ public class GameHUD extends HUD {
 
     }
 
-    public void updateProgressBar(int progress) {
+    public void updateProgressBar(float progress) {
         progressBar.setProgress(progress);
     }
 
@@ -295,16 +296,27 @@ public class GameHUD extends HUD {
         healthIndicator.updateHealth(health);
     }
 
-    public void showNewLevelMessage(int level) {
+    public void showNewLevelMessage(int level, boolean bonus) {
         final float messageHoldTime = 1.0f;
         final float moveDuration = 3.0f;
+        String message;
+        if (bonus) {
+            message = String.format( "%s %d(%s)"
+                                   , A.a.getStringResource(R.string.NEW_LEVEL_MESSAGE)
+                                   , level
+                                   , A.a.getStringResource(R.string.BONUS_LEVEL));
+        } else {
+            message = String.format( "%s %d"
+                                   , A.a.getStringResource(R.string.NEW_LEVEL_MESSAGE)
+                                   , level);
+        }
 
         Text newLevelText = new Text( 0
                                     , 0
                                     , statFont
-                                    , activity.getStringResource(R.string.NEW_LEVEL_MESSAGE) + " " + level
+                                    , message
                                     , TEXT_LENGTH
-                                    , activity.getEngine().getVertexBufferObjectManager());
+                                    , A.a.getEngine().getVertexBufferObjectManager());
         this.attachChild(newLevelText);
 
         createMessageEntityModifiers(messageHoldTime, moveDuration, newLevelText);

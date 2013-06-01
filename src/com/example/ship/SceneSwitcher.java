@@ -2,7 +2,6 @@ package com.example.ship;
 
 import android.util.Log;
 import com.example.ship.game.GameScene;
-import com.example.ship.menu.MenuHUD;
 import com.example.ship.menu.ShipMenuScene;
 import com.example.ship.resource.ResourceManager;
 import com.example.ship.root.RootScene;
@@ -21,6 +20,7 @@ public class SceneSwitcher {
     public static final int GAME_STATE = 2;
     public static final int PAUSE_STATE = 3;
     public static final int GAME_OVER_STATE = 4;
+    public static final int HIGH_SCORES_STATE = 5;
 
     private final RootActivity activity;
     private RootScene rootScene;
@@ -54,13 +54,24 @@ public class SceneSwitcher {
         }
         rootScene.unregisterTouchArea();
         rootScene.setChildScene(menuScene);
+        menuScene.switchToMenuHud();
 
-        MenuHUD menuHUD = new MenuHUD(activity);
-        menuHUD.setEventsToChildren(activity.getEvents());
-        activity.getCamera().setHUD(menuHUD);
         manageSound(MENU_STATE);
 
         currentState = MENU_STATE;
+    }
+
+    public void switchToMenuHud() {
+        menuScene.switchToMenuHud();
+
+        currentState = MENU_STATE;
+    }
+
+
+    public void switchToHighScoresHUD() {
+        menuScene.switchToHighScoresHud();
+
+        currentState = HIGH_SCORES_STATE;
     }
 
     public void switchToGameScene() {
@@ -105,6 +116,7 @@ public class SceneSwitcher {
     public void switchToGameOverHUD() {
         gameScene.getPlayer().getLevel().pauseSpawn();
         gameScene.setIgnoreUpdate(true);
+
         if (gameScene.getPlayer().getHealth() > 0) {
             gameScene.getGameOverHUD().setWinOrLooseText(activity.getStringResource(R.string.WIN_LABEL));
             Log.d("1log", "победа");
@@ -126,6 +138,10 @@ public class SceneSwitcher {
         return rootScene;
     }
 
+    public ShipMenuScene getMenuScene() {
+        return menuScene;
+    }
+
     public GameScene getGameScene() {
         return gameScene;
     }
@@ -140,8 +156,10 @@ public class SceneSwitcher {
                 resourceManager.playLoopMusic(R.raw.m_menu_music, resourceManager.FROM_THE_BEGINING);
                 break;
             case GAME_STATE :
-                resourceManager.playLoopMusic( R.raw.m_game_music
-                                             , activity.getIntResource(R.integer.GAME_SCENE_MUSIC_VOLUME) );
+                resourceManager.playMusicRandom( activity.getIntResource(R.integer.GAME_SCENE_MUSIC_VOLUME)
+                                               , R.raw.m_menu_music
+                                               , R.raw.m_game_music);
+
                 resourceManager.playLoopMusic( R.raw.m_waves
                                              , activity.getIntResource(R.integer.GAME_SCENE_WAVES_VOLUME) );
                 break;
@@ -151,4 +169,5 @@ public class SceneSwitcher {
                 break;
         }
     }
+
 }

@@ -46,8 +46,12 @@ public class Player {
     }
 
     public void reduceHealth() {
-        health--;
+        if (!level.isBonus()) {
+            health--;
+        }
+
         gameHUD.updateHealthIndicators(health);
+
         if (health < 1) {
             activity.getSceneSwitcher().switchToGameOverHUD();
             gameHUD.updateHealthIndicators(health);
@@ -56,7 +60,7 @@ public class Player {
     }
 
     public void addPoints(int points) {
-        score += points;
+        score += points * level.getScoreMultiplier();
         gameHUD.updateScore();
     }
 
