@@ -143,7 +143,7 @@ public class Events implements TouchableMenuButtonSprite
     }
 
     private void showCredits() {
-        A.a.getHighScoresManager().clearScores();
+
     }
 
     private void showHighscores() {
