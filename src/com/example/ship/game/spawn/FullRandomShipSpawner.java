@@ -2,7 +2,7 @@ package com.example.ship.game.spawn;
 
 import android.util.Log;
 import com.example.ship.R;
-import com.example.ship.RootActivity;
+import com.example.ship.commons.A;
 import com.example.ship.commons.PausableTimerHandler;
 import com.example.ship.game.GameScene;
 import com.example.ship.game.Ship;
@@ -21,9 +21,11 @@ import java.util.Random;
  */
 public class FullRandomShipSpawner extends ShipSpawner {
     public static final float MIN_SPAWN_DELAY = 3.0f;
+    private int numberOfShips;
 
-    public FullRandomShipSpawner(RootActivity activity) {
-        super(activity, MIN_SPAWN_DELAY, MIN_SPAWN_DELAY);
+    public FullRandomShipSpawner(int number, float spawnDelay) {
+        super(A.a, MIN_SPAWN_DELAY, spawnDelay);
+        this.numberOfShips = number;
     }
 
     @Override
@@ -64,6 +66,10 @@ public class FullRandomShipSpawner extends ShipSpawner {
                                         , rnd.nextBoolean());
                     gameScene.getShips().add(ship);
                     gameScene.getChildByIndex(layerId).attachChild(ship.getSprite());
+
+                    if (--numberOfShips == 0) {
+                        stopSpawn();
+                    }
                 }
             });
         }
