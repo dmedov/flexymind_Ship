@@ -63,75 +63,31 @@ direction - направление: на лево, на право, случай
     </level>
 
     <level id="9" type="regular" scoreMultiplier="1.0">
-        <enemy type="battleship" number="2" firstSpawnIn="4.0" periodicSpawnDelay="8.0" lines="1" direction="to right"/>
-        <enemy type="missileBoat" number="2" firstSpawnIn="1.0" periodicSpawnDelay="8.0" lines="2" direction="to right"/>
-        <enemy type="sailfish" number="2" firstSpawnIn="4.0" periodicSpawnDelay="8.0" lines="3" direction="to right"/>
+        <enemy type="battleship" number="2" firstSpawnIn="15.0" periodicSpawnDelay="8.0" lines="1" direction="both"/>
+        <enemy type="missileBoat" number="5" firstSpawnIn="1.0" periodicSpawnDelay="8.0" lines="2" direction="both"/>
+        <enemy type="sailfish" number="12" firstSpawnIn="4.0" periodicSpawnDelay="8.0" lines="3" direction="both"/>
     </level>
 
-    <level id="10" type="regular" scoreMultiplier="1.0">
-        <enemy type="battleship" number="2" firstSpawnIn="4.0" periodicSpawnDelay="8.0" lines="1" direction="to right"/>
-        <enemy type="missileBoat" number="2" firstSpawnIn="1.0" periodicSpawnDelay="8.0" lines="2" direction="to right"/>
-        <enemy type="sailfish" number="2" firstSpawnIn="4.0" periodicSpawnDelay="8.0" lines="3" direction="to right"/>
-    </level>
+    <level id="10" type="bonus" number="15" delay="8.0" scoreMultiplier="2.0"/>
 
-    <level id="11" type="regular" scoreMultiplier="1.0">
-        <enemy type="battleship" number="2" firstSpawnIn="4.0" periodicSpawnDelay="8.0" lines="1" direction="to right"/>
-        <enemy type="missileBoat" number="2" firstSpawnIn="1.0" periodicSpawnDelay="8.0" lines="2" direction="to right"/>
-        <enemy type="sailfish" number="2" firstSpawnIn="4.0" periodicSpawnDelay="8.0" lines="3" direction="to right"/>
-    </level>
+    <level id="11" type="bonus" number="20" delay="8.0" scoreMultiplier="2.0"/>
 
-    <level id="12" type="regular" scoreMultiplier="1.0">
-        <enemy type="battleship" number="2" firstSpawnIn="4.0" periodicSpawnDelay="8.0" lines="1" direction="to right"/>
-        <enemy type="missileBoat" number="2" firstSpawnIn="1.0" periodicSpawnDelay="8.0" lines="2" direction="to right"/>
-        <enemy type="sailfish" number="2" firstSpawnIn="4.0" periodicSpawnDelay="8.0" lines="3" direction="to right"/>
-    </level>
+    <level id="12" type="bonus" number="22" delay="8.0" scoreMultiplier="2.0"/>
 
-    <level id="13" type="regular" scoreMultiplier="1.0">
-        <enemy type="battleship" number="2" firstSpawnIn="4.0" periodicSpawnDelay="8.0" lines="1" direction="to right"/>
-        <enemy type="missileBoat" number="2" firstSpawnIn="1.0" periodicSpawnDelay="8.0" lines="2" direction="to right"/>
-        <enemy type="sailfish" number="2" firstSpawnIn="4.0" periodicSpawnDelay="8.0" lines="3" direction="to right"/>
-    </level>
+    <level id="13" type="bonus" number="24" delay="8.0" scoreMultiplier="2.0"/>
 
-    <level id="14" type="regular" scoreMultiplier="1.0">
-        <enemy type="battleship" number="2" firstSpawnIn="4.0" periodicSpawnDelay="8.0" lines="1" direction="to right"/>
-        <enemy type="missileBoat" number="2" firstSpawnIn="1.0" periodicSpawnDelay="8.0" lines="2" direction="to right"/>
-        <enemy type="sailfish" number="2" firstSpawnIn="4.0" periodicSpawnDelay="8.0" lines="3" direction="to right"/>
-    </level>
+    <level id="14" type="bonus" number="26" delay="8.0" scoreMultiplier="2.0"/>
 
-    <level id="15" type="regular" scoreMultiplier="1.0">
-        <enemy type="battleship" number="2" firstSpawnIn="4.0" periodicSpawnDelay="8.0" lines="1" direction="to right"/>
-        <enemy type="missileBoat" number="2" firstSpawnIn="1.0" periodicSpawnDelay="8.0" lines="2" direction="to right"/>
-        <enemy type="sailfish" number="2" firstSpawnIn="4.0" periodicSpawnDelay="8.0" lines="3" direction="to right"/>
-    </level>
+    <level id="15" type="bonus" number="30" delay="7.0" scoreMultiplier="2.5"/>
 
-    <level id="16" type="regular" scoreMultiplier="1.0">
-        <enemy type="battleship" number="2" firstSpawnIn="4.0" periodicSpawnDelay="8.0" lines="1" direction="to right"/>
-        <enemy type="missileBoat" number="2" firstSpawnIn="1.0" periodicSpawnDelay="8.0" lines="2" direction="to right"/>
-        <enemy type="sailfish" number="2" firstSpawnIn="4.0" periodicSpawnDelay="8.0" lines="3" direction="to right"/>
-    </level>
+    <level id="16" type="bonus" number="30" delay="6.0" scoreMultiplier="3.0"/>
 
-    <level id="17" type="regular" scoreMultiplier="1.0">
-        <enemy type="battleship" number="2" firstSpawnIn="4.0" periodicSpawnDelay="8.0" lines="1" direction="to right"/>
-        <enemy type="missileBoat" number="2" firstSpawnIn="1.0" periodicSpawnDelay="8.0" lines="2" direction="to right"/>
-        <enemy type="sailfish" number="2" firstSpawnIn="4.0" periodicSpawnDelay="8.0" lines="3" direction="to right"/>
-    </level>
+    <level id="17" type="bonus" number="30" delay="5.0" scoreMultiplier="3.5"/>
 
-    <level id="18" type="regular" scoreMultiplier="1.0">
-        <enemy type="battleship" number="2" firstSpawnIn="4.0" periodicSpawnDelay="8.0" lines="1" direction="to right"/>
-        <enemy type="missileBoat" number="2" firstSpawnIn="1.0" periodicSpawnDelay="8.0" lines="2" direction="to right"/>
-        <enemy type="sailfish" number="2" firstSpawnIn="4.0" periodicSpawnDelay="8.0" lines="3" direction="to right"/>
-    </level>
+    <level id="18" type="bonus" number="30" delay="4.0" scoreMultiplier="4.0"/>
 
-    <level id="19" type="regular" scoreMultiplier="1.0">
-        <enemy type="battleship" number="2" firstSpawnIn="4.0" periodicSpawnDelay="8.0" lines="1" direction="to right"/>
-        <enemy type="missileBoat" number="2" firstSpawnIn="1.0" periodicSpawnDelay="8.0" lines="2" direction="to right"/>
-        <enemy type="sailfish" number="2" firstSpawnIn="4.0" periodicSpawnDelay="8.0" lines="3" direction="to right"/>
-    </level>
+    <level id="19" type="bonus" number="30" delay="3.0" scoreMultiplier="5.0"/>
 
-    <level id="20" type="regular" scoreMultiplier="1.0">
-        <enemy type="battleship" number="2" firstSpawnIn="4.0" periodicSpawnDelay="8.0" lines="1" direction="to right"/>
-        <enemy type="missileBoat" number="2" firstSpawnIn="1.0" periodicSpawnDelay="8.0" lines="2" direction="to right"/>
-        <enemy type="sailfish" number="2" firstSpawnIn="4.0" periodicSpawnDelay="8.0" lines="3" direction="to right"/>
-    </level>
+    <level id="20" type="bonus" number="30" delay="2.0" scoreMultiplier="6.0"/>
 
 </resources>
