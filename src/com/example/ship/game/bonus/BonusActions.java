@@ -55,14 +55,19 @@ public class BonusActions {
 
         for (Ship ship : ships) {
             ship.getSprite().setIgnoreUpdate(true);
+            ship.setFrozen(true);
         }
+
+        gameScene.getPlayer().getLevel().pauseSpawn();
 
         TimerHandler bonusTimerHandler = new TimerHandler(shipStopTime, new ITimerCallback() {
             @Override
             public void onTimePassed(final TimerHandler timerHandler) {
                 for (Ship ship : ships) {
                     ship.getSprite().setIgnoreUpdate(false);
+                    ship.setFrozen(false);
                 }
+                gameScene.getPlayer().getLevel().resumeSpawn();
                 A.e.unregisterUpdateHandler(timerHandler);
             }
         });
@@ -70,9 +75,10 @@ public class BonusActions {
     }
 
     public static void setMachineGun() { //TODO gun bonus
-        final float gunBonusTime = 5.0f;
+        final float gunBonusTime = 7.0f;
+        final float timeMultiplier = 0.3f;
         final float previousFireDelay = gun.getFireDelay();
-        gun.setFireDelay(previousFireDelay * 0.1f);
+        gun.setFireDelay(previousFireDelay * timeMultiplier);
         gun.setAutoFire(true);
 
         TimerHandler bonusTimerHandler = new TimerHandler(gunBonusTime, new ITimerCallback() {

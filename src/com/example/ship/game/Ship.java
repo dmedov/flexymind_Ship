@@ -70,6 +70,7 @@ public class Ship {
     private Random rand;
     private int currentFireLevel = 0;
     private FireEffects fireEffects;
+    private boolean frozen = false;
 
     public Ship(RootActivity activity, float yPosition, String shipType, boolean direction) {
         this(activity, yPosition, shipsId.get(shipType), direction);
@@ -140,8 +141,8 @@ public class Ship {
     public boolean hit(int hitPoints) {
         health -= hitPoints;
         fireEffects.addFire();
-        activity.getResourceManager().playOnceSound(R.raw.s_explosion1
-                , activity.getIntResource(R.integer.SHIP_EXPLOSION));
+        activity.getResourceManager().playOnceSound( R.raw.s_explosion1
+                                                   , activity.getIntResource(R.integer.SHIP_EXPLOSION));
 
         if ( health <= 0) {
             A.a.getSceneSwitcher().getGameScene().getPlayer().addPoints(this.getScore());
@@ -299,9 +300,12 @@ public class Ship {
     private void createSinkModifier() {
         final float START_SPEED = abs(finishPoint.x - startPoint.x) / velocity;
         rand = new Random();
-        float sinkPointX = (direction == TO_LEFT) ?
+        float sinkPointX = shipSprite.getX();
+        if (!frozen) {
+            sinkPointX = (direction == TO_LEFT) ?
                 (shipSprite.getX() - START_SPEED * START_SPEED / (2 * SINK_ACCELERATION))
                 : (shipSprite.getX() + START_SPEED * START_SPEED / (2 * SINK_ACCELERATION));
+        }
 
         float sinkRotationAngle = MAX_SINK_ROTATION_ANGLE * (2 * rand.nextFloat() - 1);
         float sinkRotationVelocity = (MAX_SINK_ROTATION_VELOCITY - MIN_SINK_ROTATION_VELOCITY) * rand.nextFloat()
@@ -350,5 +354,9 @@ public class Ship {
         };
 
         shipSprite.registerEntityModifier(moveShip);
+    }
+
+    public void setFrozen(boolean frozen) {
+        this.frozen = frozen;
     }
 }
