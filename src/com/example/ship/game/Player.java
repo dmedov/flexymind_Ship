@@ -60,7 +60,7 @@ public class Player {
     }
 
     public void addPoints(int points) {
-        score += points;
+        score += points * level.getScoreMultiplier();
         gameHUD.updateScore();
     }
 

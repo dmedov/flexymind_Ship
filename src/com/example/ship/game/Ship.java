@@ -8,6 +8,7 @@ Date: 07.05.13
 import android.graphics.PointF;
 import com.example.ship.R;
 import com.example.ship.RootActivity;
+import com.example.ship.commons.A;
 import com.example.ship.commons.CSprite;
 import com.example.ship.game.particlesystem.Effects;
 import com.example.ship.game.particlesystem.Recipes;
@@ -20,7 +21,9 @@ import org.andengine.util.modifier.ease.EaseQuadIn;
 import org.andengine.util.modifier.ease.EaseQuadInOut;
 import org.andengine.util.modifier.ease.EaseQuadOut;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Random;
 
 import static java.lang.Math.abs;
 
@@ -67,6 +70,7 @@ public class Ship {
     private Random rand;
     private int currentFireLevel = 0;
     private FireEffects fireEffects;
+    private boolean frozen = false;
 
     public Ship(RootActivity activity, float yPosition, String shipType, boolean direction) {
         this(activity, yPosition, shipsId.get(shipType), direction);
@@ -137,10 +141,11 @@ public class Ship {
     public boolean hit(int hitPoints) {
         health -= hitPoints;
         fireEffects.addFire();
-        activity.getResourceManager().playOnceSound(R.raw.s_explosion1
-                , activity.getIntResource(R.integer.SHIP_EXPLOSION));
+        activity.getResourceManager().playOnceSound( R.raw.s_explosion1
+                                                   , activity.getIntResource(R.integer.SHIP_EXPLOSION));
 
         if ( health <= 0) {
+            A.a.getSceneSwitcher().getGameScene().getPlayer().addPoints(this.getScore());
             activity.getSceneSwitcher().getGameScene().getPlayer().getLevel().incrementLevelProgress();
             killSelf();
             return true;
@@ -235,16 +240,17 @@ public class Ship {
 
     private void setDirection() {
         if (direction == TO_LEFT) {
-            startPoint = new PointF(activity.getCamera().getXMax()
+            startPoint = new PointF( activity.getCamera().getXMax()
                                    , yPosition - shipSprite.getHeightScaled() * (1 - RELATIVE_WATERLINE));
-            finishPoint = new PointF(activity.getCamera().getXMin() - abs(shipSprite.getWidthScaled())
-                                                                    - FINISH_OFFSET
+
+            finishPoint = new PointF( activity.getCamera().getXMin() - abs(shipSprite.getWidthScaled())
+                                                                     - FINISH_OFFSET
                                     , startPoint.y);
         } else {
             startPoint = new PointF( activity.getCamera().getXMin() - abs(shipSprite.getWidthScaled())
                                    , yPosition - shipSprite.getHeightScaled() * (1 - RELATIVE_WATERLINE));
-            finishPoint = new PointF(activity.getCamera().getXMax() + 2f * abs(shipSprite.getWidthScaled())
-                                                                    + FINISH_OFFSET
+            finishPoint = new PointF( activity.getCamera().getXMax() + 2f * abs(shipSprite.getWidthScaled())
+                                                                     + FINISH_OFFSET
                                     , startPoint.y);
         }
     }
@@ -294,9 +300,12 @@ public class Ship {
     private void createSinkModifier() {
         final float START_SPEED = abs(finishPoint.x - startPoint.x) / velocity;
         rand = new Random();
-        float sinkPointX = (direction == TO_LEFT) ?
+        float sinkPointX = shipSprite.getX();
+        if (!frozen) {
+            sinkPointX = (direction == TO_LEFT) ?
                 (shipSprite.getX() - START_SPEED * START_SPEED / (2 * SINK_ACCELERATION))
                 : (shipSprite.getX() + START_SPEED * START_SPEED / (2 * SINK_ACCELERATION));
+        }
 
         float sinkRotationAngle = MAX_SINK_ROTATION_ANGLE * (2 * rand.nextFloat() - 1);
         float sinkRotationVelocity = (MAX_SINK_ROTATION_VELOCITY - MIN_SINK_ROTATION_VELOCITY) * rand.nextFloat()
@@ -345,5 +354,9 @@ public class Ship {
         };
 
         shipSprite.registerEntityModifier(moveShip);
+    }
+
+    public void setFrozen(boolean frozen) {
+        this.frozen = frozen;
     }
 }

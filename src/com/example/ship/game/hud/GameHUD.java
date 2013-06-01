@@ -267,7 +267,7 @@ public class GameHUD extends HUD {
 
     }
 
-    public void updateProgressBar(int progress) {
+    public void updateProgressBar(float progress) {
         progressBar.setProgress(progress);
     }
 

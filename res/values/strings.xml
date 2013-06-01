@@ -9,17 +9,21 @@
     <string name="MENU_HS_BUTTON">highscoresID</string>
     <string name="MENU_CREDITS_BUTTON">creditsID</string>
     <string name="MENU_EXIT_BUTTON">exitID</string>
+    <string name="HIGHSCORES_BACK_BUTTON">hsBackID</string>
     <!--Menu Button Labels-->
     <string name="MENU_START_BUTTON_LABEL">Start</string>
     <string name="MENU_HS_BUTTON_LABEL">High Scores</string>
     <string name="MENU_CREDITS_BUTTON_LABEL">Credits</string>
     <string name="MENU_EXIT_BUTTON_LABEL">Exit</string>
+    <string name="NO_RECORDS">No records</string>
     <!--GameScene-->
     <string name="SCORE">Score</string>
     <string name="LEVEL">Level</string>
     <string name="LEFT">Left</string>
     <string name="NEW_LEVEL_MESSAGE">Level</string>
     <string name="BONUS_LEVEL">Bonus</string>
+    <string name="TYPE_NAME">Enter your name</string>
+    <string name="IN_TOP">Your name:</string>
     <!--Game Button ID-->
     <string name="GAME_PAUSE_BUTTON">pauseID</string>
     <string name="GAME_PAUSE_BACK_BUTTON">backID</string>

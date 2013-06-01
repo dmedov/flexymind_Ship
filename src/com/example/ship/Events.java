@@ -1,7 +1,9 @@
 package com.example.ship;
 
-import com.example.ship.game.hud.GameButtonSprite;
+import android.util.Log;
+import com.example.ship.commons.A;
 import com.example.ship.game.Gun;
+import com.example.ship.game.hud.GameButtonSprite;
 import com.example.ship.game.hud.TouchableGameButtonSprite;
 import com.example.ship.menu.MenuButtonSprite;
 import com.example.ship.menu.TouchableMenuButtonSprite;
@@ -57,9 +59,11 @@ public class Events implements TouchableMenuButtonSprite
                         exitApplication();
                         break;
                     case R.string.GAME_OVER_RESTART_BUTTON:
+                        A.a.getSceneSwitcher().getGameScene().getGameOverHUD().addHighScore();
                         startGame();
                         break;
                     case R.string.GAME_OVER_EXIT_BUTTON:
+                        A.a.getSceneSwitcher().getGameScene().getGameOverHUD().addHighScore();
                         backToMenu();
                         break;
                 }
@@ -96,9 +100,16 @@ public class Events implements TouchableMenuButtonSprite
                     case R.string.GAME_PAUSE_BACK_BUTTON:
                         backToGame();
                         break;
+                    case R.string.HIGHSCORES_BACK_BUTTON:
+                        backToMenuHud();
+                        break;
                 }
             }
         });
+    }
+
+    private void backToMenuHud() {
+        activity.getSceneSwitcher().switchToMenuHud();
     }
 
     private void menuButtonJump (Sprite button, boolean up) {
@@ -132,11 +143,12 @@ public class Events implements TouchableMenuButtonSprite
     }
 
     private void showCredits() {
-        //To change body of created methods use File | Settings | File Templates.
+
     }
 
     private void showHighscores() {
-        //To change body of created methods use File | Settings | File Templates.
+        activity.getSceneSwitcher().switchToHighScoresHUD();
+        Log.d("1log", A.a.getHighScoresManager().getHighScores().toString());
     }
 
     private void exitApplication() {

@@ -3,6 +3,7 @@ package com.example.ship.game;
 import android.util.Log;
 import com.example.ship.R;
 import com.example.ship.RootActivity;
+import com.example.ship.commons.A;
 import com.example.ship.game.hud.GameHUD;
 import com.example.ship.game.hud.GameOverHUD;
 import com.example.ship.game.hud.PauseHUD;
@@ -103,7 +104,8 @@ public class GameScene extends Scene {
     }
 
     public void switchToGameOverHUD() {
-        gameOverHUD.setScoreToGameOverHUD(player.getStringScore());
+        gameOverHUD.setScoreToGameOverHUD(player.getStringScore(), player.getScore());
+        gameOverHUD.setNewHighScoreMode(A.a.getHighScoresManager().testScore(player.getScore()));
         activity.getCamera().setHUD(gameOverHUD);
     }
 
@@ -202,7 +204,6 @@ public class GameScene extends Scene {
                     }
 
                     if (ship.hit(getGun().getDamage())) {
-                        player.addPoints((int) (ship.getScore() * player.getLevel().getScoreMultiplier()));
                         deadShip = ship;
                     }
 
@@ -218,6 +219,11 @@ public class GameScene extends Scene {
             Bonus deadBonus = null;
             // check for torpedo collides with bonuses
             for (Bonus bonus: bonuses) {
+                // check if bonus sink already
+                if (!bonus.isLive()) {
+                    deadBonus = bonus;
+                    break;
+                }
                 if (torpedo.collidesWith(bonus.getSprite())) {
                     torpedo.detachSelf();
                     BonusActions.runGoodBonus();

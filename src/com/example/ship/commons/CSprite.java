@@ -37,7 +37,7 @@ public class CSprite extends Sprite {
         float centerY = sprite.getY();
         PointF halfDimensions = CSprite.getHalfDimensions(sprite);
         if (sprite.getScaleX() < 0) {
-            centerX += halfDimensions.x;
+            centerX -= halfDimensions.x;
         } else {
             centerX += halfDimensions.x;
         }
