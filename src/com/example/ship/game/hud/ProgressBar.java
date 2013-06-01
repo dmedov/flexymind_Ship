@@ -24,7 +24,7 @@ public class ProgressBar {
     private RootActivity activity;
     private MaskRectangle maskRectangle;
     private PointF startPointProgessBar;
-
+    private float newProgress = FULL_PROGRESS;
     public ProgressBar(RootActivity activity, GameHUD gameHUD) {
 
         this.activity = activity;
@@ -46,7 +46,13 @@ public class ProgressBar {
             protected void onManagedUpdate(float pSecondsElapsed) {
                 super.onManagedUpdate(pSecondsElapsed);
                 Gun gun = A.a.getSceneSwitcher().getGameScene().getGun();
-                setProgress(gun.getTime() / gun.getFireDelay() * 100f);
+                if (newProgress >= 90) {
+                    return;
+                }
+
+                newProgress = gun.getTime() / gun.getFireDelay() * 100f;
+
+                setProgress(newProgress);
             }
         };;
 
@@ -59,6 +65,7 @@ public class ProgressBar {
     }
 
     public void setProgress(float progress) {
+        newProgress = progress;
         maskRectangle.setHeight(progressBarSprite.getHeightScaled() * progress / FULL_PROGRESS);
         maskRectangle.setY(startPointProgessBar.y - maskRectangle.getHeight());
     }
