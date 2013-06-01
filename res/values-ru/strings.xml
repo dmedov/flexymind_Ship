@@ -7,11 +7,14 @@
     <string name="MENU_HS_BUTTON_LABEL">Рекорды</string>
     <string name="MENU_CREDITS_BUTTON_LABEL">Титры</string>
     <string name="MENU_EXIT_BUTTON_LABEL">Выход</string>
+    <string name="NO_RECORDS">Рекорды отсутствуют</string>
     <!--GameScene-->
     <string name="SCORE">Очки</string>
     <string name="LEVEL">Уровень</string>
     <string name="LEFT">Осталось</string>
     <string name="NEW_LEVEL_MESSAGE">Уровень</string>
+    <string name="TYPE_NAME">Введите свое имя</string>
+    <string name="IN_TOP">Ваше имя:</string>
     <!--GameOver Button Labels-->
     <string name="GAME_OVER_RESTART_BUTTON_LABEL">Новая игра</string>
     <string name="GAME_OVER_EXIT_BUTTON_LABEL">Выход</string>
