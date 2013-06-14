@@ -2,7 +2,7 @@
 <resources>
             <Atlas type="BILINEAR" width="2048" height="2048" format="RGBA_8888">
                 <texture name="menubutton" />
-                <texture name="ship" />
+                <texture name="logo" />
                 <texture name="menubackground"/>
             </Atlas>
             <Atlas type="BILINEAR" width="2048" height="2048" format="RGBA_8888">
