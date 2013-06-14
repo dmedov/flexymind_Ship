@@ -16,6 +16,8 @@
                 <texture name="menu_sound_button_off"/>
                 <texture name="menu_music_button_on"/>
                 <texture name="menu_music_button_off"/>
+                <texture name="back_button_pushed"/>
+                <texture name="back_button_popped"/>
             </Atlas>
             <Atlas type="BILINEAR" width="2048" height="2048" format="RGBA_8888">
                 <texture name="gamebackground"/>

@@ -1,15 +1,10 @@
 package com.example.ship.menu;
 
 import android.graphics.PointF;
-import android.graphics.Typeface;
 import com.example.ship.Events;
 import com.example.ship.R;
 import com.example.ship.commons.A;
-import org.andengine.engine.Engine;
 import org.andengine.engine.camera.hud.HUD;
-import org.andengine.opengl.font.Font;
-import org.andengine.opengl.font.FontFactory;
-import org.andengine.util.color.Color;
 
 import java.util.ArrayList;
 
@@ -21,35 +16,38 @@ import java.util.ArrayList;
  * To change this template use File | Settings | File Templates.
  */
 public class MenuHUD extends HUD {
-    private final static int BUTTON_FONT_HEIGHT = 50;
-    private final static int FONT_ATLAS_SIDE = 256;
-    private final static float RELATIVE_TITLE_HEIGHT = 0.25f;
-    private final static float RELATIVE_BUTTON_HEIGHT = 0.15f;
-    private final static float RELATIVE_BUTTON_OFFSET_HEIGHT = 0.175f;
-    private ArrayList<MenuButtonSprite> buttons;
-    private Engine engine;
+    private static final float RELATIVE_BUTTON_HEIGHT = 0.15f;
+    private static final float RELATIVE_BOTTOM_BUTTONS_Y_OFFSET = 0.8f;
+    private static final float RELATIVE_TOP_BUTTONS_Y_OFFSET = 0.1f;
+    public static final float RELATIVE_MUSIC_BUTTON_X_POSITION = 0.7f;
+    public static final float RELATIVE_SOUND_BUTTON_X_POSITION = 0.8f;
+    public static final float RELATIVE_SPACE_BETWEEN_BOTTOM_BUTTONS = 0.2f;
+    private ArrayList<MenuButtonSprite> bottomButtons;
+    private ArrayList<MenuButtonSprite> topButtons;
     private PointF cameraSize;
-    private Font buttonFont;
 
     public MenuHUD() {
         super();
 
-        engine = A.e;
         cameraSize = new PointF( A.a.getCamera().getWidthRaw()
                                , A.a.getCamera().getHeightRaw());
 
-        createFont();
         createButtons();
     }
 
     public void setEventsToChildren(Events events) {
-        for (MenuButtonSprite button: buttons) {
+        for (MenuButtonSprite button: bottomButtons) {
+            button.setEvents(events);
+        }
+        for (MenuButtonSprite button: topButtons) {
             button.setEvents(events);
         }
     }
 
     private void createButtons() {
-        buttons = new ArrayList<MenuButtonSprite>();
+        bottomButtons = new ArrayList<MenuButtonSprite>();
+        topButtons = new ArrayList<MenuButtonSprite>();
+
         MenuButtonSprite startButtonSprite =
                 new MenuButtonSprite( R.string.MENU_START_BUTTON
                                     , A.rm.getLoadedTextureRegion(R.drawable.menu_play_button_pushed)
@@ -69,48 +67,49 @@ public class MenuHUD extends HUD {
 
         MenuButtonSprite musicButtonSprite =
                 new MenuButtonSprite( R.string.MENU_MUSIC_BUTTON
-                                    , A.rm.getLoadedTextureRegion(R.drawable.menu_sound_button_on)
-                                    , A.rm.getLoadedTextureRegion(R.drawable.menu_sound_button_off));
+                                    , A.rm.getLoadedTextureRegion(R.drawable.menu_music_button_on)
+                                    , A.rm.getLoadedTextureRegion(R.drawable.menu_music_button_off));
         MenuButtonSprite soundButtonSprite =
                 new MenuButtonSprite( R.string.MENU_SOUND_BUTTON
                                     , A.rm.getLoadedTextureRegion(R.drawable.menu_sound_button_on)
                                     , A.rm.getLoadedTextureRegion(R.drawable.menu_sound_button_off));
 
-        buttons.add(startButtonSprite);
-        buttons.add(highscoresButtonSprite);
-        buttons.add(creditsButtonSprite);
-        buttons.add(exitButtonSprite);
-        buttons.add(musicButtonSprite);
-        buttons.add(soundButtonSprite);
+        bottomButtons.add(startButtonSprite);
+        bottomButtons.add(highscoresButtonSprite);
+        bottomButtons.add(creditsButtonSprite);
+        bottomButtons.add(exitButtonSprite);
+        topButtons.add(musicButtonSprite);
+        topButtons.add(soundButtonSprite);
 
-        float positionOffset = cameraSize.y * RELATIVE_TITLE_HEIGHT;
+        float positionOffset = cameraSize.x * RELATIVE_SPACE_BETWEEN_BOTTOM_BUTTONS;
 
-        for (MenuButtonSprite button: buttons) {
+        for (MenuButtonSprite button: bottomButtons) {
             float buttonScale = cameraSize.y * RELATIVE_BUTTON_HEIGHT / button.getHeight();
             button.setScale(buttonScale);
 
-            button.setPosition( cameraSize.x * 0.5f - button.getWidth() * 0.5f
-                              , positionOffset);
-            positionOffset += cameraSize.y * RELATIVE_BUTTON_OFFSET_HEIGHT;
+            button.setPosition( positionOffset - button.getWidthScaled() * 0.5f
+                              , cameraSize.y * RELATIVE_BOTTOM_BUTTONS_Y_OFFSET);
+            positionOffset += cameraSize.x * 0.2f;
 
             this.registerTouchArea(button);
             this.attachChild(button);
         }
-    }
 
-    private void createFont() {
-        buttonFont = FontFactory.create( engine.getFontManager()
-                                       , engine.getTextureManager()
-                                       , FONT_ATLAS_SIDE
-                                       , FONT_ATLAS_SIDE
-                                       , Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)
-                                       , BUTTON_FONT_HEIGHT
-                                       , true
-                                       , Color.WHITE_ABGR_PACKED_INT);
-        buttonFont.load();
-    }
+        for (MenuButtonSprite button: topButtons) {
+            float buttonScale = cameraSize.y * RELATIVE_BUTTON_HEIGHT * 0.5f / button.getHeight();
+            button.setScale(buttonScale);
 
-    private String getStringResource(int id) {
-        return A.a.getResources().getString(id);
+            this.registerTouchArea(button);
+            this.attachChild(button);
+        }
+
+        musicButtonSprite.setPosition( cameraSize.x * RELATIVE_MUSIC_BUTTON_X_POSITION
+                                     , cameraSize.y * RELATIVE_TOP_BUTTONS_Y_OFFSET
+                                       - musicButtonSprite.getHeightScaled());
+        soundButtonSprite.setPosition( cameraSize.x * RELATIVE_SOUND_BUTTON_X_POSITION
+                                     , cameraSize.y * RELATIVE_TOP_BUTTONS_Y_OFFSET
+                                       - musicButtonSprite.getHeightScaled());
+        positionOffset += cameraSize.x * 0.2f;
+
     }
 }
