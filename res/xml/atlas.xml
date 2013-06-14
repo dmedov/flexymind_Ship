@@ -1,9 +1,21 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <resources>
             <Atlas type="BILINEAR" width="2048" height="2048" format="RGBA_8888">
+                <texture name="menu_background" />
                 <texture name="menubutton" />
                 <texture name="logo" />
-                <texture name="menu_background"/>
+                <texture name="menu_play_button_pushed"/>
+                <texture name="menu_play_button_popped"/>
+                <texture name="menu_records_button_pushed"/>
+                <texture name="menu_records_button_popped"/>
+                <texture name="menu_credits_button_pushed"/>
+                <texture name="menu_credits_button_popped"/>
+                <texture name="menu_exit_button_pushed"/>
+                <texture name="menu_exit_button_popped"/>
+                <texture name="menu_sound_button_on"/>
+                <texture name="menu_sound_button_off"/>
+                <texture name="menu_music_button_on"/>
+                <texture name="menu_music_button_off"/>
             </Atlas>
             <Atlas type="BILINEAR" width="2048" height="2048" format="RGBA_8888">
                 <texture name="gamebackground"/>

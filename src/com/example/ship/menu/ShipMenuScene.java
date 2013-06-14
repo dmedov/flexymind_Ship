@@ -45,7 +45,7 @@ public class ShipMenuScene extends Scene {
     }
 
     private void createHuds() {
-        menuHUD = new MenuHUD(activity);
+        menuHUD = new MenuHUD();
         menuHUD.setEventsToChildren(activity.getEvents());
 
         highScoresHUD = new HighScoresHUD();

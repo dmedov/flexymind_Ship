@@ -9,12 +9,11 @@
     <string name="MENU_HS_BUTTON">highscoresID</string>
     <string name="MENU_CREDITS_BUTTON">creditsID</string>
     <string name="MENU_EXIT_BUTTON">exitID</string>
+    <string name="MENU_MUSIC_BUTTON">musicID</string>
+    <string name="MENU_SOUND_BUTTON">soundID</string>
     <string name="HIGHSCORES_BACK_BUTTON">hsBackID</string>
     <!--Menu Button Labels-->
-    <string name="MENU_START_BUTTON_LABEL">Start</string>
     <string name="MENU_HS_BUTTON_LABEL">High Scores</string>
-    <string name="MENU_CREDITS_BUTTON_LABEL">Credits</string>
-    <string name="MENU_EXIT_BUTTON_LABEL">Exit</string>
     <string name="NO_RECORDS">No records</string>
     <!--GameScene-->
     <string name="SCORE">Score</string>

@@ -145,11 +145,9 @@ public class GameOverHUD extends HUD {
     private void createGameOverButtons() {
 
         restartButtonSprite =
-                new MenuButtonSprite( resourceManager.getLoadedTextureRegion(R.drawable.menubutton)
-                                    , activity.getEngine().getVertexBufferObjectManager()
-                                    , R.string.GAME_OVER_RESTART_BUTTON
-                                    , getStringResource(R.string.GAME_OVER_RESTART_BUTTON_LABEL)
-                                    , font);
+                new MenuButtonSprite( R.string.GAME_OVER_RESTART_BUTTON
+                                    , A.rm.getLoadedTextureRegion(R.drawable.menu_play_button_pushed)
+                                    , A.rm.getLoadedTextureRegion(R.drawable.menu_play_button_popped));
 
         restartButtonSprite.setScale(cameraSize.y * RELATIVE_GAME_OVER_BUTTON / restartButtonSprite.getHeight());
         restartButtonSprite.setPosition( cameraSize.x * 0.5f - restartButtonSprite.getWidth() * 0.5f
@@ -157,11 +155,9 @@ public class GameOverHUD extends HUD {
                                          + cameraSize.y * RELATIVE_SPACE_BETWEEN_ELEMENTS_HEIGHT);
 
         exitButtonSprite =
-                new MenuButtonSprite( resourceManager.getLoadedTextureRegion(R.drawable.menubutton)
-                                    , activity.getEngine().getVertexBufferObjectManager()
-                                    , R.string.GAME_OVER_EXIT_BUTTON
-                                    , getStringResource(R.string.GAME_OVER_EXIT_BUTTON_LABEL)
-                                    , font);
+                new MenuButtonSprite( R.string.GAME_OVER_EXIT_BUTTON
+                                    , A.rm.getLoadedTextureRegion(R.drawable.back_button_pushed)
+                                    , A.rm.getLoadedTextureRegion(R.drawable.back_button_popped));
 
         exitButtonSprite.setScale(cameraSize.y * RELATIVE_GAME_OVER_BUTTON / exitButtonSprite.getHeight());
         exitButtonSprite.setPosition( cameraSize.x * 0.5f - exitButtonSprite.getWidth() * 0.5f
@@ -199,10 +195,6 @@ public class GameOverHUD extends HUD {
         this.score = score;
         setNewHighScoreMode(A.a.getHighScoresManager().testScore(score));
         scoreText.setText(activity.getResources().getString(R.string.SCORE) + scoreString);
-    }
-
-    private String getStringResource(int id) {
-        return activity.getResources().getString(id);
     }
 
     public void setEventsToChildren(Events events) {
