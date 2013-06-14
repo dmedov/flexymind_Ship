@@ -3,7 +3,7 @@
             <Atlas type="BILINEAR" width="2048" height="2048" format="RGBA_8888">
                 <texture name="menubutton" />
                 <texture name="logo" />
-                <texture name="menubackground"/>
+                <texture name="menu_background"/>
             </Atlas>
             <Atlas type="BILINEAR" width="2048" height="2048" format="RGBA_8888">
                 <texture name="gamebackground"/>

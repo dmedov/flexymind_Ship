@@ -41,7 +41,6 @@ public class ShipMenuScene extends Scene {
         this.resourceManager = activity.getResourceManager();
 
         createBackground();
-        createTitle();
         createHuds();
     }
 
@@ -87,7 +86,7 @@ public class ShipMenuScene extends Scene {
     }
 
     private void createBackground() {
-        ITextureRegion backgroundTexture = resourceManager.getLoadedTextureRegion(R.drawable.menubackground);
+        ITextureRegion backgroundTexture = resourceManager.getLoadedTextureRegion(R.drawable.menu_background);
         Sprite backgroundImage = new Sprite( 0
                                            , 0
                                            , backgroundTexture
