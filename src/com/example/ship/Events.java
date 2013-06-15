@@ -34,7 +34,7 @@ public class Events implements TouchableMenuButtonSprite
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                menuButtonJump(button, true);
+                //menuButtonJump(button, true);
             }
         });
     }
@@ -44,7 +44,7 @@ public class Events implements TouchableMenuButtonSprite
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                menuButtonJump(button, false);
+                //menuButtonJump(button, false);
                 switch (button.getId()) {
                     case R.string.MENU_START_BUTTON:
                         startGame();

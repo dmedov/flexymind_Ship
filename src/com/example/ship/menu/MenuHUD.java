@@ -16,12 +16,13 @@ import java.util.ArrayList;
  * To change this template use File | Settings | File Templates.
  */
 public class MenuHUD extends HUD {
-    private static final float RELATIVE_BUTTON_HEIGHT = 0.15f;
+    private static final float RELATIVE_BOTTOM_BUTTON_HEIGHT = 0.15f;
+    private static final float RELATIVE_TOP_BUTTON_HEIGHT = RELATIVE_BOTTOM_BUTTON_HEIGHT * 0.5f;
     private static final float RELATIVE_BOTTOM_BUTTONS_Y_OFFSET = 0.8f;
     private static final float RELATIVE_TOP_BUTTONS_Y_OFFSET = 0.1f;
-    public static final float RELATIVE_MUSIC_BUTTON_X_POSITION = 0.7f;
-    public static final float RELATIVE_SOUND_BUTTON_X_POSITION = 0.8f;
-    public static final float RELATIVE_SPACE_BETWEEN_BOTTOM_BUTTONS = 0.2f;
+    private static final float RELATIVE_MUSIC_BUTTON_X_POSITION = 0.7f;
+    private static final float RELATIVE_SOUND_BUTTON_X_POSITION = 0.8f;
+    private static final float RELATIVE_SPACE_BETWEEN_BOTTOM_BUTTONS = 0.2f;
     private ArrayList<MenuButtonSprite> bottomButtons;
     private ArrayList<MenuButtonSprite> topButtons;
     private PointF cameraSize;
@@ -84,7 +85,7 @@ public class MenuHUD extends HUD {
         float positionOffset = cameraSize.x * RELATIVE_SPACE_BETWEEN_BOTTOM_BUTTONS;
 
         for (MenuButtonSprite button: bottomButtons) {
-            float buttonScale = cameraSize.y * RELATIVE_BUTTON_HEIGHT / button.getHeight();
+            float buttonScale = cameraSize.y * RELATIVE_BOTTOM_BUTTON_HEIGHT / button.getHeight();
             button.setScale(buttonScale);
 
             button.setPosition( positionOffset - button.getWidthScaled() * 0.5f
@@ -96,7 +97,7 @@ public class MenuHUD extends HUD {
         }
 
         for (MenuButtonSprite button: topButtons) {
-            float buttonScale = cameraSize.y * RELATIVE_BUTTON_HEIGHT * 0.5f / button.getHeight();
+            float buttonScale = cameraSize.y * RELATIVE_TOP_BUTTON_HEIGHT / button.getHeight();
             button.setScale(buttonScale);
 
             this.registerTouchArea(button);

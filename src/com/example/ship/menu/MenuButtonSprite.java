@@ -10,13 +10,18 @@ public class MenuButtonSprite extends Sprite {
 
     private final int id;
     private TouchableMenuButtonSprite touchableMenuButtonSprite;
+    private Sprite poppedSprite;
 
     public MenuButtonSprite( int id
-                           , ITextureRegion buttonPoppedTexture
-                           , ITextureRegion buttonPushedTexture) {
+                           , ITextureRegion buttonPushedTexture
+                           , ITextureRegion buttonPoppedTexture) {
 
         super(0, 0, buttonPushedTexture, A.a.getVertexBufferObjectManager());
         this.id = id;
+
+        poppedSprite = new Sprite(0, 0, buttonPoppedTexture, A.a.getVertexBufferObjectManager());
+        poppedSprite.setVisible(false);
+        this.attachChild(poppedSprite);
 
     }
 
@@ -34,9 +39,13 @@ public class MenuButtonSprite extends Sprite {
                                 , float pTouchAreaLocalY) {
 
         if (pSceneTouchEvent.isActionDown()) {
+            this.setAlpha(0.0f);
+            poppedSprite.setVisible(true);
             touchableMenuButtonSprite.onAreaButtonMenuTouched(this);
         }
         if (pSceneTouchEvent.isActionUp()) {
+            poppedSprite.setVisible(false);
+            this.setAlpha(1.0f);
             touchableMenuButtonSprite.onAreaButtonMenuReleased(this);
         }
         return true;

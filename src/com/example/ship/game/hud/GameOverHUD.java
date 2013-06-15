@@ -10,7 +10,6 @@ import com.example.ship.commons.A;
 import com.example.ship.commons.InputText;
 import com.example.ship.game.highscores.ScoreRecord;
 import com.example.ship.menu.MenuButtonSprite;
-import com.example.ship.resource.ResourceManager;
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.text.Text;
@@ -36,7 +35,6 @@ public class GameOverHUD extends HUD {
     private final PointF cameraSize;
     private static final int TEXT_LENGTH = 16;
 
-    private ResourceManager resourceManager;
     private RootActivity activity;
     private Font font;
     private Text winOrLooseText;
@@ -52,7 +50,6 @@ public class GameOverHUD extends HUD {
         super();
 
         this.activity = activity;
-        this.resourceManager = activity.getResourceManager();
         cameraSize = new PointF( this.activity.getCamera().getWidthRaw()
                                , this.activity.getCamera().getHeightRaw());
 
